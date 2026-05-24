@@ -1,0 +1,67 @@
+#include "pch.h"
+#include "Scene.h"
+#include "Application.h"
+#include "Entity.h"
+#include "2DPendentLib/Shape.h"
+#include "SoundManager.h"
+#include "AssetManager.h"
+#include "Camera.h"
+
+int Scene::GetWindowWidth() const
+{
+	return m_application->m_window.GetWindowSize().GetX();
+}
+
+int Scene::GetWindowHeight() const
+{
+	return m_application->m_window.GetWindowSize().GetY();
+}
+
+float Scene::GetDeltaTime() const
+{
+	return m_application->m_deltaTime;
+}
+
+void Scene::ChangeisRunning(bool p_bool)
+{
+	m_application->m_isRunning = p_bool;
+}
+
+void Scene::ChangeAutoFPS()
+{
+	if (m_application->m_autoFPS == false)
+	{
+		m_application->m_autoFPS = true;
+		std::cerr << "Auto FPS enabled." << std::endl;
+	}
+	else
+	{
+		m_application->m_autoFPS = false;
+		std::cerr << "Auto FPS disabled." << std::endl;
+	}
+}
+
+bool Scene::GetAutoFPS()
+{
+	return m_application->m_autoFPS;
+}
+
+void Scene::SetFPS(int p_newFPS)
+{
+	m_application->SetFPS(p_newFPS);
+}
+
+int Scene::GetCurrentFPS() const
+{
+	return static_cast<int>(m_application->m_currentFPS);
+}
+
+Application* Scene::GetApplication() const
+{
+	return m_application;
+}
+
+Camera* Scene::GetCamera() const
+{
+	return m_application->m_camera;
+}

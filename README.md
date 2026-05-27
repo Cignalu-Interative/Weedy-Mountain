@@ -1,2 +1,2 @@
-# Cignalu-Engine-2Dpendent
-Moteur 2D de notre studio Cignalu Interactive 
+# Moteur2DCignaluInteractive
+Moteur crée dans un but d'approfondissement de nos connaissances avec Dumè Courrèges et moi même

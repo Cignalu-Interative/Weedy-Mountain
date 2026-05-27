@@ -1,0 +1,81 @@
+{
+    "projects": {
+        "0D617CBC-7869-5998-6516-726D44260631": {
+            "config-debug": {
+                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64" ],
+                "preprocessorDefinitions": []
+            },
+            "config-release": {
+                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64" ],
+                "preprocessorDefinitions": []
+            },
+            "dependencies": [
+                "0E5C1DA7-759E-1F63-0384-0F836C5015B9"
+            ],
+            "dependents": [],
+            "name": "2DPendentEngine",
+            "property-lib": true,
+            "property-pch": true,
+            "property-vcpkg": false,
+            "property-window": false
+        },
+        "0E5C1DA7-759E-1F63-0384-0F836C5015B9": {
+            "config-debug": {
+                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64" ],
+                "preprocessorDefinitions": []
+            },
+            "config-release": {
+                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64" ],
+                "preprocessorDefinitions": []
+            },
+            "dependencies": [],
+            "dependents": [],
+            "name": "2DPendentLib",
+            "property-lib": true,
+            "property-pch": true,
+            "property-vcpkg": false,
+            "property-window": false
+        },
+        "384C6ABD-387E-77EC-77C2-55501F1F6D3C": {
+            "config-debug": {
+                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64" ],
+                "preprocessorDefinitions": []
+            },
+            "config-release": {
+                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64" ],
+                "preprocessorDefinitions": [ "NDEBUG" ],
+                "subsystem": "windows"
+            },
+            "dependencies": [
+                "0D617CBC-7869-5998-6516-726D44260631"
+            ],
+            "dependents": [],
+            "name": "Game",
+            "property-lib": false,
+            "property-pch": true,
+            "property-vcpkg": false,
+            "property-window": false
+        }
+    },
+    "projects_name_to_guid": {
+        "2DPendentEngine": "0D617CBC-7869-5998-6516-726D44260631",
+        "2DPendentLib": "0E5C1DA7-759E-1F63-0384-0F836C5015B9",
+        "Game": "384C6ABD-387E-77EC-77C2-55501F1F6D3C"
+    },
+    "solution_guid": "0C071A39-1387-6DE1-3635-18843B664244",
+    "solution_name": "2Dpendent",
+    "startup_project": "384C6ABD-387E-77EC-77C2-55501F1F6D3C",
+    "version": "2.0"
+}

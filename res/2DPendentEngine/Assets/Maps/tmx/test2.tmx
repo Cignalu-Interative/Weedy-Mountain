@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="20" height="10" tilewidth="16" tileheight="16" infinite="0" nextlayerid="4" nextobjectid="9">
+ <layer id="1" name="Calque de Tuiles 1" width="20" height="10">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="2" name="Calque d'Objets 1">
+  <object id="1" name="gygy" type="gygyg" x="32" y="16" width="32" height="32" rotation="3" visible="0"/>
+  <object id="2" name="huhnuj" type="hu" x="128" y="32" visible="0">
+   <point/>
+  </object>
+  <object id="3" name="nujn" type="bjun" x="192" y="32" width="32" height="32" rotation="-6" visible="0">
+   <ellipse/>
+  </object>
+  <object id="4" name="vgvghvg" type="gvhvhv" x="64" y="80" rotation="-6" visible="0">
+   <polygon points="0,0 32,48 48,0"/>
+  </object>
+  <object id="5" name="drdr" type="drd" x="184.667" y="98.83" width="110" height="21" rotation="3" visible="0">
+   <properties>
+    <property name="vgv" type="float" value="4"/>
+   </properties>
+   <text fontfamily="Segoe MDL2 Assets" wrap="1" color="#aa0000" halign="center" valign="center">Hello World</text>
+  </object>
+  <object id="8" x="188" y="22.1667" width="108" height="19">
+   <text wrap="1">Bonjour Monde</text>
+  </object>
+ </objectgroup>
+ <imagelayer id="3" name="Calque d'Images 1"/>
+</map>

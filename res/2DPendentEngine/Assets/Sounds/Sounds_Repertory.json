@@ -1,0 +1,40 @@
+{
+  "sounds": [
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/music/time_for_adventure.mp3"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sounds/coin.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sounds/explosion.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sounds/hurt.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sounds/jump.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sounds/power_up.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sounds/tap.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Sounds/Musics/music1.mp3"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Sounds/Musics/music2.mp3"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Sounds/SFXs/Monsieur.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Sounds/SFXs/click_button.wav"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Sounds/SFXs/coin.wav"
+    }
+  ]
+}

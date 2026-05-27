@@ -1,0 +1,13 @@
+{
+  "fonts": [
+    {
+      "path": "../../res/2DPendentEngine/Assets/Fonts/DefaultPolice.ttf"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/fonts/PixelOperator8-Bold.ttf"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/fonts/PixelOperator8.ttf"
+    }
+  ]
+}

@@ -1,0 +1,2545 @@
+{
+  "textures": [
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sprites/coin.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sprites/fruit.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sprites/knight.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sprites/platforms.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sprites/slime_green.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sprites/slime_purple.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/brackeys_platformer_assets/sprites/world_tileset.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/BackGround/background.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Character/16x16 All Animations-Sheet.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Character/16x16 Idle-Sheet.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Character/16x16 Interact-Sheet.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Character/16x16 Jump-Sheet.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Character/16x16 Rotate-Sheet.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Character/16x16 Run-Sheet.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Character/16x16 Walk-Sheet.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/arrow_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/boot.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/bracket_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/bracket_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/bracket_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/bracket_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/busy_circle.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/busy_circle_fade.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/busy_hourglass.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/busy_hourglass_outline.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/busy_hourglass_outline_detail.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cross_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cross_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_alias.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_busy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_cogs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_copy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_help.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_menu.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/cursor_none.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/door.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/door_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/door_enter.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/door_exit.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/dot_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/dot_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_brush.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_brush_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_bucket.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_eraser.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_pen.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_pencil.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_picker.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/drawing_spray.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/gauntlet_default.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/gauntlet_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/gauntlet_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_small_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_small_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_thin_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_thin_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_thin_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_thin_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_thin_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/hand_thin_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/line_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/line_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/line_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/lock.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/lock_unlocked.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/look_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/look_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/look_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/look_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/mark_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/mark_exclamation_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/mark_question.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/mark_question_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/message_dots_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/message_dots_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/message_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/message_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/navigation_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_b_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_c_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_f.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_g.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_h.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_i.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_j.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_k.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_l.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_scifi_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_scifi_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_toon_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_toon_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_CCW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_CCW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_CCW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_CW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_CW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_CW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_empty.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/progress_full.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_a_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_a_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_a_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_a_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_b_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_b_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_b_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_b_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_c_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_c_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_c_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_c_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_c_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_c_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_d_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_d_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_d_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_d_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_d_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_d_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_e_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_e_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_e_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_e_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_e_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_e_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/resize_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/rotate_ccw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/rotate_cw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/rotate_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/rotate_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/stairs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/stairs_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/stairs_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/steps.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/target_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/target_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/target_round_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/target_round_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_axe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_axe_single.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_bomb.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_bow.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_hammer.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_hoe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_pickaxe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_shovel.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_sword_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_sword_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_torch.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_wand.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_watering_can.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tool_wrench.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tracking_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tracking_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tracking_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tracking_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tracking_vertical_left.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/tracking_vertical_right.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/zoom.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/zoom_in.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/zoom_out.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/zoom_reset.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/arrow_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/boot.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/bracket_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/bracket_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/bracket_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/bracket_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/busy_circle.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/busy_circle_fade.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/busy_hourglass.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/busy_hourglass_outline.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/busy_hourglass_outline_detail.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cross_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cross_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_alias.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_busy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_cogs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_copy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_help.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_menu.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/cursor_none.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/door.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/door_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/door_enter.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/door_exit.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/dot_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/dot_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_brush.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_brush_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_bucket.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_eraser.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_pen.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_pencil.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_picker.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/drawing_spray.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/gauntlet_default.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/gauntlet_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/gauntlet_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_small_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_small_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_thin_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_thin_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_thin_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_thin_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_thin_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/hand_thin_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/line_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/line_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/line_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/lock.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/lock_unlocked.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/look_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/look_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/look_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/look_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/mark_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/mark_exclamation_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/mark_question.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/mark_question_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/message_dots_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/message_dots_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/message_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/message_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/navigation_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_b_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_c_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_f.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_g.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_h.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_i.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_j.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_k.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_l.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_scifi_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_scifi_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_toon_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/pointer_toon_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_CCW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_CCW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_CCW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_CW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_CW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_CW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_empty.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/progress_full.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_a_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_a_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_a_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_a_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_b_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_b_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_b_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_b_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_c_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_c_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_c_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_c_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_c_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_c_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_d_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_d_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_d_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_d_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_d_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_d_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_e_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_e_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_e_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_e_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_e_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_e_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/resize_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/rotate_ccw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/rotate_cw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/rotate_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/rotate_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/stairs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/stairs_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/stairs_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/steps.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/target_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/target_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/target_round_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/target_round_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_axe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_axe_single.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_bomb.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_bow.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_hammer.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_hoe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_pickaxe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_shovel.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_sword_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_sword_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_torch.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_wand.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_watering_can.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tool_wrench.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tracking_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tracking_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tracking_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tracking_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tracking_vertical_left.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/tracking_vertical_right.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/zoom.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/zoom_in.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/zoom_out.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Double/zoom_reset.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/arrow_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/boot.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/bracket_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/bracket_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/bracket_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/bracket_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/busy_circle.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/busy_circle_fade.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/busy_hourglass.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/busy_hourglass_outline.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/busy_hourglass_outline_detail.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cross_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cross_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_alias.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_busy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_cogs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_copy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_help.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_menu.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/cursor_none.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/door.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/door_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/door_enter.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/door_exit.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/dot_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/dot_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_brush.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_brush_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_bucket.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_eraser.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_pen.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_pencil.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_picker.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/drawing_spray.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/gauntlet_default.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/gauntlet_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/gauntlet_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_small_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_small_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_thin_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_thin_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_thin_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_thin_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_thin_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/hand_thin_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/line_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/line_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/line_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/lock.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/lock_unlocked.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/look_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/look_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/look_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/look_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/mark_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/mark_exclamation_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/mark_question.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/mark_question_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/message_dots_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/message_dots_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/message_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/message_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/navigation_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_b_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_c_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_f.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_g.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_h.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_i.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_j.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_k.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_l.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_scifi_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_scifi_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_toon_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/pointer_toon_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_CCW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_CCW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_CCW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_CW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_CW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_CW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_empty.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/progress_full.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_a_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_a_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_a_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_a_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_b_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_b_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_b_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_b_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_c_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_c_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_c_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_c_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_c_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_c_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_d_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_d_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_d_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_d_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_d_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_d_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_e_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_e_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_e_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_e_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_e_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_e_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/resize_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/rotate_ccw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/rotate_cw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/rotate_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/rotate_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/stairs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/stairs_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/stairs_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/steps.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/target_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/target_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/target_round_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/target_round_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_axe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_axe_single.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_bomb.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_bow.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_hammer.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_hoe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_pickaxe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_shovel.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_sword_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_sword_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_torch.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_wand.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_watering_can.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tool_wrench.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tracking_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tracking_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tracking_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tracking_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tracking_vertical_left.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/tracking_vertical_right.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/zoom.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/zoom_in.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/zoom_out.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Default/zoom_reset.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/arrow_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/boot.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/bracket_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/bracket_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/bracket_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/bracket_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/busy_circle.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/busy_circle_fade.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/busy_hourglass.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/busy_hourglass_outline.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/busy_hourglass_outline_detail.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cross_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cross_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_alias.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_busy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_cogs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_copy.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_help.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_menu.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/cursor_none.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/door.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/door_disabled.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/door_enter.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/door_exit.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/dot_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/dot_small.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_brush.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_brush_large.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_bucket.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_eraser.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_pen.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_pencil.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_picker.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/drawing_spray.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/gauntlet_default.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/gauntlet_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/gauntlet_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_small_point_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_small_point_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_thin_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_thin_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_thin_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_thin_small_closed.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_thin_small_open.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/hand_thin_small_point.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/line_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/line_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/line_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/lock.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/lock_unlocked.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/look_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/look_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/look_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/look_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/mark_exclamation.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/mark_exclamation_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/mark_question.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/mark_question_pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/message_dots_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/message_dots_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/message_round.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/message_square.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_n.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_ne.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_nw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_s.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_se.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_sw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/navigation_w.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_b_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_c_shaded.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_f.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_g.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_h.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_i.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_j.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_k.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_l.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_scifi_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_scifi_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_toon_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/pointer_toon_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_CCW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_CCW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_CCW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_CW_25.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_CW_50.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_CW_75.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_empty.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/progress_full.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_a_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_a_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_a_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_a_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_a_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_a_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_b_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_b_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_b_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_b_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_b_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_b_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_c_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_c_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_c_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_c_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_c_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_c_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_d_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_d_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_d_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_d_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_d_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_d_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_e_cross.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_e_cross_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_e_diagonal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_e_diagonal_mirror.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_e_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_e_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/resize_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/rotate_ccw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/rotate_cw.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/rotate_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/rotate_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/stairs.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/stairs_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/stairs_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/steps.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/target_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/target_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/target_round_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/target_round_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_axe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_axe_single.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_bomb.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_bow.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_hammer.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_hoe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_pickaxe.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_shovel.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_sword_a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_sword_b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_torch.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_wand.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_watering_can.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tool_wrench.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tracking_horizontal.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tracking_horizontal_down.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tracking_horizontal_up.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tracking_vertical.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tracking_vertical_left.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/tracking_vertical_right.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/zoom.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/zoom_in.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/zoom_out.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Cursor/Outline/Double/zoom_reset.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/IconWindow/CignaluEngineIcone.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/IconWindow/CignaluEngineIconeV2.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/LoadingScreen/CignaluInteractive.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/Other/Perceval.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/TilesetPNG/Objects.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/TilesetPNG/walls_floor.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Banner01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Banner02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Banner03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Banner04a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar04a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar05a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar06a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar07a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar08a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar09a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar10a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar11a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar12a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Bar13a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_BarFill01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_BarFill01b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_BarFill01c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_BarFill01d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_BarFill01e.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_BarFill01f.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_BarFill01g.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button01a_1.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button01a_2.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button01a_3.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button01a_4.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button02a_1.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button02a_2.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button02a_3.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Button02a_4.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ButtonArrow01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ButtonCheck01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ButtonCross01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ButtonMinus01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ButtonPlay01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ButtonPlus01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Frame01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Frame02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Frame03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameMarker01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameMarker02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameMarker03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot01b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot01c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot02b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot02c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot03b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_FrameSlot03c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Handle01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Handle02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Handle03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Handle04a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Handle05a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Handle06a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconArrow01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconArrow01b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconArrow01c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconCheck01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconCheck01b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconCheck01c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconCross01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconCross01b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconCross01c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconDropdown01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconLine01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconPlay01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconPlay01b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconPlay01c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconPlay01d.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconPoint01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconPoint01b.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconPoint01c.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_IconStripe01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_InputField01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_InputField02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select01a_1.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select01a_2.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select01a_3.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select01a_4.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select02a_1.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select02a_2.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select02a_3.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_Select02a_4.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleLeftOff01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleLeftOn01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleOff01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleOff02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleOff03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleOn01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleOn02a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleOn03a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleRightOff01a.png"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Textures/UI/UI_Flat_ToggleRightOn01a.png"
+    }
+  ]
+}

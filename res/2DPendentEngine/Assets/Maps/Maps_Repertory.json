@@ -1,0 +1,46 @@
+{
+  "maps": [
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/DemoMap.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest1.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest2.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest3.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest4.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest5.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest6.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest7.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest8.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/MapTest9.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/TestCollider.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/TestGroup.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/test2.tmx"
+    },
+    {
+      "path": "../../res/2DPendentEngine/Assets/Maps/tmx/test3.tmx"
+    }
+  ]
+}

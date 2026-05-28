@@ -113,7 +113,7 @@ Vector2f positionA = p_circleA.GetPosition();
     Vector2f positionB = p_circleB.GetPosition();
 
     float distance = Utils::Distance(positionA, positionB);
-    float sommeDimention = p_circleA.GetDimension().GetX() + p_circleB.GetDimension().GetX();
+    float sommeDimention = p_circleA.GetDimension().GetX() / 2 + p_circleB.GetDimension().GetX() / 2;
     float carreDimention = sommeDimention * sommeDimention;
     /*float dx = positionA.GetX() - positionB.GetX();
     float dy = positionA.GetY() - positionB.GetY();
@@ -125,46 +125,48 @@ Vector2f positionA = p_circleA.GetPosition();
 
 bool Collision::Collision_ARC(const Collider& p_rect, const Collider& p_circle)
 {
-Vector2f circlePosition = p_circle.GetPosition();
-float circleRadius = p_circle.GetDimension().GetX();
+	Vector2f circlePosition = p_circle.GetPosition();
+	float circleRadius = p_circle.GetDimension().GetX() / 2;
 
-Vector2f rectPosition = p_rect.GetPosition({0,0});
-Vector2i rectDimension = p_rect.GetDimension();
+	Vector2f rectPosition = p_rect.GetPosition({0,0});
+	Vector2i rectDimension = p_rect.GetDimension();
 
-float testX = circlePosition.GetX();
-float testY = circlePosition.GetY();
+	float testX = circlePosition.GetX();
+	float testY = circlePosition.GetY();
 
-if(circlePosition.GetX() < rectPosition.GetX())
-{
-	testX = rectPosition.GetX();
-}
-else if (circlePosition.GetX() > rectPosition.GetX() + rectDimension.GetX())
-{
-	testX = rectPosition.GetX() + rectDimension.GetX();
-}
+	if(circlePosition.GetX() < rectPosition.GetX())
+	{
+		testX = rectPosition.GetX();
+	}
+	else if (circlePosition.GetX() > rectPosition.GetX() + rectDimension.GetX())
+	{
+		testX = rectPosition.GetX() + rectDimension.GetX();
+	}
 
-if(circlePosition.GetY() < rectPosition.GetY())
-{
-	testY = rectPosition.GetY();
-}
-else if (circlePosition.GetY() > rectPosition.GetY() + rectDimension.GetY())
-{
-	testY = rectPosition.GetY() + rectDimension.GetY();
-}
+	if(circlePosition.GetY() < rectPosition.GetY())
+	{
+		testY = rectPosition.GetY();
+	}
+	else if (circlePosition.GetY() > rectPosition.GetY() + rectDimension.GetY())
+	{
+		testY = rectPosition.GetY() + rectDimension.GetY();
+	}
 
-Vector2f distance = {circlePosition.GetX() - testX, circlePosition.GetY() - testY};
+	Vector2f distance = {circlePosition.GetX() - testX, circlePosition.GetY() - testY};
 
-float sqrtLength = (distance.GetX() * distance.GetX()) + (distance.GetY() * distance.GetY());
+	float sqrtLength = (distance.GetX() * distance.GetX()) + (distance.GetY() * distance.GetY());
 
-return sqrtLength <= (circleRadius * circleRadius);
+	return sqrtLength <= (circleRadius * circleRadius);
 }
 
 void Collision::Repulse_AABB(Entity* p_entityRectA, Entity* p_entityRectB)
 {
 	Collider* colliderA = p_entityRectA->GetCollider();
 	Collider* colliderB = p_entityRectB->GetCollider();
+
 	Vector2f centerA = colliderA->GetPosition();
 	Vector2f centerB = colliderB->GetPosition();
+
 	Vector2i dimensionA = colliderA->GetDimension();
 	Vector2i dimensionB = colliderB->GetDimension();
 
@@ -211,32 +213,25 @@ void Collision::Repulse_CBC(Entity* p_entityCircleA, Entity* p_entityCircleB)
 {
 	Collider* colliderA = p_entityCircleA->GetCollider();
 	Collider* colliderB = p_entityCircleB->GetCollider();
+
 	Vector2f centerA = colliderA->GetPosition();
 	Vector2f centerB = colliderB->GetPosition();
+
 	int radiusA = colliderA->GetDimension().GetX() / 2;
 	int radiusB = colliderB->GetDimension().GetX() / 2;
 
-	float distance = Utils::Distance(centerA, centerB);
-	float minDistance = radiusA + radiusB;
+	Vector2f distance = centerA - centerB;
 
-	if (distance >= minDistance * minDistance)
-	{
-		return; // Pas de collision
-	}
+	float lenght = Utils::DistanceSquared(centerA, centerB);
 
-	if (distance < 1e-6f) // Éviter la division par zéro, déplacer les cercles verticalement
-	{
-		p_entityCircleA->Move({ 0, -minDistance * 0.5f });
-		p_entityCircleB->Move({ 0, minDistance * 0.5f });
-		return;
-	}
+	float overlap = (lenght - (radiusA + radiusB)) * 0.5f;
 
-	float DistanceSqrt = Utils::DistanceSquared(centerA, centerB);
-	float overlap = minDistance - DistanceSqrt;
-	Vector2f correction = (centerB - centerA)  * (overlap / distance * 0.5f);
+	Vector2f normal = distance / lenght;
 
-	p_entityCircleA->Move(-correction);
-	p_entityCircleB->Move(correction);
+	Vector2f translation = overlap * normal;
+
+	p_entityCircleA->Move(-translation);
+	p_entityCircleB->Move(translation);
 }
 
 void Collision::Repulse_ARC(Entity* p_entityRect, Entity* p_entityCircle)

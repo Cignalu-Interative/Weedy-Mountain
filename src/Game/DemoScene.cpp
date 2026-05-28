@@ -27,48 +27,45 @@ void DemoScene::OnInitialize()
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
 
-	m_ground = CreateEntity<Entity>({ float(GetCamera()->GetPosition({0.0f, 0.5f}).GetX()), float(GetWindowHeight() - 50)}, {GetWindowWidth(), 50}, "", Shape::Rectangle);
-	m_ground->ShowCollider(true);
-	m_ground->InitialisePhysicsBody(ShapeBodyPhysics::Static);
+	//m_ground = CreateEntity<Entity>({ float(GetCamera()->GetPosition({0.0f, 0.5f}).GetX()), float(GetWindowHeight() - 50)}, {GetWindowWidth(), 50}, "", Shape::Rectangle);
+	//m_ground->ShowCollider(true);
+	//m_ground->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "Perceval", Shape::Rectangle);
-	player1->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
-	player1->GetPhysicsBody()->SetFreezeRotation(true);
-	player1->SetAngle(0.0f);
+	player1->SetRigidBody(true);
+	player1->SetAngle(85.0f);
 	player1->ShowCollider(true);
-	player1->SetTag(64);
 	m_players.push_back(player1);
 
-	Player* player2 = new Player();
-	player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
-	player2->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
-	player2->SetAngle(0.0f);
-	player2->ShowCollider(true);
-	m_players.push_back(player2);
+	//Player* player2 = new Player();
+	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
+	//player2->SetRigidBody(true);
+	//player2->SetAngle(0.0f);
+	//player2->ShowCollider(true);
+	//m_players.push_back(player2);
 
 	Player* player3 = new Player();
 	player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
-	player3->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
-	player3->GetPhysicsBody()->SetFreezeRotation(true);
-	player3->SetAngle(0.0f);
+	player3->SetAngle(8.0f);
 	player3->SetRigidBody(true);
 	player3->ShowCollider(true);
 	m_players.push_back(player3);
 
-	Player* player4 = new Player();
-	player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
-	player4->SetAngle(0.0f);
-	player4->ShowCollider(true);
-	m_players.push_back(player4);
+	//Player* player4 = new Player();
+	//player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
+	//player4->SetRigidBody(true);
+	//player4->SetAngle(0.0f);
+	//player4->ShowCollider(true);
+	//m_players.push_back(player4);
 
-	Player* player5 = new Player();
-	player5 = CreateEntity<Player>({ 1000, 350 }, { 125, 125 }, "Perceval", Shape::Rectangle);
-	player5->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
-	player5->GetPhysicsBody()->SetFreezeRotation(true);
-	player5->SetAngle(0.0f);
-	player5->SetRigidBody(true);
-	player5->ShowCollider(true);
-	m_players.push_back(player5);
+	//Player* player5 = new Player();
+	//player5 = CreateEntity<Player>({ 1000, 350 }, { 125, 125 }, "Perceval", Shape::Rectangle);
+	//player5->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
+	//player5->GetPhysicsBody()->SetFreezeRotation(true);
+	//player5->SetAngle(0.0f);
+	//player5->SetRigidBody(true);
+	//player5->ShowCollider(true);
+	//m_players.push_back(player5);
 	/*for (int i = 0; i < 80; i++)
 	{
 		Player* player5 = new Player();
@@ -76,13 +73,13 @@ void DemoScene::OnInitialize()
 		m_players.push_back(player5);
 	}*/
 
-	User* user = CreateEntity<User>({900,555}, {88, 88}, "Perceval", Shape::Circle);
-	user->ShowCollider(true);
-	m_user = user;
+	//User* user = CreateEntity<User>({900,555}, {88, 88}, "Perceval", Shape::Circle);
+	//user->ShowCollider(true);
+	//m_user = user;
 
-	Application::Get()->GetCamera()->SetIsShow(true);
+	//Application::Get()->GetCamera()->SetIsShow(true);
 
-	m_playerToCamera = CreateEntity<Player>({ 600, 200 }, { 80, 80 }, "Perceval", Shape::Rectangle);
+	//m_playerToCamera = CreateEntity<Player>({ 600, 200 }, { 80, 80 }, "Perceval", Shape::Rectangle);
 
 	debug.CreatePoint("test", Vector2f(600, 150), Color(0, 0, 255, 255));
 	debug.CreateLine("test", Vector2f(456.0f, 15.0f), Vector2f(400.0f, 7005.0f), Color(0, 0, 255, 255));

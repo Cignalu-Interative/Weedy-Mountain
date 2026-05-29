@@ -1,3 +1,22 @@
 {
-  "fonts": []
+  "fonts": [
+    {
+      "path": "../../res/Game/Assets/Fonts/Gameplay.ttf"
+    },
+    {
+      "path": "../../res/Game/Assets/Fonts/PixelSplitter-Bold.ttf"
+    },
+    {
+      "path": "../../res/Game/Assets/Fonts/RETROTECH.ttf"
+    },
+    {
+      "path": "../../res/Game/Assets/Fonts/UnscreenMK.ttf"
+    },
+    {
+      "path": "../../res/Game/Assets/Fonts/eas-vhs.ttf"
+    },
+    {
+      "path": "../../res/Game/Assets/Fonts/ka1.ttf"
+    }
+  ]
 }

@@ -27,7 +27,7 @@ Button* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std
 	return button;
 }
 
-Slider* Scene::CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, int p_stateCount, bool p_isGUI)
+Slider* Scene::CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_id, int p_stateCount, bool p_isGUI)
 {
 	if (m_application == nullptr)
 	{
@@ -38,7 +38,7 @@ Slider* Scene::CreateSlider(Vector2f p_position, Vector2i p_dimention, const std
 
 	slider->SetScene(this);
 	slider->Initialize(p_position, p_dimention, p_spritePath, m_application->GetRender(), Shape::Rectangle, p_isGUI);
-	slider->InitSlider(p_dimention.GetX(), p_dimention.GetY(), p_stateCount);
+	slider->InitSlider(p_id, p_dimention.GetX(), p_dimention.GetY(), p_stateCount);
 	m_application->m_entityToAdd.push_back(slider);
 
 	return slider;

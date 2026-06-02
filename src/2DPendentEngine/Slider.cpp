@@ -5,14 +5,17 @@
 
 #include <iostream>
 
-void Slider::InitSlider(int p_railWidth, int p_railHeight, int p_stateCount)
+void Slider::InitSlider(const std::string& p_id, int p_railWidth, int p_railHeight, int p_stateCount)
 {
     m_railWidth = p_railWidth;
     m_railHeight = p_railHeight;
     m_stateCount = p_stateCount;
     m_isVertical = (p_railHeight > p_railWidth);
+    m_railOrigin = GetPosition({ 0.f, 0.f });
 
-    Debug::Get()->CreateRect("TEST2", GetPosition(), { m_railWidth, m_railHeight }, Color{ 0, 255, 0, 255 }, true);
+    m_idRail = p_id + "_rail";
+    m_idHandle = p_id + "_handle";
+    m_idStatePrefix = p_id + "_state_";
 
     if (m_isVertical)
     {
@@ -25,22 +28,73 @@ void Slider::InitSlider(int p_railWidth, int p_railHeight, int p_stateCount)
         m_handleHeight = p_railHeight;
     }
 
-    //SetDimension({ m_handleWidth, m_handleHeight });
-    ShowCollider(true);
-    ApplyHandlePosition(); 
+    GetCollider()->SetDimension({ m_handleWidth, m_handleHeight });
+    Transformable::SetDimension({ m_handleWidth, m_handleHeight });
+    GetSprite()->Resize({ m_handleWidth, m_handleHeight });
 
-    //SetPosition(GetCollider()->GetPosition({ 0.f, 0.f }), { 0.f, 0.f });
-    //std::cout << "x : " << GetPosition({ 0.f, 0.f }).GetX() << "; y : " << GetPosition({ 0.f, 0.f }).GetY() << "/ Collider pos / x : " << GetCollider()->GetPosition({ 0.f, 0.f }).GetX() << "; y : " << GetCollider()->GetPosition({ 0.f, 0.f }).GetY() << std::endl;
+    bool isGUI = GetIsGUI();
+
+    Debug::Get()->CreateFillRect(m_idRail,{ m_railOrigin.GetX() + m_railWidth / 2.f, m_railOrigin.GetY() + m_railHeight / 2.f }, { m_railWidth, m_railHeight }, Color{ 255, 255, 255, 255 }, isGUI);
+
+    if (m_stateCount >= 2)
+    {
+        float step = 1.f / static_cast<float>(m_stateCount - 1);
+
+        int barW = m_isVertical ? m_railWidth : 2;
+        int barH = m_isVertical ? 2 : m_railHeight;
+
+        for (int i = 0; i < m_stateCount; i++)
+        {
+            float normalized = i * step;
+            float posOnAxis = GetRailStart() + normalized * GetRailLength();
+
+            Vector2f barPos;
+
+            if (m_isVertical)
+                barPos = { m_railOrigin.GetX() + m_railWidth / 2.f, posOnAxis };
+            else
+                barPos = { posOnAxis, m_railOrigin.GetY() + m_railHeight / 2.f };
+
+            Debug::Get()->CreateFillRect(m_idStatePrefix + std::to_string(i), barPos, { barW, barH }, Color{ 150, 150, 150, 255 }, isGUI);
+        }
+    }
+
+    Debug::Get()->CreateFillRect(m_idHandle, { m_railOrigin.GetX() + m_railWidth / 2.f, m_railOrigin.GetY() + m_railHeight / 2.f }, { m_handleWidth, m_handleHeight }, Color{ 245, 222, 179, 255 }, isGUI);
+
+    ApplyHandlePosition();
 }
 
 float Slider::GetRailStart() const
 {
-    Vector2f railOrigin = GetPosition({ 0.f, 0.f });
+    if (m_isVertical)
+        return m_railOrigin.GetY() + m_handleHeight / 2.f;
+    else
+        return m_railOrigin.GetX() + m_handleWidth / 2.f;
+}
+
+void Slider::ApplyHandlePosition()
+{
+    float offset = m_normalizedValue * GetRailLength();
+
+    float x, y;
 
     if (m_isVertical)
-        return railOrigin.GetY() + m_handleHeight / 2.f;
+    {
+        x = m_railOrigin.GetX() + m_railWidth / 2.f;
+        y = GetRailStart() + offset;
+    }
     else
-        return railOrigin.GetX() + m_handleWidth / 2.f;
+    {
+        x = GetRailStart() + offset;
+        y = m_railOrigin.GetY() + m_railHeight / 2.f;
+    }
+
+    SetPosition({ x, y });
+
+    if (m_idHandle.empty() == false)
+    {
+        Debug::Get()->GetFillRect(m_idHandle)->SetPosition({ x, y });
+    }
 }
 
 float Slider::GetRailLength() const
@@ -49,27 +103,6 @@ float Slider::GetRailLength() const
         return static_cast<float>(m_railHeight - m_handleHeight);
     else
         return static_cast<float>(m_railWidth  - m_handleWidth);
-}
-
-void Slider::ApplyHandlePosition()
-{
-    Vector2f railOrigin = GetPosition({ 0.f, 0.f });
-
-    float offset = m_normalizedValue * GetRailLength();
-    std::cout << offset << std::endl;
-
-    if (m_isVertical)
-    {
-        float x = railOrigin.GetX() + m_railWidth  / 2.f;
-        float y = GetRailStart() + offset;
-        SetPosition({ x, y });
-    }
-    else
-    {
-        float x = GetRailStart() + offset;
-        float y = railOrigin.GetY() + m_railHeight / 2.f;
-        SetPosition({ x, y });
-    }
 }
 
 void Slider::SnapToNearest()
@@ -116,17 +149,28 @@ void Slider::OnUpdate()
     if (m_isDragging == false && IsMouseIn() && im->IsMouseDown(BUTTON_LEFT))
     {
         m_isDragging = true;
-
         Vector2f mousePos = im->GetMousePosition();
         Vector2f handlePos = GetPosition({ 0.5f, 0.5f });
-
         m_dragOffset = m_isVertical ? mousePos.GetY() - handlePos.GetY() : mousePos.GetX() - handlePos.GetX();
+    }
+
+    if (m_isDragging && im->IsMouseUp(BUTTON_LEFT))
+    {
+        m_isDragging = false;
+
+        if (m_stateCount != -1)
+            SnapToNearest();
+
+        if (m_onValueChanged)
+            m_onValueChanged(m_normalizedValue);
+
+        Button::OnUpdate();
+        return; 
     }
 
     if (m_isDragging && im->IsMouseHeld(BUTTON_LEFT))
     {
         Vector2f mousePos = im->GetMousePosition();
-
         float mousePosOnAxis = m_isVertical ? mousePos.GetY() : mousePos.GetX();
         float railStart = GetRailStart();
         float railLength = GetRailLength();
@@ -136,21 +180,9 @@ void Slider::OnUpdate()
 
         bool changed = (clamped != m_normalizedValue);
         m_normalizedValue = clamped;
-
         ApplyHandlePosition();
 
         if (changed && m_onValueChanged)
-            m_onValueChanged(m_normalizedValue);
-    }
-
-    if (m_isDragging && im->IsMouseUp(BUTTON_LEFT))
-    {
-        m_isDragging = false;
-
-        if (m_stateCount != -1)
-            SnapToNearest();   
-
-        if (m_onValueChanged)
             m_onValueChanged(m_normalizedValue);
     }
 

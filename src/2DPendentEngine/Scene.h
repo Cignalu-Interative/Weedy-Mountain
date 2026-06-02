@@ -49,7 +49,7 @@ protected:
 
 	Button* CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI = true);
 
-	Slider* CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, int p_stateCount = -1, bool p_isGUI = true);
+	Slider* CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_id, int p_stateCount = -1, bool p_isGUI = true);
 
 public:
 

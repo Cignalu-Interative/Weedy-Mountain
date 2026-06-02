@@ -269,6 +269,74 @@ void Collision::Repulse_ARC(Entity* p_entityRect, Entity* p_entityCircle)
 
 }
 
+void Collision::Repulse_OBC(Entity* p_entityRect, Entity* p_entityCircle)
+{
+	Vector2i rectDimension = p_entityRect->GetDimension();
+	Vector2f rectPosition = { p_entityRect->GetPosition() };
+	Vector2f rectCenter = { rectPosition.GetX(), rectPosition.GetY() };
+
+	float angle = p_entityRect->GetAngle();
+
+	//circle
+	Vector2f circleCenter = { p_entityCircle->GetPosition().GetX(), p_entityCircle->GetPosition().GetY() };
+	float circleRadius = p_entityCircle->GetDimension().GetX() / 2;
+
+	//vecteur center circle-rectangle
+	Vector2f vector = { circleCenter - rectCenter };
+
+	float newAngle = Utils::DegToRad(angle);
+
+	float x = vector.GetX() * Utils::Cos(newAngle) + vector.GetY() * Utils::Sin(newAngle);
+	float y = -vector.GetX() * Utils::Sin(newAngle) + vector.GetY() * Utils::Cos(newAngle);
+
+	Vector2f newCircleCenter = { x,y };
+
+	float testX = newCircleCenter.GetX();
+	float testY = newCircleCenter.GetY();
+
+	if (newCircleCenter.GetX() < -rectDimension.GetX() / 2)
+	{
+		testX = -rectDimension.GetX() / 2;
+	}
+	else if (newCircleCenter.GetX() > rectDimension.GetX() / 2)
+	{
+		testX = rectDimension.GetX() / 2;
+	}
+
+	if (newCircleCenter.GetY() < -rectDimension.GetY() / 2)
+	{
+		testY = -rectDimension.GetY() / 2;
+	}
+	else if (newCircleCenter.GetY() > rectDimension.GetY() / 2)
+	{
+		testY = rectDimension.GetY() / 2;
+	}
+
+	Vector2f distance = { newCircleCenter.GetX() - testX, newCircleCenter.GetY() - testY };
+
+	float sqrtLength = (distance.GetX() * distance.GetX()) + (distance.GetY() * distance.GetY());
+
+	if (sqrtLength <= (circleRadius * circleRadius))
+	{
+		Vector2f normal = Utils::NormalizeVector(distance);
+
+		float lenght = sqrt(sqrtLength);
+
+		float penetration = circleRadius - lenght;
+
+		float worldX = normal.GetX() * cos(newAngle) - normal.GetY() * sin(newAngle);
+		float worldY = normal.GetX() * sin(newAngle) + normal.GetY() * cos(newAngle);
+
+		Vector2f worldPosition = { worldX,worldY };
+
+		Vector2f push = worldPosition * penetration;
+
+		p_entityCircle->Move(push * 0.5);
+		p_entityRect->Move(-push * 0.5);
+
+	}
+}
+
 bool Collision::Collision_OBB(const Collider& p_rectA, const Collider& p_rectB)
 {
     auto cornersA = Utils::GetCorners(
@@ -398,5 +466,6 @@ void Collision::Repulse(Entity* p_entityA, Entity* p_entityB)
 	else if (shapeA == Shape::Rectangle && shapeB == Shape::Circle)
 	{
 		//return Repulse_ARC(p_entityA, p_entityB);
+		return Repulse_OBC(p_entityA, p_entityB);
 	}
 }

@@ -52,4 +52,6 @@ public:
 	//Ne pas utiliser pour l'instant il faut dabord implémenter la rotation pour les colliders et les sprites
 	static bool Collision_OBB(const Collider& p_rectA, const Collider& p_rectB);
 
+	static bool Collision_OBC(const Collider& p_rect, const Collider& p_circle);
+
 };

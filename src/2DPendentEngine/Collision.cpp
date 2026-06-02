@@ -270,6 +270,54 @@ bool Collision::Collision_OBB(const Collider& p_rectA, const Collider& p_rectB)
     return true; // Aucun axe séparateur = collision
 }
 
+bool Collision::Collision_OBC(const Collider& p_rect, const Collider& p_circle)
+{
+	//rectangle 
+	Vector2i rectDimension = p_rect.GetDimension();
+	Vector2f rectCenter = { p_rect.GetPosition().GetX(), p_rect.GetPosition().GetY()};
+	Vector2f rectPosition = { p_rect.GetPosition() };
+	float angle = p_rect.GetAngle();
+
+	//circle
+	Vector2f circleCenter = { p_circle.GetPosition().GetX(), p_circle.GetPosition().GetY()};
+	float circleRadius = p_circle.GetDimension().GetX() / 2;
+
+	//vecteur center circle-rectangle
+	Vector2f vector = { circleCenter - rectCenter };
+
+	float x = vector.GetX() * Utils::Cos(angle) + vector.GetY() * Utils::Sin(angle);
+	float y = -vector.GetX() * Utils::Sin(angle) + vector.GetY() * Utils::Cos(angle);
+
+	Vector2f newCircleCenter = { x,y };
+
+	float testX = newCircleCenter.GetX();
+	float testY = newCircleCenter.GetY();
+
+	if (newCircleCenter.GetX() < -rectDimension.GetX() / 2)
+	{
+		testX = -rectDimension.GetX() / 2;
+	}
+	else if (newCircleCenter.GetX() >  rectDimension.GetX() / 2)
+	{
+		testX = rectDimension.GetX() / 2 ;
+	}
+
+	if (newCircleCenter.GetY() < -rectDimension.GetY() / 2)
+	{
+		testY = -rectDimension.GetY() / 2;
+	}
+	else if (newCircleCenter.GetY() > rectDimension.GetY() / 2)
+	{
+		testY = rectDimension.GetY() /  2 ;
+	}
+
+	Vector2f distance = { newCircleCenter.GetX() - testX, newCircleCenter.GetY() - testY };
+
+	float sqrtLength = (distance.GetX() * distance.GetX()) + (distance.GetY() * distance.GetY());
+
+	return sqrtLength <= (circleRadius * circleRadius);
+}
+
 bool Collision::IsColliding(const Collider& p_colliderA, const Collider& p_colliderB)
 {
 	Shape shapeA = p_colliderA.GetShape();
@@ -277,7 +325,10 @@ bool Collision::IsColliding(const Collider& p_colliderA, const Collider& p_colli
 
 	if (shapeA == Shape::Rectangle && shapeB == Shape::Rectangle)
 	{
-		return Collision_AABB(p_colliderA, p_colliderB);
+		if (p_colliderA.GetAngle() != 0 || p_colliderB.GetAngle() != 0)
+			return Collision_OBB(p_colliderA, p_colliderB);
+		else
+			return Collision_AABB(p_colliderA, p_colliderB);
 	}
 	else if (shapeA == Shape::Circle && shapeB == Shape::Circle)
 	{
@@ -285,7 +336,10 @@ bool Collision::IsColliding(const Collider& p_colliderA, const Collider& p_colli
 	}
 	else if (shapeA == Shape::Rectangle && shapeB == Shape::Circle)
 	{
-		return Collision_ARC(p_colliderA, p_colliderB);
+		if (p_colliderA.GetAngle() != 0 || p_colliderB.GetAngle() != 0)
+			return Collision_OBC(p_colliderA, p_colliderB);
+		//else
+		//	return Collision_ARC(p_colliderA, p_colliderB);
 	}
 	else if (shapeA == Shape::Circle && shapeB == Shape::Rectangle)
 	{

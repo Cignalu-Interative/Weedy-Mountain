@@ -439,8 +439,8 @@ bool Collision::IsColliding(const Collider& p_colliderA, const Collider& p_colli
 	{
 		if (p_colliderA.GetAngle() != 0 || p_colliderB.GetAngle() != 0)
 			return Collision_OBC(p_colliderA, p_colliderB);
-		//else
-		//	return Collision_ARC(p_colliderA, p_colliderB);
+		else
+			return Collision_ARC(p_colliderA, p_colliderB);
 	}
 	else if (shapeA == Shape::Circle && shapeB == Shape::Rectangle)
 	{
@@ -465,7 +465,10 @@ void Collision::Repulse(Entity* p_entityA, Entity* p_entityB)
 	}
 	else if (shapeA == Shape::Rectangle && shapeB == Shape::Circle)
 	{
-		//return Repulse_ARC(p_entityA, p_entityB);
-		return Repulse_OBC(p_entityA, p_entityB);
+		if (p_entityA->GetAngle() !=0)
+			return Repulse_OBC(p_entityA, p_entityB);
+		else
+			return Repulse_ARC(p_entityA, p_entityB);
+		
 	}
 }

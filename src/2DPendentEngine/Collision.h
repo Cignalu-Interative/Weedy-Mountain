@@ -22,31 +22,12 @@ private:
 
 	//Collision entre deux rectangles
 	static bool Collision_AABB(const Collider& p_rectA, const Collider& p_rectB);
+
 	//Collision entre deux cercles
 	static bool Collision_CBC(const Collider& p_circleA, const Collider& p_circleB);
+
 	//Collision entre un rectangle et un cercle
 	static bool Collision_ARC(const Collider& p_rect, const Collider& p_circle);
-
-	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle et Rectangle
-	static void Repulse_AABB(Entity* p_entityRectA, Entity* p_entityRectB);
-	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Cercle et Cercle
-	static void Repulse_CBC(Entity* p_entityCircleA, Entity* p_entityCircleB);
-	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle et Cercle
-	static void Repulse_ARC(Entity* p_entityRect, Entity* p_entityCircle);
-
-	static void Repulse_OBC(Entity* p_entityRect, Entity* p_entityCircle);
-
-public:
-
-	friend class RectangleCollider;
-
-	//Vérifie si deux colliders sont en collision
-	static bool IsColliding(const Collider& p_colliderA, const Collider& p_colliderB);
-
-	static void Repulse(Entity* p_entityA, Entity* p_entityB);
-
-
-
 
 	// En public pour l'instant rapide pour Rectangle collider
 	//Collision entre deux OBB (Oriented Bounding Box)
@@ -54,6 +35,28 @@ public:
 	//Ne pas utiliser pour l'instant il faut dabord implémenter la rotation pour les colliders et les sprites
 	static bool Collision_OBB(const Collider& p_rectA, const Collider& p_rectB);
 
+	//Collision entre Oriented Box et un cercle 
 	static bool Collision_OBC(const Collider& p_rect, const Collider& p_circle);
+
+
+	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle et Rectangle
+	static void Repulse_AABB(Entity* p_entityRectA, Entity* p_entityRectB);
+
+	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Cercle et Cercle
+	static void Repulse_CBC(Entity* p_entityCircleA, Entity* p_entityCircleB);
+
+	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle et Cercle
+	static void Repulse_ARC(Entity* p_entityRect, Entity* p_entityCircle);
+
+	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle avec un angle et Cercle 
+	static void Repulse_OBC(Entity* p_entityRect, Entity* p_entityCircle);
+
+public:
+
+
+	//Vérifie si deux colliders sont en collision
+	static bool IsColliding(const Collider& p_colliderA, const Collider& p_colliderB);
+
+	static void Repulse(Entity* p_entityA, Entity* p_entityB);
 
 };

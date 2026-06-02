@@ -1,8 +1,6 @@
 #include "pch.h"
 #include "Tool.h"
 
-
-
 void Tool::OnUpdate()
 {
 	

@@ -3,10 +3,6 @@
 
 void Axe::OnInitialize()
 {
-
+	SetEnergyCost(10);
 }
 
-void Axe::OnDestroy()
-{
-	// play sound destroy
-}

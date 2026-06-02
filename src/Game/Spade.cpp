@@ -3,11 +3,7 @@
 
 void Spade::OnInitialize()
 {
-	
+	SetEnergyCost(10);
 	
 }
 
-void Spade::OnDestroy()
-{
-	// play destroy sound
-}

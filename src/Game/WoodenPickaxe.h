@@ -4,7 +4,6 @@
 class WoodenPickaxe : public Pickaxe
 {
 public :
-
 	//Fonction pour initialiser l'outil, notamment en définissant son sprite
 	void OnInitialize() override;
 	//Fonction pour mettre à jour l'outil, notamment en mettant à jour son sprite et en gérant sa logique de jeu

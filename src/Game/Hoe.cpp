@@ -3,10 +3,5 @@
 
 void Hoe::OnInitialize()
 {
-
-}
-
-void Hoe::OnDestroy()
-{
-	// play destroy sound
+	SetEnergyCost(10);
 }

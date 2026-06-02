@@ -2,10 +2,6 @@
 
 void Pickaxe::OnInitialize()
 {
-
+	SetEnergyCost(10);
 }
 
-void Pickaxe::OnDestroy()
-{
-	// play destroy sound
-}

@@ -4,4 +4,5 @@
 void DiamondAxe::OnInitialize()
 {
 	SetRarity(Rarity::Diamond);
+
 }

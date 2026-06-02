@@ -14,6 +14,8 @@ void WateringCan::Use()
 
 	m_load -= 0.2f;
 
+
+	// faire en sorte que ca arrose seulement les tuiles concernées
 }
 
 void WateringCan::Load()

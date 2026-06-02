@@ -2,6 +2,12 @@
 #include "DemoScene.h"
 #include "Player.h"
 #include "User.h"
+#include "DiamondAxe.h"
+#include "StoneAxe.h"
+#include "IronAxe.h"
+#include "WoodenAxe.h"
+#include "DiamondPickaxe.h"
+#include "IronPickaxe.h"
 #include "2DPendentLib/InputManager.h"
 #include "2DPendentLib/Utils.h"
 #include "2DPendentLib/AssetManager.h"
@@ -23,6 +29,7 @@ DemoScene::DemoScene()
 void DemoScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/2DPendentEngine/Assets/Textures/Textures_Repertory.json");
+	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 	MapTiledManager::Get()->AddMaps("../../res/2DPendentEngine/Assets/Maps/Maps_Repertory.json");
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
@@ -34,33 +41,21 @@ void DemoScene::OnInitialize()
 	player1->ShowCollider(true);
 	m_players.push_back(player1);
 
-	Player* player2 = new Player();
-	player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
-	player2->SetAngle(0.0f);
-	player2->SetRigidBody(true);
-	player2->ShowCollider(true);
-	m_players.push_back(player2);
 
-	Player* player3 = new Player();
-	player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
-	player3->SetAngle(8.0f);
-	player3->SetRigidBody(true);
-	player3->ShowCollider(true);
-	m_players.push_back(player3);
+	DiamondAxe* diamondAxe = CreateEntity<DiamondAxe>({ 700, 350 }, { 16, 16 }, "item57", Shape::Rectangle);
+	diamondAxe->ShowCollider(true);
 
-	Player* player4 = new Player();
-	player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
-	player4->SetAngle(0.0f);
-	player4->SetRigidBody(true);
-	player4->ShowCollider(true);
-	m_players.push_back(player4);
+	IronPickaxe* ironPickaxe = CreateEntity<IronPickaxe>({ 800, 350 }, { 16, 16 }, "item24", Shape::Rectangle);
+	ironPickaxe->ShowCollider(true);
 
-	Player* player5 = new Player();
-	player5 = CreateEntity<Player>({ 1000, 350 }, { 125, 125 }, "Perceval", Shape::Rectangle);
-	player5->SetAngle(0.0f);
-	player5->SetRigidBody(true);
-	player5->ShowCollider(true);
-	m_players.push_back(player5);
+	StoneAxe* stoneAxe = CreateEntity<StoneAxe>({ 900, 350 }, { 16, 16 }, "item41", Shape::Rectangle);
+	stoneAxe->ShowCollider(true);
+
+
+
+
+
+
 
 	/*for (int i = 0; i < 80; i++)
 	{

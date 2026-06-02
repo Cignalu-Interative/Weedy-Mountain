@@ -5,7 +5,7 @@ class WateringCan : public Tool
 private:
 	float m_maxLoad;
 	float m_load;
-
+	int m_useArea = 1;
 public:
 	//Fonction pour initialiser l'outil, notamment en définissant son sprite
 	void OnInitialize() override;

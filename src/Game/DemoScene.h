@@ -12,14 +12,14 @@ private:
 
 protected:
 
-	//Fonctions virtuelles héritées de Scene pour définir la logique d'initialisation, de gestion des événements, de mise à jour et de destruction de la scène
-	void OnInitialize() override;
-	//Fonction pour gérer les événements liés à la scène, notamment en utilisant l'InputManager pour détecter les entrées utilisateur spécifiques à cette scène
-	void OnEvent() override;
-	//Fonction pour mettre à jour la logique de la scène, notamment en mettant à jour les joueurs et les autres éléments présents dans la scène
-	void OnUpdate() override;
-	//Fonction pour libérer les ressources utilisées par la scène, notamment en détruisant les joueurs et les autres éléments présents dans la scène
-	void OnDestroy() override;
+    //Fonctions virtuelles hï¿½ritï¿½es de Scene pour dï¿½finir la logique d'initialisation, de gestion des ï¿½vï¿½nements, de mise ï¿½ jour et de destruction de la scï¿½ne
+    void OnInitialize() override;
+    //Fonction pour gï¿½rer les ï¿½vï¿½nements liï¿½s ï¿½ la scï¿½ne, notamment en utilisant l'InputManager pour dï¿½tecter les entrï¿½es utilisateur spï¿½cifiques ï¿½ cette scï¿½ne
+    void OnEvent() override;
+    //Fonction pour mettre ï¿½ jour la logique de la scï¿½ne, notamment en mettant ï¿½ jour les joueurs et les autres ï¿½lï¿½ments prï¿½sents dans la scï¿½ne
+    void OnUpdate() override;
+    //Fonction pour libï¿½rer les ressources utilisï¿½es par la scï¿½ne, notamment en dï¿½truisant les joueurs et les autres ï¿½lï¿½ments prï¿½sents dans la scï¿½ne
+    void OnDestroy() override;
 
 public:
 

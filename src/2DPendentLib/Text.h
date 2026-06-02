@@ -30,6 +30,8 @@ private:
 	
 	void CreateTexture();
 
+	Vector2f m_positionWanted; //Position voulue pour le texte, indépendante de la position réelle du texte avec la taille du texte
+
 public:
 
 	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 28);
@@ -58,4 +60,6 @@ public:
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 
 	void UpdateTexture();
+
+	void SetPosition(const Vector2f& p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 };

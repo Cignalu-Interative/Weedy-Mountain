@@ -103,7 +103,7 @@ void MapTiledManager::DrawCurrentMap(Render* f_render, Window* f_window, Camera*
 {
 	if (m_current_map == nullptr)
 	{
-		std::cerr << "Engine/MapTiledManager.cpp/DrawCurrentMap/ error no map to draw" << std::endl;
+		//std::cerr << "Engine/MapTiledManager.cpp/DrawCurrentMap/ error no map to draw" << std::endl;
 		return;
 	}
 	m_current_map->Draw(f_render, f_window, p_camera);

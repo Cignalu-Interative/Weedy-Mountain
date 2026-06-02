@@ -20,17 +20,15 @@ void DemoScene::OnInitialize()
 
 	debug.CreateText("Time", { GetWindowWidth() / 2.0f, 15 }, "00:00", ColorsNamed::White, true);
 
-	Text* timeText = debug.GetText("Time"); //obligé sinon il se décale lors du rescale
+	Text* timeText = debug.GetText("Time");
 	timeText->SetFontSize(75);
-	timeText->SetPosition({ GetWindowWidth() / 2.0f, 15 });
 
 	debug.CreateText("Date", { GetWindowWidth() / 2.0f, 100 }, " ", ColorsNamed::White, true);
 
 	Text* dateText = debug.GetText("Date");
 	dateText->SetFontSize(35);
-	dateText->SetPosition({ GetWindowWidth() / 2.0f, 100 });
 
-	debug.CreateCircle("Clock", { GetWindowWidth() / 2.0f, 175 }, {100, 100}, ColorsNamed::Blue, true);
+	debug.CreateCircle("Clock", { GetWindowWidth() / 2.0f, 175 }, { 100, 100 }, ColorsNamed::Blue, true);
 
 	Circle* circle = debug.GetCircle("Clock");
 	circle->SetFilled(true);
@@ -77,8 +75,6 @@ void DemoScene::OnUpdate()
 		text += std::to_string(m_gameData.GetMinute());
 
 		timeText->SetText(text);
-
-		timeText->SetPosition({ GetWindowWidth() / 2.0f, 15 });
 	}
 
 	Text* dateText = debug.GetText("Date");
@@ -100,8 +96,6 @@ void DemoScene::OnUpdate()
 		text += " ";
 
 		dateText->SetText(text);
-
-		dateText->SetPosition({ GetWindowWidth() / 2.0f, 100 }); //a bouger
 	}
 
 	Circle* circle = debug.GetCircle("Clock");

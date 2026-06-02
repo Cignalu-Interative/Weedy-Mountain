@@ -55,7 +55,14 @@ Text::~Text()
 void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color)
 {
 	SetColor(p_color);
-	m_text = p_text;
+	if (m_text == "")
+	{
+		m_text = " ";
+	}
+	else
+	{
+		m_text = p_text;
+	}
 
 	CreateTexture();
 
@@ -75,6 +82,7 @@ void Text::SetFont(const std::string& p_idFont, int p_sizeFont)
 	m_font = newFont;
 	m_fontPath = FontManager::Get()->GetFont(p_idFont);
 	UpdateTexture();
+	SetPosition(m_positionWanted);
 }
 
 void Text::SetText(const std::string& p_text)
@@ -93,9 +101,10 @@ void Text::SetText(const std::string& p_text)
 	{
 		Initialize({ 0.0f, 0.0f }, p_text, { 255, 255, 255, 255 });
 	}
-	std::cerr << "Mise a jour du texte : " << p_text << std::endl;
+	//std::cerr << "Mise a jour du texte : " << p_text << std::endl;
 	m_text = p_text;
 	UpdateTexture();
+	SetPosition(m_positionWanted);
 }
 
 void Text::SetFontSize(int p_size)
@@ -121,6 +130,7 @@ void Text::SetFontSize(int p_size)
 	}
 
 	UpdateTexture();
+	SetPosition(m_positionWanted);
 }
 
 void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
@@ -276,4 +286,10 @@ void Text::UpdateTexture()
 	}
 	SetDimension({ textWidth, textHeight });
 	//std::cerr << "Taille texture pour le text : " << textSizeW << " " << textSizeH << std::endl;
+}
+
+void Text::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
+{
+	Transformable::SetPosition(p_position, p_anchor);
+	m_positionWanted = p_position;
 }

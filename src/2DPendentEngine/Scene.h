@@ -21,6 +21,10 @@ private:
 
 	std::string m_name; //Nom de la scène, utilisé pour l'identifier dans le SceneManager
 
+	bool m_sleepUpdate = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnUpdate() ne sera pas appelée
+
+	bool m_visible = true; //Indique si la scène est visible ou non, si elle n'est pas visible, les entités de la scène ne seront pas dessinées à l'écran
+
 protected:
 
 	//Constructeur par défaut de Scene
@@ -37,6 +41,10 @@ protected:
 	virtual void OnEvent() = 0; 
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise à jour
 	virtual void OnUpdate() = 0; 
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise en veille
+	virtual void OnSleep() = 0;
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de réveil
+	virtual void OnWake() = 0;
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de destruction
 	virtual void OnDestroy() = 0; 
 
@@ -61,13 +69,23 @@ public:
 	bool GetAutoFPS(); 
 	//Fonction pour définir la valeur de m_FPS de l'application en utilisant la fonction m_FPS de l'application
 	void SetFPS(int p_newFPS); 
-
+	//Fonction pour obtenir la valeur de m_FPS de l'application en utilisant la fonction m_FPS de l'application
 	int GetCurrentFPS() const;
 
 	//Fonction pour obtenir un pointeur vers l'application
 	Application* GetApplication() const;
 
 	Camera* GetCamera() const;
+
+	// Setter pour le bool m_sleepUpdate, si m_sleepUpdate est true, la fonction OnUpdate() ne sera pas appelée
+	void SetSleepUpdate(bool p_sleep) { m_sleepUpdate = p_sleep; }
+	// Getter pour le bool m_sleepUpdate
+	bool GetSleepUpdate() const { return m_sleepUpdate; }
+
+	// Setter pour le bool m_visible, si m_visible est false, les entités de la scène ne seront pas dessinées à l'écran
+	void SetVisible(bool p_visible) { m_visible = p_visible; }
+	// Getter pour le bool m_visible
+	bool GetVisible() const { return m_visible; }
 
 	//Liste des class amie avec la class Scene
 	friend class Application;

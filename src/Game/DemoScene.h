@@ -2,23 +2,13 @@
 #include "2DPendentEngine/Scene.h"
 #include <list>
 #include <vector>
+#include "Gameata.h"
 
-class User;
-class Player;
 class DemoScene : public Scene
 {
 private:
 
-	//Liste de pointeurs vers les joueurs actuellement présents dans la scène
-	std::vector<Player*> m_players;
-	User* m_user = nullptr;
-
-	Player* m_playerToCamera = nullptr;
-
-	Entity* entitySelected = nullptr;
-	Entity* lastEntitySelected = nullptr;
-
-	const Vector2i m_levelDimension = { 2000, 2000 }; //Dimension du niveau en pixels
+	GameData m_gameData;
 
 protected:
 
@@ -33,10 +23,6 @@ protected:
 
 public:
 
-	DemoScene();
+	DemoScene() = default;
 	~DemoScene() = default;
-
-	void TestVélocité();
-
-	void SelectEntity(Vector2f p_position);
 };

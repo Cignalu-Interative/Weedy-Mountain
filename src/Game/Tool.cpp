@@ -12,8 +12,3 @@ void Tool::OnInitialize()
 {
 	
 }
-
-void Tool::Use()
-{
-	
-}

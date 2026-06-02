@@ -3,5 +3,7 @@
 
 class StoneHoe : public Hoe
 {
+public:
+	void OnInitialize() override;
 };
 

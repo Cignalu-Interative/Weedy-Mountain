@@ -1,7 +1,9 @@
 #pragma once
 #include "Tool.h"
-class Ax : public Tool
+class Axe : public Tool
 {
+private :
+
 
 public :
 

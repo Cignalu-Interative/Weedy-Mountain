@@ -3,5 +3,7 @@
 
 class DiamondHoe : public Hoe
 {
+public : 
+	void OnInitialize() override;
 };
 

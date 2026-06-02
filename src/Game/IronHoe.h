@@ -3,5 +3,7 @@
 
 class IronHoe : public Hoe
 {
+public : 
+	void OnInitialize() override;
 };
 

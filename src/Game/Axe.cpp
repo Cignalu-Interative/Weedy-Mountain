@@ -1,12 +1,12 @@
 #include "pch.h"
-#include "Ax.h"
+#include "Axe.h"
 
-void Ax::OnInitialize()
+void Axe::OnInitialize()
 {
 
 }
 
-void Ax::OnDestroy()
+void Axe::OnDestroy()
 {
 	// play sound destroy
 }

@@ -3,5 +3,7 @@
 
 class IronPickaxe : public Pickaxe
 {
+public: 
+	void OnInitialize() override;
 };
 

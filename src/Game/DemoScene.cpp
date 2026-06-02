@@ -29,17 +29,17 @@ void DemoScene::OnInitialize()
 
 
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "Perceval", Shape::Rectangle);
-	player1->SetAngle(45);
+	player1->SetAngle(55);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
 	m_players.push_back(player1);
 
-	Player* player2 = new Player();
-	player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
-	player2->SetAngle(0.0f);
-	player2->SetRigidBody(true);
-	player2->ShowCollider(true);
-	m_players.push_back(player2);
+	//Player* player2 = new Player();
+	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
+	//player2->SetAngle(0.0f);
+	//player2->SetRigidBody(true);
+	//player2->ShowCollider(true);
+	//m_players.push_back(player2);
 
 	//Player* player3 = new Player();
 	//player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
@@ -50,7 +50,7 @@ void DemoScene::OnInitialize()
 
 	Player* player4 = new Player();
 	player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
-	player4->SetAngle(50.0f);
+	player4->SetAngle(0.f);
 	player4->SetRigidBody(true);
 	player4->ShowCollider(true);
 	m_players.push_back(player4);

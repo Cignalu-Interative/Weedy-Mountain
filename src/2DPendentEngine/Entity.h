@@ -23,7 +23,7 @@ protected:
 
 	Vector2f m_direction = { 0.0f, 0.0f };
 
-	float m_speed = 100;
+	float m_speed = 25;
 
 	const float m_PIXELS_PER_METER = 10; // Constante pour convertir les pixels en mètres pour la physique
 

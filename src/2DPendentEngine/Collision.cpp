@@ -135,7 +135,7 @@ bool Collision::Collision_ARC(const Collider& p_rect, const Collider& p_circle)
 	float testY = circlePosition.GetY();
 
 	if(circlePosition.GetX() < rectPosition.GetX())
-	{
+	{	
 		testX = rectPosition.GetX();
 	}
 	else if (circlePosition.GetX() > rectPosition.GetX() + rectDimension.GetX())
@@ -236,6 +236,36 @@ void Collision::Repulse_CBC(Entity* p_entityCircleA, Entity* p_entityCircleB)
 
 void Collision::Repulse_ARC(Entity* p_entityRect, Entity* p_entityCircle)
 {
+	float radiusCircle = p_entityCircle->GetDimension().GetX() / 2;
+	Vector2f circlePosition = p_entityCircle->GetPosition();
+
+	float xMin = p_entityRect->GetPosition({ 0,0 }).GetX();
+	float xMax = xMin + p_entityRect->GetDimension().GetX();
+
+	float yMin = p_entityRect->GetPosition({ 0,0 }).GetY();
+	float yMax = yMin + p_entityRect->GetDimension().GetY();
+
+	float closestX = Utils::Clamp(circlePosition.GetX(), xMin, xMax);
+	float closestY = Utils::Clamp(circlePosition.GetY(), yMin, yMax);
+
+	Vector2f closestPosition = { closestX,closestY };
+
+	Vector2f direction = circlePosition - closestPosition;
+
+	float sqrtLength = (direction.GetX() * direction.GetX()) + (direction.GetY() * direction.GetY());
+
+	if (sqrtLength < (radiusCircle * radiusCircle))
+	{
+		
+		float distance = Utils::DistanceSquared(circlePosition, closestPosition);
+
+		float push = radiusCircle - distance;
+
+		Vector2f dir = Utils::NormalizeVector(direction);
+
+		p_entityCircle->Move(push * dir);
+		p_entityRect->Move(-push * dir);
+	}
 
 }
 
@@ -274,8 +304,9 @@ bool Collision::Collision_OBC(const Collider& p_rect, const Collider& p_circle)
 {
 	//rectangle 
 	Vector2i rectDimension = p_rect.GetDimension();
-	Vector2f rectCenter = { p_rect.GetPosition().GetX(), p_rect.GetPosition().GetY()};
 	Vector2f rectPosition = { p_rect.GetPosition() };
+	Vector2f rectCenter = { rectPosition.GetX(), rectPosition.GetY()};
+	
 	float angle = p_rect.GetAngle();
 
 	//circle
@@ -285,8 +316,10 @@ bool Collision::Collision_OBC(const Collider& p_rect, const Collider& p_circle)
 	//vecteur center circle-rectangle
 	Vector2f vector = { circleCenter - rectCenter };
 
-	float x = vector.GetX() * Utils::Cos(angle) + vector.GetY() * Utils::Sin(angle);
-	float y = -vector.GetX() * Utils::Sin(angle) + vector.GetY() * Utils::Cos(angle);
+	float newAngle = Utils::DegToRad(angle);
+
+	float x = vector.GetX() * Utils::Cos(newAngle) + vector.GetY() * Utils::Sin(newAngle);
+	float y = -vector.GetX() * Utils::Sin(newAngle) + vector.GetY() * Utils::Cos(newAngle);
 
 	Vector2f newCircleCenter = { x,y };
 
@@ -364,10 +397,6 @@ void Collision::Repulse(Entity* p_entityA, Entity* p_entityB)
 	}
 	else if (shapeA == Shape::Rectangle && shapeB == Shape::Circle)
 	{
-		return Repulse_ARC(p_entityA, p_entityB);
-	}
-	else if (shapeA == Shape::Circle && shapeB == Shape::Rectangle)
-	{
-		return Repulse_ARC(p_entityB, p_entityA);
+		//return Repulse_ARC(p_entityA, p_entityB);
 	}
 }

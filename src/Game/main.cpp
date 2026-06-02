@@ -4,6 +4,7 @@
 #include "2DPendentEngine/Application.h"
 #include "2DPendentEngine/Aleatory.h"
 #include "DemoScene.h"
+#include "GameScene.h"
 
 //Code d'entrée
 int main(int argc, char* argv[])
@@ -13,6 +14,9 @@ int main(int argc, char* argv[])
 	application->Init();
 
 	SceneManager::Get()->AddScene<DemoScene>("demo");
+	SceneManager::Get()->AddScene<GameScene>("game");
+	
+	SceneManager::Get()->SetCurrentScene("game");
 
 	application->Run();
 	application->Shutdown();

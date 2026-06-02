@@ -29,7 +29,7 @@ protected:
 
 	int m_tag = 0; //Tag de l'entité, utilisé pour identifier le type de l'entité (ex: 0 = joueur, 1 = ennemi, 2 = plateforme, etc...)
 
-	bool m_toDestroy = false; //Bool pour savoir si l'entité doit être détruitey
+	bool m_toDestroy = false; //Bool pour savoir si l'entité doit être détruite
 	bool m_rigidBody = false; //Bool pour savoir si les corps sont rigide et dont ne peuvent pas se traverser
 	bool m_clampToWindow = false; //Bool pour savoir si l'entité doit être clamp à la fenêtre
 	bool m_resetDirection = true; //Bool pour savoir si la direction doit être réinitialisée à chaque frame, utile pour les entités contrôlées par le joueur

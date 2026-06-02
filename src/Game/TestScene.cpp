@@ -10,6 +10,7 @@
 #include "2DPendentLib/FontManager.h"
 
 #include "Button.h"
+#include "Slider.h"
 
 #include <iostream>
 
@@ -31,6 +32,14 @@ void TestScene::OnInitialize()
 	b->SetOnReleaseClick([] {
 		std::cout << "release click" << std::endl;
 		});
+
+	Slider* s = CreateSlider({ 200.f, h / 2.f }, { 50, 300 }, "Oak_Tree", 3);
+	//s->SetOnHoverStay([] {
+	//	std::cout << "hover" << std::endl;
+	//	});
+	//s->SetOnHoverExit([] {
+	//	std::cout << "exit" << std::endl;
+	//	});
 }
 
 void TestScene::OnEvent()

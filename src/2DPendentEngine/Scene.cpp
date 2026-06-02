@@ -8,6 +8,7 @@
 #include "Camera.h"
 
 #include "Button.h"
+#include "Slider.h"
 
 Button* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
 {
@@ -24,6 +25,23 @@ Button* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std
 	m_application->m_entityToAdd.push_back(button);
 
 	return button;
+}
+
+Slider* Scene::CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, int p_stateCount, bool p_isGUI)
+{
+	if (m_application == nullptr)
+	{
+		return nullptr;
+	}
+
+	Slider* slider = new Slider();
+
+	slider->SetScene(this);
+	slider->Initialize(p_position, p_dimention, p_spritePath, m_application->GetRender(), Shape::Rectangle, p_isGUI);
+	slider->InitSlider(p_dimention.GetX(), p_dimention.GetY(), p_stateCount);
+	m_application->m_entityToAdd.push_back(slider);
+
+	return slider;
 }
 
 int Scene::GetWindowWidth() const

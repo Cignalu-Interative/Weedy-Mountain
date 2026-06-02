@@ -3,7 +3,7 @@
 
 void Spade::OnInitialize()
 {
-	SetMaxDurability(100);
+	
 	
 }
 

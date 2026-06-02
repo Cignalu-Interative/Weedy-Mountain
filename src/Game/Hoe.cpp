@@ -3,7 +3,7 @@
 
 void Hoe::OnInitialize()
 {
-	SetMaxDurability(100);
+
 }
 
 void Hoe::OnDestroy()

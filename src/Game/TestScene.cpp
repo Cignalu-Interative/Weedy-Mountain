@@ -16,6 +16,16 @@ void TestScene::OnUpdate()
 
 }
 
+void TestScene::OnSleep()
+{
+
+}
+
+void TestScene::OnWake()
+{
+
+}
+
 void TestScene::OnDestroy()
 {
 

@@ -84,7 +84,7 @@ void DemoScene::OnInitialize()
 	debug.GetFillRect("test")->SetAngle(700);
 	debug.CreateCircle("test", Vector2f(150, 100), Vector2i(50, 100), Color(0, 0, 255, 255), false, true);
 	debug.GetCircle("test")->SetAngle(64);
-	debug.CreateFillCircle("test", Vector2f(500.0f, 300.0f), Vector2i(120, 64), Color(0, 0, 255, 255));
+	debug.CreateFillCircle("test", Vector2f(500.0f, 300.0f), Vector2i(240, 64), Color(0, 0, 255, 255));
 	debug.GetFillCircle("test")->SetAngle(45.0f);
 	debug.CreateText("HW", Vector2f(970, 90), "Hello World !", Color(0, 0, 255, 255));
 	debug.GetText("HW")->SetAngle(45.0f);
@@ -550,8 +550,8 @@ void DemoScene::OnUpdate()
 	{
 		SoundManager::Get()->SetListener(entitySelected);
 
-		/*Vector2f camTargetPos = entitySelected->GetPosition();
-		GetCamera()->SetPosition(camTargetPos);*/
+		Vector2f camTargetPos = entitySelected->GetPosition();
+		GetCamera()->SetPosition(camTargetPos);
 
 
 		//std::cerr << "player pos : " << camTargetPos.GetX() << " " << camTargetPos.GetY() << std::endl;
@@ -568,6 +568,16 @@ void DemoScene::OnUpdate()
 	/*debug.Get()->destroyPoint("r");
 	debug.Get()->destroyPoint("g");
 	debug.Get()->destroyPoint("b");*/
+}
+
+void DemoScene::OnSleep()
+{
+
+}
+
+void DemoScene::OnWake()
+{
+
 }
 
 void DemoScene::OnDestroy()

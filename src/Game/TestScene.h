@@ -14,6 +14,10 @@ protected:
 	void OnEvent() override;
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise à jour
 	void OnUpdate() override;
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise en veille
+	void OnSleep() override;
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de réveil
+	void OnWake() override;
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de destruction
 	void OnDestroy() override;
 

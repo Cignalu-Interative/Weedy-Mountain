@@ -2,7 +2,7 @@
 #include "2DPendentEngine/Scene.h"
 #include <list>
 #include <vector>
-#include "Gameata.h"
+#include "GameData.h"
 
 class DemoScene : public Scene
 {

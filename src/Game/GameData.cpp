@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "Gameata.h"
+#include "GameData.h"
 
 //Trucs qu'on peut changer si on veut changer la durée plus tard
 

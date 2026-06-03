@@ -2,12 +2,7 @@
 #include "DemoScene.h"
 #include "Player.h"
 #include "User.h"
-#include "DiamondAxe.h"
-#include "StoneAxe.h"
-#include "IronAxe.h"
-#include "WoodenAxe.h"
-#include "DiamondPickaxe.h"
-#include "IronPickaxe.h"
+#include "Tool.h"
 #include "2DPendentLib/InputManager.h"
 #include "2DPendentLib/Utils.h"
 #include "2DPendentLib/AssetManager.h"
@@ -42,14 +37,22 @@ void DemoScene::OnInitialize()
 	m_players.push_back(player1);
 
 
-	DiamondAxe* diamondAxe = CreateEntity<DiamondAxe>({ 700, 350 }, { 16, 16 }, "item57", Shape::Rectangle);
+	diamondAxe = CreateEntity<Tool>({ 700, 350 }, { 16, 16 }, "item57", Shape::Rectangle);
 	diamondAxe->ShowCollider(true);
+	diamondAxe->SetType(ToolType::Axe);
+	diamondAxe->SetRarity(Rarity::Diamond);
+	diamondAxe->SetEnergyCost(2);
+	diamondAxe->SetUseTime(1);
 
-	IronPickaxe* ironPickaxe = CreateEntity<IronPickaxe>({ 800, 350 }, { 16, 16 }, "item24", Shape::Rectangle);
-	ironPickaxe->ShowCollider(true);
+	Wateringcan = CreateEntity<Tool>({ 600, 350 }, { 16, 16 }, "item52", Shape::Rectangle);
+	Wateringcan->ShowCollider(true);
+	Wateringcan->SetType(ToolType::WateringCan);
+	Wateringcan->SetRarity(Rarity::Diamond);
+	Wateringcan->SetEnergyCost(2);
+	Wateringcan->SetUseTime(1);
+	Wateringcan->SetMaxLoad(10);
+	Wateringcan->Load();
 
-	StoneAxe* stoneAxe = CreateEntity<StoneAxe>({ 900, 350 }, { 16, 16 }, "item41", Shape::Rectangle);
-	stoneAxe->ShowCollider(true);
 
 
 
@@ -149,6 +152,15 @@ void DemoScene::OnInitialize()
 
 void DemoScene::OnEvent()
 {
+	if (input.IsKeyboardDown(K_e))
+	{
+		diamondAxe->Use();
+	}
+	if (input.IsKeyboardDown(K_u))
+	{
+		Wateringcan->Use();
+	}
+
 
 	if (input.IsGameControllerButtonDown(CONTROLLER_BUTTON_GUIDE))
 	{

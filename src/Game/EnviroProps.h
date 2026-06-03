@@ -35,7 +35,7 @@ protected:
 
 public:
 	EnviroProps() = default;
-
+	void SetType(EnviroName p_name);
 
 };
 

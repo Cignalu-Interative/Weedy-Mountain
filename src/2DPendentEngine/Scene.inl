@@ -37,7 +37,7 @@ inline T* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const s
 		return nullptr;
 	}
 
-	Button* button = new T();
+	T* button = new T();
 
 	button->SetScene(this);
 	button->Initialize(p_position, p_dimention, p_spritePath, m_application->GetRender(), Shape::Rectangle, p_isGUI);

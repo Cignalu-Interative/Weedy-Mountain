@@ -12,6 +12,22 @@ void Tool::OnUpdate()
 void Tool::OnInitialize()
 {
 	m_load = m_maxLoad;
+	switch (m_rarity)
+	{
+
+	case Rarity::Wooden : 
+		SetUseTime(2);
+		break;
+	case Rarity::Stone : 
+		SetUseTime(1.75);
+		break;
+	case Rarity::Iron : 
+		SetUseTime(1.25);
+		break;
+	case Rarity::Diamond : 
+		SetUseTime(0.4);
+		break;
+	}
 }
 
 void Tool::Use()

@@ -33,6 +33,9 @@ private:
 
 	Rarity m_rarity = Rarity::Wooden;
 	ToolType m_type; 
+
+
+	void SetUseTime(float _time) { m_useTime = _time; }
 public:
 	void OnUpdate() override;
 	void OnInitialize() override;
@@ -45,7 +48,6 @@ public:
 	ToolType GetType() { return m_type; }
 	float GetUseTime() { return m_useTime; }
 
-	void SetUseTime(float _time) { m_useTime = _time; }
 	void SetRarity(Rarity _rarity) { m_rarity = _rarity; }
 	void SetEnergyCost(float cost) { m_energyCost = cost; }
 	void SetType(ToolType _type) { m_type = _type; }

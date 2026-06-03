@@ -42,14 +42,13 @@ void DemoScene::OnInitialize()
 	diamondAxe->SetType(ToolType::Axe);
 	diamondAxe->SetRarity(Rarity::Diamond);
 	diamondAxe->SetEnergyCost(2);
-	diamondAxe->SetUseTime(1);
+
 
 	Wateringcan = CreateEntity<Tool>({ 600, 350 }, { 16, 16 }, "item52", Shape::Rectangle);
 	Wateringcan->ShowCollider(true);
 	Wateringcan->SetType(ToolType::WateringCan);
 	Wateringcan->SetRarity(Rarity::Diamond);
 	Wateringcan->SetEnergyCost(2);
-	Wateringcan->SetUseTime(1);
 	Wateringcan->SetMaxLoad(10);
 	Wateringcan->Load();
 

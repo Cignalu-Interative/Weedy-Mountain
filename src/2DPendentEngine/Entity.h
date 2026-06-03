@@ -16,7 +16,7 @@ class Entity : public Transformable
 protected:
 
 	Sprite* m_sprite = nullptr; //Sprite de l'entité
-	Collider* m_collider = nullptr; //Collider de l'entité
+	std::vector<Collider*> m_colliders; //Collider de l'entité
 	PhysicsBody* m_physicsBody = nullptr; //Composant physique de l'entité
 
 	Scene* m_scene = nullptr; //Pointeur vers la scène à laquelle l'entité appartient
@@ -52,7 +52,9 @@ protected:
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique de mise à jour
 	virtual void OnUpdate() {};
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique de collision
-	virtual void OnCollision(Entity* other) {};
+	virtual void OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side) {}
+	virtual void OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side) {}
+	virtual void OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side) {}
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique de collision avec les bords de la fenêtre
 	virtual void OnOutBorder() {};
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique de destruction
@@ -92,8 +94,10 @@ public:
 	bool ToDestroy() const { return m_toDestroy; }
 	void SetToDestroy(bool p_toDestroy) { m_toDestroy = p_toDestroy; }
 
-	//Obtenir la forme du collider de l'entité
-	Shape GetShape() const { return static_cast<Shape>(m_collider->GetShape()); }
+	//Obtenir la forme du premier collider de l'entité
+	Shape GetShape() const { return static_cast<Shape>(GetCollider()->GetShape()); }
+	//Obtenir la forme d'un collider de l'entité avec son ID
+	Shape GetShape(const std::string& p_id) const { return static_cast<Shape>(GetCollider(p_id)->GetShape()); }
 
 	//Obtenir le delta time en milliseconds depuis la dernière frame, en utilisant la fonction GetDeltaTime() de la scène à laquelle l'entité appartient
 	float GetDeltaTime() const;
@@ -101,11 +105,20 @@ public:
 	//Set le pointeur de la scene à laquelle l'entité appartient
 	void SetScene(Scene* p_scene) { m_scene = p_scene; }
 
-	template<typename T>
-	T* GetCollider() const;
+	//Ajouter un collider à l'entité
+	Collider* AddCollider(const std::string& p_id, Vector2i p_dimension, Shape p_shape, Vector2f p_offset = { 0.f,0.f }, bool p_isTrigger = false, uint32_t p_layer = 1, uint32_t p_mask = 0xFFFFFFFF);
 
-	//Obtenir le collider de l'entité
-	Collider* GetCollider() { return m_collider; }
+	//Obtenir le collider de l'entité avec son ID
+	Collider* GetCollider(const std::string& p_id) const;
+	//Obtenir le premier collider de l'entité
+	Collider* GetCollider() const;
+	//Obtenir tous les colliders de l'entité
+	const std::vector<Collider*>& GetColliders() const { return m_colliders; }
+	//Supprimer le collider de l'entité avec son ID
+	void RemoveCollider(const std::string& p_id);
+	// Sync tous les colliders de l'entity
+	void SyncColliders();
+
 	//Obtenir le sprite de l'entité
 	Sprite* GetSprite() { return m_sprite; }
 
@@ -137,7 +150,10 @@ public:
 	void SetClampToWindow(bool p_clamp) { m_clampToWindow = p_clamp; }
 	bool GetClampToWindow() const { return m_clampToWindow; }
 
-	void ShowCollider(bool p_show) { m_collider->SetShow(p_show); }
+	//modifie la visibilité de tout les collider de l'entité
+	void ShowCollider(bool p_show);            
+	//modifie la visibilité du collider de l'entité avec son ID
+	void ShowCollider(const std::string& p_id, bool p_show); 
 
 	void SetIsGUI(bool p_isGUI);
 	bool GetIsGUI() const;
@@ -155,6 +171,7 @@ public:
 	bool GetIsGrounded() const { return m_isGrounded; }
 
 	//Liste des class amie avec la class Entity
+	friend class CollisionManager;
 	friend class Application;
 	friend class Scene;
 };

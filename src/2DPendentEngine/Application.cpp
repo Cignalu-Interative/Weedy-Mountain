@@ -7,6 +7,7 @@
 #include "MapTiledManager.h"
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
+#include "CollisionManager.h"
 
 Application::Application()
 {
@@ -147,6 +148,9 @@ void Application::HandleInput()
 
 void Application::Update()
 {
+	CollisionManager::Get()->SyncAll();
+	CollisionManager::Get()->Update();
+
 	if (SceneManager::Get()->GetCurrentScene() == nullptr)
 	{
 		return;
@@ -199,9 +203,9 @@ void Application::Update()
 void Application::UpdatePhysics_Collisions()
 {
 	for (Entity* entity : m_entities)
-	{
 		entity->UpdateMovement_Forces(m_deltaTime);
-	}
+
+	std::set<std::pair<Entity*, Entity*>> resolvedPairs;
 
 	for (auto it1 = m_entities.begin(); it1 != m_entities.end(); ++it1)
 	{
@@ -212,59 +216,61 @@ void Application::UpdatePhysics_Collisions()
 			Entity* entity = *it1;
 			Entity* otherEntity = *it2;
 
-			if (Collision::IsColliding(*entity->m_collider, *otherEntity->m_collider) == false)
+			for (Collider* colliderA : entity->GetColliders())
 			{
-				continue;
+				for (Collider* colliderB : otherEntity->GetColliders())
+				{
+					if (!colliderA || !colliderB)
+						continue;
+
+					if (colliderA->IsTrigger() || colliderB->IsTrigger())
+						continue;
+
+					if (colliderA->CanCollideWith(colliderB) == false)  
+						continue;
+
+					if (Collision::IsColliding(*colliderA, *colliderB) == false)
+						continue;
+
+					if (entity->IsRigidBody() && otherEntity->IsRigidBody())
+					{
+						float dx = colliderB->GetPosition().GetX() - colliderA->GetPosition().GetX();
+						float dy = colliderB->GetPosition().GetY() - colliderA->GetPosition().GetY();
+
+						float overlapX = (colliderA->GetDimension().GetX() * 0.5f + colliderB->GetDimension().GetX() * 0.5f) - Utils::AbsValue(dx);
+						float overlapY = (colliderA->GetDimension().GetY() * 0.5f + colliderB->GetDimension().GetY() * 0.5f) - Utils::AbsValue(dy);
+
+						Vector2f normal;
+						if (overlapX < overlapY)
+							normal = { dx < 0 ? -1.0f : 1.0f, 0.0f };
+						else
+							normal = { 0.0f, dy < 0 ? -1.0f : 1.0f };
+
+						if (normal.GetY() > 0.5f) entity->SetIsGrounded(true);
+						if (normal.GetY() < -0.5f) otherEntity->SetIsGrounded(true);
+
+						auto entityPair = std::make_pair(std::min(entity, otherEntity), std::max(entity, otherEntity));
+
+						if (resolvedPairs.count(entityPair) == 0)
+						{
+							Collision::Repulse(entity, otherEntity);
+
+							PhysicsBody* physicsBodyA = entity->m_physicsBody;
+							PhysicsBody* physicsBodyB = otherEntity->m_physicsBody;
+
+							if (physicsBodyA && physicsBodyB)
+								PhysicsBody::ResolveCollisionPhysics(physicsBodyA, physicsBodyB, entity->GetPosition(), normal);
+
+							resolvedPairs.insert(entityPair);
+						}
+					}
+				}
 			}
-			if (entity->IsRigidBody() && otherEntity->IsRigidBody())
-			{
-				// Calcule la normale depuis les overlaps comme Repulse_AABB
-				Collider* colliderA = entity->GetCollider();
-				Collider* colliderB = otherEntity->GetCollider();
-
-				float dx = colliderB->GetPosition().GetX() - colliderA->GetPosition().GetX();
-				float dy = colliderB->GetPosition().GetY() - colliderA->GetPosition().GetY();
-
-				float overlapX = (colliderA->GetDimension().GetX() * 0.5f + colliderB->GetDimension().GetX() * 0.5f) - Utils::AbsValue(dx);
-				float overlapY = (colliderA->GetDimension().GetY() * 0.5f + colliderB->GetDimension().GetY() * 0.5f) - Utils::AbsValue(dy);
-
-				Vector2f normal;
-				if (overlapX < overlapY)
-				{
-					// Collision latérale
-					normal = { dx < 0 ? -1.0f : 1.0f, 0.0f };
-				}
-				else
-				{
-					// Collision verticale
-					normal = { 0.0f, dy < 0 ? -1.0f : 1.0f };
-				}
-				if (normal.GetY() > 0.5f)
-					entity->SetIsGrounded(true);        // A est posé sur B
-				if (normal.GetY() < -0.5f)
-					otherEntity->SetIsGrounded(true);   // B est posé sur A
-
-				Collision::Repulse(entity, otherEntity);
-
-				PhysicsBody* physicsBodyA = entity->m_physicsBody;
-				PhysicsBody* physicsBodyB = otherEntity->m_physicsBody;
-
-				if (physicsBodyA && physicsBodyB)
-				{
-					PhysicsBody::ResolveCollisionPhysics(physicsBodyA, physicsBodyB, entity->GetPosition(), normal);
-				}
-			}
-			entity->OnCollision(otherEntity);
-			otherEntity->OnCollision(entity);
-			std::cout << "Collision detected between entities!" << std::endl;
-
 		}
 	}
 
 	for (Entity* entity : m_entities)
-	{
 		entity->UpdateMovement_Velocity(m_deltaTime);
-	}
 }
 
 void Application::Draw()

@@ -3,6 +3,8 @@
 #include "2DPendentLib/Face.h"
 #include "2DPendentLib/Drawable.h"
 
+class Rectangle;
+
 
 class RectangleCollider : public Collider, public Drawable
 {

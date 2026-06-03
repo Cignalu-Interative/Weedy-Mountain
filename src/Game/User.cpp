@@ -34,7 +34,7 @@ void User::OnUpdate()
 
 }
 
-void User::OnCollision(Entity* other)
+void User::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)
 {
 
 }

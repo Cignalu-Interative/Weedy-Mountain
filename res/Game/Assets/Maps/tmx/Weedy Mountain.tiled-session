@@ -1,0 +1,9 @@
+{
+    "last.imagePath": "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Textures/Environment/Tilesets/All",
+    "map.lastUsedFormat": "tmx",
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 16,
+        "width": 16
+    }
+}

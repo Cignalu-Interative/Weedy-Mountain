@@ -15,6 +15,6 @@ public:
 
 	void Use();
 	void Load();
-	void SetMaxLoad(float max) { m_maxLoad = max; }
+	void SetMaxLoad(float max);
 };
 

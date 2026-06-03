@@ -4,7 +4,7 @@
 void WateringCan::OnInitialize()
 {
 	SetMaxLoad(6);
-	m_load = m_maxLoad;
+	
 }
 
 void WateringCan::Use()
@@ -20,5 +20,11 @@ void WateringCan::Use()
 
 void WateringCan::Load()
 {
+	m_load = m_maxLoad;
+}
+
+void WateringCan::SetMaxLoad(float max)
+{
+	m_maxLoad = max; 
 	m_load = m_maxLoad;
 }

@@ -3,6 +3,7 @@
 
 struct PlayerJob
 {
+	std::string name;
 	int m_lvl = 1;
 	float m_exp = 0.f;
 	float m_expNeeded = 100.f;
@@ -38,6 +39,8 @@ private:
 
 	std::vector<PlayerJob*> m_Jobs;
 
+	Entity* m_interactZone;
+
 protected:
 
 	//Fonction pour initialiser le joueur, notamment en définissant sa position, sa dimension, son sprite et son collider
@@ -53,8 +56,7 @@ protected:
 
 public:
 
+	Collider* GetInteractZone() { m_interactZone->GetCollider(); }
 	PlayerStats GetStats() { return m_Stats; }
-
-
 };
 

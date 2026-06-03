@@ -510,7 +510,10 @@ void Collision::Repulse(Entity* p_entityA, Entity* p_entityB)
 
 	if (shapeA == Shape::Rectangle && shapeB == Shape::Rectangle)
 	{
-		return Repulse_OBB(p_entityA, p_entityB);
+		if (p_entityA->GetAngle() != 0.f)
+			return Repulse_OBB(p_entityA, p_entityB);
+		else
+			return Repulse_AABB(p_entityA, p_entityB);
 	}
 	else if (shapeA == Shape::Circle && shapeB == Shape::Circle)
 	{

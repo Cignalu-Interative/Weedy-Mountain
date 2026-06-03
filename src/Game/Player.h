@@ -1,5 +1,6 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
+
 struct PlayerJob
 {
 	int m_lvl = 1;

@@ -35,4 +35,11 @@ void EnviroProps::OnInitialize()
 		//m_Stats.m_MinToolsRarity
 		break;
 	}
+
+	SetOnClick([this] {
+		m_Stats.m_HitToDestroy--;
+		if (m_Stats.m_HitToDestroy <= 0) {
+			Destroy();
+		}
+	});
 }

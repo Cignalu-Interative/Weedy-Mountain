@@ -5,24 +5,24 @@
 
 void Player::OnInitialize()
 {
-	Job* gatherer = new Job();
+	PlayerJob* gatherer = new PlayerJob();
 	m_Jobs.push_back(gatherer);
-	Job* farmer = new Job();
+	PlayerJob* farmer = new PlayerJob();
 	m_Jobs.push_back(farmer);
-	Job* miner = new Job();
+	PlayerJob* miner = new PlayerJob();
 	m_Jobs.push_back(miner);
-	Job* killer = new Job();
+	PlayerJob* killer = new PlayerJob();
 	m_Jobs.push_back(killer);
-	Job* dealer = new Job();
+	PlayerJob* dealer = new PlayerJob();
 	m_Jobs.push_back(dealer);
 }
 
 void Player::OnEvent()
 {
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
-		SetSpeed(m_PlayerSpeed * 2);
+		SetSpeed(m_Stats.m_PlayerSpeed * 2);
 	}
-	else SetSpeed(m_PlayerSpeed);
+	else SetSpeed(m_Stats.m_PlayerSpeed);
 
 	if (InputManager::Get()->IsKeyboardHeld(K_z)) {
 		SetDirection({ GetDirection().GetX(), -1.0f });

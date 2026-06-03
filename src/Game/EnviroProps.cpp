@@ -3,6 +3,8 @@
 #include "Collision.h"
 #include "Player.h"
 
+#include "User.h"
+
 void EnviroProps::OnInitialize()
 {
 	
@@ -21,15 +23,16 @@ void EnviroProps::OnCollision(Entity* other)
 {
 	Collider* otherCollider;
 
-	if (auto cast = dynamic_cast<Player*>(other))
+	if (auto cast = dynamic_cast<User*>(other))
 	{
-		otherCollider = cast->GetInteractZone();
+		otherCollider = cast->GetCollider();
 	}
 	else
 		return;
 
 
-	Collision::IsColliding(*m_collider, *otherCollider);
+	if (Collision::IsColliding(*m_collider, *otherCollider))
+		m_isInPlayerZone = true;
 }
 
 void EnviroProps::OnDestroy()
@@ -74,6 +77,10 @@ void EnviroProps::SetType(EnviroName p_name)
 	}
 
 	SetOnClick([this] {
+		if (m_isInPlayerZone == false)
+			return;
+		
+		m_isInPlayerZone = false;
 		m_Stats.m_HitToDestroy--;
 		if (m_Stats.m_HitToDestroy <= 0) {
 			

@@ -17,6 +17,9 @@ void GameScene::OnInitialize()
 	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {32,64}, "Player", Shape::Rectangle);
 	m_Player->ShowCollider(true);
 	EnviroProps* Tree = CreateButton<EnviroProps>({200,200},{128,160}, "Oak_Tree", "", "", false);
+	Tree->SetOnHoverStay([]() {
+		std::cout << "Hovering on tree" << std::endl;
+		});
 	Tree->SetType(EnviroName::Tree);
 	Tree->ShowCollider(true);
 }

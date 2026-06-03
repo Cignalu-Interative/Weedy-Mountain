@@ -56,7 +56,6 @@ protected:
 
 public:
 
-	Collider* GetInteractZone() { m_interactZone->GetCollider(); }
 	PlayerStats GetStats() { return m_Stats; }
 };
 

@@ -22,6 +22,8 @@ class EnviroProps: public Button
 	EnviroName m_Name;
 	EnviroStats m_Stats;
 
+	bool m_isInPlayerZone = false;
+
 protected:
 	void OnInitialize() override;
 

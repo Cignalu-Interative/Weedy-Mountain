@@ -256,7 +256,7 @@ void Application::UpdatePhysics_Collisions()
 			}
 			entity->OnCollision(otherEntity);
 			otherEntity->OnCollision(entity);
-			std::cout << "Collision detected between entities!" << std::endl;
+			//std::cout << "Collision detected between entities!" << std::endl;
 
 		}
 	}

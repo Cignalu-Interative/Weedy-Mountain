@@ -4,9 +4,11 @@
 #include "DemoScene.h"
 #include "2DPendentLib/InputManager.h"
 
+#include "User.h"
+
 void Player::OnInitialize()
 {
-	m_interactZone = GetScene()->CreateEntity<Entity>(GetPosition(), { 160, 160 }, "Oak_Tree", Shape::Circle);
+	m_interactZone = GetScene()->CreateEntity<User>(GetPosition(), { 160, 160 }, "Oak_Tree", Shape::Circle);
 	m_interactZone->ShowCollider(true);
 
 	PlayerJob* gatherer = new PlayerJob();

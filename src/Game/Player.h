@@ -1,6 +1,6 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
-struct Job
+struct PlayerJob
 {
 	int m_lvl = 1;
 	float m_exp = 0.f;
@@ -16,9 +16,7 @@ struct Job
 
 };
 
-class Player : public Entity
-{
-private:
+struct PlayerStats {
 	float m_PlayerSpeed = 50.f;
 
 	float m_MaxHp = 100.f;
@@ -29,8 +27,15 @@ private:
 
 	float m_MaxToxicity = 100.f;
 	float m_Toxicity = 0.f;
+};
 
-	std::vector<Job*> m_Jobs;
+class Player : public Entity
+{
+private:
+
+	PlayerStats m_Stats;
+
+	std::vector<PlayerJob*> m_Jobs;
 
 protected:
 
@@ -47,14 +52,7 @@ protected:
 
 public:
 
-	float GetHp() { return m_Hp; }
-	float GetStamina() { return m_Stamina; }
-	float GetToxicity() { return m_Toxicity; }
-	std::vector<Job*> GetJobs() { return m_Jobs; }
-
-	void SetHp(float Hp) { m_Hp = Hp; }
-	void SetStamina(float Stamina) { m_Stamina = Stamina; }
-	void SetToxicity(float Toxicity) { m_Toxicity = Toxicity; }
+	PlayerStats GetStats() { return m_Stats; }
 
 
 };

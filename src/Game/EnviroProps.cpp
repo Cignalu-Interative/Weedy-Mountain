@@ -48,31 +48,36 @@ void EnviroProps::SetType(EnviroName p_name)
 		m_Stats.m_MinSpawn = 1;
 		m_Stats.m_MaxSpawn = 3;
 		m_Stats.m_HitToDestroy = 4;
-		//m_Stats.m_MinToolsRarity
+		m_Stats.m_MinToolsRarity = Rarity::Stone;
+		m_Stats.m_ToolType = ToolType::Axe;
 		break;
 	case EnviroName::Shrub:
 		m_Stats.m_MinSpawn = 2;
 		m_Stats.m_MaxSpawn = 4;
 		m_Stats.m_HitToDestroy = 2;
-		//m_Stats.m_MinToolsRarity
+		m_Stats.m_MinToolsRarity = Rarity::Wooden;
+		m_Stats.m_ToolType = ToolType::Axe;
 		break;
 	case EnviroName::Grass:
 		m_Stats.m_MinSpawn = 3;
 		m_Stats.m_MaxSpawn = 5;
 		m_Stats.m_HitToDestroy = 1;
-		//m_Stats.m_MinToolsRarity
+		m_Stats.m_MinToolsRarity = Rarity::Wooden;
+		m_Stats.m_ToolType = ToolType::Hoe;
 		break;
 	case EnviroName::Rock:
 		m_Stats.m_MinSpawn = 0;
 		m_Stats.m_MaxSpawn = 0;
 		m_Stats.m_HitToDestroy = 2;
-		//m_Stats.m_MinToolsRarity
+		m_Stats.m_MinToolsRarity = Rarity::Wooden;
+		m_Stats.m_ToolType = ToolType::Pickaxe;
 		break;
 	case EnviroName::Stone:
 		m_Stats.m_MinSpawn = 0;
 		m_Stats.m_MaxSpawn = 0;
 		m_Stats.m_HitToDestroy = 4;
-		//m_Stats.m_MinToolsRarity
+		m_Stats.m_MinToolsRarity = Rarity::Iron;
+		m_Stats.m_ToolType = ToolType::Pickaxe;
 		break;
 	}
 

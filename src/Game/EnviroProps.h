@@ -1,6 +1,7 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
 #include "2DPendentEngine/Button.h"
+#include "Tool.h"
 enum class EnviroName
 {
 	Tree,
@@ -14,7 +15,8 @@ struct EnviroStats {
 	int m_MinSpawn = 0;
 	int m_MaxSpawn = 1;
 	int m_HitToDestroy = 1;
-	//Rarity m_MinToolsRarity = Rarity::Wooden;
+	Rarity m_MinToolsRarity = Rarity::Wooden;
+	ToolType m_ToolType = ToolType::Axe;
 };
 
 class EnviroProps: public Button

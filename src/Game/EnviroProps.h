@@ -16,7 +16,7 @@ struct EnviroStats {
 	int m_MaxSpawn = 1;
 	int m_HitToDestroy = 1;
 	Rarity m_MinToolsRarity = Rarity::Wooden;
-	ToolType m_ToolType = ToolType::Axe;
+	std::vector<ToolType> m_ToolType;
 };
 
 class EnviroProps: public Button

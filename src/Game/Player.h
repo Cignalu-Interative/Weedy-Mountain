@@ -1,7 +1,9 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
+
 struct PlayerJob
 {
+	std::string name;
 	int m_lvl = 1;
 	float m_exp = 0.f;
 	float m_expNeeded = 100.f;
@@ -53,7 +55,5 @@ protected:
 public:
 
 	PlayerStats GetStats() { return m_Stats; }
-
-
 };
 

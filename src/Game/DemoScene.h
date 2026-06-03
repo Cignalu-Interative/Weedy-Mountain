@@ -2,7 +2,7 @@
 #include "2DPendentEngine/Scene.h"
 #include <list>
 #include <vector>
-
+class Tool;
 class User;
 class Player;
 class DemoScene : public Scene
@@ -20,6 +20,9 @@ private:
 
 	const Vector2i m_levelDimension = { 2000, 2000 }; //Dimension du niveau en pixels
 
+
+	Tool* diamondAxe = nullptr;
+	Tool* Wateringcan = nullptr;
 protected:
 
 	//Fonctions virtuelles héritées de Scene pour définir la logique d'initialisation, de gestion des événements, de mise à jour et de destruction de la scène

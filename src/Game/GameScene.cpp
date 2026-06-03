@@ -11,6 +11,8 @@
 
 void GameScene::OnInitialize()
 {
+	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+
 	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {32,64}, "Player", Shape::Rectangle);
 	m_Player->ShowCollider(true);
 }

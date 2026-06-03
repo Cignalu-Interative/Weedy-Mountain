@@ -13,7 +13,7 @@ int main(int argc, char* argv[])
 	Application* application = Application::Get();
 	application->Init();
 
-	SceneManager::Get()->AddScene<DemoScene>("demo");
+	//SceneManager::Get()->AddScene<DemoScene>("demo");
 	SceneManager::Get()->AddScene<GameScene>("game");
 	
 	SceneManager::Get()->SetCurrentScene("game");

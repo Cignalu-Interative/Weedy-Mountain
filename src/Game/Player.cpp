@@ -1,10 +1,14 @@
 #include "pch.h"
 #include "Player.h"
+#include "Scene.h"
 #include "DemoScene.h"
 #include "2DPendentLib/InputManager.h"
 
 void Player::OnInitialize()
 {
+	m_interactZone = GetScene()->CreateEntity<Entity>(GetPosition(), { 160, 160 }, "Oak_Tree", Shape::Circle);
+	m_interactZone->ShowCollider(true);
+
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->name = "Gatherer";
 	m_Jobs.push_back(gatherer);
@@ -48,6 +52,8 @@ void Player::OnUpdate()
 	for (int i = 0; i < m_Jobs.size(); i++) {
 		m_Jobs[i]->levelUp();
 	}
+
+	m_interactZone->SetPosition(GetPosition());
 }
 
 void Player::OnCollision(Entity* other)
@@ -57,5 +63,5 @@ void Player::OnCollision(Entity* other)
 
 void Player::OnDestroy()
 {
-
+	m_interactZone->SetToDestroy(true);
 }

@@ -7,6 +7,41 @@
 #include "AssetManager.h"
 #include "Camera.h"
 
+
+void Scene::Initialize()
+{
+	if (m_isInCache)
+	{
+		return;
+	}
+	OnInitialize();
+	m_isInCache = true;
+}
+
+void Scene::Event()
+{
+	if (m_isSleepEvent)
+	{
+		return;
+	}
+	OnEvent();
+}
+
+void Scene::Update()
+{
+	if (m_sleepUpdate)
+	{
+		return;
+	}
+	OnUpdate();
+}
+
+void Scene::Destroy()
+{
+	m_isInCache = false;
+	OnDestroy();
+}
+
 int Scene::GetWindowWidth() const
 {
 	return m_application->m_window.GetWindowSize().GetX();

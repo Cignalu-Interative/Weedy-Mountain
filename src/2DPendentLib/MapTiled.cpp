@@ -282,7 +282,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     if (m_tilesets.empty())
     {
-        std::cerr << "Pas de tileset pour draw" << std::endl;
+        //std::cerr << "Pas de tileset pour draw" << std::endl;
         return;
     }
     int countTexture = 0;

@@ -15,11 +15,13 @@ private:
 	std::vector<Scene*> m_scenesVector;
 
 	//Pointeur vers la scène actuellement active
-	Scene* m_currentScene = nullptr;
+	//Scene* m_currentScene = nullptr;
+	std::unordered_map<std::string, size_t> m_scenesToUpdate;
+	std::vector<Scene*> m_scenesToUpdateVector; //Vector pour stocker les scènes actuellement update, utilisé pour itérer plus rapidement lors de la mise à jour des scènes
 
-	void ChangeCurrentScene();
+	//void ChangeCurrentScene();
 
-	std::string m_tempCurrentSceneID;
+	//std::string m_tempCurrentSceneID;
 
 public:
 
@@ -43,13 +45,27 @@ public:
 	void ClearScenes();
 
 	//Fonction pour mettre à jour la scène actuellement active
-	void UpdateCurrentScene();
+	//void UpdateCurrentScene();
 
 	//Fonction pour définir la scène actuellement active en utilisant son identifiant unique (string)
-	void SetCurrentScene(const std::string& p_id);
+	//void SetCurrentScene(const std::string& p_id);
 
 	//Fonction pour obtenir un pointeur vers la scène actuellement active
-	Scene* GetCurrentScene() const { return m_currentScene; }
+	//Scene* GetCurrentScene() const { return m_currentScene; }
+
+	void PushScene(const std::string& p_id);
+
+	void PopScene(const std::string& p_id);
+
+	void ClearScenesToUpdate();
+
+	void EventScenesToUpdate();
+
+	void UpdateScenesToUpdate();
+
+	bool IsSceneToUpdate() const;
+
+	Scene* GetScene(const std::string& p_id) const;
 
 };
 

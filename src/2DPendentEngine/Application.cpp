@@ -76,7 +76,7 @@ void Application::Run()
 
 		Draw();
 
-		SceneManager::Get()->ChangeCurrentScene();
+		//SceneManager::Get()->ChangeCurrentScene();
 	}
 }
 
@@ -127,7 +127,15 @@ void Application::HandleInput()
 {
 	InputManager::Get()->Update();
 	
-	SceneManager::Get()->GetCurrentScene()->OnEvent();
+	if (SceneManager::Get()->IsSceneToUpdate() == false)
+	{
+		return;
+	}
+
+	SceneManager::Get()->EventScenesToUpdate();
+
+	//SceneManager::Get()->GetCurrentScene()->OnEvent();
+
 
 	for (auto it = m_entities.begin(); it != m_entities.end(); )
 	{
@@ -148,11 +156,16 @@ void Application::HandleInput()
 
 void Application::Update()
 {
-	if (SceneManager::Get()->GetCurrentScene() == nullptr)
+	/*if (SceneManager::Get()->GetCurrentScene() == nullptr)
+	{
+		return;
+	}*/
+	if (SceneManager::Get()->IsSceneToUpdate() == false)
 	{
 		return;
 	}
-	SceneManager::Get()->UpdateCurrentScene();
+	//SceneManager::Get()->UpdateCurrentScene();
+	SceneManager::Get()->UpdateScenesToUpdate();
 	for (auto it = m_entities.begin(); it != m_entities.end(); )
 	{
 		Entity* entity = *it;

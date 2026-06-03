@@ -20,22 +20,22 @@ SceneManager* SceneManager::Get()
 	return &instance;
 }
 
-void SceneManager::ChangeCurrentScene()
-{
-	if (m_tempCurrentSceneID.empty())
-		return;
-
-	if (auto it = m_scenes.find(m_tempCurrentSceneID); it != m_scenes.end())
-	{
-		if (m_currentScene)
-		{
-			m_currentScene->OnDestroy();
-		}
-		m_currentScene = m_scenesVector[it->second];
-		m_currentScene->OnInitialize();
-	}
-	m_tempCurrentSceneID.clear();
-}
+//void SceneManager::ChangeCurrentScene()
+//{
+//	if (m_tempCurrentSceneID.empty())
+//		return;
+//
+//	if (auto it = m_scenes.find(m_tempCurrentSceneID); it != m_scenes.end())
+//	{
+//		if (m_currentScene)
+//		{
+//			m_currentScene->OnDestroy();
+//		}
+//		m_currentScene = m_scenesVector[it->second];
+//		m_currentScene->OnInitialize();
+//	}
+//	m_tempCurrentSceneID.clear();
+//}
 
 void SceneManager::RemoveScene(const std::string& p_id)
 {
@@ -77,13 +77,101 @@ void SceneManager::ClearScenes()
 	m_scenes.clear();
 }
 
-void SceneManager::UpdateCurrentScene()
+//void SceneManager::UpdateCurrentScene()
+//{
+//	//m_currentScene->OnEvent();
+//	m_currentScene->OnUpdate();
+//}
+//
+//void SceneManager::SetCurrentScene(const std::string& p_id)
+//{
+//	m_tempCurrentSceneID = p_id;
+//}
+
+void SceneManager::PushScene(const std::string& p_id)
 {
-	//m_currentScene->OnEvent();
-	m_currentScene->OnUpdate();
+	Scene* scene = GetScene(p_id);
+	if (scene == nullptr)
+	{
+		return;
+	}
+
+	m_scenesToUpdate[p_id] = m_scenesToUpdateVector.size();
+	m_scenesToUpdateVector.push_back(scene);
+	scene->Initialize();
 }
 
-void SceneManager::SetCurrentScene(const std::string& p_id)
+void SceneManager::PopScene(const std::string& p_id)
 {
-	m_tempCurrentSceneID = p_id;
+	if (m_scenesToUpdateVector.empty())
+	{
+		return;
+	}
+	auto it = m_scenesToUpdate.find(p_id);
+
+	if (it == m_scenesToUpdate.end())
+	{
+		return;
+	}
+
+	size_t indexToDelete = it->second;
+	size_t lastIndex = m_scenesToUpdateVector.size() - 1;
+
+	m_scenesToUpdateVector[indexToDelete]->Destroy();
+
+	if (indexToDelete != lastIndex)
+	{
+		std::swap(m_scenesToUpdateVector[indexToDelete], m_scenesToUpdateVector[lastIndex]);
+		m_scenesToUpdate[m_scenesToUpdateVector[indexToDelete]->GetName()] = indexToDelete;
+	}
+	delete m_scenesToUpdateVector[lastIndex];
+	m_scenesToUpdateVector[lastIndex] = nullptr;
+	m_scenesToUpdateVector.pop_back();
+	m_scenesToUpdate.erase(it);
+}
+
+void SceneManager::ClearScenesToUpdate()
+{
+	for (auto& scene : m_scenesToUpdateVector)
+	{
+		scene->Destroy();
+		delete scene;
+	}
+	m_scenesToUpdateVector.clear();
+	m_scenesToUpdate.clear();
+}
+
+void SceneManager::EventScenesToUpdate()
+{
+	for (Scene* scene : m_scenesToUpdateVector)
+	{
+		scene->Event();
+	}
+}
+
+void SceneManager::UpdateScenesToUpdate()
+{
+	for (Scene* scene : m_scenesToUpdateVector)
+	{
+		scene->Update();
+	}
+}
+
+bool SceneManager::IsSceneToUpdate() const
+{
+	if (m_scenesToUpdateVector.empty())
+	{
+		return false;
+	}
+	return true;
+}
+
+Scene* SceneManager::GetScene(const std::string& p_id) const
+{
+	auto it = m_scenes.find(p_id);
+	if (it != m_scenes.end())
+	{
+		return m_scenesVector[it->second];
+	}
+	return nullptr;
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <list>
 #include "2DPendentLib/Vector2.h"
 #include "2DPendentLib/SoundOrientation.h"
 
@@ -28,9 +29,18 @@ private:
 	bool m_isSleepEvent = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnEvent() ne sera pas appelée
 	bool m_isSleepUpdate = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnUpdate() ne sera pas appelée
 
-	std::vector<Entity*> m_entities; //Vector de pointeurs vers les entités présentes dans la scène
+	std::list<Entity*> m_entities; //Vector de pointeurs vers les entités présentes dans la scène
 
 	// TO DO faire la meme chose pour les map tiled
+
+	//Indique si la scène est dans le cache du SceneManager ou non, si elle est dans le cache,
+	//elle ne sera pas détruite lorsqu'elle sera retirée de la scène active, mais simplement mise en veille
+	bool m_isInCache = false;
+
+	void Initialize();
+	void Event();
+	void Update();
+	void Destroy();
 
 protected:
 
@@ -43,7 +53,7 @@ protected:
 	std::string GetName() const { return m_name; }
 
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique d'initialisation
-	virtual void OnInitialize() = 0; 
+	virtual void OnInitialize() {};
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de gestion des événements
 	virtual void OnEvent() = 0; 
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise à jour
@@ -84,11 +94,6 @@ public:
 
 	Camera* GetCamera() const;
 
-	// Setter pour le bool m_sleepUpdate, si m_sleepUpdate est true, la fonction OnUpdate() ne sera pas appelée
-	void SetSleepUpdate(bool p_sleep) { m_sleepUpdate = p_sleep; }
-	// Getter pour le bool m_sleepUpdate
-	bool GetSleepUpdate() const { return m_sleepUpdate; }
-
 	// Setter pour le bool m_visible, si m_visible est false, les entités de la scène ne seront pas dessinées à l'écran
 	void SetIsVisible(bool p_visible);
 	// Getter pour le bool m_visible
@@ -98,7 +103,7 @@ public:
 
 	void RemoveEntity(Entity* p_entity);
 
-	std::vector<Entity*>& GetEntities() { return m_entities; }
+	std::list<Entity*>& GetEntities() { return m_entities; }
 
 	// Setter pour le bool m_sleepEvent, si m_sleepEvent est true, la fonction OnEvent() ne sera pas appelée
 	// pour freeze placer au debut un if = true alors return
@@ -109,6 +114,10 @@ public:
 	// pour freeze placer au debut un if = true alors return
 	void SetSleepUpdate(bool p_sleep) { m_isSleepUpdate = p_sleep; }
 	bool GetSleepUpdate() const { return m_isSleepUpdate; }
+
+
+	void SetIsInCache(bool p_isInCache) { m_isInCache = p_isInCache; }
+	bool GetIsInCache() const { return m_isInCache; }
 
 	//Liste des class amie avec la class Scene
 	friend class Application;

@@ -154,9 +154,6 @@ void DemoScene::OnInitialize()
 
 void DemoScene::OnEvent()
 {
-
-	Scene::OnEvent();
-
 	if (input.IsGameControllerButtonDown(CONTROLLER_BUTTON_GUIDE))
 	{
 		ChangeisRunning(false);

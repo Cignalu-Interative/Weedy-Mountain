@@ -22,6 +22,7 @@ T* Scene::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::str
 	entity->SetScene(this);
 	entity->Initialize(p_position, p_dimension, p_path, m_application->GetRender(), p_shape, p_isGUI);
 	m_application->m_entityToAdd.push_back(newEntity);
+	AddEntity(entity);
 
 	return newEntity;
 }

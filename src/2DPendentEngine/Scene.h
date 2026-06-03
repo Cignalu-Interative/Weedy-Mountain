@@ -23,7 +23,14 @@ private:
 
 	bool m_sleepUpdate = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnUpdate() ne sera pas appelée
 
-	bool m_visible = true; //Indique si la scène est visible ou non, si elle n'est pas visible, les entités de la scène ne seront pas dessinées à l'écran
+	bool m_isVisible = true; //Indique si la scène est visible ou non, si elle n'est pas visible, les entités de la scène ne seront pas dessinées à l'écran
+
+	bool m_isSleepEvent = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnEvent() ne sera pas appelée
+	bool m_isSleepUpdate = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnUpdate() ne sera pas appelée
+
+	std::vector<Entity*> m_entities; //Vector de pointeurs vers les entités présentes dans la scène
+
+	// TO DO faire la meme chose pour les map tiled
 
 protected:
 
@@ -83,9 +90,25 @@ public:
 	bool GetSleepUpdate() const { return m_sleepUpdate; }
 
 	// Setter pour le bool m_visible, si m_visible est false, les entités de la scène ne seront pas dessinées à l'écran
-	void SetVisible(bool p_visible) { m_visible = p_visible; }
+	void SetIsVisible(bool p_visible);
 	// Getter pour le bool m_visible
-	bool GetVisible() const { return m_visible; }
+	bool GetIsVisible() const { return m_isVisible; }
+
+	void AddEntity(Entity* p_entity);
+
+	void RemoveEntity(Entity* p_entity);
+
+	std::vector<Entity*>& GetEntities() { return m_entities; }
+
+	// Setter pour le bool m_sleepEvent, si m_sleepEvent est true, la fonction OnEvent() ne sera pas appelée
+	// pour freeze placer au debut un if = true alors return
+	void SetSleepEvent(bool p_sleep) { m_isSleepEvent = p_sleep; }
+	bool GetSleepEvent() const { return m_isSleepEvent; }
+
+	// Setter pour le bool m_sleepUpdate, si m_sleepUpdate est true, la fonction OnUpdate() ne sera pas appelée
+	// pour freeze placer au debut un if = true alors return
+	void SetSleepUpdate(bool p_sleep) { m_isSleepUpdate = p_sleep; }
+	bool GetSleepUpdate() const { return m_isSleepUpdate; }
 
 	//Liste des class amie avec la class Scene
 	friend class Application;

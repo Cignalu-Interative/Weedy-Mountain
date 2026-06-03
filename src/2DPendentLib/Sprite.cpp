@@ -160,6 +160,11 @@ void Sprite::SetSpeedAnimation(float p_speed)
 */
 void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
+    if (m_isVisible == false)
+    {
+        return;
+	}
+
     SDL_Renderer* renderer = f_render->m_renderer;
 
     // Vérifications sécurité

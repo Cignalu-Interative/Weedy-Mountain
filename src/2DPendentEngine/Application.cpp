@@ -164,7 +164,7 @@ void Application::Update()
 			++it;
 			continue;
 		}
-
+		entity->GetScene()->RemoveEntity(entity);
 		m_entityToDestroy.push_back(entity);
 		it = m_entities.erase(it);
 	}

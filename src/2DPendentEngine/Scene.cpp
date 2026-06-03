@@ -65,3 +65,50 @@ Camera* Scene::GetCamera() const
 {
 	return m_application->m_camera;
 }
+
+void Scene::SetIsVisible(bool p_visible)
+{
+	switch (p_visible)
+	{
+	case true:
+
+		m_isVisible = true;
+
+		for (Entity* entity : m_entities)
+		{
+			entity->SetIsVisible(true);
+		}
+
+		break;
+	case false:
+
+		m_isVisible = false;
+		for (Entity* entity : m_entities)
+		{
+			entity->SetIsVisible(false);
+		}
+
+		break;
+	}
+}
+
+void Scene::AddEntity(Entity* p_entity)
+{
+	m_entities.push_back(p_entity);
+}
+
+void Scene::RemoveEntity(Entity* p_entity)
+{
+	if (m_entities.empty())
+	{
+		return;
+	}
+	auto it = std::find(m_entities.begin(), m_entities.end(), p_entity);
+
+	if (it == m_entities.end())
+	{
+		return;
+	}
+
+	m_entities.erase(it);
+}

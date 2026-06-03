@@ -189,7 +189,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     float posY;
     if (IsGUI())
     {
-        Vector2f dimension = (Vector2f)GetDimension();
+        dimension = (Vector2f)GetDimension();
         posX = position.GetX();
         posY = position.GetY();
 	}

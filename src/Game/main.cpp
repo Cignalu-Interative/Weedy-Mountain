@@ -6,7 +6,7 @@
 #include "DemoScene.h"
 #include "GameScene.h"
 
-//Code d'entrée
+//Code d'entrï¿½e
 int main(int argc, char* argv[])
 {
 	Aleatory::Initialize();

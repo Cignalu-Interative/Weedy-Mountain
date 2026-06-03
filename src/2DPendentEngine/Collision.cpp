@@ -284,10 +284,10 @@ void Collision::Repulse_OBC(Entity* p_entityRect, Entity* p_entityCircle)
 	//vecteur center circle-rectangle
 	Vector2f vector = { circleCenter - rectCenter };
 
-	float newAngle = Utils::DegToRad(angle);
+	float radiantAngle = Utils::DegToRad(angle);
 
-	float x = vector.GetX() * Utils::Cos(newAngle) + vector.GetY() * Utils::Sin(newAngle);
-	float y = -vector.GetX() * Utils::Sin(newAngle) + vector.GetY() * Utils::Cos(newAngle);
+	float x = vector.GetX() * Utils::Cos(radiantAngle) + vector.GetY() * Utils::Sin(radiantAngle);
+	float y = -vector.GetX() * Utils::Sin(radiantAngle) + vector.GetY() * Utils::Cos(radiantAngle);
 
 	Vector2f newCircleCenter = { x,y };
 
@@ -322,19 +322,72 @@ void Collision::Repulse_OBC(Entity* p_entityRect, Entity* p_entityCircle)
 
 		float lenght = sqrt(sqrtLength);
 
-		float penetration = circleRadius - lenght;
+		float overlap = circleRadius - lenght;
 
-		float worldX = normal.GetX() * cos(newAngle) - normal.GetY() * sin(newAngle);
-		float worldY = normal.GetX() * sin(newAngle) + normal.GetY() * cos(newAngle);
+		float worldX = normal.GetX() * cos(radiantAngle) - normal.GetY() * sin(radiantAngle);
+		float worldY = normal.GetX() * sin(radiantAngle) + normal.GetY() * cos(radiantAngle);
 
 		Vector2f worldPosition = { worldX,worldY };
 
-		Vector2f push = worldPosition * penetration;
+		Vector2f push = worldPosition * overlap;
 
 		p_entityCircle->Move(push * 0.5);
 		p_entityRect->Move(-push * 0.5);
 
 	}
+}
+
+void Collision::Repulse_OBB(Entity* p_entityRectA, Entity* p_entityRectB)
+{
+	auto cornersA = Utils::GetCorners(
+		p_entityRectA->GetPosition(), p_entityRectA->GetDimension(),
+		p_entityRectA->GetAngle(), p_entityRectA->GetRotationPoint());
+	auto cornersB = Utils::GetCorners(
+		p_entityRectB->GetPosition(), p_entityRectB->GetDimension(),
+		p_entityRectB->GetAngle(), p_entityRectB->GetRotationPoint());
+
+	// 4 axes à tester : 2 par rect (les normales de leurs côtés)
+	std::array<Vector2f, 4> axes;
+
+	// Axes de A
+	axes[0] = { cornersA[1].GetX() - cornersA[0].GetX(), cornersA[1].GetY() - cornersA[0].GetY() };
+	axes[1] = { cornersA[3].GetX() - cornersA[0].GetX(), cornersA[3].GetY() - cornersA[0].GetY() };
+	// Axes de B
+	axes[2] = { cornersB[1].GetX() - cornersB[0].GetX(), cornersB[1].GetY() - cornersB[0].GetY() };
+	axes[3] = { cornersB[3].GetX() - cornersB[0].GetX(), cornersB[3].GetY() - cornersB[0].GetY() };
+
+	float smallerOverlap = FLT_MAX;
+	Vector2f axisOverlap;
+
+	for (const auto& axis : axes)
+	{
+		Vector2f axe = Utils::NormalizeVector(axis);
+
+		auto [minA, maxA] = Project(cornersA, axe);
+		auto [minB, maxB] = Project(cornersB, axe);
+
+		float overlap = Utils::Min({ maxA, maxB }) - Utils::Max({ minA, minB });
+
+		if (overlap < smallerOverlap && overlap > 0)
+		{
+			smallerOverlap = overlap;
+			axisOverlap = axe;
+		}
+	}
+
+	Vector2f direction = p_entityRectB->GetPosition() - p_entityRectA->GetPosition();
+
+	Vector2f axisOverlapNormalize = Utils::NormalizeVector(axisOverlap);
+	Vector2f normal = axisOverlapNormalize * smallerOverlap;
+
+	if (Utils::Dot(direction, axisOverlap) < 0)
+		normal = -normal;
+
+
+	p_entityRectA->Move(-normal * 0.5);
+	p_entityRectB->Move(normal * 0.5);
+
+
 }
 
 bool Collision::Collision_OBB(const Collider& p_rectA, const Collider& p_rectB)
@@ -457,7 +510,7 @@ void Collision::Repulse(Entity* p_entityA, Entity* p_entityB)
 
 	if (shapeA == Shape::Rectangle && shapeB == Shape::Rectangle)
 	{
-		return Repulse_AABB(p_entityA, p_entityB);
+		return Repulse_OBB(p_entityA, p_entityB);
 	}
 	else if (shapeA == Shape::Circle && shapeB == Shape::Circle)
 	{

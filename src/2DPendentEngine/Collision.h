@@ -51,6 +51,8 @@ private:
 	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle avec un angle et Cercle 
 	static void Repulse_OBC(Entity* p_entityRect, Entity* p_entityCircle);
 
+	static void Repulse_OBB(Entity* p_entityRect, Entity* p_entityRectB);
+
 public:
 
 

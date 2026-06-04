@@ -21,11 +21,3 @@ T* Entity::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::st
 {
 	return GetScene()->CreateEntity<T>(p_position, p_dimension, p_path, p_shape);
 }
-
-template<typename T>
-T* Entity::GetCollider() const
-{
-	T* collider = dynamic_cast<T*>(m_collider);
-
-	return collider;
-}

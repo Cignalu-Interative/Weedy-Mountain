@@ -5,11 +5,17 @@
 #include "2DPendentLib/Utils.h"
 #include "RectangleCollider.h"
 #include "CircleCollider.h"
+#include "CollisionManager.h"
 
 Entity::~Entity()
 {
 	delete m_sprite;
-	delete m_collider;
+	for (Collider* c : m_colliders)
+	{
+		CollisionManager::Get()->UnregisterCollider(c);
+		delete c;
+	}
+	m_colliders.clear();
 	delete m_physicsBody;
 }
 
@@ -23,23 +29,7 @@ void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::st
 	sprite->SetIsGUI(p_isGUI);
 	m_sprite = sprite;
 
-	switch (p_shape)
-	{
-	case Shape::Circle:
-	{
-		CircleCollider* collider = new CircleCollider();
-		collider->Initialize(p_position, p_dimension);
-		m_collider = collider;
-		break;
-	}
-	case Shape::Rectangle:
-	{
-		RectangleCollider* collider = new RectangleCollider();
-		collider->Initialize(p_position, p_dimension);
-		m_collider = collider;
-		break;
-	}
-	}
+	AddCollider("default", p_dimension, p_shape);
 
 	OnInitialize();
 }
@@ -59,38 +49,29 @@ void Entity::Draw(Render* f_render, Window* f_window)
 	Camera* p_camera = m_scene->GetCamera();
 
 	Vector2i dimensionWindow = f_window->GetWindowSize();
-
 	Vector2f screenPosTopLeft = p_camera->WorldToScreen(GetPosition({ 0.0f, 0.0f }));
 	Vector2f screenPosBottomRight = p_camera->WorldToScreen(GetPosition({ 1.0f, 1.0f }));
 
-	if (screenPosBottomRight.GetX() < 0 || screenPosTopLeft.GetX() > dimensionWindow.GetX() ||
-		screenPosBottomRight.GetY() < 0 || screenPosTopLeft.GetY() > dimensionWindow.GetY())
-	{
-		//std::cerr << "no draw" << std::endl;
+	if (screenPosBottomRight.GetX() < 0 || screenPosTopLeft.GetX() > dimensionWindow.GetX() || screenPosBottomRight.GetY() < 0 || screenPosTopLeft.GetY() > dimensionWindow.GetY())
 		return;
-	}
 
 	if (m_sprite)
-	{
 		m_sprite->Draw(f_render, f_window, p_camera);
-	}
-	if (m_collider)
+
+	// Itère sur tous les colliders
+	for (Collider* c : m_colliders)
 	{
-		Shape shape = m_collider->GetShape();
-		switch (shape)
+		if (c->IsShow() == false) 
+			continue;
+
+		switch (c->GetShape())
 		{
 		case Shape::Circle:
-		{
-			CircleCollider* collider = GetCollider<CircleCollider>();
-			collider->Draw(f_render, f_window, p_camera);
+			static_cast<CircleCollider*>(c)->Draw(f_render, f_window, p_camera);
 			break;
-		}
 		case Shape::Rectangle:
-		{
-			RectangleCollider* collider = GetCollider<RectangleCollider>();
-			collider->Draw(f_render, f_window, p_camera);
+			static_cast<RectangleCollider*>(c)->Draw(f_render, f_window, p_camera);
 			break;
-		}
 		}
 	}
 }
@@ -336,8 +317,7 @@ float Entity::GetDeltaTime() const
 void Entity::SetPosition(Vector2f p_position, Vector2f p_anchor)
 {
 	Transformable::SetPosition(p_position, p_anchor);
-	if (m_collider)
-		m_collider->SetPosition(p_position, p_anchor);
+	SyncColliders();
 	if (m_physicsBody)
 		m_physicsBody->SetPosition(p_position, p_anchor);
 	if (m_sprite)
@@ -347,8 +327,9 @@ void Entity::SetPosition(Vector2f p_position, Vector2f p_anchor)
 void Entity::SetDimension(Vector2i p_dimension)
 {
 	Transformable::SetDimension(p_dimension);
-	if (m_collider)
-		m_collider->SetDimension(p_dimension);
+	Collider* def = GetCollider("default");
+	if (def)
+		def->SetDimension(p_dimension);
 	if (m_physicsBody)
 		m_physicsBody->SetDimension(p_dimension);
 	if (m_sprite)
@@ -358,8 +339,8 @@ void Entity::SetDimension(Vector2i p_dimension)
 void Entity::SetAngle(float p_angle)
 {
 	Transformable::SetAngle(p_angle);
-	if (m_collider)
-		m_collider->SetAngle(p_angle);
+	for (Collider* c : m_colliders)
+		c->SetAngle(p_angle);
 	if (m_physicsBody)
 		m_physicsBody->SetAngle(p_angle);
 	if (m_sprite)
@@ -384,10 +365,85 @@ bool Entity::GetIsGUI() const
 void Entity::Move(Vector2f p_translation)
 {
 	Transformable::Move(p_translation);
-	if (m_collider)
-		m_collider->Move(p_translation);
 	if (m_physicsBody)
 		m_physicsBody->Move(p_translation);
 	if (m_sprite)
 		m_sprite->Move(p_translation);
+	SyncColliders(); 
+}
+
+Collider* Entity::AddCollider(const std::string& p_id, Vector2i p_dimension,Shape p_shape, Vector2f p_offset, bool p_isTrigger, uint32_t p_layer, uint32_t p_mask)
+{
+	Collider* col = nullptr;
+
+	if (p_shape == Shape::Rectangle)
+	{
+		auto* rc = new RectangleCollider();
+		rc->Initialize(GetPosition({ 0.5f, 0.5f }), p_dimension);
+		col = rc;
+	}
+	else if (p_shape == Shape::Circle)
+	{
+		auto* cc = new CircleCollider();
+		cc->Initialize(GetPosition({ 0.5f, 0.5f }), p_dimension);
+		col = cc;
+	}
+
+	col->SetID(p_id);
+	col->SetOffset(p_offset);
+	col->SetIsTrigger(p_isTrigger);
+	col->SetLayer(p_layer);
+	col->SetMask(p_mask);
+	col->SetOwner(this);
+	col->SyncWithOwner();
+
+	m_colliders.push_back(col);
+	CollisionManager::Get()->RegisterCollider(col);
+
+	return col;
+}
+
+Collider* Entity::GetCollider(const std::string& p_id) const
+{
+	for (Collider* c : m_colliders)
+		if (c->GetID() == p_id)
+			return c;
+	return nullptr;
+}
+
+Collider* Entity::GetCollider() const
+{
+	return m_colliders.empty() ? nullptr : m_colliders[0];
+}
+
+void Entity::RemoveCollider(const std::string& p_id)
+{
+	for (auto it = m_colliders.begin(); it != m_colliders.end(); ++it)
+	{
+		if ((*it)->GetID() == p_id)
+		{
+			CollisionManager::Get()->UnregisterCollider(*it);
+			delete* it;
+			m_colliders.erase(it);
+			return;
+		}
+	}
+}
+
+void Entity::SyncColliders()
+{
+	for (Collider* c : m_colliders)
+		c->SyncWithOwner();
+}
+
+void Entity::ShowCollider(bool p_show)
+{
+	for (Collider* c : m_colliders)
+		c->SetShow(p_show);
+}
+
+void Entity::ShowCollider(const std::string& p_id, bool p_show)
+{
+	Collider* c = GetCollider(p_id);
+	if (c) c->SetShow(p_show);
 }

@@ -33,7 +33,7 @@ protected:
 
 	void OnUpdate() override;
 
-	void OnCollision(Entity* other) override;
+	void OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side) override;
 
 	void OnDestroy() override;
 

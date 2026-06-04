@@ -15,6 +15,8 @@ void GameScene::OnInitialize()
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 
 	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {32,64}, "Player", Shape::Rectangle);
+	m_Player->SetTag(1);
+	m_Player->AddCollider("interact", { 160,160 }, Shape::Circle, { 0,0 }, true);
 	m_Player->ShowCollider(true);
 	EnviroProps* Tree = CreateButton<EnviroProps>({200,200},{128,160}, "Oak_Tree", "", "", false);
 	Tree->SetOnHoverStay([]() {

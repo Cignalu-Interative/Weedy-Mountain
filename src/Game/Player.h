@@ -39,8 +39,6 @@ private:
 
 	std::vector<PlayerJob*> m_Jobs;
 
-	Entity* m_interactZone;
-
 protected:
 
 	//Fonction pour initialiser le joueur, notamment en définissant sa position, sa dimension, son sprite et son collider

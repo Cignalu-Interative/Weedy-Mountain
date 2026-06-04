@@ -8,9 +8,6 @@
 
 void Player::OnInitialize()
 {
-	m_interactZone = GetScene()->CreateEntity<User>(GetPosition(), { 160, 160 }, "Oak_Tree", Shape::Circle);
-	m_interactZone->ShowCollider(true);
-
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->name = "Gatherer";
 	m_Jobs.push_back(gatherer);
@@ -55,7 +52,7 @@ void Player::OnUpdate()
 		m_Jobs[i]->levelUp();
 	}
 
-	m_interactZone->SetPosition(GetPosition());
+	
 }
 
 void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)
@@ -65,5 +62,5 @@ void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _
 
 void Player::OnDestroy()
 {
-	m_interactZone->SetToDestroy(true);
+
 }

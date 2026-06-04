@@ -19,20 +19,11 @@ void EnviroProps::OnUpdate()
 	Button::OnUpdate();
 }
 
-void EnviroProps::OnCollision(Entity* other)
+void EnviroProps::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	Collider* otherCollider;
-
-	if (auto cast = dynamic_cast<User*>(other))
-	{
-		otherCollider = cast->GetCollider();
-	}
-	else
-		return;
-
-
-	if (Collision::IsColliding(*m_collider, *otherCollider))
+	if(_other->GetOwner()->GetTag() == 1 && _other->GetID() == "interact") {
 		m_isInPlayerZone = true;
+	}
 }
 
 void EnviroProps::OnDestroy()

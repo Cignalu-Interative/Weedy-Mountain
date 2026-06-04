@@ -25,6 +25,20 @@ void CollisionManager::RegisterCollider(Collider* p_collider)
 void CollisionManager::UnregisterCollider(Collider* p_collider)
 {
     m_colliders.erase(std::remove(m_colliders.begin(), m_colliders.end(), p_collider), m_colliders.end());
+
+    auto removePairs = [&](std::set<ColliderPair>& p_set)
+        {
+            for (auto it = p_set.begin(); it != p_set.end(); )
+            {
+                if (it->first == p_collider || it->second == p_collider)
+                    it = p_set.erase(it);
+                else
+                    ++it;
+            }
+        };
+
+	removePairs(m_currentPairs);
+	removePairs(m_previousPairs);
 }
 
 bool CollisionManager::Overlaps(Collider* a, Collider* b) const

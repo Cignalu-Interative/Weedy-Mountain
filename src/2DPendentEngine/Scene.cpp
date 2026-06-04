@@ -6,6 +6,7 @@
 #include "SoundManager.h"
 #include "AssetManager.h"
 #include "Camera.h"
+#include "Debug.h"
 
 
 void Scene::Initialize()
@@ -133,33 +134,9 @@ void Scene::SetIsVisible(bool p_visible)
 		{
 			entity->SetIsVisible(true);
 		}
-		for (Point& point : Debug::Get()->GetAllPoints())
+		for (Geometry* geo : m_geometries)
 		{
-			point.SetIsVisible(true);
-		}
-		for (Line& line : Debug::Get()->GetAllLines())
-		{
-			line.SetIsVisible(true);
-		}
-		for (Rectangle& rect : Debug::Get()->GetAllRects())
-		{
-			rect.SetIsVisible(true);
-		}
-		for (Rectangle& fillRect : Debug::Get()->GetAllFillRects())
-		{
-			fillRect.SetIsVisible(true);
-		}
-		for (Circle& circle : Debug::Get()->GetAllCircles())
-		{
-			circle.SetIsVisible(true);
-		}
-		for (Circle& fillCircle : Debug::Get()->GetAllFillCircles())
-		{
-			fillCircle.SetIsVisible(true);
-		}
-		for (Text* text : Debug::Get()->GetAllTexts())
-		{
-			text->SetIsVisible(true);
+			geo->SetIsVisible(true);
 		}
 	}
 	else
@@ -169,33 +146,9 @@ void Scene::SetIsVisible(bool p_visible)
 		{
 			entity->SetIsVisible(false);
 		}
-		for (Point& point : Debug::Get()->GetAllPoints())
+		for (Geometry* geo : m_geometries)
 		{
-			point.SetIsVisible(false);
-		}
-		for (Line& line : Debug::Get()->GetAllLines())
-		{
-			line.SetIsVisible(false);
-		}
-		for (Rectangle& rect : Debug::Get()->GetAllRects())
-		{
-			rect.SetIsVisible(false);
-		}
-		for (Rectangle& fillRect : Debug::Get()->GetAllFillRects())
-		{
-			fillRect.SetIsVisible(false);
-		}
-		for (Circle& circle : Debug::Get()->GetAllCircles())
-		{
-			circle.SetIsVisible(false);
-		}
-		for (Circle& fillCircle : Debug::Get()->GetAllFillCircles())
-		{
-			fillCircle.SetIsVisible(false);
-		}
-		for (Text* text : Debug::Get()->GetAllTexts())
-		{
-			text->SetIsVisible(false);
+			geo->SetIsVisible(false);
 		}
 	}
 }
@@ -220,3 +173,63 @@ void Scene::RemoveEntity(Entity* p_entity)
 
 	m_entities.erase(it);
 }
+
+void Scene::RemoveGeometry(const std::string& p_id)
+{
+	Debug* d = Debug::Get();
+
+	Geometry* geo = d->GetGeometry<Geometry>(p_id);
+
+	if (!geo)
+		return;
+
+	auto it = std::find(m_geometries.begin(), m_geometries.end(), geo);
+
+	if (it == m_geometries.end())
+	{
+		return;
+	}
+
+	m_geometries.erase(it);
+
+	d->Destroy(p_id);
+}
+
+void Scene::CreatePoint(const std::string& p_id, Vector2f p_position, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreatePoint(p_id, p_position, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateLine(const std::string& p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateLine(p_id, p_start, p_end, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateRect(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateRect(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateFillRect(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateFillRect(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateCircle(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateCircle(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+
+void Scene::CreateFillCircle(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateFillCircle(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+
+void Scene::CreateText(const std::string& p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateText(p_id, p_position, p_text, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+

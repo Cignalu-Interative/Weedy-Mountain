@@ -3,6 +3,7 @@
 #include "Scene.h"
 #include "Application.h"
 #include "Entity.h"
+#include "2DPendentLib/Geometry.h"
 
 //Fonction template pour créer une entité dans la scène (seul la Width compte pour le raduis du cercle)
 template<typename T>
@@ -25,4 +26,16 @@ T* Scene::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::str
 	AddEntity(newEntity);
 
 	return newEntity;
+}
+
+template<typename T>
+T* Scene::GetGeometry(const std::string& p_id)
+{
+	for (Geometry* geometry : m_geometries)
+	{
+		if (geometry->GetId() == p_id)
+		{
+			return dynamic_cast<T*>(geometry);
+		}
+	}
 }

@@ -9,8 +9,8 @@ inline SoundManager& sound = *SoundManager::Get();
 
 void TestScene::OnInitialize()
 {
-	debug.CreateRect("Rect", Vector2f(100, 100), Vector2i(100, 100), Color(255, 0, 0, 255));
-	debug.CreateCircle("Circle", Vector2f(200, 200), Vector2i(50, 50), Color(0, 255, 0, 255));
+	CreateRect("Rect", Vector2f(100, 100), Vector2i(100, 100), Color(255, 0, 0, 255));
+	CreateCircle("Circle", Vector2f(200, 200), Vector2i(50, 50), Color(0, 255, 0, 255), false, false);
 
 	CreateEntity<Player>(Vector2f(400, 400), Vector2i(100, 100), "Perceval", Shape::Rectangle);
 }

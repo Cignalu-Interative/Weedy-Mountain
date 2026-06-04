@@ -3,6 +3,7 @@
 #include <list>
 #include "2DPendentLib/Vector2.h"
 #include "2DPendentLib/SoundOrientation.h"
+#include "2DPendentLib/Color.h"
 
 class SoundManager;
 enum class Shape : uint8_t;
@@ -10,6 +11,8 @@ class Entity;
 class Application;
 class AssetManager;
 class Camera;
+class Geometry;
+
 class Scene
 {
 private:
@@ -31,6 +34,7 @@ private:
 	bool m_isSleepUpdate = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnUpdate() ne sera pas appelée
 
 	std::list<Entity*> m_entities; //Vector de pointeurs vers les entités présentes dans la scène
+	std::list<Geometry*> m_geometries; //Vector de pointeurs vers les géometries présentes dans la scène, utilisé pour les éléments de décor et les éléments de l'interface utilisateur
 
 	// TO DO faire la meme chose pour les map tiled
 
@@ -108,6 +112,13 @@ public:
 
 	std::list<Entity*>& GetEntities() { return m_entities; }
 
+	void RemoveGeometry(const std::string& p_id);
+
+	template<typename T>
+	T* GetGeometry(const std::string& p_id);
+
+	std::list<Geometry*>& GetGeometries() { return m_geometries; }
+
 	void SetIsOnStateSleep(bool p_isOnStateSleep) { m_isOnStateSleep = p_isOnStateSleep; }
 	bool GetIsOnStateSleep() const { return m_isOnStateSleep; }
 
@@ -127,6 +138,24 @@ public:
 
 	void SetIsInCache(bool p_isInCache) { m_isInCache = p_isInCache; }
 	bool GetIsInCache() const { return m_isInCache; }
+
+	//DEBUG
+	void CreatePoint(const std::string& p_id, Vector2f p_position, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	// Fonction pour créer une ligne à dessiner
+	void CreateLine(const std::string& p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	// Fonction pour créer un rectangle à dessiner
+	void CreateRect(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	// Fonction pour créer un rectangle rempli à dessiner
+	void CreateFillRect(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	// Fonction pour créer un cercle à dessiner
+	void CreateCircle(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	// Fonction pour créer un cercle rempli à dessiner
+	void CreateFillCircle(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	// Fonction pour créer un texte à dessiner
+	//faire un create qui renvoie une addresse de text pour l'update
+	void CreateText(const std::string& p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+
+
 
 	//Liste des class amie avec la class Scene
 	friend class Application;

@@ -60,163 +60,175 @@ float Debug::GetDeltaTime()
 	return 0.0f;
 }
 
-void Debug::CreatePoint(std::string p_id, Vector2f p_position, Color p_color, bool p_isGUI, bool p_clampToScreen)
+Point* Debug::CreatePoint(std::string p_id, Vector2f p_position, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_points.find(p_id);
 	if (it != m_points.end())
 	{
-		Point* point = &m_pointsVector[it->second];
+		Point* point = m_pointsVector[it->second];
 		point->SetPosition(p_position);
 		point->SetColor(p_color);
 		point->SetIsGUI(p_isGUI);
 		point->SetIsClamp(p_clampToScreen);
-		return;
+		return point;
 	}
 
-	Point point(p_position, p_color);
-	point.SetIsGUI(p_isGUI);
-	point.SetIsClamp(p_clampToScreen);
+	Point* point = new Point(p_position, p_color);
+	point->SetIsGUI(p_isGUI);
+	point->SetIsClamp(p_clampToScreen);
 
 	if (p_id.empty())
 	{
 		p_id = "point_auto_" + std::to_string(m_pointCount++);
 	}
-	point.SetId(p_id);
+	point->SetId(p_id);
 	m_points[std::move(p_id)] = m_pointsVector.size();
 	m_pointsVector.push_back(point);
+
+	return point;
 }
-void Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI, bool p_clampToScreen)
+Line* Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_lines.find(p_id);
 	if (it != m_lines.end())
 	{
-		Line* line = &m_linesVector[it->second];
+		Line* line = m_linesVector[it->second];
 		line->SetPosition(p_start);
 		line->SetEndPosition(p_end);
 		line->SetColor(p_color);
 		line->SetIsGUI(p_isGUI);
 		line->SetIsClamp(p_clampToScreen);
-		return;
+		return line;
 	}
 
-	Line line(p_start, p_end, p_color);
-	line.SetIsGUI(p_isGUI);
-	line.SetIsClamp(p_clampToScreen);
+	Line* line = new Line(p_start, p_end, p_color);
+	line->SetIsGUI(p_isGUI);
+	line->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
 	{
 		p_id = "line_auto_" + std::to_string(m_lineCount++);
 	}
-	line.SetId(p_id);
+	line->SetId(p_id);
 	m_lines[std::move(p_id)] = m_linesVector.size();
 	m_linesVector.push_back(line);
+
+	return line;
 }
-void Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_dim, Color p_color, bool p_isGUI, bool p_clampToScreen)
+Rectangle* Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_dim, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_rects.find(p_id);
 	if (it != m_rects.end())
 	{
-		Rectangle* rect = &m_rectsVector[it->second];
+		Rectangle* rect = m_rectsVector[it->second];
 		rect->SetDimension(p_dim);
 		rect->SetPosition(p_position);
 		rect->SetColor(p_color);
 		rect->SetIsGUI(p_isGUI);
 		rect->SetIsClamp(p_clampToScreen);
-		return;
+		return rect;
 	}
 
-	Rectangle rect;
-	rect.Initialize(p_position, p_dim, p_color);
-	rect.SetIsGUI(p_isGUI);
-	rect.SetIsClamp(p_clampToScreen);
+	Rectangle* rect = new Rectangle;
+	rect->Initialize(p_position, p_dim, p_color);
+	rect->SetIsGUI(p_isGUI);
+	rect->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
 	{
 		p_id = "rect_auto_" + std::to_string(m_rectCount++);
 	}
-	rect.SetId(p_id);
+	rect->SetId(p_id);
 	m_rects[std::move(p_id)] = m_rectsVector.size();
 	m_rectsVector.push_back(rect);
+
+	return rect;
 }
-void Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+Rectangle* Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_fillRects.find(p_id);
 	if (it != m_fillRects.end())
 	{
-		Rectangle* rect = &m_fillRectsVector[it->second];
+		Rectangle* rect = m_fillRectsVector[it->second];
 		rect->SetDimension(p_dimension);
 		rect->SetPosition(p_position);
 		rect->SetColor(p_color);
 		rect->SetIsGUI(p_isGUI);
 		rect->SetIsClamp(p_clampToScreen);
-		return;
+		return rect;
 	}
 
-	Rectangle rect;
-	rect.Initialize(p_position, p_dimension, p_color);
-	rect.SetFilled(true);
-	rect.SetIsGUI(p_isGUI);
-	rect.SetIsClamp(p_clampToScreen);
+	Rectangle* rect = new Rectangle;
+	rect->Initialize(p_position, p_dimension, p_color);
+	rect->SetFilled(true);
+	rect->SetIsGUI(p_isGUI);
+	rect->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
 	{
 		p_id = "fillRect_auto_" + std::to_string(m_fillRectCount++);
 	}
-	rect.SetId(p_id);
+	rect->SetId(p_id);
 	m_fillRects[std::move(p_id)] = m_fillRectsVector.size();
 	m_fillRectsVector.push_back(rect);
+
+	return rect;
 }
-void Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+Circle* Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_circles.find(p_id);
 	if (it != m_circles.end())
 	{
-		Circle* circle = &m_circlesVector[it->second];
+		Circle* circle = m_circlesVector[it->second];
 		circle->SetDimension(p_dimension);
 		circle->SetPosition(p_position);
 		circle->SetColor(p_color);
 		circle->SetIsGUI(p_isGUI);
 		circle->SetIsClamp(p_clampToScreen);
-		return;
+		return circle;
 	}
 
-	Circle circle;
-	circle.Initialize(p_position, p_dimension, p_color);
-	circle.SetIsGUI(p_isGUI);
-	circle.SetIsClamp(p_clampToScreen);
+	Circle* circle = new Circle;
+	circle->Initialize(p_position, p_dimension, p_color);
+	circle->SetIsGUI(p_isGUI);
+	circle->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
 	{
 		p_id = "circle_auto_" + std::to_string(m_circleCount++);
 	}
-	circle.SetId(p_id);
+	circle->SetId(p_id);
 	m_circles[std::move(p_id)] = m_circlesVector.size();
 	m_circlesVector.push_back(circle);
+
+	return circle;
 }
-void Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+Circle* Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_fillCircles.find(p_id);
 	if (it != m_fillCircles.end())
 	{
-		Circle* circle = &m_fillCirclesVector[it->second];
+		Circle* circle = m_fillCirclesVector[it->second];
 		circle->SetDimension(p_dimension);
 		circle->SetPosition(p_position);
 		circle->SetColor(p_color);
 		circle->SetIsGUI(p_isGUI);
 		circle->SetIsClamp(p_clampToScreen);
-		return;
+		return circle;
 	}
 
-	Circle circle;
-	circle.Initialize(p_position, p_dimension, p_color);
-	circle.SetFilled(true);
-	circle.SetIsGUI(p_isGUI);
-	circle.SetIsClamp(p_clampToScreen);
+	Circle* circle = new Circle;
+	circle->Initialize(p_position, p_dimension, p_color);
+	circle->SetFilled(true);
+	circle->SetIsGUI(p_isGUI);
+	circle->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
 	{
 		p_id = "fillCircle_auto_" + std::to_string(m_fillCircleCount++);
 	}
-	circle.SetId(p_id);
+	circle->SetId(p_id);
 	m_fillCircles[std::move(p_id)] = m_fillCirclesVector.size();
 	m_fillCirclesVector.push_back(circle);
+
+	return circle;
 }
-void Debug::CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI, bool p_clampToScreen)
+Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_texts.find(p_id);
 	if (it != m_texts.end())
@@ -227,7 +239,7 @@ void Debug::CreateText(std::string p_id, Vector2f p_position, const std::string&
 		text->SetColor(p_color);
 		text->SetIsGUI(p_isGUI);
 		text->SetIsClamp(p_clampToScreen);
-		return;
+		return text;
 	}
 
 	Text* text = new Text();
@@ -242,6 +254,8 @@ void Debug::CreateText(std::string p_id, Vector2f p_position, const std::string&
 	text->SetId(p_id);
 	m_texts[std::move(p_id)] = m_textsVector.size();
 	m_textsVector.push_back(text);
+
+	return text;
 }
 
 void Debug::destroyPoint(const std::string& p_id)
@@ -263,9 +277,10 @@ void Debug::destroyPoint(const std::string& p_id)
 	if (indexToDelete != lastIndex)
 	{
 		std::swap(m_pointsVector[indexToDelete], m_pointsVector[lastIndex]);
-		m_points[m_pointsVector[indexToDelete].GetId()] = indexToDelete;
+		m_points[m_pointsVector[indexToDelete]->GetId()] = indexToDelete;
 	}
-
+	delete m_pointsVector[lastIndex];
+	m_pointsVector[lastIndex] = nullptr;
 	m_pointsVector.pop_back();
 	m_points.erase(it);
 }
@@ -288,9 +303,10 @@ void Debug::destroyLine(const std::string& p_id)
 	if (indexToDelete != lastIndex)
 	{
 		std::swap(m_linesVector[indexToDelete], m_linesVector[lastIndex]);
-		m_lines[m_linesVector[indexToDelete].GetId()] = indexToDelete;
+		m_lines[m_linesVector[indexToDelete]->GetId()] = indexToDelete;
 	}
-
+	delete m_linesVector[lastIndex];
+	m_linesVector[lastIndex] = nullptr;
 	m_linesVector.pop_back();
 	m_lines.erase(it);
 }
@@ -313,9 +329,10 @@ void Debug::destroyRect(const std::string& p_id)
 	if (indexToDelete != lastIndex)
 	{
 		std::swap(m_rectsVector[indexToDelete], m_rectsVector[lastIndex]);
-		m_rects[m_rectsVector[indexToDelete].GetId()] = indexToDelete;
+		m_rects[m_rectsVector[indexToDelete]->GetId()] = indexToDelete;
 	}
-
+	delete m_rectsVector[lastIndex];
+	m_rectsVector[lastIndex] = nullptr;
 	m_rectsVector.pop_back();
 	m_rects.erase(it);
 }
@@ -338,9 +355,10 @@ void Debug::destroyFillRect(const std::string& p_id)
 	if (indexToDelete != lastIndex)
 	{
 		std::swap(m_fillRectsVector[indexToDelete], m_fillRectsVector[lastIndex]);
-		m_fillRects[m_fillRectsVector[indexToDelete].GetId()] = indexToDelete;
+		m_fillRects[m_fillRectsVector[indexToDelete]->GetId()] = indexToDelete;
 	}
-
+	delete m_fillRectsVector[lastIndex];
+	m_fillRectsVector[lastIndex] = nullptr;
 	m_fillRectsVector.pop_back();
 	m_fillRects.erase(it);
 }
@@ -363,9 +381,10 @@ void Debug::destroyCircle(const std::string& p_id)
 	if (indexToDelete != lastIndex)
 	{
 		std::swap(m_circlesVector[indexToDelete], m_circlesVector[lastIndex]);
-		m_circles[m_circlesVector[indexToDelete].GetId()] = indexToDelete;
+		m_circles[m_circlesVector[indexToDelete]->GetId()] = indexToDelete;
 	}
-
+	delete m_circlesVector[lastIndex];
+	m_circlesVector[lastIndex] = nullptr;
 	m_circlesVector.pop_back();
 	m_circles.erase(it);
 }
@@ -388,9 +407,10 @@ void Debug::destroyFillCircle(const std::string& p_id)
 	if (indexToDelete != lastIndex)
 	{
 		std::swap(m_fillCirclesVector[indexToDelete], m_fillCirclesVector[lastIndex]);
-		m_fillCircles[m_fillCirclesVector[indexToDelete].GetId()] = indexToDelete;
+		m_fillCircles[m_fillCirclesVector[indexToDelete]->GetId()] = indexToDelete;
 	}
-
+	delete m_fillCirclesVector[lastIndex];
+	m_fillCirclesVector[lastIndex] = nullptr;
 	m_fillCirclesVector.pop_back();
 	m_fillCircles.erase(it);
 }
@@ -421,33 +441,68 @@ void Debug::destroyText(const std::string& p_id)
 	m_texts.erase(it);
 }
 
+void Debug::Destroy(const std::string& p_id)
+{
+	destroyPoint(p_id);
+	destroyLine(p_id);
+	destroyRect(p_id);
+	destroyFillRect(p_id);
+	destroyCircle(p_id);
+	destroyFillCircle(p_id);
+	destroyText(p_id);
+}
+
 void Debug::ClearPoints()
 {
-	m_points.clear();
+	for (auto& point : m_pointsVector)
+	{
+		delete point;
+	}
 	m_pointsVector.clear();
+	m_points.clear();
 }
 void Debug::ClearLines()
 {
+	for (auto& line : m_linesVector)
+	{
+		delete line;
+	}
 	m_linesVector.clear();
 	m_lines.clear();
 }
 void Debug::ClearRects()
 {
+	for (auto& rect : m_rectsVector)
+	{
+		delete rect;
+	}
 	m_rectsVector.clear();
 	m_rects.clear();
 }
 void Debug::ClearFillRects()
 {
+	for (auto& fillRect : m_fillRectsVector)
+	{
+		delete fillRect;
+	}
 	m_fillRectsVector.clear();
 	m_fillRects.clear();
 }
 void Debug::ClearCircles()
 {
+	for (auto& circle : m_circlesVector)
+	{
+		delete circle;
+	}
 	m_circlesVector.clear();
 	m_circles.clear();
 }
 void Debug::ClearFillCircles()
 {
+	for (auto& fillCircle : m_fillCirclesVector)
+	{
+		delete fillCircle;
+	}
 	m_fillCirclesVector.clear();
 	m_fillCircles.clear();
 }
@@ -477,84 +532,96 @@ Point* Debug::GetPoint(const std::string& p_id)
 	auto it = m_points.find(p_id);
 	if (it != m_points.end())
 	{
-		return &m_pointsVector[it->second];
+		return m_pointsVector[it->second];
 	}
-	else
-	{
-		CreatePoint(p_id, { 0, 0 }, { 255, 255, 255, 255 });
-		it = m_points.find(p_id);
-		return &m_pointsVector[it->second];
-	}
+	//else
+	//{
+	//	CreatePoint(p_id, { 0, 0 }, { 255, 255, 255, 255 });
+	//	it = m_points.find(p_id);
+	//	return m_pointsVector[it->second];
+	//}
+
+	return nullptr;
 }
 Line* Debug::GetLine(const std::string& p_id)
 {
 	auto it = m_lines.find(p_id);
 	if (it != m_lines.end())
 	{
-		return &m_linesVector[it->second];
+		return m_linesVector[it->second];
 	}
-	else
-	{
-		CreateLine(p_id, { 0, 0 }, { 100, 100 }, { 255, 255, 255, 255 });
-		it = m_lines.find(p_id);
-		return &m_linesVector[it->second];
-	}
+	//else
+	//{
+	//	CreateLine(p_id, { 0, 0 }, { 100, 100 }, { 255, 255, 255, 255 });
+	//	it = m_lines.find(p_id);
+	//	return m_linesVector[it->second];
+	//}
+
+	return nullptr;
 }
 Rectangle* Debug::GetRect(const std::string& p_id)
 {
 	auto it = m_rects.find(p_id);
 	if (it != m_rects.end())
 	{
-		return &m_rectsVector[it->second];
+		return m_rectsVector[it->second];
 	}
-	else
-	{
-		CreateRect(p_id, { 0, 0 }, { 100, 100 }, { 255, 255, 255, 255 });
-		it = m_rects.find(p_id);
-		return &m_rectsVector[it->second];
-	}
+	//else
+	//{
+	//	CreateRect(p_id, { 0, 0 }, { 100, 100 }, { 255, 255, 255, 255 });
+	//	it = m_rects.find(p_id);
+	//	return m_rectsVector[it->second];
+	//}
+
+	return nullptr;
 }
 Rectangle* Debug::GetFillRect(const std::string& p_id)
 {
 	auto it = m_fillRects.find(p_id);
 	if (it != m_fillRects.end())
 	{
-		return &m_fillRectsVector[it->second];
+		return m_fillRectsVector[it->second];
 	}
-	else
-	{
-		CreateFillRect(p_id, { 0, 0 }, { 100, 100 }, { 255, 255, 255, 255 });
-		it = m_fillRects.find(p_id);
-		return &m_fillRectsVector[it->second];
-	}
+	//else
+	//{
+	//	CreateFillRect(p_id, { 0, 0 }, { 100, 100 }, { 255, 255, 255, 255 });
+	//	it = m_fillRects.find(p_id);
+	//	return m_fillRectsVector[it->second];
+	//}
+
+	return nullptr;
 }
 Circle* Debug::GetCircle(const std::string& p_id)
 {
 	auto it = m_circles.find(p_id);
 	if (it != m_circles.end())
 	{
-		return &m_circlesVector[it->second];
+		return m_circlesVector[it->second];
 	}
-	else
-	{
-		CreateCircle(p_id, { 0, 0 }, {50, 50}, {255, 255, 255, 255});
-		it = m_circles.find(p_id);
-		return &m_circlesVector[it->second];
-	}
+	//else
+	//{
+	//	CreateCircle(p_id, { 0, 0 }, {50, 50}, {255, 255, 255, 255});
+	//	it = m_circles.find(p_id);
+	//	return m_circlesVector[it->second];
+	//}
+
+	return nullptr;
 }
 Circle* Debug::GetFillCircle(const std::string& p_id)
 {
 	auto it = m_fillCircles.find(p_id);
 	if (it != m_fillCircles.end())
 	{
-		return &m_fillCirclesVector[it->second];
+		return m_fillCirclesVector[it->second];
 	}
-	else
-	{
-		CreateFillCircle(p_id, { 0, 0 }, {50, 50}, { 255, 255, 255, 255 });
-		it = m_fillCircles.find(p_id);
-		return &m_fillCirclesVector[it->second];
-	}
+	//else
+	//{
+	//	CreateFillCircle(p_id, { 0, 0 }, {50, 50}, { 255, 255, 255, 255 });
+	//	it = m_fillCircles.find(p_id);
+	//	return m_fillCirclesVector[it->second];
+	//}
+
+	return nullptr;
 }
 Text* Debug::GetText(const std::string& p_id)
 {
@@ -563,20 +630,22 @@ Text* Debug::GetText(const std::string& p_id)
 	{
 		return m_textsVector[it->second];
 	}
-	else
-	{
-		CreateText(p_id, { 0, 0 }, p_id, { 255, 255, 255, 255 });
-		it = m_texts.find(p_id);
-		return m_textsVector[it->second];
-	}
+	//else
+	//{
+	//	CreateText(p_id, { 0, 0 }, p_id, { 255, 255, 255, 255 });
+	//	it = m_texts.find(p_id);
+	//	return m_textsVector[it->second];
+	//}
+
+	return nullptr;
 }
 
-std::vector<Point> Debug::GetAllAutoPoints() const
+std::vector<Point*> Debug::GetAllAutoPoints() const
 {
 	m_autoPointsCache.clear();
-	for (const Point& point : m_pointsVector)
+	for (Point* point : m_pointsVector)
 	{
-		if (point.GetId().find("point_auto_") != std::string::npos)
+		if (point->GetId().find("point_auto_") != std::string::npos)
 		{
 			m_autoPointsCache.push_back(point);
 		}
@@ -584,12 +653,12 @@ std::vector<Point> Debug::GetAllAutoPoints() const
 	return m_autoPointsCache;
 }
 
-std::vector<Line> Debug::GetAllAutoLines() const
+std::vector<Line*> Debug::GetAllAutoLines() const
 {
 	m_autoLinesCache.clear();
-	for (const Line& line : m_linesVector)
+	for (Line* line : m_linesVector)
 	{
-		if (line.GetId().find("line_auto_") != std::string::npos)
+		if (line->GetId().find("line_auto_") != std::string::npos)
 		{
 			m_autoLinesCache.push_back(line);
 		}
@@ -597,12 +666,12 @@ std::vector<Line> Debug::GetAllAutoLines() const
 	return m_autoLinesCache;
 }
 
-std::vector<Rectangle> Debug::GetAllAutoRects() const
+std::vector<Rectangle*> Debug::GetAllAutoRects() const
 {
 	m_autoRectsCache.clear();
-	for (const Rectangle& rect : m_rectsVector)
+	for (Rectangle* rect : m_rectsVector)
 	{
-		if (rect.GetId().find("rect_auto_") != std::string::npos)
+		if (rect->GetId().find("rect_auto_") != std::string::npos)
 		{
 			m_autoRectsCache.push_back(rect);
 		}
@@ -610,12 +679,12 @@ std::vector<Rectangle> Debug::GetAllAutoRects() const
 	return m_autoRectsCache;
 }
 
-std::vector<Rectangle> Debug::GetAllAutoFillRects() const
+std::vector<Rectangle*> Debug::GetAllAutoFillRects() const
 {
 	m_autoFillRectsCache.clear();
-	for (const Rectangle& rect : m_fillRectsVector)
+	for (Rectangle* rect : m_fillRectsVector)
 	{
-		if (rect.GetId().find("fillrect_auto_") != std::string::npos)
+		if (rect->GetId().find("fillrect_auto_") != std::string::npos)
 		{
 			m_autoFillRectsCache.push_back(rect);
 		}
@@ -623,12 +692,12 @@ std::vector<Rectangle> Debug::GetAllAutoFillRects() const
 	return m_autoFillRectsCache;
 }
 
-std::vector<Circle> Debug::GetAllAutoCircles() const
+std::vector<Circle*> Debug::GetAllAutoCircles() const
 {
 	m_autoCirclesCache.clear();
-	for (const Circle& circle : m_circlesVector)
+	for (Circle* circle : m_circlesVector)
 	{
-		if (circle.GetId().find("circle_auto_") != std::string::npos)
+		if (circle->GetId().find("circle_auto_") != std::string::npos)
 		{
 			m_autoCirclesCache.push_back(circle);
 		}
@@ -636,12 +705,12 @@ std::vector<Circle> Debug::GetAllAutoCircles() const
 	return m_autoCirclesCache;
 }
 
-std::vector<Circle> Debug::GetAllAutoFillCircles() const
+std::vector<Circle*> Debug::GetAllAutoFillCircles() const
 {
 	m_autoFillCirclesCache.clear();
-	for (const Circle& circle : m_fillCirclesVector)
+	for (Circle* circle : m_fillCirclesVector)
 	{
-		if (circle.GetId().find("fillcircle_auto_") != std::string::npos)
+		if (circle->GetId().find("fillcircle_auto_") != std::string::npos)
 		{
 			m_autoFillCirclesCache.push_back(circle);
 		}
@@ -662,44 +731,39 @@ std::vector<Text*>& Debug::GetAllAutoTexts() const
 	return m_autoTextsCache;
 }
 
-std::vector<Point>& Debug::GetAllPoints()
+std::vector<Point*>& Debug::GetAllPoints()
 {
 	return m_pointsVector;
 }
 
-std::vector<Line>& Debug::GetAllLines()
+std::vector<Line*>& Debug::GetAllLines()
 {
 	return m_linesVector;
 }
 
-std::vector<Rectangle>& Debug::GetAllRects()
+std::vector<Rectangle*>& Debug::GetAllRects()
 {
 	return m_rectsVector;
 }
 
-std::vector<Rectangle>& Debug::GetAllFillRects()
+std::vector<Rectangle*>& Debug::GetAllFillRects()
 {
 	return m_fillRectsVector;
 }
 
-std::vector<Circle>& Debug::GetAllCircles()
+std::vector<Circle*>& Debug::GetAllCircles()
 {
 	return m_circlesVector;
 }
 
-std::vector<Circle>& Debug::GetAllFillCircles()
+std::vector<Circle*>& Debug::GetAllFillCircles()
 {
 	return m_fillCirclesVector;
 }
 
 std::vector<Text*>& Debug::GetAllTexts()
 {
-	std::vector<Text*> texts;
-	for (Text* text : m_textsVector)
-	{
-		texts.push_back(text);
-	}
-	return texts;
+	return m_textsVector;
 }
 
 void Debug::Draw(Render* f_render, Window* f_window, Camera* p_camera)
@@ -719,28 +783,28 @@ void Debug::DrawPoint(Render* f_render, Window* f_window, Camera* p_camera)
 	int windowH = f_window->GetWindowSize().GetY();
 	for (auto& point : m_pointsVector)
 	{
-		if (point.GetIsClamp() == true)
+		if (point->GetIsClamp() == true)
 		{
-			Vector2f pointPos = point.GetPosition();
+			Vector2f pointPos = point->GetPosition();
 			if (pointPos.GetX() < 0)
 			{
-				point.SetPosition({ static_cast<float>(0 + m_margin), point.GetPosition().GetY() }, { 0, 0.5f });
+				point->SetPosition({ static_cast<float>(0 + m_margin), point->GetPosition().GetY() }, { 0, 0.5f });
 			}
 			else if (pointPos.GetX() > windowW)
 			{
-				point.SetPosition({ static_cast<float>(windowW - m_margin), point.GetPosition().GetY() }, { 1, 0.5f });
+				point->SetPosition({ static_cast<float>(windowW - m_margin), point->GetPosition().GetY() }, { 1, 0.5f });
 			}
 
 			if (pointPos.GetY() < 0)
 			{
-				point.SetPosition({ point.GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+				point->SetPosition({ point->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
 			}
 			else if (pointPos.GetY() > windowH)
 			{
-				point.SetPosition({ point.GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+				point->SetPosition({ point->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
 			}
 		}
-		point.Draw(f_render, f_window, p_camera);
+		point->Draw(f_render, f_window, p_camera);
 	}
 }
 
@@ -750,47 +814,47 @@ void Debug::DrawLine(Render* f_render, Window* f_window, Camera* p_camera)
 	int windowH = f_window->GetWindowSize().GetY();
 	for (auto& line : m_linesVector)
 	{
-		if (line.GetIsClamp() == true)
+		if (line->GetIsClamp() == true)
 		{
-			Vector2f lineStartPos = line.GetPosition();
-			Vector2f lineEndPos = line.GetEndPosition();
+			Vector2f lineStartPos = line->GetPosition();
+			Vector2f lineEndPos = line->GetEndPosition();
 			if (lineStartPos.GetX() < 0)
 			{
-				line.SetPosition({ static_cast<float>(0 + m_margin), line.GetPosition().GetY() }, { 0, 0.5f });
+				line->SetPosition({ static_cast<float>(0 + m_margin), line->GetPosition().GetY() }, { 0, 0.5f });
 			}
 			else if (lineStartPos.GetX() > windowW)
 			{
-				line.SetPosition({ static_cast<float>(windowW - m_margin), line.GetPosition().GetY() }, { 1, 0.5f });
+				line->SetPosition({ static_cast<float>(windowW - m_margin), line->GetPosition().GetY() }, { 1, 0.5f });
 			}
 
 			if (lineStartPos.GetY() < 0)
 			{
-				line.SetPosition({ line.GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+				line->SetPosition({ line->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
 			}
 			else if (lineStartPos.GetY() > windowH)
 			{
-				line.SetPosition({ line.GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+				line->SetPosition({ line->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
 			}
 
 			if (lineEndPos.GetX() < 0)
 			{
-				line.SetEndPosition({ static_cast<float>(0 + m_margin), line.GetEndPosition().GetY() }, { 0, 0.5f });
+				line->SetEndPosition({ static_cast<float>(0 + m_margin), line->GetEndPosition().GetY() }, { 0, 0.5f });
 			}
 			else if (lineEndPos.GetX() > windowW)
 			{
-				line.SetEndPosition({ static_cast<float>(windowW - m_margin), line.GetEndPosition().GetY() }, { 1, 0.5f });
+				line->SetEndPosition({ static_cast<float>(windowW - m_margin), line->GetEndPosition().GetY() }, { 1, 0.5f });
 			}
 
 			if (lineEndPos.GetY() < 0)
 			{
-				line.SetEndPosition({ line.GetEndPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+				line->SetEndPosition({ line->GetEndPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
 			}
 			else if (lineEndPos.GetY() > windowH)
 			{
-				line.SetEndPosition({ line.GetEndPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+				line->SetEndPosition({ line->GetEndPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
 			}
 		}
-		line.Draw(f_render, f_window, p_camera);
+		line->Draw(f_render, f_window, p_camera);
 	}
 }
 
@@ -800,29 +864,29 @@ void Debug::DrawRect(Render* f_render, Window* f_window, Camera* p_camera)
 	int windowH = f_window->GetWindowSize().GetY();
 	for (auto& rectangle : m_rectsVector)
 	{
-		if (rectangle.GetIsClamp() == true)
+		if (rectangle->GetIsClamp() == true)
 		{
-			int width = rectangle.GetDimension().GetX();
-			int height = rectangle.GetDimension().GetY();
+			int width = rectangle->GetDimension().GetX();
+			int height = rectangle->GetDimension().GetY();
 
-			if (rectangle.GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+			if (rectangle->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
 			{
-				rectangle.SetPosition({ static_cast<float>(0 + m_margin), rectangle.GetPosition().GetY() }, { 0, 0.5f });
+				rectangle->SetPosition({ static_cast<float>(0 + m_margin), rectangle->GetPosition().GetY() }, { 0, 0.5f });
 			}
-			else if (rectangle.GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+			else if (rectangle->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
 			{
-				rectangle.SetPosition({ static_cast<float>(windowW - m_margin), rectangle.GetPosition().GetY() }, { 1, 0.5f });
+				rectangle->SetPosition({ static_cast<float>(windowW - m_margin), rectangle->GetPosition().GetY() }, { 1, 0.5f });
 			}
-			if (rectangle.GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+			if (rectangle->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
 			{
-				rectangle.SetPosition({ rectangle.GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+				rectangle->SetPosition({ rectangle->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
 			}
-			else if (rectangle.GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+			else if (rectangle->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
 			{
-				rectangle.SetPosition({ rectangle.GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+				rectangle->SetPosition({ rectangle->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
 			}
 		}
-		rectangle.Draw(f_render, f_window, p_camera);
+		rectangle->Draw(f_render, f_window, p_camera);
 	}
 }
 
@@ -832,29 +896,29 @@ void Debug::DrawFillRect(Render* f_render, Window* f_window, Camera* p_camera)
 	int windowH = f_window->GetWindowSize().GetY();
 	for (auto& rectangle : m_fillRectsVector)
 	{
-		if (rectangle.GetIsClamp() == true)
+		if (rectangle->GetIsClamp() == true)
 		{
-			int width = rectangle.GetDimension().GetX();
-			int height = rectangle.GetDimension().GetY();
+			int width = rectangle->GetDimension().GetX();
+			int height = rectangle->GetDimension().GetY();
 
-			if (rectangle.GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+			if (rectangle->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
 			{
-				rectangle.SetPosition({ static_cast<float>(0 + m_margin), rectangle.GetPosition().GetY() }, { 0, 0.5f });
+				rectangle->SetPosition({ static_cast<float>(0 + m_margin), rectangle->GetPosition().GetY() }, { 0, 0.5f });
 			}
-			else if (rectangle.GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+			else if (rectangle->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
 			{
-				rectangle.SetPosition({ static_cast<float>(windowW - m_margin), rectangle.GetPosition().GetY() }, { 1, 0.5f });
+				rectangle->SetPosition({ static_cast<float>(windowW - m_margin), rectangle->GetPosition().GetY() }, { 1, 0.5f });
 			}
-			if (rectangle.GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+			if (rectangle->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
 			{
-				rectangle.SetPosition({ rectangle.GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+				rectangle->SetPosition({ rectangle->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
 			}
-			else if (rectangle.GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+			else if (rectangle->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
 			{
-				rectangle.SetPosition({ rectangle.GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+				rectangle->SetPosition({ rectangle->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
 			}
 		}
-		rectangle.Draw(f_render, f_window, p_camera);
+		rectangle->Draw(f_render, f_window, p_camera);
 	}
 }
 
@@ -864,28 +928,28 @@ void Debug::DrawCircle(Render* f_render, Window* f_window, Camera* p_camera)
 	int windowH = f_window->GetWindowSize().GetY();
 	for (auto& circle : m_circlesVector)
 	{
-		int width = circle.GetDimension().GetX();
-		int height = circle.GetDimension().GetY();
-		if (circle.GetIsClamp() == true)
+		int width = circle->GetDimension().GetX();
+		int height = circle->GetDimension().GetY();
+		if (circle->GetIsClamp() == true)
 		{
-			if (circle.GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+			if (circle->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
 			{
-				circle.SetPosition({ static_cast<float>(0 + m_margin), circle.GetPosition().GetY() }, { 0, 0.5f });
+				circle->SetPosition({ static_cast<float>(0 + m_margin), circle->GetPosition().GetY() }, { 0, 0.5f });
 			}
-			else if (circle.GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+			else if (circle->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
 			{
-				circle.SetPosition({ static_cast<float>(windowW - m_margin), circle.GetPosition().GetY() }, { 1, 0.5f });
+				circle->SetPosition({ static_cast<float>(windowW - m_margin), circle->GetPosition().GetY() }, { 1, 0.5f });
 			}
-			if (circle.GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+			if (circle->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
 			{
-				circle.SetPosition({ circle.GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+				circle->SetPosition({ circle->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
 			}
-			else if (circle.GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+			else if (circle->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
 			{
-				circle.SetPosition({ circle.GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+				circle->SetPosition({ circle->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
 			}
 		}
-		circle.Draw(f_render, f_window, p_camera);
+		circle->Draw(f_render, f_window, p_camera);
 	}
 }
 
@@ -895,28 +959,28 @@ void Debug::DrawFillCircle(Render* f_render, Window* f_window, Camera* p_camera)
 	int windowH = f_window->GetWindowSize().GetY();
 	for (auto& circle : m_fillCirclesVector)
 	{
-		int width = circle.GetDimension().GetX();
-		int height = circle.GetDimension().GetY();
-		if (circle.GetIsClamp() == true)
+		int width = circle->GetDimension().GetX();
+		int height = circle->GetDimension().GetY();
+		if (circle->GetIsClamp() == true)
 		{
-			if (circle.GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+			if (circle->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
 			{
-				circle.SetPosition({ static_cast<float>(0 + m_margin), circle.GetPosition().GetY() }, { 0, 0.5f });
+				circle->SetPosition({ static_cast<float>(0 + m_margin), circle->GetPosition().GetY() }, { 0, 0.5f });
 			}
-			else if (circle.GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+			else if (circle->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
 			{
-				circle.SetPosition({ static_cast<float>(windowW - m_margin), circle.GetPosition().GetY() }, { 1, 0.5f });
+				circle->SetPosition({ static_cast<float>(windowW - m_margin), circle->GetPosition().GetY() }, { 1, 0.5f });
 			}
-			if (circle.GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+			if (circle->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
 			{
-				circle.SetPosition({ circle.GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+				circle->SetPosition({ circle->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
 			}
-			else if (circle.GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+			else if (circle->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
 			{
-				circle.SetPosition({ circle.GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+				circle->SetPosition({ circle->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
 			}
 		}
-		circle.Draw(f_render, f_window, p_camera);
+		circle->Draw(f_render, f_window, p_camera);
 	}
 }
 

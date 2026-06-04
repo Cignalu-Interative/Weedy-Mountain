@@ -22,6 +22,20 @@
 
 class Render;
 class Window;
+
+enum class Type
+{
+	Point,
+	Line,
+	Rect,
+	FillRect,
+	Circle,
+	FillCircle,
+	Text,
+
+	COUNT
+};
+
 class Debug : public Drawable//, public Transformable
 {
 private:
@@ -38,12 +52,12 @@ private:
 	std::unordered_map<std::string, size_t> m_fillCircles; // Map pour stocker les cercles remplis à dessiner, indexés par un identifiant unique
 	std::unordered_map<std::string, size_t> m_texts; // Map pour stocker les textes à dessiner, indexés par un identifiant unique
 
-	std::vector<Point> m_pointsVector; // Vector pour stocker les points à dessiner, utilisé pour itérer plus rapidement lors du dessin	
-	std::vector<Line> m_linesVector; // Vector pour stocker les lignes à dessiner, utilisé pour itérer plus rapidement lors du dessin
-	std::vector<Rectangle> m_rectsVector; // Vector pour stocker les rectangles à dessiner, utilisé pour itérer plus rapidement lors du dessin
-	std::vector<Rectangle> m_fillRectsVector; // Vector pour stocker les rectangles remplis à dessiner, utilisé pour itérer plus rapidement lors du dessin
-	std::vector<Circle> m_circlesVector; // Vector pour stocker les cercles à dessiner, utilisé pour itérer plus rapidement lors du dessin
-	std::vector<Circle> m_fillCirclesVector; // Vector pour stocker les cercles remplis à dessiner, utilisé pour itérer plus rapidement lors du dessin
+	std::vector<Point*> m_pointsVector; // Vector pour stocker les points à dessiner, utilisé pour itérer plus rapidement lors du dessin	
+	std::vector<Line*> m_linesVector; // Vector pour stocker les lignes à dessiner, utilisé pour itérer plus rapidement lors du dessin
+	std::vector<Rectangle*> m_rectsVector; // Vector pour stocker les rectangles à dessiner, utilisé pour itérer plus rapidement lors du dessin
+	std::vector<Rectangle*> m_fillRectsVector; // Vector pour stocker les rectangles remplis à dessiner, utilisé pour itérer plus rapidement lors du dessin
+	std::vector<Circle*> m_circlesVector; // Vector pour stocker les cercles à dessiner, utilisé pour itérer plus rapidement lors du dessin
+	std::vector<Circle*> m_fillCirclesVector; // Vector pour stocker les cercles remplis à dessiner, utilisé pour itérer plus rapidement lors du dessin
 	std::vector<Text*> m_textsVector; // Vector pour stocker les textes à dessiner, utilisé pour itérer plus rapidement lors du dessin
 
 	size_t m_pointCount = 0; // Compteur pour générer des identifiants uniques pour les points
@@ -56,12 +70,12 @@ private:
 
 	// mutable permet de modifier les éléments de debug même dans les fonctions const,
 	// ce qui est utile pour les fonctions Get qui retournent des pointeurs vers les éléments de debug
-	mutable std::vector<Point> m_autoPointsCache;
-	mutable std::vector<Line> m_autoLinesCache; 
-	mutable std::vector<Rectangle> m_autoRectsCache;
-	mutable std::vector<Rectangle> m_autoFillRectsCache;
-	mutable std::vector<Circle> m_autoCirclesCache;
-	mutable std::vector<Circle> m_autoFillCirclesCache;
+	mutable std::vector<Point*> m_autoPointsCache;
+	mutable std::vector<Line*> m_autoLinesCache; 
+	mutable std::vector<Rectangle*> m_autoRectsCache;
+	mutable std::vector<Rectangle*> m_autoFillRectsCache;
+	mutable std::vector<Circle*> m_autoCirclesCache;
+	mutable std::vector<Circle*> m_autoFillCirclesCache;
 	mutable std::vector<Text*> m_autoTextsCache;
 
 public:
@@ -87,20 +101,20 @@ public:
 	// Peut prendre un identifiant unique en paramètre, sinon il sera généré automatiquement
 	// Ne pas appeller cette fonction sans id dans une boucle, sinon elle va créer un nouvel élément à chaque frame
 	// Si il ya un id au deusieme appel, alors l'élément sera mis à jour avec les nouvelles valeurs
-	void CreatePoint(std::string p_id, Vector2f p_position, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	Point* CreatePoint(std::string p_id, Vector2f p_position, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 	// Fonction pour créer une ligne à dessiner
-	void CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	Line* CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 	// Fonction pour créer un rectangle à dessiner
-	void CreateRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	Rectangle* CreateRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 	// Fonction pour créer un rectangle rempli à dessiner
-	void CreateFillRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	Rectangle* CreateFillRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 	// Fonction pour créer un cercle à dessiner
-	void CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	Circle* CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 	// Fonction pour créer un cercle rempli à dessiner
-	void CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	Circle* CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 	// Fonction pour créer un texte à dessiner
 	//faire un create qui renvoie une addresse de text pour l'update
-	void CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
+	Text* CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 
 	// Fonctions pour détruire un point de debug grace à son identifiant unique
 	void destroyPoint(const std::string& p_id);
@@ -116,6 +130,8 @@ public:
 	void destroyFillCircle(const std::string& p_id);
 	// Fonction pour détruire un texte de debug grace à son identifiant unique
 	void destroyText(const std::string& p_id);
+
+	void Destroy(const std::string& p_id);
 
 	// Fonctions pour effacer tous les points de debug
 	void ClearPoints();
@@ -149,20 +165,56 @@ public:
 	// Fonction pour obtenir un texte de debug grace à son identifiant unique
 	Text* GetText(const std::string& p_id);
 
-	std::vector<Point> GetAllAutoPoints() const;
-	std::vector<Line> GetAllAutoLines() const;
-	std::vector<Rectangle> GetAllAutoRects() const;
-	std::vector<Rectangle> GetAllAutoFillRects() const;
-	std::vector<Circle> GetAllAutoCircles() const;
-	std::vector<Circle> GetAllAutoFillCircles() const;
+	template<typename T>
+	T* GetGeometry(const std::string& p_id)
+	{
+		T* geometry = nullptr;
+
+		geometry = GetPoint(p_id);
+		if (geometry)
+			return geometry;
+
+		geometry = GetLine(p_id);
+		if (geometry)
+			return geometry;
+
+		geometry = GetRect(p_id);
+		if (geometry)
+			return geometry;
+
+		geometry = GetFillRect(p_id);
+		if (geometry)
+			return geometry;
+
+		geometry = GetCircle(p_id);
+		if (geometry)
+			return geometry;
+
+		geometry = GetFillCircle(p_id);
+		if (geometry)
+			return geometry;
+
+		geometry = GetText(p_id);
+		if (geometry)
+			return geometry;
+
+		return nullptr;
+	}
+
+	std::vector<Point*> GetAllAutoPoints() const;
+	std::vector<Line*> GetAllAutoLines() const;
+	std::vector<Rectangle*> GetAllAutoRects() const;
+	std::vector<Rectangle*> GetAllAutoFillRects() const;
+	std::vector<Circle*> GetAllAutoCircles() const;
+	std::vector<Circle*> GetAllAutoFillCircles() const;
 	std::vector<Text*>& GetAllAutoTexts() const;
 
-	std::vector<Point>& GetAllPoints();
-	std::vector<Line>& GetAllLines();
-	std::vector<Rectangle>& GetAllRects();
-	std::vector<Rectangle>& GetAllFillRects();
-	std::vector<Circle>& GetAllCircles();
-	std::vector<Circle>& GetAllFillCircles();
+	std::vector<Point*>& GetAllPoints();
+	std::vector<Line*>& GetAllLines();
+	std::vector<Rectangle*>& GetAllRects();
+	std::vector<Rectangle*>& GetAllFillRects();
+	std::vector<Circle*>& GetAllCircles();
+	std::vector<Circle*>& GetAllFillCircles();
 	std::vector<Text*>& GetAllTexts();
 
 	// Fonction pour dessiner les éléments de debug à l'écran

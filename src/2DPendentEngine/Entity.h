@@ -11,12 +11,14 @@
 class Render;
 class Window;
 class Scene;
+class SpriteContainer;
+
 class Entity : public Transformable
 {
 protected:
 
-	Sprite* m_sprite = nullptr; //Sprite de l'entité
-	std::vector<Collider*> m_colliders; //Collider de l'entité
+	std::vector<SpriteContainer*> m_sprites; //Sprites de l'entité
+	std::vector<Collider*> m_colliders; //Colliders de l'entité
 	PhysicsBody* m_physicsBody = nullptr; //Composant physique de l'entité
 
 	Scene* m_scene = nullptr; //Pointeur vers la scène à laquelle l'entité appartient
@@ -119,8 +121,20 @@ public:
 	// Sync tous les colliders de l'entity
 	void SyncColliders();
 
-	//Obtenir le sprite de l'entité
-	Sprite* GetSprite() { return m_sprite; }
+	//Ajouter un sprite à l'entité
+	SpriteContainer* AddSprite(const std::string& p_id, const std::string& p_texturePath, Vector2i p_dimension, int p_zOrder = 0, Vector2f p_offset = { 0.f,0.f }, bool p_isGUI = false);
+	//Supprimer le sprite de l'entité avec son ID
+	void RemoveSprite(const std::string& p_id);
+
+	SpriteContainer* GetSpriteContainer(const std::string& p_id) const;
+	SpriteContainer* GetSpriteContainer() const; // retourne le "default"
+	Sprite* GetSprite(const std::string& p_id) const;
+	Sprite* GetSprite() const; // retourne le sprite "default"
+
+	void SetSpriteVisible(const std::string& p_id, bool p_visible);
+	void SetAllSpritesVisible(bool p_visible);
+
+	void SyncSprites();
 
 	//Définir si l'entité est un corps rigide
 	void SetRigidBody(bool p_rigidBody) { m_rigidBody = p_rigidBody; }

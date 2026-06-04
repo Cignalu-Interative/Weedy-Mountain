@@ -6,6 +6,7 @@ enum class Rarity
 	Wooden,
 	Stone,
 	Iron,
+	Gold,
 	Diamond,
 
 	Count

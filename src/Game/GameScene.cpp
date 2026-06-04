@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GameScene.h"
 #include "EnviroProps.h"
+#include "EnviroSpawn.h"
 #include "2DPendentLib/InputManager.h"
 #include "2DPendentLib/Utils.h"
 #include "2DPendentLib/AssetManager.h"
@@ -10,20 +11,21 @@
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
 
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 
-	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {32,64}, "Player", Shape::Rectangle);
+	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "Player", Shape::Rectangle);
 	m_Player->SetTag(1);
-	m_Player->AddCollider("interact", { 160,160 }, Shape::Circle, { 0,0 }, true);
+	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_Player->ShowCollider(true);
-	EnviroProps* Tree = CreateButton<EnviroProps>({200,200},{128,160}, "Oak_Tree", "", "", false);
-	Tree->SetOnHoverStay([]() {
-		std::cout << "Hovering on tree" << std::endl;
-		});
-	Tree->SetType(EnviroName::Tree);
+	EnviroProps* Tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
+	Tree->SetType(EnviroSpawnName::Tree);
 	Tree->ShowCollider(true);
+	Tree->GetCollider()->Resize({ 16,16 });
+	Tree->GetCollider()->SetOffset({ 0,28 });
+	GetCamera()->SetZoom(1.75f);
 }
 
 void GameScene::OnEvent()

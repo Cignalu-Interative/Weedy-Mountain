@@ -2,7 +2,6 @@
 #include "EnviroProps.h"
 #include "Collision.h"
 #include "Player.h"
-
 #include "User.h"
 
 void EnviroProps::OnInitialize()
@@ -16,7 +15,7 @@ void EnviroProps::OnEvent()
 
 void EnviroProps::OnUpdate()
 {
-	Button::OnUpdate();
+
 }
 
 void EnviroProps::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
@@ -30,57 +29,39 @@ void EnviroProps::OnDestroy()
 {
 }
 
-void EnviroProps::SetType(EnviroName p_name)
+void EnviroProps::SetType(EnviroSpawnName p_name)
 {
-	m_Name = p_name;
 
-	switch (m_Name) {
-	case EnviroName::Tree:
-		m_Stats.m_MinSpawn = 1;
-		m_Stats.m_MaxSpawn = 3;
+	switch (p_name) {
+	case EnviroSpawnName::Tree:
+		m_Name = EnviroName::Tree;
 		m_Stats.m_HitToDestroy = 4;
 		m_Stats.m_MinToolsRarity = Rarity::Stone;
 		m_Stats.m_ToolType = { ToolType::Axe };
 		break;
-	case EnviroName::Shrub:
-		m_Stats.m_MinSpawn = 2;
-		m_Stats.m_MaxSpawn = 4;
+	case EnviroSpawnName::Shrub:
+		m_Name = EnviroName::Shrub;
 		m_Stats.m_HitToDestroy = 2;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Axe };
 		break;
-	case EnviroName::Grass:
-		m_Stats.m_MinSpawn = 3;
-		m_Stats.m_MaxSpawn = 5;
+	case EnviroSpawnName::Grass:
+		m_Name = EnviroName::Grass;
 		m_Stats.m_HitToDestroy = 1;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Hoe, ToolType::Spade};
 		break;
-	case EnviroName::Rock:
-		m_Stats.m_MinSpawn = 0;
-		m_Stats.m_MaxSpawn = 0;
+	case EnviroSpawnName::Rock:
+		m_Name = EnviroName::Rock;
 		m_Stats.m_HitToDestroy = 2;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Pickaxe };
 		break;
-	case EnviroName::Stone:
-		m_Stats.m_MinSpawn = 0;
-		m_Stats.m_MaxSpawn = 0;
+	case EnviroSpawnName::Stone:
+		m_Name = EnviroName::Stone;
 		m_Stats.m_HitToDestroy = 4;
 		m_Stats.m_MinToolsRarity = Rarity::Iron;
 		m_Stats.m_ToolType = { ToolType::Pickaxe };
 		break;
 	}
-
-	SetOnClick([this] {
-		if (m_isInPlayerZone == false)
-			return;
-		
-		m_isInPlayerZone = false;
-		m_Stats.m_HitToDestroy--;
-		if (m_Stats.m_HitToDestroy <= 0) {
-			
-			Destroy();
-		}
-		});
 }

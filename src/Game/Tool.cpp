@@ -24,6 +24,9 @@ void Tool::OnInitialize()
 	case Rarity::Iron : 
 		SetUseTime(1.25);
 		break;
+	case Rarity::Gold : 
+		SetUseTime(1);
+		break;
 	case Rarity::Diamond : 
 		SetUseTime(0.4);
 		break;

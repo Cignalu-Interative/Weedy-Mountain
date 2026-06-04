@@ -32,6 +32,7 @@ void Player::OnEvent()
 	}
 	else SetSpeed(m_Stats.m_PlayerSpeed);
 
+	//Input Clavier
 	if (InputManager::Get()->IsKeyboardHeld(K_z)) {
 		SetDirection({ GetDirection().GetX(), -1.0f });
 	}
@@ -44,6 +45,12 @@ void Player::OnEvent()
 	if (InputManager::Get()->IsKeyboardHeld(K_d)) {
 		SetDirection({ 1.0f, GetDirection().GetY() });
 	}
+
+
+	//input souris
+	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
+		//utilise l'objet selectionner dans l'inventaire (Viviens a l'aide)
+	}
 }
 
 void Player::OnUpdate()
@@ -51,8 +58,6 @@ void Player::OnUpdate()
 	for (int i = 0; i < m_Jobs.size(); i++) {
 		m_Jobs[i]->levelUp();
 	}
-
-	
 }
 
 void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)

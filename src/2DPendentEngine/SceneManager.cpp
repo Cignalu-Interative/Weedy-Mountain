@@ -95,9 +95,17 @@ void SceneManager::PushScene(const std::string& p_id)
 	{
 		return;
 	}
+	auto it = std::find(m_scenesInStackVector.begin(), m_scenesInStackVector.end(), scene);
+	if (it != m_scenesInStackVector.end())
+	{
+		std::rotate(it, it + 1, m_scenesInStackVector.end());
+	}
+	else
+	{
+		m_scenesInStack[p_id] = m_scenesInStackVector.size();
+		m_scenesInStackVector.push_back(scene);
+	}
 
-	m_scenesInStack[p_id] = m_scenesInStackVector.size();
-	m_scenesInStackVector.push_back(scene);
 	if (m_scenesInStackVector.empty() == false)
 	{
 		for (Scene* sceneInStack : m_scenesInStackVector)

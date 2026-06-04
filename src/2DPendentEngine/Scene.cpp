@@ -125,33 +125,31 @@ Camera* Scene::GetCamera() const
 
 void Scene::SetIsVisible(bool p_visible)
 {
-	switch (p_visible)
+	if (p_visible == true)
 	{
-	case true:
-
 		m_isVisible = true;
 
 		for (Entity* entity : m_entities)
 		{
 			entity->SetIsVisible(true);
 		}
-		for (Point point : Debug::Get()->GetAllPoints())
+		for (Point& point : Debug::Get()->GetAllPoints())
 		{
 			point.SetIsVisible(true);
 		}
-		for (Line line : Debug::Get()->GetAllLines())
+		for (Line& line : Debug::Get()->GetAllLines())
 		{
 			line.SetIsVisible(true);
 		}
-		for (Rectangle rect : Debug::Get()->GetAllRects())
+		for (Rectangle& rect : Debug::Get()->GetAllRects())
 		{
 			rect.SetIsVisible(true);
 		}
-		for (Rectangle fillRect : Debug::Get()->GetAllFillRects())
+		for (Rectangle& fillRect : Debug::Get()->GetAllFillRects())
 		{
 			fillRect.SetIsVisible(true);
 		}
-		for (Circle circle : Debug::Get()->GetAllCircles())
+		for (Circle& circle : Debug::Get()->GetAllCircles())
 		{
 			circle.SetIsVisible(true);
 		}
@@ -163,36 +161,35 @@ void Scene::SetIsVisible(bool p_visible)
 		{
 			text->SetIsVisible(true);
 		}
-
-		break;
-	case false:
-
+	}
+	else
+	{
 		m_isVisible = false;
 		for (Entity* entity : m_entities)
 		{
 			entity->SetIsVisible(false);
 		}
-		for (Point point : Debug::Get()->GetAllPoints())
+		for (Point& point : Debug::Get()->GetAllPoints())
 		{
 			point.SetIsVisible(false);
 		}
-		for (Line line : Debug::Get()->GetAllLines())
+		for (Line& line : Debug::Get()->GetAllLines())
 		{
 			line.SetIsVisible(false);
 		}
-		for (Rectangle rect : Debug::Get()->GetAllRects())
+		for (Rectangle& rect : Debug::Get()->GetAllRects())
 		{
 			rect.SetIsVisible(false);
 		}
-		for (Rectangle fillRect : Debug::Get()->GetAllFillRects())
+		for (Rectangle& fillRect : Debug::Get()->GetAllFillRects())
 		{
 			fillRect.SetIsVisible(false);
 		}
-		for (Circle circle : Debug::Get()->GetAllCircles())
+		for (Circle& circle : Debug::Get()->GetAllCircles())
 		{
 			circle.SetIsVisible(false);
 		}
-		for (Circle fillCircle : Debug::Get()->GetAllFillCircles())
+		for (Circle& fillCircle : Debug::Get()->GetAllFillCircles())
 		{
 			fillCircle.SetIsVisible(false);
 		}
@@ -200,8 +197,6 @@ void Scene::SetIsVisible(bool p_visible)
 		{
 			text->SetIsVisible(false);
 		}
-
-		break;
 	}
 }
 

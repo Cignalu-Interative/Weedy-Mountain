@@ -584,6 +584,7 @@ void DemoScene::OnSleep()
 
 void DemoScene::OnWake()
 {
+	SetIsVisible(true);
 	SetSleepEvent(false);
 	SetSleepUpdate(false);
 }
@@ -609,6 +610,7 @@ void DemoScene::OnDestroy()
 		lastEntitySelected = nullptr;
 	}
 	debug.ClearAll();
+	GetEntities().clear();
 }
 
 void DemoScene::TestVélocité()

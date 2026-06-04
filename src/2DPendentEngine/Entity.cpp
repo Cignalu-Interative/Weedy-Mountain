@@ -395,6 +395,8 @@ void Entity::Move(Vector2f p_translation)
 void Entity::SetIsVisible(bool p_isVisible)
 {
 	m_isVisible = p_isVisible;
+	if (m_collider)
+		m_collider->SetShow(p_isVisible);
 	if (m_sprite)
 		m_sprite->SetIsVisible(p_isVisible);
 }

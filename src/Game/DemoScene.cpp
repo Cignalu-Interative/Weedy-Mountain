@@ -534,6 +534,12 @@ void DemoScene::OnEvent()
 	{
 		entitySelected = nullptr;
 	}
+
+	if (input.IsKeyboardDown(K_TAB))
+	{
+		//SceneManager::Get()->ClearScenesInStack();
+		SceneManager::Get()->PushScene("test");
+	}
 }
 
 void DemoScene::OnUpdate()
@@ -571,12 +577,15 @@ void DemoScene::OnUpdate()
 
 void DemoScene::OnSleep()
 {
-
+	SetIsVisible(false);
+	SetSleepEvent(true);
+	SetSleepUpdate(true);
 }
 
 void DemoScene::OnWake()
 {
-
+	SetSleepEvent(false);
+	SetSleepUpdate(false);
 }
 
 void DemoScene::OnDestroy()

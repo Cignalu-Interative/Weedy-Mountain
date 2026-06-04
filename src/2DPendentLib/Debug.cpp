@@ -662,6 +662,46 @@ std::vector<Text*>& Debug::GetAllAutoTexts() const
 	return m_autoTextsCache;
 }
 
+std::vector<Point>& Debug::GetAllPoints()
+{
+	return m_pointsVector;
+}
+
+std::vector<Line>& Debug::GetAllLines()
+{
+	return m_linesVector;
+}
+
+std::vector<Rectangle>& Debug::GetAllRects()
+{
+	return m_rectsVector;
+}
+
+std::vector<Rectangle>& Debug::GetAllFillRects()
+{
+	return m_fillRectsVector;
+}
+
+std::vector<Circle>& Debug::GetAllCircles()
+{
+	return m_circlesVector;
+}
+
+std::vector<Circle>& Debug::GetAllFillCircles()
+{
+	return m_fillCirclesVector;
+}
+
+std::vector<Text*>& Debug::GetAllTexts()
+{
+	std::vector<Text*> texts;
+	for (Text* text : m_textsVector)
+	{
+		texts.push_back(text);
+	}
+	return texts;
+}
+
 void Debug::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	DrawPoint(f_render, f_window, p_camera);

@@ -16,7 +16,7 @@ void SceneManager::AddScene(const std::string& p_id)
 	m_scenes[p_id] = m_scenesVector.size();
 	m_scenesVector.push_back(scene);
 
-	if (IsSceneToUpdate() == false)
+	if (IsSceneInStack() == false)
 	{
 		/*m_tempCurrentSceneID = p_id;
 		ChangeCurrentScene();*/

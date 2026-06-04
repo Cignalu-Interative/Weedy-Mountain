@@ -96,70 +96,82 @@ void SceneManager::PushScene(const std::string& p_id)
 		return;
 	}
 
-	m_scenesToUpdate[p_id] = m_scenesToUpdateVector.size();
-	m_scenesToUpdateVector.push_back(scene);
+	m_scenesInStack[p_id] = m_scenesInStackVector.size();
+	m_scenesInStackVector.push_back(scene);
+	if (m_scenesInStackVector.empty() == false)
+	{
+		for (Scene* sceneInStack : m_scenesInStackVector)
+		{
+			if (sceneInStack == scene)
+			{
+				continue;
+			}
+			sceneInStack->Sleep();
+		}
+	}
+	scene->Wake();
 	scene->Initialize();
 }
 
 void SceneManager::PopScene(const std::string& p_id)
 {
-	if (m_scenesToUpdateVector.empty())
+	if (m_scenesInStackVector.empty())
 	{
 		return;
 	}
-	auto it = m_scenesToUpdate.find(p_id);
+	auto it = m_scenesInStack.find(p_id);
 
-	if (it == m_scenesToUpdate.end())
+	if (it == m_scenesInStack.end())
 	{
 		return;
 	}
 
 	size_t indexToDelete = it->second;
-	size_t lastIndex = m_scenesToUpdateVector.size() - 1;
+	size_t lastIndex = m_scenesInStackVector.size() - 1;
 
-	m_scenesToUpdateVector[indexToDelete]->Destroy();
+	m_scenesInStackVector[indexToDelete]->Destroy();
 
 	if (indexToDelete != lastIndex)
 	{
-		std::swap(m_scenesToUpdateVector[indexToDelete], m_scenesToUpdateVector[lastIndex]);
-		m_scenesToUpdate[m_scenesToUpdateVector[indexToDelete]->GetName()] = indexToDelete;
+		std::swap(m_scenesInStackVector[indexToDelete], m_scenesInStackVector[lastIndex]);
+		m_scenesInStack[m_scenesInStackVector[indexToDelete]->GetName()] = indexToDelete;
 	}
-	delete m_scenesToUpdateVector[lastIndex];
-	m_scenesToUpdateVector[lastIndex] = nullptr;
-	m_scenesToUpdateVector.pop_back();
-	m_scenesToUpdate.erase(it);
+	delete m_scenesInStackVector[lastIndex];
+	m_scenesInStackVector[lastIndex] = nullptr;
+	m_scenesInStackVector.pop_back();
+	m_scenesInStack.erase(it);
 }
 
-void SceneManager::ClearScenesToUpdate()
+void SceneManager::ClearScenesInStack()
 {
-	for (auto& scene : m_scenesToUpdateVector)
+	for (auto& scene : m_scenesInStackVector)
 	{
 		scene->Destroy();
-		delete scene;
+		//delete scene;
 	}
-	m_scenesToUpdateVector.clear();
-	m_scenesToUpdate.clear();
+	m_scenesInStackVector.clear();
+	m_scenesInStack.clear();
 }
 
-void SceneManager::EventScenesToUpdate()
+void SceneManager::EventScenesInStack()
 {
-	for (Scene* scene : m_scenesToUpdateVector)
+	for (Scene* scene : m_scenesInStackVector)
 	{
 		scene->Event();
 	}
 }
 
-void SceneManager::UpdateScenesToUpdate()
+void SceneManager::UpdateScenesInStack()
 {
-	for (Scene* scene : m_scenesToUpdateVector)
+	for (Scene* scene : m_scenesInStackVector)
 	{
 		scene->Update();
 	}
 }
 
-bool SceneManager::IsSceneToUpdate() const
+bool SceneManager::IsSceneInStack() const
 {
-	if (m_scenesToUpdateVector.empty())
+	if (m_scenesInStackVector.empty())
 	{
 		return false;
 	}

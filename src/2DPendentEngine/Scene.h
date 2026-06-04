@@ -22,7 +22,8 @@ private:
 
 	std::string m_name; //Nom de la scène, utilisé pour l'identifier dans le SceneManager
 
-	bool m_sleepUpdate = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnUpdate() ne sera pas appelée
+	bool m_isOnStateSleep = false; //Indique si la scène est dans l'état de veille est donc si OnSleep() a été appelé
+	bool m_isOnStateWake = false; //Indique si la scène est dans l'état de réveil est donc si OnWake() a été appelé
 
 	bool m_isVisible = true; //Indique si la scène est visible ou non, si elle n'est pas visible, les entités de la scène ne seront pas dessinées à l'écran
 
@@ -40,6 +41,8 @@ private:
 	void Initialize();
 	void Event();
 	void Update();
+	void Sleep();
+	void Wake();
 	void Destroy();
 
 protected:
@@ -104,6 +107,12 @@ public:
 	void RemoveEntity(Entity* p_entity);
 
 	std::list<Entity*>& GetEntities() { return m_entities; }
+
+	void SetIsOnStateSleep(bool p_isOnStateSleep) { m_isOnStateSleep = p_isOnStateSleep; }
+	bool GetIsOnStateSleep() const { return m_isOnStateSleep; }
+
+	void SetIsOnStateWake(bool p_isOnStateWake) { m_isOnStateWake = p_isOnStateWake; }
+	bool GetIsOnStateWake() const { return m_isOnStateWake; }
 
 	// Setter pour le bool m_sleepEvent, si m_sleepEvent est true, la fonction OnEvent() ne sera pas appelée
 	// pour freeze placer au debut un if = true alors return

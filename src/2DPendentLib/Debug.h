@@ -157,6 +157,14 @@ public:
 	std::vector<Circle> GetAllAutoFillCircles() const;
 	std::vector<Text*>& GetAllAutoTexts() const;
 
+	std::vector<Point>& GetAllPoints();
+	std::vector<Line>& GetAllLines();
+	std::vector<Rectangle>& GetAllRects();
+	std::vector<Rectangle>& GetAllFillRects();
+	std::vector<Circle>& GetAllCircles();
+	std::vector<Circle>& GetAllFillCircles();
+	std::vector<Text*>& GetAllTexts();
+
 	// Fonction pour dessiner les éléments de debug à l'écran
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 

@@ -16,8 +16,8 @@ private:
 
 	//Pointeur vers la scène actuellement active
 	//Scene* m_currentScene = nullptr;
-	std::unordered_map<std::string, size_t> m_scenesToUpdate;
-	std::vector<Scene*> m_scenesToUpdateVector; //Vector pour stocker les scènes actuellement update, utilisé pour itérer plus rapidement lors de la mise à jour des scènes
+	std::unordered_map<std::string, size_t> m_scenesInStack;
+	std::vector<Scene*> m_scenesInStackVector; //Vector pour stocker les scènes actuellement update, utilisé pour itérer plus rapidement lors de la mise à jour des scènes
 
 	//void ChangeCurrentScene();
 
@@ -57,13 +57,13 @@ public:
 
 	void PopScene(const std::string& p_id);
 
-	void ClearScenesToUpdate();
+	void ClearScenesInStack();
 
-	void EventScenesToUpdate();
+	void EventScenesInStack();
 
-	void UpdateScenesToUpdate();
+	void UpdateScenesInStack();
 
-	bool IsSceneToUpdate() const;
+	bool IsSceneInStack() const;
 
 	Scene* GetScene(const std::string& p_id) const;
 

@@ -127,12 +127,12 @@ void Application::HandleInput()
 {
 	InputManager::Get()->Update();
 	
-	if (SceneManager::Get()->IsSceneToUpdate() == false)
+	if (SceneManager::Get()->IsSceneInStack() == false)
 	{
 		return;
 	}
 
-	SceneManager::Get()->EventScenesToUpdate();
+	SceneManager::Get()->EventScenesInStack();
 
 	//SceneManager::Get()->GetCurrentScene()->OnEvent();
 
@@ -160,12 +160,12 @@ void Application::Update()
 	{
 		return;
 	}*/
-	if (SceneManager::Get()->IsSceneToUpdate() == false)
+	if (SceneManager::Get()->IsSceneInStack() == false)
 	{
 		return;
 	}
 	//SceneManager::Get()->UpdateCurrentScene();
-	SceneManager::Get()->UpdateScenesToUpdate();
+	SceneManager::Get()->UpdateScenesInStack();
 	for (auto it = m_entities.begin(); it != m_entities.end(); )
 	{
 		Entity* entity = *it;

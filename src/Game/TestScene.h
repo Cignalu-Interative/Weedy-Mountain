@@ -1,6 +1,7 @@
 #pragma once
 #include "2DPendentEngine/Scene.h"
 
+class Player;
 class TestScene : public Scene
 {
 private:

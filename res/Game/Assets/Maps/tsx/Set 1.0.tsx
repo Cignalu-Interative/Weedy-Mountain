@@ -6,4 +6,17 @@
    <property name="CanGrow" type="bool" value="true"/>
   </properties>
  </tile>
+ <tile id="172" probability="0.5"/>
+ <tile id="173" probability="0.5"/>
+ <tile id="174" probability="0.5"/>
+ <tile id="175" probability="5"/>
+ <tile id="176" probability="0.1"/>
+ <tile id="177" probability="0.1"/>
+ <tile id="190" probability="0.25"/>
+ <tile id="191" probability="0.25"/>
+ <tile id="192" probability="0.25"/>
+ <tile id="193" probability="0.1"/>
+ <tile id="194" probability="0.1"/>
+ <tile id="195" probability="0.1"/>
+ <tile id="196" probability="0.1"/>
 </tileset>

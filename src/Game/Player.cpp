@@ -59,9 +59,7 @@ void Player::OnEvent()
 
 void Player::OnUpdate()
 {
-	for (int i = 0; i < m_Jobs.size(); i++) {
-		m_Jobs[i]->levelUp();
-	}
+	UpdateJobs();
 }
 
 void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)
@@ -74,28 +72,110 @@ void Player::OnDestroy()
 
 }
 
-void Player::GetJobsRewards()
+void Player::UpdateJobs()
 {
 	for (int i = 0; i < m_Jobs.size(); i++) {
-		
+		m_Jobs[i]->levelUp();
 		switch (m_Jobs[i]->m_name)
 		{
 		case JobType::Gatherer:
-			switch (m_Jobs[i]->m_lvl)
-			{
-				case 1
-			}
-			break;
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				//unlockCraft(Bandage L1);
+				break;
+			case 3:
+				//unlockCraft(Energizing remedy L1);
+				break;
+			case 4:
+				GetStats().m_harvestEffiency *= 1.067f;
+				break;
+			case 5:
+				//unlockCraft(Bandage L2);
+				break;
+			case 6:
+				//unlockCraft(Energizing remedy L2);
+				break;
+			}break;
+
 		case JobType::Farmer:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				//unlockCraft(fertilizer L1);
+				break;
+			case 3:
+				//unlockCraft(autoWatering L1);
+				break;
+			case 4:
+				GetStats().m_farmerSpeed *= 1.067f;
+				break;
+			case 5:
+				//unlockCraft(fertilizer L2);
+				break;
+			case 6:
+				//unlockCraft(autoWatering L2);
+				break;
+			}break;
 			break;
-		case JobType::Dealer:
-			break;
+
 		case JobType::Miner:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				//unlockCraft(stone_tools);
+				break;
+			case 3:
+				//unlockCraft(iron_tools);
+				break;
+			case 4:
+				GetStats().m_miningSpeed *= 1.067f;
+				break;
+			case 5:
+				//unlockCraft(gold_tools);
+				break;
+			case 6:
+				//unlockCraft(diamond_tools);
+				break;
+			}break;
+			break;
+
+
+		case JobType::Dealer:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				GetStats().m_drugsSellQuantity += 15;
+				break;
+			case 3:
+				GetStats().m_canBuyWeedSeed = true;
+				break;
+			case 4:
+				GetStats().m_drugSellEfficency *= 1.067f;
+				break;
+			case 5:
+				GetStats().m_drugsSellQuantity += 40;
+				break;
+			case 6:
+				GetStats().m_canBuyCannabis = true;
+				break;
+			}break;
 			break;
 		case JobType::Killer:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				GetStats().m_canBuyKnife = true;
+				break;
+			case 3:
+				GetStats().m_canBuySword = true;
+				break;
+			case 4:
+				GetStats().m_PlayerSpeed *= 1.067f;
+				break;
+			case 5:
+				GetStats().m_canBuyGlock = true;
+				break;
+			case 6:
+				GetStats().m_canBuyRifle = true;
+				break;
+			}break;
 			break;
 		}
-
-
 	}
 }

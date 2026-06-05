@@ -47,7 +47,7 @@ void TestScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_TAB))
 	{
 		//SceneManager::Get()->ClearScenesInStack();
-		SceneManager::Get()->PushScene("demo");
+		SceneManager::Get()->PushScene("Game");
 	}
 }
 

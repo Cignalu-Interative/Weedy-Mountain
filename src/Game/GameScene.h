@@ -16,6 +16,9 @@ protected:
 	
 	void OnDestroy() override;
 
+	virtual void OnSleep()override {};
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de réveil
+	virtual void OnWake() override {};
 public:
 
 

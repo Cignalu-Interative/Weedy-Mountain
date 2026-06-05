@@ -11,6 +11,7 @@ enum class JobType
 	Count
 };
 
+
 struct PlayerJob
 {
 	JobType m_name;
@@ -26,38 +27,9 @@ struct PlayerJob
 		m_expNeeded = 100.f * std::exp(m_lvl * 0.25f);
 	}
 
-	void GetReward() {
-		switch (m_name)
-		{
-		case JobType::Gatherer:
-			switch (m_lvl)
-			{
-			case 2:
-				break;
-			case 3:
-				break;
-			case 4:
-				break;
-			case 5 : 
-				break;
-			case 6 :
-				break;
-
-			}
-			break;
-		case JobType::Farmer:
-
-			break;
-		case JobType::Dealer:
-			break;
-		case JobType::Miner:
-			break;
-		case JobType::Killer:
-			break;
-		}
-	}
 
 };
+
 
 struct PlayerStats {
 	float m_PlayerSpeed = 50.f;
@@ -70,16 +42,30 @@ struct PlayerStats {
 
 	float m_MaxToxicity = 100.f;
 	float m_Toxicity = 0.f;
+
+	float m_harvestEffiency = 1.f;
+	float m_farmerSpeed = 1.f;
+	float m_miningSpeed = 1.f;
+
+	float m_drugsSellQuantity = 0.f;
+	float m_drugSellEfficency = 1.f;
+
+	bool m_canBuyWeedSeed = false;
+	bool m_canBuyCannabis = false;
+
+	bool m_canBuyGlock = false;
+	bool m_canBuyRifle = false;
+	bool m_canBuyKnife = false;
+	bool m_canBuySword = false;
+
 };
 
+class Item;
 class Player : public Entity
 {
 private:
-
 	PlayerStats m_Stats;
-
 	std::vector<PlayerJob*> m_Jobs;
-
 protected:
 
 	//Fonction pour initialiser le joueur, notamment en définissant sa position, sa dimension, son sprite et son collider
@@ -94,12 +80,12 @@ protected:
 	void OnDestroy() override;
 
 public:
-
-
 	std::vector<PlayerJob*>& GetJobs() { return m_Jobs; }
-
 	PlayerStats& GetStats() { return m_Stats; }
 
-	void GetJobsRewards();
+	void UpdateJobs();
+
+
+	void UnlockCraft(Item* p_item);
 };
 

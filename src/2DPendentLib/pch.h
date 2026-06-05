@@ -1,6 +1,9 @@
 #ifndef PCH_H
 #define PCH_H
 
+#define NOMINMAX
+#define WIN32_LEAN_AND_MEAN
+
 // Pour les flux d'entrée/sortie (std::cout, std::cin, etc.)
 #include <iostream>
 // Pour la classe std::vector, qui est une structure de données de conteneur dynamique utilisée pour stocker des éléments de manière séquentielle.

@@ -214,10 +214,10 @@
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/2/Walk.png"
     },
     {
-      "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Player.png"
+      "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc.png"
     },
     {
-      "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Player_Actions.png"
+      "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc_Actions.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/Male1.png"
@@ -13244,6 +13244,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/UI/Menus/freefantasy.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/player.png"
     }
   ]
 }

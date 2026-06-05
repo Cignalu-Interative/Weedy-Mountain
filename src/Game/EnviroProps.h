@@ -38,6 +38,8 @@ protected:
 
 	void OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side) override;
 
+	void OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side) override;
+
 	void OnDestroy() override;
 
 public:

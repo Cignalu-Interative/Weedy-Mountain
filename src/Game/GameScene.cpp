@@ -16,7 +16,9 @@ void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 
-	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "Player", Shape::Rectangle);
+	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
+	m_Player->GetCollider()->SetDimension({ 16,16 });
+	m_Player->GetCollider()->SetOffset({ 0,8 });
 	m_Player->SetTag(1);
 	m_Player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);

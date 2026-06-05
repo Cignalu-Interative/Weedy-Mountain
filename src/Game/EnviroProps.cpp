@@ -12,8 +12,12 @@ void EnviroProps::OnInitialize()
 
 void EnviroProps::OnEvent()
 {
-	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT) && m_isInPlayerZone){
+	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_isInPlayerZone){
+		m_Stats.m_HitToDestroy--;
+	}
 
+	if (m_Stats.m_HitToDestroy <= 0) {
+		Destroy();
 	}
 }
 
@@ -24,8 +28,16 @@ void EnviroProps::OnUpdate()
 
 void EnviroProps::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	if(_other->GetOwner()->GetTag() == 1 && _other->GetID() == "interact") {
+	if(_other->GetOwner()->GetTag() == 1 && _other->GetID() == "actionBox") {
 		m_isInPlayerZone = true;
+	}
+
+}
+
+void EnviroProps::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
+{
+	if (_other->GetOwner()->GetTag() == 1 && _other->GetID() == "actionBox") {
+		m_isInPlayerZone = false;
 	}
 }
 

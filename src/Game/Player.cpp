@@ -35,15 +35,19 @@ void Player::OnEvent()
 	//Input Clavier
 	if (InputManager::Get()->IsKeyboardHeld(K_z)) {
 		SetDirection({ GetDirection().GetX(), -1.0f });
+		GetCollider("actionBox")->SetOffset({ 0, -8 });
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_s)) {
 		SetDirection({ GetDirection().GetX(), 1.0f });
+		GetCollider("actionBox")->SetOffset({ 0, 24 });
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_q)) {
 		SetDirection({ -1.0f, GetDirection().GetY() });
+		GetCollider("actionBox")->SetOffset({ -16, 8 });
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_d)) {
 		SetDirection({ 1.0f, GetDirection().GetY() });
+		GetCollider("actionBox")->SetOffset({ 16, 8 });
 	}
 
 

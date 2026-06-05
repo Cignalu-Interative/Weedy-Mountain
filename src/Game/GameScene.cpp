@@ -18,6 +18,7 @@ void GameScene::OnInitialize()
 
 	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "Player", Shape::Rectangle);
 	m_Player->SetTag(1);
+	m_Player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_Player->ShowCollider(true);
 	EnviroProps* Tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);

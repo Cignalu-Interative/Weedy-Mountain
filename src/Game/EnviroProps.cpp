@@ -12,10 +12,8 @@ void EnviroProps::OnInitialize()
 
 void EnviroProps::OnEvent()
 {
-	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)){
-		if (m_isInPlayerZone) {
+	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT) && m_isInPlayerZone){
 
-		}
 	}
 }
 

@@ -3,6 +3,7 @@
 #include "Collision.h"
 #include "Player.h"
 #include "User.h"
+#include "2DPendentLib/InputManager.h"
 
 void EnviroProps::OnInitialize()
 {
@@ -11,6 +12,11 @@ void EnviroProps::OnInitialize()
 
 void EnviroProps::OnEvent()
 {
+	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)){
+		if (m_isInPlayerZone) {
+
+		}
+	}
 }
 
 void EnviroProps::OnUpdate()

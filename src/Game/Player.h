@@ -1,9 +1,19 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
 
+enum class JobType
+{
+	Gatherer,
+	Farmer,
+	Miner,
+	Killer,
+	Dealer,
+	Count
+};
+
 struct PlayerJob
 {
-	std::string name;
+	JobType m_name;
 	int m_lvl = 1;
 	float m_exp = 0.f;
 	float m_expNeeded = 100.f;
@@ -54,6 +64,9 @@ protected:
 
 public:
 
-	PlayerStats GetStats() { return m_Stats; }
+
+	std::vector<PlayerJob*>& GetJobs() { return m_Jobs; }
+
+	PlayerStats& GetStats() { return m_Stats; }
 };
 

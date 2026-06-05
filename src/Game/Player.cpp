@@ -9,19 +9,19 @@
 void Player::OnInitialize()
 {
 	PlayerJob* gatherer = new PlayerJob();
-	gatherer->name = "Gatherer";
+	gatherer->m_name = JobType::Gatherer;
 	m_Jobs.push_back(gatherer);
 	PlayerJob* farmer = new PlayerJob();
-	farmer->name = "Farmer";
+	farmer->m_name = JobType::Farmer;
 	m_Jobs.push_back(farmer);
 	PlayerJob* miner = new PlayerJob();
-	miner->name = "Miner";
+	miner->m_name = JobType::Miner;
 	m_Jobs.push_back(miner);
 	PlayerJob* killer = new PlayerJob();
-	killer->name = "Killer";
+	killer->m_name = JobType::Killer;
 	m_Jobs.push_back(killer);
 	PlayerJob* dealer = new PlayerJob();
-	dealer->name = "Dealer";
+	dealer->m_name = JobType::Dealer;
 	m_Jobs.push_back(dealer);
 }
 
@@ -49,7 +49,7 @@ void Player::OnEvent()
 
 	//input souris
 	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
-		//utilise l'objet selectionner dans l'inventaire (Viviens a l'aide)
+		//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
 	}
 }
 

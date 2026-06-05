@@ -12,6 +12,10 @@
 #include "2DPendentLib/FontManager.h"
 
 
+inline Debug& debug = *Debug::Get();
+inline InputManager& input = *InputManager::Get();
+inline SoundManager& sound = *SoundManager::Get();
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -31,6 +35,7 @@ void GameScene::OnInitialize()
 
 void GameScene::OnEvent()
 {
+
 }
 
 void GameScene::OnUpdate()

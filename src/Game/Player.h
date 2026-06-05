@@ -10,8 +10,6 @@ enum class JobType
 	Dealer,
 	Count
 };
-
-
 struct PlayerJob
 {
 	JobType m_name;
@@ -51,16 +49,31 @@ struct PlayerStats {
 	float m_drugSellEfficency = 1.f;
 
 	bool m_canBuyWeedSeed = false;
-	bool m_canBuyCannabis = false;
+	bool m_canBuyCannabisSeed = false;
 
-	bool m_canBuyGlock = false;
-	bool m_canBuyRifle = false;
-	bool m_canBuyKnife = false;
-	bool m_canBuySword = false;
+	bool m_isKnifeUnlocked = false;
+	bool m_isSwordUnlocked = false;
+	bool m_isGlockUnlocked = false;
+	bool m_isRifleUnlocked = false;
+
+	bool m_isStoneToolsUnlocked = false;
+	bool m_isIronToolsUnlocked = false;
+	bool m_isGoldToolsUnlocked = false;
+	bool m_isDiamondToolsUnlocked = false;
+
+	bool m_isBandageL1Unlocked = false;
+	bool m_isBandageL2Unlocked = false;
+	bool m_isEnergizingL1Unlocked = false;
+	bool m_isEnergizingL2Unlocked = false;
+
+	bool m_isFertilizerL1Unlocked = false;
+	bool m_isFertilizerL2Unlocked = false;
+	bool m_isAutoWateringL1Unlocked = false;
+	bool m_isAutoWateringL2Unlocked = false;
 
 };
 
-class Item;
+
 class Player : public Entity
 {
 private:
@@ -85,7 +98,5 @@ public:
 
 	void UpdateJobs();
 
-
-	void UnlockCraft(Item* p_item);
 };
 

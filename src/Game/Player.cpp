@@ -17,12 +17,12 @@ void Player::OnInitialize()
 	PlayerJob* miner = new PlayerJob();
 	miner->m_name = JobType::Miner;
 	m_Jobs.push_back(miner);
-	PlayerJob* killer = new PlayerJob();
+	/*PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
 	m_Jobs.push_back(killer);
 	PlayerJob* dealer = new PlayerJob();
 	dealer->m_name = JobType::Dealer;
-	m_Jobs.push_back(dealer);
+	m_Jobs.push_back(dealer);*/
 }
 
 void Player::OnEvent()
@@ -81,38 +81,46 @@ void Player::UpdateJobs()
 		case JobType::Gatherer:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				//unlockCraft(Bandage L1);
+				GetStats().m_isBandageL1Unlocked = true;
+				
 				break;
 			case 3:
-				//unlockCraft(Energizing remedy L1);
+				GetStats().m_isEnergizingL1Unlocked = true;
+				
 				break;
 			case 4:
 				GetStats().m_harvestEffiency *= 1.067f;
 				break;
 			case 5:
-				//unlockCraft(Bandage L2);
+				GetStats().m_isBandageL2Unlocked = true;
+				
 				break;
 			case 6:
-				//unlockCraft(Energizing remedy L2);
+				GetStats().m_isEnergizingL2Unlocked = true;
+				
 				break;
 			}break;
 
 		case JobType::Farmer:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				//unlockCraft(fertilizer L1);
+				GetStats().m_isFertilizerL1Unlocked = true;
+	
 				break;
 			case 3:
-				//unlockCraft(autoWatering L1);
+				GetStats().m_isAutoWateringL1Unlocked = true;
+				
 				break;
 			case 4:
 				GetStats().m_farmerSpeed *= 1.067f;
 				break;
 			case 5:
-				//unlockCraft(fertilizer L2);
+				GetStats().m_isFertilizerL2Unlocked = true;
+				
 				break;
 			case 6:
-				//unlockCraft(autoWatering L2);
+				GetStats().m_isAutoWateringL2Unlocked = true;
+				
 				break;
 			}break;
 			break;
@@ -120,23 +128,26 @@ void Player::UpdateJobs()
 		case JobType::Miner:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				//unlockCraft(stone_tools);
+				GetStats().m_isStoneToolsUnlocked = true;
+				
 				break;
 			case 3:
-				//unlockCraft(iron_tools);
+				GetStats().m_isIronToolsUnlocked = true;
+				
 				break;
 			case 4:
 				GetStats().m_miningSpeed *= 1.067f;
 				break;
 			case 5:
-				//unlockCraft(gold_tools);
+				GetStats().m_isGoldToolsUnlocked = true;
+				
 				break;
 			case 6:
-				//unlockCraft(diamond_tools);
+				GetStats().m_isDiamondToolsUnlocked = true;
+				
 				break;
 			}break;
 			break;
-
 
 		case JobType::Dealer:
 			switch (m_Jobs[i]->m_lvl) {
@@ -153,26 +164,27 @@ void Player::UpdateJobs()
 				GetStats().m_drugsSellQuantity += 40;
 				break;
 			case 6:
-				GetStats().m_canBuyCannabis = true;
+				GetStats().m_canBuyCannabisSeed = true;
 				break;
 			}break;
 			break;
+
 		case JobType::Killer:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				GetStats().m_canBuyKnife = true;
+				GetStats().m_isKnifeUnlocked = true;
 				break;
 			case 3:
-				GetStats().m_canBuySword = true;
+				GetStats().m_isSwordUnlocked = true;
 				break;
 			case 4:
 				GetStats().m_PlayerSpeed *= 1.067f;
 				break;
 			case 5:
-				GetStats().m_canBuyGlock = true;
+				GetStats().m_isGlockUnlocked = true;
 				break;
 			case 6:
-				GetStats().m_canBuyRifle = true;
+				GetStats().m_isRifleUnlocked = true;
 				break;
 			}break;
 			break;

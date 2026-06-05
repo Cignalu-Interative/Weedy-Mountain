@@ -1,4 +1,5 @@
 #pragma once
+#include "glad/glad.h"
 #include <SDL.h>
 #include "Vector2.h"
 //Version 4.3.0
@@ -8,9 +9,12 @@ class Window
 private:
 
 	SDL_Window* m_window = nullptr; //Pointeur qui stock la window
+
+	SDL_GLContext m_glContext = nullptr; //Pointeur qui stock le contexte OpenGL
+
 	SDL_DisplayMode m_displayMode; //Struct qui stock différente informations de l'écran
 
-	Vector2i m_windowDimention; //Dimention de la window
+	Vector2i m_windowDimension; //Dimention de la window
 
 	bool m_isFullScreen; //Boll pour savoir si la window est en plein écran
 

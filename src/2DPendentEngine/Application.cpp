@@ -300,7 +300,8 @@ void Application::UpdatePhysics_Collisions()
 
 void Application::Draw()
 {
-	m_render.ClearRenderer();
+	//m_render.ClearRenderer();
+	m_render.ClearOpenGL();
 
 	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
@@ -316,7 +317,8 @@ void Application::Draw()
 		m_camera->Draw(&m_render, &m_window, m_camera);
 	}
 
-	m_render.PresentRenderer();
+	//m_render.PresentRenderer();
+	m_render.RenderOpenGL(&m_window);
 }
 
 void Application::SetFPS(int p_targetFPS)

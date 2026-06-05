@@ -24,7 +24,7 @@ struct EnviroInfo {
 
 class EnviroSpawn
 {
-	int m_maxTiles = 0;
+	int m_maxTiles = 100;
 	int m_numOfEnviro = 0;
 	std::vector<EnviroInfo*> m_enviroList;
 
@@ -33,6 +33,7 @@ public:
 	void InitEnviroSpawn();
 
 	void SpawnEnviroProps();
-
+	
+	void CreateEnviroProps(EnviroSpawnName _name);
 };
 

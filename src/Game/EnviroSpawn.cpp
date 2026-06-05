@@ -2,12 +2,10 @@
 #include "EnviroSpawn.h"
 #include "EnviroProps.h"
 
-
-
 void EnviroSpawn::InitEnviroSpawn()
 {
-	EnviroInfo* Enviro = new EnviroInfo;
 	for (int i = 0; i < (int)EnviroSpawnName::Count; i++) {
+		EnviroInfo* Enviro = new EnviroInfo;
 		switch (i) {
 		case 0:
 			Enviro->m_name = EnviroSpawnName::Tree;
@@ -44,9 +42,34 @@ void EnviroSpawn::SpawnEnviroProps()
 	}
 
 	for (int i = 0; i < m_enviroList.size(); i++) {
+
 		int spawnCount = Aleatory::GetInt(m_enviroList[i]->m_stats.m_minSpawn, m_enviroList[i]->m_stats.m_maxSpawn);
+
 		for (int j = 0; j < spawnCount; j++) {
-			//SceneManager::Get()->GetCurrentScene()->CreateEntity<EnviroProps>(/*position aléatoire*/, /*dimension*/, /*textureID*/, Shape::Rectangle)->SetType(m_enviroList[i]->m_name);
+			CreateEnviroProps(m_enviroList[i]->m_name);
 		}
 	}
+}
+
+void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
+{
+	Scene* gs = SceneManager::Get()->GetScene("game");
+	EnviroProps* Props;
+
+
+	switch (_name)
+	{
+	case EnviroSpawnName::Tree:
+		Props = gs->CreateEntity<EnviroProps>({ Aleatory::GetFloat(0.f, 200.f), Aleatory::GetFloat(0.f, 200.f) }, { 128,128 }, "player", Shape::Rectangle);
+		Props->SetType(_name);
+		Props->SetTag(2);
+		//Props->AddSprite("tree",{0,0}, {0,0}); Marche Pas (Lnk2019 si utilisé)
+		Props->GetCollider()->Resize({ 16,16 });
+		Props->GetCollider()->SetOffset({ 0,28 });
+		break;
+	default:
+		break;
+	}
+
+
 }

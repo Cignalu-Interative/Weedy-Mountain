@@ -13,6 +13,7 @@ void EnviroProps::OnInitialize()
 void EnviroProps::OnEvent()
 {
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_isInPlayerZone){
+		// ajouter la verification de l'outils et de sa rareté
 		m_Stats.m_HitToDestroy--;
 	}
 

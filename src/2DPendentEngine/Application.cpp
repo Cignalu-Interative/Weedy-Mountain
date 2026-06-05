@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Timer.h"
 #include "Scene.h"
+#include "2DPendentLib/Utils.h"
 #include "MapTiledManager.h"
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
@@ -218,10 +219,10 @@ void Application::Update()
 
 void Application::UpdatePhysics_Collisions()
 {
-	for (Entity* entity : m_entities)
-	{
-		//entity->UpdateMovement_Forces(m_FIX_UPDATE);
-	}
+	//for (Entity* entity : m_entities)
+	//{
+	//	//entity->UpdateMovement_Forces(m_FIX_UPDATE);
+	//}
 
 	std::set<std::pair<Entity*, Entity*>> resolvedPairs;
 
@@ -364,14 +365,12 @@ void Application::UpdateFPSCounter()
 
 void Application::IsEneableToUpdate()
 {
-	//0.05 secondes correspond à 20 FPS, cela permet d'éviter les problèmes de physique et de logique du jeu qui peuvent survenir
-	// lorsque le temps entre deux frames est trop long (par exemple, lorsque le jeu est mis en pause ou lorsqu'il y a un ralentissement temporaire)
-	// Vaut mieux un temps de mise à jour plus long que de sauter des mises à jour et de causer des problèmes de logique du jeu
-	//double frametime = Utils::LimitMax((double)m_deltaTime, 0.05);
-	m_accumulator += m_deltaTime;
+	m_accumulator += Utils::LimitMax(m_deltaTime, 0.05f);
+
 	while (m_accumulator >= m_FIX_UPDATE)
 	{
 		UpdatePhysics_Collisions();
 		m_accumulator -= m_FIX_UPDATE;
 	}
+
 }

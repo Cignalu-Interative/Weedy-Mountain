@@ -69,7 +69,7 @@ bool CollisionManager::Overlaps(Collider* a, Collider* b) const
         return (dx * dx + dy * dy) < (ra + rb) * (ra + rb);
     }
 
-    // Rectangle vs Circle (on délègue au cercle)
+    // Rectangle vs Circle (on dï¿½lï¿½gue au cercle)
     Collider* rect = (a->GetShape() == Shape::Rectangle) ? a : b;
     Collider* circle = (a->GetShape() == Shape::Circle) ? a : b;
 
@@ -87,7 +87,7 @@ bool CollisionManager::Overlaps(Collider* a, Collider* b) const
 
 CollisionSide CollisionManager::ComputeSide(Collider* self, Collider* other) const
 {
-    // Overlap minimal sur chaque axe -> détermine la face
+    // Overlap minimal sur chaque axe -> dï¿½termine la face
     Vector2f posS = self->GetPosition({ 0.5f, 0.5f });
     Vector2f posO = other->GetPosition({ 0.5f, 0.5f });
     Vector2i dimS = self->GetDimension();
@@ -112,7 +112,7 @@ void CollisionManager::Update()
 {
     m_currentPairs.clear();
 
-    // Détection O(n²) sur tous les colliders enregistrés
+    // Dï¿½tection O(nï¿½) sur tous les colliders enregistrï¿½s
     for (size_t i = 0; i < m_colliders.size(); ++i)
     {
         for (size_t j = i + 1; j < m_colliders.size(); ++j)
@@ -120,7 +120,7 @@ void CollisionManager::Update()
             Collider* a = m_colliders[i];
             Collider* b = m_colliders[j];
 
-            // Pas de collision entre colliders du même owner
+            // Pas de collision entre colliders du mï¿½me owner
             if (a->GetOwner() == b->GetOwner())
                 continue;
 

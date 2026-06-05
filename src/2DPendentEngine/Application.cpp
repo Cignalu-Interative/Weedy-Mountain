@@ -77,7 +77,7 @@ void Application::Run()
 
 		Draw();
 
-		SceneManager::Get()->ChangeCurrentScene();
+		//SceneManager::Get()->ChangeCurrentScene();
 	}
 }
 
@@ -120,6 +120,7 @@ void Application::FPSDeltaTime()
 	if (m_autoFPS)
 	{
 		SetFPS(m_window.V_Sync());
+		//SetFPS(240);
 	}
 }
 
@@ -127,7 +128,15 @@ void Application::HandleInput()
 {
 	InputManager::Get()->Update();
 	
-	SceneManager::Get()->GetCurrentScene()->OnEvent();
+	if (SceneManager::Get()->IsSceneInStack() == false)
+	{
+		return;
+	}
+
+	SceneManager::Get()->EventScenesInStack();
+
+	//SceneManager::Get()->GetCurrentScene()->OnEvent();
+
 
 	for (auto it = m_entities.begin(); it != m_entities.end(); )
 	{
@@ -148,14 +157,21 @@ void Application::HandleInput()
 
 void Application::Update()
 {
-	CollisionManager::Get()->SyncAll();
-	CollisionManager::Get()->Update();
+	/*if (SceneManager::Get()->GetCurrentScene() == nullptr)
+	{
+		return;
+	}*/
 
-	if (SceneManager::Get()->GetCurrentScene() == nullptr)
+	if (SceneManager::Get()->IsSceneInStack() == false)
 	{
 		return;
 	}
-	SceneManager::Get()->UpdateCurrentScene();
+
+	CollisionManager::Get()->SyncAll();
+	CollisionManager::Get()->Update();
+
+	//SceneManager::Get()->UpdateCurrentScene();
+	SceneManager::Get()->UpdateScenesInStack();
 	for (auto it = m_entities.begin(); it != m_entities.end(); )
 	{
 		Entity* entity = *it;
@@ -167,7 +183,7 @@ void Application::Update()
 			++it;
 			continue;
 		}
-
+		entity->GetScene()->RemoveEntity(entity);
 		m_entityToDestroy.push_back(entity);
 		it = m_entities.erase(it);
 	}
@@ -203,10 +219,19 @@ void Application::Update()
 void Application::UpdatePhysics_Collisions()
 {
 	for (Entity* entity : m_entities)
-		entity->UpdateMovement_Forces(m_deltaTime);
+	{
+		//entity->UpdateMovement_Forces(m_FIX_UPDATE);
+	}
 
 	std::set<std::pair<Entity*, Entity*>> resolvedPairs;
 
+	for (Entity* entity : m_entities)
+	{
+		entity->UpdateMovement_Velocity(m_FIX_UPDATE);
+	}
+
+	return;
+	
 	for (auto it1 = m_entities.begin(); it1 != m_entities.end(); ++it1)
 	{
 		auto it2 = it1;
@@ -310,14 +335,11 @@ void Application::CapFPS()
 
 	float sleepTime = m_targetDeltaTime - m_deltaTime; // 1M ns (temps de sommeil pour atteindre le temps cible entre chaque frame)
 
-	auto beforeSleep = std::chrono::steady_clock::now();
 	if (sleepTime > 0.0f) // Si le temps de sommeil est sup�rieur � 1 ms, on dort pendant ce temps pour limiter le nombre de frame par seconde
 	{
 		m_timerFPS.Sleep(sleepTime);  // Dort pendant tant de nanosecondes pour limiter le nombre de frame par seconde
+		m_deltaTime = m_targetDeltaTime;
 	}
-	auto afterSleep = std::chrono::steady_clock::now();
-	float elapsedMs = std::chrono::duration<float>(afterSleep - beforeSleep).count();
-	m_deltaTime += elapsedMs;
 }
 
 void Application::UpdateFPSCounter()
@@ -345,8 +367,8 @@ void Application::IsEneableToUpdate()
 	//0.05 secondes correspond à 20 FPS, cela permet d'éviter les problèmes de physique et de logique du jeu qui peuvent survenir
 	// lorsque le temps entre deux frames est trop long (par exemple, lorsque le jeu est mis en pause ou lorsqu'il y a un ralentissement temporaire)
 	// Vaut mieux un temps de mise à jour plus long que de sauter des mises à jour et de causer des problèmes de logique du jeu
-	double frametime = Utils::LimitMax((double)m_deltaTime, 0.05);
-	m_accumulator += frametime;
+	//double frametime = Utils::LimitMax((double)m_deltaTime, 0.05);
+	m_accumulator += m_deltaTime;
 	while (m_accumulator >= m_FIX_UPDATE)
 	{
 		UpdatePhysics_Collisions();

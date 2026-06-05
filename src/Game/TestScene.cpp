@@ -44,6 +44,11 @@ void TestScene::OnInitialize()
 
 void TestScene::OnEvent()
 {
+	if (InputManager::Get()->IsKeyboardDown(K_TAB))
+	{
+		//SceneManager::Get()->ClearScenesInStack();
+		SceneManager::Get()->PushScene("demo");
+	}
 }
 
 void TestScene::OnUpdate()
@@ -52,4 +57,18 @@ void TestScene::OnUpdate()
 
 void TestScene::OnDestroy()
 {
+}
+
+void TestScene::OnSleep()
+{
+	SetIsVisible(false);
+	SetSleepEvent(true);
+	SetSleepUpdate(true);
+}
+
+void TestScene::OnWake()
+{
+	SetIsVisible(true);
+	SetSleepEvent(false);
+	SetSleepUpdate(false);
 }

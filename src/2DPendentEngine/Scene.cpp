@@ -6,6 +6,65 @@
 #include "SoundManager.h"
 #include "AssetManager.h"
 #include "Camera.h"
+#include "Debug.h"
+#include "Geometry.h"
+
+
+void Scene::Initialize()
+{
+	if (m_isInCache)
+	{
+		return;
+	}
+	OnInitialize();
+	m_isInCache = true;
+}
+
+void Scene::Event()
+{
+	if (m_isSleepEvent)
+	{
+		return;
+	}
+	OnEvent();
+}
+
+void Scene::Update()
+{
+	if (m_isSleepUpdate)
+	{
+		return;
+	}
+	OnUpdate();
+}
+
+void Scene::Sleep()
+{
+	if (m_isOnStateSleep)
+	{
+		return;
+	}
+	m_isOnStateSleep = true;
+	m_isOnStateWake = false;
+	OnSleep();
+}
+
+void Scene::Wake()
+{
+	if (m_isOnStateWake)
+	{
+		return;
+	}
+	m_isOnStateWake = true;
+	m_isOnStateSleep = false;
+	OnWake();
+}
+
+void Scene::Destroy()
+{
+	m_isInCache = false;
+	OnDestroy();
+}
 
 #include "Button.h"
 #include "Slider.h"
@@ -102,3 +161,147 @@ Camera* Scene::GetCamera() const
 {
 	return m_application->m_camera;
 }
+
+void Scene::SetIsVisible(bool p_visible)
+{
+	if (p_visible == true)
+	{
+		m_isVisible = true;
+
+		for (Entity* entity : m_entities)
+		{
+			entity->SetIsVisible(true);
+		}
+		for (Geometry* geo : m_geometries)
+		{
+			geo->SetIsVisible(true);
+		}
+	}
+	else
+	{
+		m_isVisible = false;
+		for (Entity* entity : m_entities)
+		{
+			entity->SetIsVisible(false);
+		}
+		for (Geometry* geo : m_geometries)
+		{
+			geo->SetIsVisible(false);
+		}
+	}
+}
+
+void Scene::AddEntity(Entity* p_entity)
+{
+	m_entities.push_back(p_entity);
+}
+
+void Scene::RemoveEntity(Entity* p_entity)
+{
+	if (m_entities.empty())
+	{
+		return;
+	}
+	auto it = std::find(m_entities.begin(), m_entities.end(), p_entity);
+
+	if (it == m_entities.end())
+	{
+		return;
+	}
+
+	it.operator*()->SetToDestroy(true);
+	m_entities.erase(it);
+}
+
+void Scene::RemoveGeometry(const std::string& p_id)
+{
+	Debug* d = Debug::Get();
+
+	Geometry* geo = d->GetGeometry<Geometry>(p_id);
+
+	if (!geo)
+		return;
+
+	auto it = std::find(m_geometries.begin(), m_geometries.end(), geo);
+
+	if (it == m_geometries.end())
+	{
+		return;
+	}
+
+	m_geometries.erase(it);
+
+	d->Destroy(p_id);
+}
+
+void Scene::CreatePoint(const std::string& p_id, Vector2f p_position, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreatePoint(p_id, p_position, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateLine(const std::string& p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateLine(p_id, p_start, p_end, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateRect(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateRect(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateFillRect(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateFillRect(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateCircle(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateCircle(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateFillCircle(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateFillCircle(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+void Scene::CreateText(const std::string& p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI, bool p_clampToScreen)
+{
+	Geometry* geo = Debug::Get()->CreateText(p_id, p_position, p_text, p_color, p_isGUI, p_clampToScreen);
+	m_geometries.push_back(geo);
+}
+
+Entity* Scene::GetEntityByTag(int p_tag)
+{
+	for (Entity* entity : m_entities)
+	{
+		if (entity->GetTag() == p_tag)
+		{
+			return entity;
+		}
+	}
+}
+std::vector<Entity*> Scene::GetEntitiesByTag(int p_tag)
+{
+	std::vector<Entity*> entities;
+	for (Entity* entity : m_entities)
+	{
+		if (entity->GetTag() == p_tag)
+		{
+			entities.push_back(entity);
+		}
+	}
+	return entities;
+}
+
+void Scene::DestroyEntityByTag(int p_tag)
+{
+	GetEntityByTag(p_tag)->Destroy();
+}
+void Scene::DestroyEntitiesByTag(int p_tag)
+{
+	for (Entity* ent : GetEntitiesByTag(p_tag))
+	{
+		ent->Destroy();
+	}
+}
+

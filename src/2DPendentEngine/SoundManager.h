@@ -51,6 +51,8 @@ public:
 
 	void RemoveSound(const std::string& p_id);
 
+	void RemoveAllSounds();
+
 	Sound* GetSound(const std::string& p_id) const;
 
 	//Fonction pour appller la fonction Play() de Sound en utilisant l'identifiant du son,

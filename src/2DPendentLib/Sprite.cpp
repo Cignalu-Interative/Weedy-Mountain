@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "AssetManager.h"
 #include "Camera.h"
+#include "Utils.h"
 
 Sprite::~Sprite()
 {
@@ -11,12 +12,12 @@ Sprite::~Sprite()
     {
         //SDL_DestroyTexture(m_texture);
         m_texture = nullptr;
-	}
+    }
 }
 
 void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Render* f_render)
 {
-	m_texture = AssetManager::Get()->GetTexture(p_id);
+    m_texture = AssetManager::Get()->GetTexture(p_id);
 
     int textureWidth, textureHeight;
     SDL_QueryTexture(m_texture, NULL, NULL, &textureWidth, &textureHeight);
@@ -32,8 +33,8 @@ void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p
     //m_currentFrame = { 0.0f, 0.0f };
     int width = GetDimension().GetX();
     int height = GetDimension().GetY();
-   // int frameW = m_frameSize.GetX();
-    //int frameH = m_frameSize.GetY();
+    // int frameW = m_frameSize.GetX();
+     //int frameH = m_frameSize.GetY();
 
     float posX = GetPosition().GetX();
     float posY = GetPosition().GetY();
@@ -41,11 +42,15 @@ void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p
 
     SetPosition(p_position);
 }
+void Sprite::SetOpacity(Uint8 p_oppacity)
+{
+	m_oppacity = Utils::Clamp(p_oppacity, (Uint8)0, (Uint8)255);
+}
 /*
 void Sprite::Update(float p_deltaTimeMs)
 {
     m_animTimer -= std::chrono::duration<float>(p_deltaTimeMs).count();
-	m_speedAnimation = std::max(m_speedAnimation, 0.01f);  // Sécurité : pas de vitesse nulle ou négative
+    m_speedAnimation = std::max(m_speedAnimation, 0.01f);  // Sécurité : pas de vitesse nulle ou négative
 
     if (m_animTimer <= m_speedAnimation)
     {
@@ -72,8 +77,8 @@ void Sprite::AutoDetectFrameSize(Vector2i p_spriteDimention)
 {
     // Tailles frame courantes en game dev (power of 2)
     int commonSizes[] = { 8, 16, 24, 32, 48, 64, 96, 128 };
-	int texWidth = p_spriteDimention.GetX();
-	int texHeight = p_spriteDimention.GetY();
+    int texWidth = p_spriteDimention.GetX();
+    int texHeight = p_spriteDimention.GetY();
 
     for (int frameW : commonSizes)
     {
@@ -160,6 +165,11 @@ void Sprite::SetSpeedAnimation(float p_speed)
 */
 void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
+    if (m_isVisible == false)
+    {
+        return;
+	}
+
     SDL_Renderer* renderer = f_render->m_renderer;
 
     // Vérifications sécurité
@@ -192,17 +202,17 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         dimension = (Vector2f)GetDimension();
         posX = position.GetX();
         posY = position.GetY();
-	}
+    }
     else
     {
         dimension = (Vector2f)GetDimension() * p_camera->GetZoom();
         posX = p_camera->WorldToScreen(position).GetX();
-		posY = p_camera->WorldToScreen(position).GetY();
+        posY = p_camera->WorldToScreen(position).GetY();
     }
-    
+
     Vector2i dimensionWindow = f_window->GetWindowSize();
-    
-    Vector2f screenPosBottomRight = {posX + dimension.GetX(), posY + dimension.GetY()};
+
+    Vector2f screenPosBottomRight = { posX + dimension.GetX(), posY + dimension.GetY() };
 
     if (screenPosBottomRight.GetX() < 0 || posX > dimensionWindow.GetX() ||
         screenPosBottomRight.GetY() < 0 || posY > dimensionWindow.GetY())
@@ -232,6 +242,10 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     //        flip = SDL_FLIP_NONE;
     //}
 
+    SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
+
+    SDL_SetTextureAlphaMod(m_texture, m_oppacity);
+
     // 3. Rendu avec ROTATION complète
     if (SDL_RenderCopyExF(renderer, m_texture,
         srcRect,           // Frame du sprite sheet (ou NULL)
@@ -241,7 +255,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         flip) == -1)       //  miroir (optionnel)
     {
         SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionné : %s", SDL_GetError());
-		return;
+        return;
     }
 
     // Nettoyage

@@ -3,8 +3,7 @@
 #include <SDL.h>
 #include "2DPendentEngine/Application.h"
 #include "2DPendentEngine/Aleatory.h"
-#include "DemoScene.h"
-#include "GameScene.h"
+#include "Launcher.h"
 
 //Code d'entr�e
 int main(int argc, char* argv[])
@@ -13,10 +12,7 @@ int main(int argc, char* argv[])
 	Application* application = Application::Get();
 	application->Init();
 
-	//SceneManager::Get()->AddScene<DemoScene>("demo");
-	SceneManager::Get()->AddScene<GameScene>("game");
-	
-	SceneManager::Get()->SetCurrentScene("game");
+	Launcher::Launch();
 
 	application->Run();
 	application->Shutdown();

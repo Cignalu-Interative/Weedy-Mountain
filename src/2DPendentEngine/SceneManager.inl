@@ -8,7 +8,7 @@ template<typename T>
 void SceneManager::AddScene(const std::string& p_id)
 {
 	static_assert(std::is_base_of_v<Scene, T>, "T must be derived from Scene");
-	RemoveScene(p_id);
+	//RemoveScene(p_id);
 
 	T* scene = new T();
 	scene->SetApplication(Application::Get());
@@ -16,9 +16,11 @@ void SceneManager::AddScene(const std::string& p_id)
 	m_scenes[p_id] = m_scenesVector.size();
 	m_scenesVector.push_back(scene);
 
-	if (m_currentScene == nullptr)
+	if (IsSceneInStack() == false)
 	{
-		m_tempCurrentSceneID = p_id;
-		ChangeCurrentScene();
+		/*m_tempCurrentSceneID = p_id;
+		ChangeCurrentScene();*/
+
+		PushScene(p_id);
 	}
 }

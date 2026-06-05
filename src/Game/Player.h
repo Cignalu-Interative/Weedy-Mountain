@@ -30,9 +30,23 @@ struct PlayerJob
 		switch (m_name)
 		{
 		case JobType::Gatherer:
+			switch (m_lvl)
+			{
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5 : 
+				break;
+			case 6 :
+				break;
 
+			}
 			break;
 		case JobType::Farmer:
+
 			break;
 		case JobType::Dealer:
 			break;

@@ -18,7 +18,9 @@
             "scaleInEditor": 1
         },
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 1,
+            "scaleInEditor": 1
         },
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx": {
             "dynamicWrapping": false,
@@ -34,7 +36,7 @@
             "scaleInEditor": 1
         },
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Village.tsx": {
-            "scaleInDock": 1.5,
+            "scaleInDock": 2,
             "scaleInEditor": 1
         },
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/farm objects free.tsx": {
@@ -62,19 +64,19 @@
             "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": -16.66666666666663,
-                "y": 509.33333333333337
+                "x": 128,
+                "y": 383.33333333333326
             }
         },
         "Village.tmx": {
             "expandedObjectLayers": [
                 7
             ],
-            "scale": 3,
+            "scale": 0.5,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": -567.8333333333333,
-                "y": 592.6666666666666
+                "x": -63,
+                "y": 170
             }
         }
     },
@@ -94,12 +96,14 @@
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Village.tsx",
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx",
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Path_spring.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Buildings.tsx"
+        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Buildings.tsx",
+        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx"
     ],
     "project": "Weedy Mountain.tiled-project",
     "property.type": "bool",
     "recentFiles": [
         "Farm.tmx",
+        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx",
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Buildings.tsx",
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Path_spring.tsx",
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx",
@@ -109,8 +113,7 @@
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/props.tsx",
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx",
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/farm objects free.tsx"
+        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx"
     ],
     "tileset.lastUsedFormat": "tsx",
     "tileset.tileSize": {

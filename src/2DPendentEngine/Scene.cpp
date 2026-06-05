@@ -171,6 +171,7 @@ void Scene::RemoveEntity(Entity* p_entity)
 		return;
 	}
 
+	it.operator*()->SetToDestroy(true);
 	m_entities.erase(it);
 }
 
@@ -220,16 +221,49 @@ void Scene::CreateCircle(const std::string& p_id, Vector2f p_position, Vector2i 
 	Geometry* geo = Debug::Get()->CreateCircle(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
 	m_geometries.push_back(geo);
 }
-
 void Scene::CreateFillCircle(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	Geometry* geo = Debug::Get()->CreateFillCircle(p_id, p_position, p_dimension, p_color, p_isGUI, p_clampToScreen);
 	m_geometries.push_back(geo);
 }
-
 void Scene::CreateText(const std::string& p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI, bool p_clampToScreen)
 {
 	Geometry* geo = Debug::Get()->CreateText(p_id, p_position, p_text, p_color, p_isGUI, p_clampToScreen);
 	m_geometries.push_back(geo);
+}
+
+Entity* Scene::GetEntityByTag(int p_tag)
+{
+	for (Entity* entity : m_entities)
+	{
+		if (entity->GetTag() == p_tag)
+		{
+			return entity;
+		}
+	}
+}
+std::vector<Entity*> Scene::GetEntitiesByTag(int p_tag)
+{
+	std::vector<Entity*> entities;
+	for (Entity* entity : m_entities)
+	{
+		if (entity->GetTag() == p_tag)
+		{
+			entities.push_back(entity);
+		}
+	}
+	return entities;
+}
+
+void Scene::DestroyEntityByTag(int p_tag)
+{
+	GetEntityByTag(p_tag)->Destroy();
+}
+void Scene::DestroyEntitiesByTag(int p_tag)
+{
+	for (Entity* ent : GetEntitiesByTag(p_tag))
+	{
+		ent->Destroy();
+	}
 }
 

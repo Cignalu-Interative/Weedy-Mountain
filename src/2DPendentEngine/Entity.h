@@ -13,6 +13,8 @@ class Window;
 class Scene;
 class Entity : public Transformable
 {
+	void SetToDestroy(bool p_toDestroy) { m_toDestroy = p_toDestroy; }
+
 protected:
 
 	Sprite* m_sprite = nullptr; //Sprite de l'entité
@@ -44,8 +46,6 @@ protected:
 	void Update();
 	//Fonction pour dessiner l'entité à l'écran
 	void Draw(Render* f_render, Window* f_window);
-	//Fonction pour marquer l'entité pour destruction, elle sera détruite à la fin de la frame en cours
-	void Destroy();
 
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique d'initialisation
 	virtual void OnInitialize() {};
@@ -90,9 +90,10 @@ public:
 
 	PhysicsBody* GetPhysicsBody() { return m_physicsBody; }
 
+	//Fonction pour marquer l'entité pour destruction, elle sera détruite à la fin de la frame en cours
+	void Destroy();
 	//Obtenir le bool pour savoir si l'entité doit être détruite
 	bool ToDestroy() const { return m_toDestroy; }
-	void SetToDestroy(bool p_toDestroy) { m_toDestroy = p_toDestroy; }
 
 	//Obtenir la forme du collider de l'entité
 	Shape GetShape() const { return static_cast<Shape>(m_collider->GetShape()); }

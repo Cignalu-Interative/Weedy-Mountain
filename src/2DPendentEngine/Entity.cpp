@@ -97,9 +97,8 @@ void Entity::Draw(Render* f_render, Window* f_window)
 
 void Entity::Destroy()
 {
-	m_toDestroy = true;
-
 	OnDestroy();
+	GetScene()->RemoveEntity(this);
 }
 
 void Entity::UpdateMovement_Forces(float p_deltaTime)

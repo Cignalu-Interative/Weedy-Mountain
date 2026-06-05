@@ -29,6 +29,7 @@ void DemoScene::OnInitialize()
 
 
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "Perceval", Shape::Rectangle);
+	player1->GetSprite()->SetOpacity(128);
 	player1->SetAngle(85.0f);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
@@ -36,6 +37,7 @@ void DemoScene::OnInitialize()
 
 	Player* player2 = new Player();
 	player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
+	player2->GetSprite()->SetOpacity(45);
 	player2->SetAngle(0.0f);
 	player2->SetRigidBody(true);
 	player2->ShowCollider(true);
@@ -43,6 +45,7 @@ void DemoScene::OnInitialize()
 
 	Player* player3 = new Player();
 	player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
+	player3->GetSprite()->SetOpacity(67);
 	player3->SetAngle(8.0f);
 	player3->SetRigidBody(true);
 	player3->ShowCollider(true);
@@ -50,6 +53,7 @@ void DemoScene::OnInitialize()
 
 	Player* player4 = new Player();
 	player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
+	player4->GetSprite()->SetOpacity(200);
 	player4->SetAngle(0.0f);
 	player4->SetRigidBody(true);
 	player4->ShowCollider(true);
@@ -232,7 +236,7 @@ void DemoScene::OnEvent()
 			if (Collision::IsColliding(*collider, *player->GetCollider()))
 			{
 				std::cerr << "Collision detected with player at position: (" << player->GetPosition().GetX() << ", " << player->GetPosition().GetY() << ")" << std::endl;
-				player->SetToDestroy(true);
+				player->Destroy();
 				collisionDetected = true;
 				return;
 			}
@@ -591,14 +595,13 @@ void DemoScene::OnWake()
 
 void DemoScene::OnDestroy()
 {
-	for (Player* player : m_players)
+	/*for (Player* player : m_players)
 	{
-		player->SetToDestroy(true);
+		player->Destroy();
 	}
-	m_players.clear();
 	if (m_user != nullptr)
 	{
-		m_user->SetToDestroy(true);
+		m_user->Destroy();
 		m_user = nullptr;
 	}
 	if (entitySelected != nullptr)
@@ -608,7 +611,8 @@ void DemoScene::OnDestroy()
 	if (lastEntitySelected != nullptr)
 	{
 		lastEntitySelected = nullptr;
-	}
+	}*/
+	m_players.clear();
 	debug.ClearAll();
 	GetEntities().clear();
 }

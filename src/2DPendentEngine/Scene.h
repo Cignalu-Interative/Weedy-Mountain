@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <list>
+#include <vector>
 #include "2DPendentLib/Vector2.h"
 #include "2DPendentLib/SoundOrientation.h"
 #include "2DPendentLib/Color.h"
@@ -155,7 +156,11 @@ public:
 	//faire un create qui renvoie une addresse de text pour l'update
 	void CreateText(const std::string& p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 
+	Entity* GetEntityByTag(int p_tag);
+	std::vector<Entity*> GetEntitiesByTag(int p_tag);
 
+	void DestroyEntityByTag(int p_tag);
+	void DestroyEntitiesByTag(int p_tag);
 
 	//Liste des class amie avec la class Scene
 	friend class Application;

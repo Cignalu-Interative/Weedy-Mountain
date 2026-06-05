@@ -47,7 +47,7 @@ void TestScene::OnDestroy()
 {
 	for (Entity* entity : GetEntities())
 	{
-		entity->SetToDestroy(true);
+		entity->Destroy();
 	}
 	GetEntities().clear();
 	debug.ClearAll();

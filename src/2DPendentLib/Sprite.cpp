@@ -4,6 +4,7 @@
 #include "Window.h"
 #include "AssetManager.h"
 #include "Camera.h"
+#include "Utils.h"
 
 Sprite::~Sprite()
 {
@@ -40,6 +41,10 @@ void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p
     m_spriteRect = { posX, posY, static_cast<float>(width), static_cast<float>(height) };
 
     SetPosition(p_position);
+}
+void Sprite::SetOpacity(Uint8 p_oppacity)
+{
+	m_oppacity = Utils::Clamp(p_oppacity, (Uint8)0, (Uint8)255);
 }
 /*
 void Sprite::Update(float p_deltaTimeMs)
@@ -236,6 +241,10 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     //    else if (velX > 0)  // Va à droite
     //        flip = SDL_FLIP_NONE;
     //}
+
+    SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
+
+    SDL_SetTextureAlphaMod(m_texture, m_oppacity);
 
     // 3. Rendu avec ROTATION complète
     if (SDL_RenderCopyExF(renderer, m_texture,

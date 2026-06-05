@@ -16,8 +16,12 @@ protected:
 	
 	void OnDestroy() override;
 
+	void OnSleep() override;
+
+	void OnWake() override;
 public:
 
-
+	GameScene() = default;
+	~GameScene() = default;
 };
 

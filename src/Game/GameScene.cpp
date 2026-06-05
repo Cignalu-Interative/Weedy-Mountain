@@ -43,3 +43,11 @@ void GameScene::OnUpdate()
 void GameScene::OnDestroy()
 {
 }
+
+void GameScene::OnSleep()
+{
+}
+
+void GameScene::OnWake()
+{
+}

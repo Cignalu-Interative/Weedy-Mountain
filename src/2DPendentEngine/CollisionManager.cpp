@@ -37,8 +37,8 @@ void CollisionManager::UnregisterCollider(Collider* p_collider)
             }
         };
 
-	removePairs(m_currentPairs);
-	removePairs(m_previousPairs);
+    removePairs(m_currentPairs);
+    removePairs(m_previousPairs);
 }
 
 bool CollisionManager::Overlaps(Collider* a, Collider* b) const

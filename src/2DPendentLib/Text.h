@@ -14,21 +14,23 @@ private:
 	std::string m_text; // Texte à afficher
 
 	TTF_Font* m_font = nullptr; // Police de caractères utilisée pour le texte
-	
+
 	SDL_Texture* m_textTexture = nullptr; // Texture du texte
-	
+
 	SDL_Renderer* m_renderer = nullptr; // Renderer utilisé pour dessiner le texte
-	
+
 	SDL_FRect m_textRect; // Rectangle du texte
-	
+
 	int m_fontSize; // Taille de la police utilisée pour le texte
-	
+
 	float m_timeToUpdate = 0.0f; // Temps écoulé depuis la dernière mise à jour de la texture du texte
 	float m_updateInterval = 0.5f; // Intervalle de temps entre les mises à jour de la texture du texte (en secondes)
 
 	bool m_clampToScreen = false; // Si true, la geometry sera dessiné à la position la plus proche sur l'écran si sa position dépasse les limites de l'écran
-	
+
 	void CreateTexture();
+
+	Vector2f m_positionWanted; //Position voulue pour le texte, indépendante de la position réelle du texte avec la taille du texte
 
 public:
 
@@ -58,4 +60,6 @@ public:
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 
 	void UpdateTexture();
+
+	void SetPosition(const Vector2f& p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 };

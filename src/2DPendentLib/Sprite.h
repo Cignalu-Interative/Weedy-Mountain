@@ -15,6 +15,11 @@ private:
 	SDL_FRect m_spriteRect; //Rectangle de la texture à dessiner
 
 	bool m_isGUI = false; //Bool pour savoir si le sprite est un élément d'interface utilisateur (GUI), il ne sera pas affecté par la physique et les collisions
+
+	bool m_isVisible = true; //Bool pour savoir si le sprite doit être dessiné à l'écran
+
+	Uint8 m_oppacity = 255; //Opacité du sprite, de 0 (transparent) à 255 (opaque)
+
 	//SDL_FPoint m_rotationCenter = { 0, 0 }; //Point autour duquel le sprite tourne
 
 	//Vector2i m_frameSize; // Taille d'une frame
@@ -42,6 +47,12 @@ public:
 
 	void SetIsGUI(bool p_isGUI) { m_isGUI = p_isGUI; }
 	bool IsGUI() const { return m_isGUI; }
+
+	void SetIsVisible(bool p_isVisible) { m_isVisible = p_isVisible; }
+	bool IsVisible() const { return m_isVisible; }
+
+	void SetOpacity(Uint8 p_oppacity);
+	Uint8 GetOpacity() const { return m_oppacity; }
 	
 	/*
 	//Met à jour l'animation du sprite en fonction du temps écoulé depuis la dernière frame

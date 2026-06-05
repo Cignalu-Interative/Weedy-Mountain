@@ -3,9 +3,10 @@
 #include "Scene.h"
 #include "Application.h"
 #include "Entity.h"
+#include "2DPendentLib/Geometry.h"
 #include "Button.h"
 
-//Fonction template pour créer une entité dans la scène (seul la Width compte pour le raduis du cercle)
+//Fonction template pour crï¿½er une entitï¿½ dans la scï¿½ne (seul la Width compte pour le raduis du cercle)
 template<typename T>
 T* Scene::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Shape p_shape, bool p_isGUI)
 {
@@ -23,12 +24,24 @@ T* Scene::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::str
 	entity->SetScene(this);
 	entity->Initialize(p_position, p_dimension, p_path, m_application->GetRender(), p_shape, p_isGUI);
 	m_application->m_entityToAdd.push_back(newEntity);
+	AddEntity(newEntity);
 
 	return newEntity;
 }
 
 template<typename T>
-inline T* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
+T* Scene::GetGeometry(const std::string& p_id)
+{
+	for (Geometry* geometry : m_geometries)
+	{
+		if (geometry->GetId() == p_id)
+		{
+			return dynamic_cast<T*>(geometry);
+		}
+	}
+}
+template<typename T>
+T* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
 {
 	static_assert(std::is_base_of_v<Button, T>, "T must be derived from Button");
 

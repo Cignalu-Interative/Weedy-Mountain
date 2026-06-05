@@ -11,12 +11,16 @@
 class Render;
 class Window;
 class Scene;
+class SpriteContainer;
+
 class Entity : public Transformable
 {
+	void SetToDestroy(bool p_toDestroy) { m_toDestroy = p_toDestroy; }
+
 protected:
 
-	Sprite* m_sprite = nullptr; //Sprite de l'entité
-	std::vector<Collider*> m_colliders; //Collider de l'entité
+	std::vector<SpriteContainer*> m_sprites; //Sprites de l'entité
+	std::vector<Collider*> m_colliders; //Colliders de l'entité
 	PhysicsBody* m_physicsBody = nullptr; //Composant physique de l'entité
 
 	Scene* m_scene = nullptr; //Pointeur vers la scène à laquelle l'entité appartient
@@ -36,14 +40,14 @@ protected:
 
 	bool m_isGrounded = false; //Bool pour savoir si l'entité est au sol, utile pour les entités contrôlées par le joueur
 
+	bool m_isVisible = true; //Bool pour savoir si l'entité doit être dessinée à l'écran
+
 	//Fonction pour initialiser l'entité, notamment en définissant sa position, sa dimension, son sprite et son collider
 	void Initialize(Vector2f p_position, Vector2i p_dimention, const std::string& p_path, Render* f_render, Shape p_shape, bool p_isGUI = false);
 	//Fonction pour mettre à jour l'entité, notamment en mettant à jour son sprite et en gérant sa logique de jeu
 	void Update();
 	//Fonction pour dessiner l'entité à l'écran
 	void Draw(Render* f_render, Window* f_window);
-	//Fonction pour marquer l'entité pour destruction, elle sera détruite à la fin de la frame en cours
-	void Destroy();
 
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique d'initialisation
 	virtual void OnInitialize() {};
@@ -90,9 +94,10 @@ public:
 
 	PhysicsBody* GetPhysicsBody() { return m_physicsBody; }
 
+	//Fonction pour marquer l'entité pour destruction, elle sera détruite à la fin de la frame en cours
+	void Destroy();
 	//Obtenir le bool pour savoir si l'entité doit être détruite
 	bool ToDestroy() const { return m_toDestroy; }
-	void SetToDestroy(bool p_toDestroy) { m_toDestroy = p_toDestroy; }
 
 	//Obtenir la forme du premier collider de l'entité
 	Shape GetShape() const { return static_cast<Shape>(GetCollider()->GetShape()); }
@@ -119,8 +124,20 @@ public:
 	// Sync tous les colliders de l'entity
 	void SyncColliders();
 
-	//Obtenir le sprite de l'entité
-	Sprite* GetSprite() { return m_sprite; }
+	//Ajouter un sprite à l'entité
+	SpriteContainer* AddSprite(const std::string& p_id, const std::string& p_texturePath, Vector2i p_dimension, int p_zOrder = 0, Vector2f p_offset = { 0.f,0.f }, bool p_isGUI = false);
+	//Supprimer le sprite de l'entité avec son ID
+	void RemoveSprite(const std::string& p_id);
+
+	SpriteContainer* GetSpriteContainer(const std::string& p_id) const;
+	SpriteContainer* GetSpriteContainer() const; // retourne le "default"
+	Sprite* GetSprite(const std::string& p_id) const;
+	Sprite* GetSprite() const; // retourne le sprite "default"
+
+	void SetSpriteVisible(const std::string& p_id, bool p_visible);
+	void SetAllSpritesVisible(bool p_visible);
+
+	void SyncSprites();
 
 	//Définir si l'entité est un corps rigide
 	void SetRigidBody(bool p_rigidBody) { m_rigidBody = p_rigidBody; }
@@ -169,6 +186,10 @@ public:
 
 	void SetIsGrounded(bool p_isGrounded) { m_isGrounded = p_isGrounded; }
 	bool GetIsGrounded() const { return m_isGrounded; }
+
+	void SetIsVisible(bool p_isVisible);
+
+	bool GetIsVisible() const { return m_isVisible; };
 
 	//Liste des class amie avec la class Entity
 	friend class CollisionManager;

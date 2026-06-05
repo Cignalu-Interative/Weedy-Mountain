@@ -103,6 +103,10 @@ void Text::SetText(const std::string& p_text)
 	}
 	//std::cerr << "Mise a jour du texte : " << p_text << std::endl;
 	m_text = p_text;
+	if (m_text == "")
+	{
+		m_text = " ";
+	}
 	UpdateTexture();
 	SetPosition(m_positionWanted);
 }

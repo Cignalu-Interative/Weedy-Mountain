@@ -1,31 +1,22 @@
 #pragma once
-#include "2DPendentEngine/Scene.h"
+#include "Scene.h"
 
-class Player;
 class TestScene : public Scene
 {
-private:
-
-
 protected:
 
-	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique d'initialisation
+	//Fonctions virtuelles hï¿½ritï¿½es de Scene pour dï¿½finir la logique d'initialisation, de gestion des ï¿½vï¿½nements, de mise ï¿½ jour et de destruction de la scï¿½ne
 	void OnInitialize() override;
-	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de gestion des événements
+	//Fonction pour gï¿½rer les ï¿½vï¿½nements liï¿½s ï¿½ la scï¿½ne, notamment en utilisant l'InputManager pour dï¿½tecter les entrï¿½es utilisateur spï¿½cifiques ï¿½ cette scï¿½ne
 	void OnEvent() override;
-	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise à jour
+	//Fonction pour mettre ï¿½ jour la logique de la scï¿½ne, notamment en mettant ï¿½ jour les joueurs et les autres ï¿½lï¿½ments prï¿½sents dans la scï¿½ne
 	void OnUpdate() override;
-	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise en veille
-	void OnSleep() override;
-	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de réveil
-	void OnWake() override;
-	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de destruction
+	//Fonction pour libï¿½rer les ressources utilisï¿½es par la scï¿½ne, notamment en dï¿½truisant les joueurs et les autres ï¿½lï¿½ments prï¿½sents dans la scï¿½ne
 	void OnDestroy() override;
-
 
 public:
 
-
-
+	TestScene() = default;
+	~TestScene() = default;
 };
 

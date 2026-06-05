@@ -13,6 +13,8 @@ class Application;
 class AssetManager;
 class Camera;
 class Geometry;
+class Button;
+class Slider;
 
 class Scene
 {
@@ -76,6 +78,12 @@ protected:
 	//Fonction template pour créer une entité de type T
 	template<typename T>
 	T* CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Shape p_shape, bool p_isGUI = false);
+
+	template<typename T>
+	T* CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI = true);
+	Button* CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI = true);
+
+	Slider* CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_id, int p_stateCount = -1, bool p_isGUI = true);
 
 public:
 

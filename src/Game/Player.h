@@ -26,6 +26,23 @@ struct PlayerJob
 		m_expNeeded = 100.f * std::exp(m_lvl * 0.25f);
 	}
 
+	void GetReward() {
+		switch (m_name)
+		{
+		case JobType::Gatherer:
+
+			break;
+		case JobType::Farmer:
+			break;
+		case JobType::Dealer:
+			break;
+		case JobType::Miner:
+			break;
+		case JobType::Killer:
+			break;
+		}
+	}
+
 };
 
 struct PlayerStats {
@@ -68,5 +85,7 @@ public:
 	std::vector<PlayerJob*>& GetJobs() { return m_Jobs; }
 
 	PlayerStats& GetStats() { return m_Stats; }
+
+	void GetJobsRewards();
 };
 

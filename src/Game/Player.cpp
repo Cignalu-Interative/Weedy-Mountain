@@ -73,3 +73,29 @@ void Player::OnDestroy()
 {
 
 }
+
+void Player::GetJobsRewards()
+{
+	for (int i = 0; i < m_Jobs.size(); i++) {
+		
+		switch (m_Jobs[i]->m_name)
+		{
+		case JobType::Gatherer:
+			switch (m_Jobs[i]->m_lvl)
+			{
+				case 1
+			}
+			break;
+		case JobType::Farmer:
+			break;
+		case JobType::Dealer:
+			break;
+		case JobType::Miner:
+			break;
+		case JobType::Killer:
+			break;
+		}
+
+
+	}
+}

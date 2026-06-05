@@ -7,6 +7,7 @@
 #include "AssetManager.h"
 #include "Camera.h"
 #include "Debug.h"
+#include "Geometry.h"
 
 
 void Scene::Initialize()

@@ -14,6 +14,10 @@ protected:
 	//Fonction pour lib�rer les ressources utilis�es par la sc�ne, notamment en d�truisant les joueurs et les autres �l�ments pr�sents dans la sc�ne
 	void OnDestroy() override;
 
+	void OnSleep() override;
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de réveil
+	void OnWake() override;
+
 public:
 
 	TestScene() = default;

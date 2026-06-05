@@ -606,3 +606,11 @@ void Entity::SyncSprites()
 		sc->m_sprite->SetPosition({center.GetX() + sc->m_offset.GetX(), center.GetY() + sc->m_offset.GetY()});
 	}
 }
+
+void Entity::SetIsVisible(bool p_isVisible)
+{
+	m_isVisible = p_isVisible;
+
+	SetAllSpritesVisible(p_isVisible);
+	ShowCollider(p_isVisible);
+}

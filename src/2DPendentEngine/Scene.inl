@@ -40,7 +40,8 @@ T* Scene::GetGeometry(const std::string& p_id)
 		}
 	}
 }
-inline T* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
+template<typename T>
+T* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
 {
 	static_assert(std::is_base_of_v<Button, T>, "T must be derived from Button");
 

@@ -126,6 +126,10 @@ public:
 
 	//Ajouter un sprite à l'entité
 	SpriteContainer* AddSprite(const std::string& p_id, const std::string& p_texturePath, Vector2i p_dimension, int p_zOrder = 0, Vector2f p_offset = { 0.f,0.f }, bool p_isGUI = false);
+	//Changer le premier sprite de l'entité (id "default")
+	void SetSprite(const std::string& p_texturePath);
+	//Changer le sprite de l'entité avec son ID
+	void SetSprite(const std::string& p_id, const std::string& p_texturePath);
 	//Supprimer le sprite de l'entité avec son ID
 	void RemoveSprite(const std::string& p_id);
 

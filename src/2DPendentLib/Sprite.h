@@ -51,6 +51,8 @@ public:
 	void SetIsVisible(bool p_isVisible) { m_isVisible = p_isVisible; }
 	bool IsVisible() const { return m_isVisible; }
 
+	void ChangeTexture(const std::string& p_texturePath);
+
 	void SetOpacity(Uint8 p_oppacity);
 	Uint8 GetOpacity() const { return m_oppacity; }
 	

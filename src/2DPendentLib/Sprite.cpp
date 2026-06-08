@@ -46,6 +46,11 @@ void Sprite::SetOpacity(Uint8 p_oppacity)
 {
 	m_oppacity = Utils::Clamp(p_oppacity, (Uint8)0, (Uint8)255);
 }
+
+void Sprite::ChangeTexture(const std::string& p_texturePath)
+{
+    m_texture = AssetManager::Get()->GetTexture(p_texturePath);
+}
 /*
 void Sprite::Update(float p_deltaTimeMs)
 {

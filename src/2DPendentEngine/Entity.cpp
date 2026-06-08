@@ -541,6 +541,18 @@ SpriteContainer* Entity::AddSprite(const std::string& p_id, const std::string& p
 	return sc;
 }
 
+void Entity::SetSprite(const std::string& p_texturePath)
+{
+	SetSprite("default", p_texturePath);
+}
+
+void Entity::SetSprite(const std::string& p_id, const std::string& p_texturePath)
+{
+	SpriteContainer* sc = GetSpriteContainer(p_id);
+	if (sc && sc->m_sprite)
+		sc->m_sprite->ChangeTexture(p_texturePath);
+}
+
 SpriteContainer* Entity::GetSpriteContainer(const std::string& p_id) const
 {
 	for (SpriteContainer* sc : m_sprites)

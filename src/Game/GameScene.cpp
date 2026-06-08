@@ -21,6 +21,7 @@ void GameScene::OnInitialize()
 	m_Player->GetCollider()->SetOffset({ 0,8 });
 	m_Player->GetCollider()->SetID("playerCollider");
 	m_Player->SetTag(1);
+	m_Player->SetDrawLayer(2);
 	m_Player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_Player->ShowCollider(true);

@@ -20,6 +20,11 @@ void EnviroProps::OnEvent()
 	if (m_Stats.m_HitToDestroy <= 0) {
 		Destroy();
 	}
+
+	if (SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition().GetY() < GetPosition().GetY()+16) {
+		SetDrawLayer(3);
+	}
+	else SetDrawLayer(1);
 }
 
 void EnviroProps::OnUpdate()

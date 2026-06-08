@@ -32,6 +32,7 @@ protected:
 	const float m_PIXELS_PER_METER = 10; // Constante pour convertir les pixels en mètres pour la physique
 
 	int m_tag = 0; //Tag de l'entité, utilisé pour identifier le type de l'entité (ex: 0 = joueur, 1 = ennemi, 2 = plateforme, etc...)
+	int m_drawLayer = 1;
 
 	bool m_toDestroy = false; //Bool pour savoir si l'entité doit être détruitey
 	bool m_rigidBody = false; //Bool pour savoir si les corps sont rigide et dont ne peuvent pas se traverser
@@ -98,6 +99,9 @@ public:
 	void Destroy();
 	//Obtenir le bool pour savoir si l'entité doit être détruite
 	bool ToDestroy() const { return m_toDestroy; }
+
+	void SetDrawLayer(int p_drawLayer) { m_drawLayer = p_drawLayer; }
+	int GetDrawLayer() const { return m_drawLayer; }
 
 	//Obtenir la forme du premier collider de l'entité
 	Shape GetShape() const { return static_cast<Shape>(GetCollider()->GetShape()); }

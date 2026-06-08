@@ -304,7 +304,14 @@ void Application::Draw()
 
 	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
-	for (Entity* entity : m_entities)
+	std::vector<Entity*> entToDraw = m_entities;
+
+	std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
+		{
+			return a->GetDrawLayer() < b->GetDrawLayer();
+		});
+
+	for (Entity* entity : entToDraw)
 	{
 		entity->Draw(&m_render, &m_window);
 	}

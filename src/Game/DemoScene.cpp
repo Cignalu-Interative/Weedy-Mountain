@@ -33,6 +33,7 @@ void DemoScene::OnInitialize()
 	//player1->SetAngle(85.0f);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
+	m_player = player1;
 	m_players.push_back(player1);
 
 	//Player* player2 = new Player();
@@ -227,25 +228,27 @@ void DemoScene::OnEvent()
 
 	if (input.IsMouseDown(BUTTON_MIDDLE))
 	{
-		Vector2f mousePosition = GetCamera()->ScreenToWorld(input.GetMousePosition());
-		RectangleCollider* collider = new RectangleCollider();
-		collider->Initialize(mousePosition, { 10, 10 });
-		bool collisionDetected = false;
-		for (Player* player : m_players)
-		{
-			if (Collision::IsColliding(*collider, *player->GetCollider()))
-			{
-				std::cerr << "Collision detected with player at position: (" << player->GetPosition().GetX() << ", " << player->GetPosition().GetY() << ")" << std::endl;
-				player->Destroy();
-				collisionDetected = true;
-				return;
-			}
-		}
-		if (collisionDetected == false)
-		{
-			//Player* player = CreateEntity(mousePosition, { 100, 100 }, "Perceval", Shape::Rectangle, false, false);
-			//m_players.push_back(player);
-		}
+		m_player->SetAnimationByName("run");
+		//Vector2f mousePosition = GetCamera()->ScreenToWorld(input.GetMousePosition());
+		//RectangleCollider* collider = new RectangleCollider();
+		//collider->Initialize(mousePosition, { 10, 10 });
+		//bool collisionDetected = false;
+		//for (Player* player : m_players)
+		//{
+		//	if (Collision::IsColliding(*collider, *player->GetCollider()))
+		//	{
+		//		std::cerr << "Collision detected with player at position: (" << player->GetPosition().GetX() << ", " << player->GetPosition().GetY() << ")" << std::endl;
+		//		player->Destroy();
+		//		collisionDetected = true;
+		//		return;
+		//	}
+		//}
+		//if (collisionDetected == false)
+		//{
+
+		//	//Player* player = CreateEntity(mousePosition, { 100, 100 }, "Perceval", Shape::Rectangle, false, false);
+		//	//m_players.push_back(player);
+		//}
 	}
 
 	if (input.IsKeyboardDown(K_p))

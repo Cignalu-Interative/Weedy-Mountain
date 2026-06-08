@@ -18,6 +18,8 @@ private:
 	Entity* entitySelected = nullptr;
 	Entity* lastEntitySelected = nullptr;
 
+	Player* m_player = nullptr;
+
 	const Vector2i m_levelDimension = { 2000, 2000 }; //Dimension du niveau en pixels
 
 protected:

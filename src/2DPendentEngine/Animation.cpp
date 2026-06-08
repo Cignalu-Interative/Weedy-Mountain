@@ -103,6 +103,10 @@ void Animation::SetAnimationByName(const std::string& p_name)
     if (m_parser)
     {
 		m_nameAnimation = p_name;
-		m_frameSize = m_parser->GetFrameDimension();
+        const InfoAnimation* info = m_parser->GetInfoAnimationByName(p_name);
+        m_frameTime = info->s_frameTime;
+        m_totalFrames = info->s_nbFrames.size();
+        m_frameSize = m_parser->GetFrameDimension();
+
     }
 }

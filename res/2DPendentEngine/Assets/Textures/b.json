@@ -10,6 +10,14 @@
                 10
             ],
             "loop": true
+        },
+        "run": {
+            "frame_time": 3,
+            "frames": [
+                10,
+                0
+            ],
+            "loop": true
         }
     },
     "frame_size": {

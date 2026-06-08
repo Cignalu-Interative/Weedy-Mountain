@@ -198,6 +198,8 @@ public:
 
 	bool GetIsVisible() const { return m_isVisible; };
 
+	void SetAnimationByName(const std::string& p_nameAnimation);
+
 	//Liste des class amie avec la class Entity
 	friend class CollisionManager;
 	friend class Application;

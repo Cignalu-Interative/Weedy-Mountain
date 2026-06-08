@@ -635,3 +635,8 @@ void Entity::SetIsVisible(bool p_isVisible)
 	SetAllSpritesVisible(p_isVisible);
 	ShowCollider(p_isVisible);
 }
+
+void Entity::SetAnimationByName(const std::string& p_nameAnimation)
+{
+	m_animation->SetAnimationByName(p_nameAnimation);
+}

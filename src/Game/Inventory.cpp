@@ -7,7 +7,15 @@
 
 Inventory::Inventory(int slotCount)
 {
-	m_slots.resize(slotCount);
+	SetDrawLayer(100);
+
+	for (int i = 0; i < slotCount; i++)
+	{
+		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>({ 0, 0 }, { 30, 30 }, "slot", "slot_" + std::to_string(i), "", true);
+		slot->AddSprite("slot_" + std::to_string(i), "", { 30, 30 }, 1, { 0, 0 }, true);
+		slot->SetDrawLayer(101);
+		m_slots.push_back(slot);
+	}
 }
 
 
@@ -21,11 +29,11 @@ bool Inventory::CanAdd(ItemID ID, int amount)
 
 	int remaining = amount;
 
-	for (InventorySlot& slot : m_slots)
+	for (InventorySlot* slot : m_slots)
 	{
-		if (slot.IsEmpty() == false)
+		if (slot->IsEmpty() == false)
 		{
-			ItemStack& stack = slot.GetStack();
+			ItemStack& stack = slot->GetStack();
 
 			if (stack.GetID() != ID)
 				continue;
@@ -77,12 +85,12 @@ int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 
 
 	//remplir les stacks existantes
-	for (InventorySlot& slot : m_slots)
+	for (InventorySlot* slot : m_slots)
 	{
-		if (slot.IsEmpty())
+		if (slot->IsEmpty())
 			continue;
 
-		ItemStack& stack = slot.GetStack();
+		ItemStack& stack = slot->GetStack();
 
 		if (stack.GetID() != ID)
 			continue;
@@ -99,14 +107,14 @@ int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 
 
 	//remplir les slots vies
-	for (InventorySlot& slot : m_slots)
+	for (InventorySlot* slot : m_slots)
 	{
-		if (slot.IsEmpty() == false)
+		if (slot->IsEmpty() == false)
 			continue;
 
 		int toAdd = std::min(data->GetMaxStack(), remaining);
 
-		slot.SetStack(ItemStack(ID, toAdd));
+		slot->SetStack(ItemStack(ID, toAdd));
 		remaining -= toAdd;
 
 		if (remaining <= 0)
@@ -135,12 +143,12 @@ int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 
 	int remaining = amount;
 
-	for (InventorySlot& slot : m_slots)
+	for (InventorySlot* slot : m_slots)
 	{
-		if (slot.IsEmpty())
+		if (slot->IsEmpty())
 			continue;
 
-		ItemStack& stack = slot.GetStack();
+		ItemStack& stack = slot->GetStack();
 
 		if (stack.GetID() != ID)
 			continue;
@@ -151,7 +159,7 @@ int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 		stack.SetAmount(available - toRemove);
 
 		if (stack.GetAmount() <= 0)
-			slot.Clear();
+			slot->Clear();
 
 		remaining -= toRemove;
 
@@ -168,25 +176,35 @@ int Inventory::CountItem(ItemID ID)
 {
 	int total = 0;
 
-	for (InventorySlot& slot : m_slots)
+	for (InventorySlot* slot : m_slots)
 	{
-		if (slot.IsEmpty())
+		if (slot->IsEmpty())
 			continue;
 
-		if (slot.GetStack().GetID() == ID)
-			total += slot.GetStack().GetAmount();
+		if (slot->GetStack().GetID() == ID)
+			total += slot->GetStack().GetAmount();
 	}
 
 	return total;
 }
 
-InventorySlot& Inventory::GetSlot(int index)
+void Inventory::SetVisible(bool visible)
+{
+	SetIsVisible(visible);
+
+	for (InventorySlot* slot : m_slots)
+	{
+		slot->SetIsVisible(visible);
+	}
+}
+
+InventorySlot* Inventory::GetSlot(int index)
 {
 	assert(index >= 0 && index < m_slots.size());
 	return m_slots[index];
 }
 
-std::vector<InventorySlot>& Inventory::GetSlots()
+std::vector<InventorySlot*>& Inventory::GetSlots()
 {
 	return m_slots;
 }

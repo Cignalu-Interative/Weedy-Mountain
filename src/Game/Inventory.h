@@ -2,12 +2,13 @@
 
 #include "InventorySlot.h"
 #include <vector>
+#include "Entity.h"
 
-class Inventory
+class Inventory : public Entity
 {
 private:
 
-	std::vector<InventorySlot> m_slots;
+	std::vector<InventorySlot*> m_slots;
 
 public:
 
@@ -21,9 +22,11 @@ public:
 
 	int CountItem(ItemID ID);
 
-	InventorySlot& GetSlot(int index);
+	void SetVisible(bool visible);
 
-	std::vector<InventorySlot>& GetSlots();
+	InventorySlot* GetSlot(int index);
+
+	std::vector<InventorySlot*>& GetSlots();
 
 	int GetSlotCount();
 };

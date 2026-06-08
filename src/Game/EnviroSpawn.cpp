@@ -56,15 +56,15 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 {
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
+	Props = gs->CreateEntity<EnviroProps>({ Aleatory::GetFloat(0.f, 200.f), Aleatory::GetFloat(0.f, 200.f) }, { 128,128 }, "", Shape::Rectangle);
+	Props->SetType(_name);
+	Props->SetTag(2);
 
 
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:
-		Props = gs->CreateEntity<EnviroProps>({ Aleatory::GetFloat(0.f, 200.f), Aleatory::GetFloat(0.f, 200.f) }, { 128,128 }, "", Shape::Rectangle);
-		Props->SetType(_name);
-		Props->SetTag(2);
-		Props->AddSprite("tree", "Oak_Tree", {64, 64}, 1); 
+		Props->SetSprite("Oak_Tree");
 		Props->GetCollider()->Resize({ 16,16 });
 		Props->GetCollider()->SetOffset({ 0,28 });
 		break;

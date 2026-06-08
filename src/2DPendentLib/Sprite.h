@@ -13,6 +13,7 @@ private:
 
 	SDL_Texture* m_texture = nullptr; //Texture du sprite
 	SDL_FRect m_spriteRect; //Rectangle de la texture à dessiner
+	SDL_Rect* m_srcRect = nullptr;
 
 	bool m_isGUI = false; //Bool pour savoir si le sprite est un élément d'interface utilisateur (GUI), il ne sera pas affecté par la physique et les collisions
 
@@ -55,39 +56,11 @@ public:
 
 	void SetOpacity(Uint8 p_oppacity);
 	Uint8 GetOpacity() const { return m_oppacity; }
-	
-	/*
-	//Met à jour l'animation du sprite en fonction du temps écoulé depuis la dernière frame
-	void Update(float p_deltaTimeMs);
 
-	//Permet de régler automatiquement la taille d'une frame en fonction de la dimension du sprite et du nombre de frames en X et Y
-	void AutoDetectFrameSize(Vector2i p_spriteDimention);
-
-	//Positionne le sprite sur la frame du sprite sheet correspondant à l'index donné (en partant de 0,0 en haut à gauche)
-	void SetCurrentFramePosition(Vector2f p_framePosition);
-	//Obtenir la position de la frame courante dans le sprite sheet
-	Vector2f GetCurrentFramePosition() const { return m_currentFrame; }
-	//Obtenir l'index de la frame courante dans le sprite sheet
-	int GetCurrentFrameIndex() const;
-
-	//Permet de faire avancer l'animation du sprite en passant à la frame suivante, en bouclant entre les frames de début et de fin spécifiées
-	void NextFrame(int p_startFrame = 0, int p_endFrame = -1);
-
-	//Set le bool pour savoir si le sprite fait face à droite ou à gauche (pour le flip horizontal)
-	void SetFacingRight(bool p_facingRight);
-	bool IsFacingRight() const; //Obtenir le bool pour savoir si le sprite fait face à droite ou à gauche (pour le flip horizontal)
-
-	// Permet de régler la vitesse de l'animation (ex: 0.1f pour 10 FPS)
-	void SetSpeedAnimation(float p_speed);
-	// Obtenir la vitesse de l'animation
-	float GetSpeedAnimation() const { return m_speedAnimation; }*/
+	SDL_Rect* GetSpriteRect() { return m_srcRect; }
+	void SetSourceRectSprite(SDL_Rect p_SDLrect);
 
 	//Fonction pour dessinner le sprite à l'écran
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 
-	/*
-	//Permet de définir l'ancre du sprite (ex: (0,0) pour le coin haut gauche, (0.5,0.5) pour le centre, etc.)
-	void SetAnchor(Vector2f p_anchor) { m_anchor = p_anchor; }
-	//Obtenir l'ancre du sprite
-	Vector2f GetAnchor() const { return m_anchor; }*/
 };

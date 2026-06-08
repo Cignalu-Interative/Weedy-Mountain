@@ -7,6 +7,7 @@
 #include "CircleCollider.h"
 #include "CollisionManager.h"
 #include "SpriteContainer.h"
+#include "Animation.h"
 
 Entity::~Entity()
 {
@@ -26,14 +27,20 @@ Entity::~Entity()
 	delete m_physicsBody;
 }
 
-void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Render* f_render, Shape p_shape, bool p_isGUI)
+void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Render* f_render, Shape p_shape, bool p_isGUI, bool p_animation, const std::string& p_jsonAnimation)
 {
 	SetDimension(p_dimension);
 	SetPosition(p_position);
 
-	AddSprite("default", p_path, p_dimension, 0, { 0.f,0.f }, p_isGUI);
+	SpriteContainer* spriteContainer = AddSprite("default", p_path, p_dimension, 0, { 0.f,0.f }, p_isGUI);
 
 	AddCollider("default", p_dimension, p_shape);
+
+	if (p_animation)
+	{
+		m_animation = new Animation();
+		m_animation->Init(spriteContainer->m_sprite,"default", true, p_jsonAnimation);
+	}
 
 	OnInitialize();
 }
@@ -42,8 +49,10 @@ void Entity::Update()
 {
 	//OnEvent();
 
-	/*float deltatime = GetDeltaTime();
-	UpdateMovement(deltatime);*/
+	float deltatime = GetDeltaTime();
+	//UpdateMovement(deltatime);
+	if (m_animation != nullptr)
+		m_animation->Update(deltatime);
 
 	OnUpdate();
 }

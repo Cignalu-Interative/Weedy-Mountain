@@ -77,7 +77,7 @@ protected:
 
 	//Fonction template pour créer une entité de type T
 	template<typename T>
-	T* CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Shape p_shape, bool p_isGUI = false);
+	T* CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Shape p_shape, bool p_isGUI = false, bool p_animation = false, const std::string& p_jsonAnimation = "");
 
 	template<typename T>
 	T* CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI = true);

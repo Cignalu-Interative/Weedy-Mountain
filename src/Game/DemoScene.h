@@ -28,6 +28,10 @@ protected:
 	void OnEvent() override;
 	//Fonction pour mettre à jour la logique de la scène, notamment en mettant à jour les joueurs et les autres éléments présents dans la scène
 	void OnUpdate() override;
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de mise en veille
+	void OnSleep() override;
+	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de réveil
+	void OnWake() override;
 	//Fonction pour libérer les ressources utilisées par la scène, notamment en détruisant les joueurs et les autres éléments présents dans la scène
 	void OnDestroy() override;
 

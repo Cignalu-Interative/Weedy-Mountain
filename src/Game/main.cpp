@@ -3,17 +3,16 @@
 #include <SDL.h>
 #include "2DPendentEngine/Application.h"
 #include "2DPendentEngine/Aleatory.h"
-#include "DemoScene.h"
-#include "TestScene.h"
+#include "Launcher.h"
 
-//Code d'entrée
+//Code d'entrï¿½e
 int main(int argc, char* argv[])
 {
 	Aleatory::Initialize();
 	Application* application = Application::Get();
 	application->Init();
 
-	SceneManager::Get()->AddScene<TestScene>("demo");
+	Launcher::Launch();
 
 	application->Run();
 	application->Shutdown();

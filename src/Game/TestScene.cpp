@@ -10,6 +10,7 @@
 #include "2DPendentLib/FontManager.h"
 
 #include "Button.h"
+#include "Slider.h"
 
 #include <iostream>
 
@@ -31,10 +32,23 @@ void TestScene::OnInitialize()
 	b->SetOnReleaseClick([] {
 		std::cout << "release click" << std::endl;
 		});
+
+	Slider* s = CreateSlider({ 200.f, h / 2.f }, { 20, 500 }, "", "SLIDER");
+	s->SetOnHoverStay([] {
+		std::cout << "hover" << std::endl;
+		});
+	s->SetOnHoverExit([] {
+		std::cout << "exit" << std::endl;
+		});
 }
 
 void TestScene::OnEvent()
 {
+	if (InputManager::Get()->IsKeyboardDown(K_TAB))
+	{
+		//SceneManager::Get()->ClearScenesInStack();
+		SceneManager::Get()->PushScene("demo");
+	}
 }
 
 void TestScene::OnUpdate()
@@ -43,4 +57,18 @@ void TestScene::OnUpdate()
 
 void TestScene::OnDestroy()
 {
+}
+
+void TestScene::OnSleep()
+{
+	SetIsVisible(false);
+	SetSleepEvent(true);
+	SetSleepUpdate(true);
+}
+
+void TestScene::OnWake()
+{
+	SetIsVisible(true);
+	SetSleepEvent(false);
+	SetSleepUpdate(false);
 }

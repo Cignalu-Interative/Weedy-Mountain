@@ -110,6 +110,16 @@ void SoundManager::RemoveSound(const std::string& p_id)
 	m_sounds.erase(it);
 }
 
+void SoundManager::RemoveAllSounds()
+{
+	for (auto& sound : m_soundsVector)
+	{
+		delete sound;
+	}
+	m_soundsVector.clear();
+	m_sounds.clear();
+}
+
 Sound* SoundManager::GetSound(const std::string& p_id) const
 {
 	auto it = m_sounds.find(p_id);

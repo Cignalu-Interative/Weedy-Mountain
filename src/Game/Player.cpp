@@ -17,7 +17,7 @@ void Player::OnUpdate()
 
 }
 
-void Player::OnCollision(Entity* other)
+void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)
 {
 
 }

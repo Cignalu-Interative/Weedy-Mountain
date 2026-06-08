@@ -16,7 +16,7 @@ protected:
 	//Fonction pour mettre à jour l'utilisateur, notamment en mettant à jour son sprite et en gérant sa logique de jeu
 	void OnUpdate() override;
 	//Fonction pour gérer les collisions de l'utilisateur avec d'autres entités, notamment en gérant les interactions avec les ennemis, les objets ou les éléments du décor
-	void OnCollision(Entity* other) override;
+	void OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side) override;
 	//Fonction pour marquer l'utilisateur pour destruction, elle sera détruite à la fin de la frame en cours
 	void OnDestroy() override;
 

@@ -32,4 +32,6 @@
 // pour les fonctions d'utilité comme std::move et std::forward
 #include <utility>
 
+#include <set>
+
 #endif

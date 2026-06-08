@@ -3,6 +3,7 @@
 #include "2DPendentLib/Render.h"
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/Utils.h"
+#include "Rectangle.h"
 
 void RectangleCollider::Initialize(Vector2f p_position, Vector2i p_dimension)
 {

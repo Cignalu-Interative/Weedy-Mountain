@@ -14,6 +14,13 @@
 #include "SoundManager.h"
 #include "Aleatory.h"
 #include "2DPendentLib/AssetManager.h"
+
+
+#include "2DPendentLib/glad/glad.h"
+#include "2DPendentLib/glm/glm.hpp"
+#include "2DPendentLib/glm/gtc/type_ptr.hpp"
+#include "2DPendentLib/Triangle.h"
+#include "2DPendentLib/Shader.h"
 //Version 3.4.0
 
 class Entity;
@@ -62,6 +69,11 @@ private:
 	bool m_isRunning = false;
 	bool m_autoFPS = true; // Si true, le jeu ajustera automatiquement le nombre de frames par seconde par rapport au fps trouvé grace à la fonction V_Sync
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
+
+
+
+	Triangle triangle;
+	Shader shader;
 
 public:
 

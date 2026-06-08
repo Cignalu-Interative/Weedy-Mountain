@@ -20,7 +20,7 @@ bool Render::CreateRenderer(Window& f_window)
 
 void Render::ClearRenderer()
 {
-	if (SDL_SetRenderDrawColor(m_renderer, 0, 0, 0, 255) < 0)
+	if (SDL_SetRenderDrawColor(m_renderer, m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a) < 0)
 	{
 		SDL_Log("Lib/Render.cpp/ClearRenderer/SDL_SetRenderDrawColor/SDL_SetRenderDrawColor non reussie : %s", SDL_GetError());
 		return;
@@ -39,11 +39,16 @@ void Render::PresentRenderer()
 
 void Render::ClearOpenGL()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
 void Render::RenderOpenGL(Window* f_window)
 {
 	SDL_GL_SwapWindow(f_window->GetWindow());
+}
+
+void Render::SetBackgroundColor(Color p_backgroundColor)
+{
+	m_backgroundColor = p_backgroundColor;
 }

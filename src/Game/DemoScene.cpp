@@ -624,8 +624,8 @@ void DemoScene::TestVélocité()
 		if (player->GetTag() == 64 && player->GetPhysicsBody())
 		{
 			Vector2f vel = player->GetPhysicsBody()->GetLinearVelocity();
-			std::cout << "Velocity : X=" << vel.GetX()
-				<< " Y=" << vel.GetY() << std::endl;
+			/*std::cout << "Velocity : X=" << vel.GetX()
+				<< " Y=" << vel.GetY() << std::endl;*/
 		}
 	}
 }

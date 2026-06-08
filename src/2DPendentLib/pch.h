@@ -33,4 +33,6 @@
 // Pour les classes std::utility, qui contient des fonctions utilitaires telles que std::swap, std::move, etc.
 #include <filesystem>
 
+#include <sstream>
+
 #endif

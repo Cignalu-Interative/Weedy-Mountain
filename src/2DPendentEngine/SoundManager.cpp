@@ -58,7 +58,7 @@ void SoundManager::AddSound(const std::string& p_path)
 			auto it = m_sounds.find(autoId);
 			if (it != m_sounds.end())
 			{
-				SDL_Log("Lib/AssetManager.cpp/AddTexture/GetNameFromPath/Sound already loaded with ID : %s", autoId.c_str());
+				//SDL_Log("Lib/AssetManager.cpp/AddTexture/GetNameFromPath/Sound already loaded with ID : %s", autoId.c_str());
 				continue;
 			}
 			Sound* sound = new Sound();

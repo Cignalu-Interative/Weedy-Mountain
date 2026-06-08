@@ -1,5 +1,6 @@
 #pragma once
 #include <SDL.h>
+#include "Color.h"
 //Version 2.2.0
 class Window;
 class Render
@@ -8,6 +9,8 @@ private:
 
 	//Pointeur qui stock le render
 	SDL_Renderer* m_renderer = nullptr;
+
+	Color m_backgroundColor = ColorsNamed::Black;
 
 public:
 
@@ -28,6 +31,7 @@ public:
 
 	void RenderOpenGL(Window* f_window);
 
+	void SetBackgroundColor(Color p_color);
 
 	//Liste des class amie avec la class Render
 	friend class Circle;

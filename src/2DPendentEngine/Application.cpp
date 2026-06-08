@@ -9,6 +9,8 @@
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
 
+
+
 Application::Application()
 {
 	m_entities.reserve(256); // Réserver de la mémoire pour 256 entités afin d'éviter les reallocations fréquentes lors de l'ajout d'entités
@@ -58,6 +60,12 @@ void Application::Init()
 	SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
 
+
+
+	triangle.Init();
+	shader.LoadFromFiles("../../src/2DPendentLib/Shaders/TestShader.vert", "../../src/2DPendentLib/Shaders/TestShader.frag");
+	
+
 	std::cerr << "Application initialized successfully." << std::endl;
 }
 
@@ -79,6 +87,8 @@ void Application::Run()
 
 		//SceneManager::Get()->ChangeCurrentScene();
 	}
+
+	triangle.Destroy();
 }
 
 void Application::Shutdown()
@@ -214,6 +224,11 @@ void Application::Update()
 		m_entities.push_back(*it);
 	}
 	m_entityToAdd.clear();
+
+
+	/*triangle.modelMatrix = glm::mat4(1.0f);
+
+	triangle.modelMatrix = glm::translate(triangle.modelMatrix, glm::vec3(0.5f, 0.2f, 0.0f));*/
 }
 
 void Application::UpdatePhysics_Collisions()
@@ -316,6 +331,11 @@ void Application::Draw()
 	{
 		m_camera->Draw(&m_render, &m_window, m_camera);
 	}
+
+
+
+	triangle.Draw();
+
 
 	//m_render.PresentRenderer();
 	m_render.RenderOpenGL(&m_window);

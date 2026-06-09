@@ -55,6 +55,14 @@ void Player::OnEvent()
 	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
 		//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
 	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_x))
+	{
+		for (int i = 0; i < GetJobs().size(); i++)
+		{
+			GetJobs()[i]->m_exp = GetJobs()[i]->m_expNeeded;
+		}
+	}
 }
 
 void Player::OnUpdate()
@@ -81,46 +89,40 @@ void Player::UpdateJobs()
 		case JobType::Gatherer:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				GetStats().m_isBandageL1Unlocked = true;
-				
+				UnlockRecipe(Recipes::BandageL1);
 				break;
 			case 3:
-				GetStats().m_isEnergizingL1Unlocked = true;
-				
+				UnlockRecipe(Recipes::EnergizingL1);
 				break;
 			case 4:
 				GetStats().m_harvestEffiency *= 1.067f;
 				break;
 			case 5:
-				GetStats().m_isBandageL2Unlocked = true;
-				
+				UnlockRecipe(Recipes::BandageL2);
 				break;
 			case 6:
-				GetStats().m_isEnergizingL2Unlocked = true;
-				
+				UnlockRecipe(Recipes::EnergizingL2);
 				break;
 			}break;
 
 		case JobType::Farmer:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				GetStats().m_isFertilizerL1Unlocked = true;
-	
+				UnlockRecipe(Recipes::FertilizerL1);
 				break;
 			case 3:
-				GetStats().m_isAutoWateringL1Unlocked = true;
+				UnlockRecipe(Recipes::AutoWateringL1);
 				
 				break;
 			case 4:
 				GetStats().m_farmerSpeed *= 1.067f;
 				break;
 			case 5:
-				GetStats().m_isFertilizerL2Unlocked = true;
+				UnlockRecipe(Recipes::FertilizerL2);
 				
 				break;
 			case 6:
-				GetStats().m_isAutoWateringL2Unlocked = true;
-				
+				UnlockRecipe(Recipes::AutoWateringL2);
 				break;
 			}break;
 			break;
@@ -128,22 +130,22 @@ void Player::UpdateJobs()
 		case JobType::Miner:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				GetStats().m_isStoneToolsUnlocked = true;
+				UnlockRecipe(Recipes::StoneTools);
 				
 				break;
 			case 3:
-				GetStats().m_isIronToolsUnlocked = true;
+				UnlockRecipe(Recipes::IronTools);
 				
 				break;
 			case 4:
 				GetStats().m_miningSpeed *= 1.067f;
 				break;
 			case 5:
-				GetStats().m_isGoldToolsUnlocked = true;
+				UnlockRecipe(Recipes::GoldTools);
 				
 				break;
 			case 6:
-				GetStats().m_isDiamondToolsUnlocked = true;
+				UnlockRecipe(Recipes::DiamondTools);
 				
 				break;
 			}break;
@@ -155,7 +157,7 @@ void Player::UpdateJobs()
 				GetStats().m_drugsSellQuantity += 15;
 				break;
 			case 3:
-				GetStats().m_canBuyWeedSeed = true;
+				UnlockRecipe(Recipes::WeedSeed);
 				break;
 			case 4:
 				GetStats().m_drugSellEfficency *= 1.067f;
@@ -164,7 +166,7 @@ void Player::UpdateJobs()
 				GetStats().m_drugsSellQuantity += 40;
 				break;
 			case 6:
-				GetStats().m_canBuyCannabisSeed = true;
+				UnlockRecipe(Recipes::CannabisSeed);
 				break;
 			}break;
 			break;
@@ -172,22 +174,45 @@ void Player::UpdateJobs()
 		case JobType::Killer:
 			switch (m_Jobs[i]->m_lvl) {
 			case 2:
-				GetStats().m_isKnifeUnlocked = true;
+				UnlockRecipe(Recipes::Knife);
 				break;
 			case 3:
-				GetStats().m_isSwordUnlocked = true;
+				UnlockRecipe(Recipes::Sword);
 				break;
 			case 4:
 				GetStats().m_PlayerSpeed *= 1.067f;
 				break;
 			case 5:
-				GetStats().m_isGlockUnlocked = true;
+				UnlockRecipe(Recipes::Glock);
 				break;
 			case 6:
-				GetStats().m_isRifleUnlocked = true;
+				UnlockRecipe(Recipes::Rifle);
 				break;
 			}break;
 			break;
 		}
 	}
+}
+
+void Player::UnlockRecipe(Recipes _toUnlock)
+{
+	if (!IsRecipeUnlocked(_toUnlock))
+	{
+		m_unlockedRecipes.push_back(_toUnlock);
+		std::cout << "item unlocked" << std::endl;
+	}
+		
+}
+
+bool Player::IsRecipeUnlocked(Recipes _toUnlock)
+{
+	for (int i = 0; i < m_unlockedRecipes.size(); i++)
+	{
+		if (m_unlockedRecipes[i] == _toUnlock)
+		{
+			return true;
+		}
+
+	}
+	return false;
 }

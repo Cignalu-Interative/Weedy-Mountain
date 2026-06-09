@@ -25,8 +25,32 @@ struct PlayerJob
 		}
 		m_expNeeded = 100.f * std::exp(m_lvl * 0.25f);
 	}
+};
 
+enum class Recipes
+{
+	WeedSeed,
+	CannabisSeed,
 
+	Knife,
+	Sword,
+	Glock,
+	Rifle,
+	
+	StoneTools,
+	IronTools,
+	GoldTools,
+	DiamondTools,
+	
+	BandageL1,
+	BandageL2,
+	EnergizingL1,
+	EnergizingL2,
+	
+	FertilizerL1,
+	FertilizerL2,
+	AutoWateringL1,
+	AutoWateringL2
 };
 
 struct PlayerStats {
@@ -48,28 +72,7 @@ struct PlayerStats {
 	float m_drugsSellQuantity = 0.f;
 	float m_drugSellEfficency = 1.f;
 
-	bool m_canBuyWeedSeed = false;
-	bool m_canBuyCannabisSeed = false;
-
-	bool m_isKnifeUnlocked = false;
-	bool m_isSwordUnlocked = false;
-	bool m_isGlockUnlocked = false;
-	bool m_isRifleUnlocked = false;
-
-	bool m_isStoneToolsUnlocked = false;
-	bool m_isIronToolsUnlocked = false;
-	bool m_isGoldToolsUnlocked = false;
-	bool m_isDiamondToolsUnlocked = false;
-
-	bool m_isBandageL1Unlocked = false;
-	bool m_isBandageL2Unlocked = false;
-	bool m_isEnergizingL1Unlocked = false;
-	bool m_isEnergizingL2Unlocked = false;
-
-	bool m_isFertilizerL1Unlocked = false;
-	bool m_isFertilizerL2Unlocked = false;
-	bool m_isAutoWateringL1Unlocked = false;
-	bool m_isAutoWateringL2Unlocked = false;
+	
 
 };
 
@@ -79,6 +82,7 @@ class Player : public Entity
 private:
 	PlayerStats m_Stats;
 	std::vector<PlayerJob*> m_Jobs;
+	std::vector<Recipes> m_unlockedRecipes;
 protected:
 
 	//Fonction pour initialiser le joueur, notamment en définissant sa position, sa dimension, son sprite et son collider
@@ -97,6 +101,7 @@ public:
 	PlayerStats& GetStats() { return m_Stats; }
 
 	void UpdateJobs();
-
+	void UnlockRecipe(Recipes _toUnlock);
+	bool IsRecipeUnlocked(Recipes _toUnlock);
 };
 

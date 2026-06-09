@@ -30,41 +30,42 @@ void DemoScene::OnInitialize()
 
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "Perceval", Shape::Rectangle);
 	player1->GetSprite()->SetOpacity(128);
-	player1->SetAngle(85.0f);
+	player1->SetAngle(0.0f);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
 	m_players.push_back(player1);
 
 	Player* player2 = new Player();
-	player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
+	player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Rectangle);
 	player2->GetSprite()->SetOpacity(45);
 	player2->SetAngle(0.0f);
+	player2->SetIsStatic(true);
 	player2->SetRigidBody(true);
 	player2->ShowCollider(true);
 	m_players.push_back(player2);
 
-	Player* player3 = new Player();
-	player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
-	player3->GetSprite()->SetOpacity(67);
-	player3->SetAngle(8.0f);
-	player3->SetRigidBody(true);
-	player3->ShowCollider(true);
-	m_players.push_back(player3);
+	//Player* player3 = new Player();
+	//player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
+	//player3->GetSprite()->SetOpacity(67);
+	//player3->SetAngle(8.0f);
+	//player3->SetRigidBody(true);
+	//player3->ShowCollider(true);
+	//m_players.push_back(player3);
 
-	Player* player4 = new Player();
-	player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
-	player4->GetSprite()->SetOpacity(200);
-	player4->SetAngle(0.0f);
-	player4->SetRigidBody(true);
-	player4->ShowCollider(true);
-	m_players.push_back(player4);
+	//Player* player4 = new Player();
+	//player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
+	//player4->GetSprite()->SetOpacity(200);
+	//player4->SetAngle(0.0f);
+	//player4->SetRigidBody(true);
+	//player4->ShowCollider(true);
+	//m_players.push_back(player4);
 
-	Player* player5 = new Player();
-	player5 = CreateEntity<Player>({ 1000, 350 }, { 125, 125 }, "Perceval", Shape::Rectangle);
-	player5->SetAngle(0.0f);
-	player5->SetRigidBody(true);
-	player5->ShowCollider(true);
-	m_players.push_back(player5);
+	//Player* player5 = new Player();
+	//player5 = CreateEntity<Player>({ 1000, 350 }, { 125, 125 }, "Perceval", Shape::Rectangle);
+	//player5->SetAngle(0.0f);
+	//player5->SetRigidBody(true);
+	//player5->ShowCollider(true);
+	//m_players.push_back(player5);
 
 	/*for (int i = 0; i < 80; i++)
 	{

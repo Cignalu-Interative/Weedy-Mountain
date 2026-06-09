@@ -77,11 +77,13 @@ private:
 	Shader shader;
 	Mesh quadMesh;
 
+	// Position (x,y,z) + Couleur (r,g,b)
 	std::vector<float> quadVerts = {
-	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f,
-	 0.5f, -0.5f, 0.0f,   1.0f, 0.0f,
-	 0.5f,  0.5f, 0.0f,   1.0f, 1.0f,
-	-0.5f,  0.5f, 0.0f,   0.0f, 1.0f,
+		// pos              couleur
+		0.0f, -0.75f, 0.0f,   1.0f, 0.0f, 0.0f,  // rouge en bas a gauche
+		 0.98f, -0.75f, 0.0f,   0.0f, 1.0f, 0.0f,  // verten bas a droite
+		 0.98f,  0.75f, 0.0f,   0.0f, 0.0f, 1.0f,  // bleu en haut a droite
+		0.0f,  0.75f, 0.0f,   1.0f, 1.0f, 0.0f   // jaune en haut a gauche
 	};
 
 	std::vector<unsigned int> quadIndices = {
@@ -89,9 +91,10 @@ private:
 		2, 3, 0
 	};
 
+	// Attributs : position (loc 0) + couleur (loc 1)
 	std::vector<VertexAttrib> attribs = {
 		{ 0, 3 },  // location 0 → position (vec3)
-		{ 1, 2 },  // location 1 → texcoord (vec2)
+		{ 1, 3 },  // location 1 → couleur (vec3)
 	};
 
 public:

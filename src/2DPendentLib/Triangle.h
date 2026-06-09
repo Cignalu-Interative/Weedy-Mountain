@@ -12,9 +12,9 @@
 
 // Format des données : x, y, z, r, g, b
 static const float s_triangleVertices[] = {
-     -0.5f, -0.5f, 0.0f,  1.0f, 0.0f, 0.0f,  // bas gauche → rouge
-      0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,  // bas droite → vert
-      0.0f,  0.5f, 0.0f,  0.0f, 0.0f, 1.0f   // haut centre → bleu
+     -1.f, -0.75f, 0.0f,  1.0f, 0.0f, 0.0f,  // bas gauche → rouge
+      0.0f, -0.75f, 0.0f,  0.0f, 1.0f, 0.0f,  // bas droite → vert
+      -0.5f,  1.f, 0.0f,  0.0f, 0.0f, 1.0f   // haut centre → bleu
 };
 
 // Nouvelle fonction qui lit un fichier et compile le shader

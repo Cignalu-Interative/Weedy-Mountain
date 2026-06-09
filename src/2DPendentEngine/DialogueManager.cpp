@@ -2,6 +2,27 @@
 #include "DialogueManager.h"
 #include "json.hpp"
 #include "Utils.h"
+#include <regex>
+
+void DialogueManager::ParserDialogueFile(const std::string& p_path)
+{
+	std::ifstream file(p_path);
+	if (!file.is_open())
+	{
+		std::cout << "Engine/DialogueManager.cpp/ParserDialogueFile/failed to open file: %s" << p_path.c_str() << std::endl;
+		return;
+	}
+
+	std::string line; // pour iterer dans chaque ligne du fichier
+
+	while (std::getline(file, line))
+	{
+		
+
+		
+	}
+
+}
 
 DialogueManager* DialogueManager::Get()
 {
@@ -43,7 +64,11 @@ void DialogueManager::AddDialogueByRepertory(const std::string& p_path)
 				continue;
 			}
 
+
+
 			m_dialoguesMap[autoId] = m_dialoguesMap.size();
+			//m_dialoguesMap.push_back(texture);
+			m_dialoguesIdsVector.push_back(autoId);
 		}
 	}
 }

@@ -51,6 +51,14 @@ void Sprite::ChangeTexture(const std::string& p_texturePath)
 {
     m_texture = AssetManager::Get()->GetTexture(p_texturePath);
 }
+void Sprite::SetSourceRectSprite(SDL_Rect p_SDLrect)
+{
+    if (m_srcRect == nullptr)
+    {
+        m_srcRect = new SDL_Rect();
+    }
+    *m_srcRect = p_SDLrect;
+}
 /*
 void Sprite::Update(float p_deltaTimeMs)
 {
@@ -184,7 +192,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     }
 
     // 1. SOURCE : Le morceau à découper dans la texture (ou NULL pour tout afficher)
-    SDL_Rect* srcRect = nullptr;
+    //SDL_Rect* srcRect = nullptr;
     //if (m_totalFrames > 1)  // Sprite sheet ?
     //{
     //    srcRect = new SDL_Rect{
@@ -253,7 +261,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     // 3. Rendu avec ROTATION complète
     if (SDL_RenderCopyExF(renderer, m_texture,
-        srcRect,           // Frame du sprite sheet (ou NULL)
+        m_srcRect,           // Frame du sprite sheet (ou NULL)
         &dstRect,          // Position/taille à l'écran
         GetAngle(),        // Angle Transformable (degrés)
         &rotationCenter,   // Centre rotation pré-calculé
@@ -264,5 +272,5 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     }
 
     // Nettoyage
-    delete srcRect;
+    //delete srcRect;
 }

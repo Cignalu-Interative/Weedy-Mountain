@@ -8,7 +8,7 @@
 
 //Fonction template pour cr�er une entit� dans la sc�ne (seul la Width compte pour le raduis du cercle)
 template<typename T>
-T* Scene::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Shape p_shape, bool p_isGUI)
+	T* Scene::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Shape p_shape, bool p_isGUI, bool p_animation, const std::string & p_jsonAnimation)
 {
 	//bool pour verifier si la class T est une entity si oui value = true
 	static_assert(std::is_base_of_v<Entity, T>, "T must be derived from Entity");
@@ -22,7 +22,7 @@ T* Scene::CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::str
 
 	Entity* entity = newEntity;
 	entity->SetScene(this);
-	entity->Initialize(p_position, p_dimension, p_path, m_application->GetRender(), p_shape, p_isGUI);
+	entity->Initialize(p_position, p_dimension, p_path, m_application->GetRender(), p_shape, p_isGUI, p_animation, p_jsonAnimation);
 	m_application->m_entityToAdd.push_back(newEntity);
 	AddEntity(newEntity);
 
@@ -53,7 +53,7 @@ T* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::str
 	T* button = new T();
 
 	button->SetScene(this);
-	button->Initialize(p_position, p_dimention, p_spritePath, m_application->GetRender(), Shape::Rectangle, p_isGUI);
+	button->Initialize(p_position, p_dimention, p_spritePath, m_application->GetRender(), Shape::Rectangle, p_isGUI, false, "");
 	button->InitText(p_textID, p_text);
 	m_application->m_entityToAdd.push_back(button);
 

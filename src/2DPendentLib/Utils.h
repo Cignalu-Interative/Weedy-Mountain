@@ -1,4 +1,6 @@
 #pragma once
+#include "glad/glad.h"
+#include <SDL.h>
 #include <cmath>
 #include <numbers>
 #include <initializer_list>
@@ -503,6 +505,109 @@ namespace Utils
 
 	template<typename... Args>
 	static std::size_t Max_Arg_Size();
+
+
+
+
+	static void MakeOrtho(float p_mat[16],
+		float left, float right,
+		float bottom, float top,
+		float nearZ = -1.0f, float farZ = 1.0f)
+	{
+		float rL = 1.0f / (right - left);
+		float tB = 1.0f / (top - bottom);
+		float fN = 1.0f / (farZ - nearZ);
+
+		// Zéro d'abord
+		for (int i = 0; i < 16; ++i) p_mat[i] = 0.0f;
+
+		p_mat[0] = 2.0f * rL;
+		p_mat[5] = 2.0f * tB;
+		p_mat[10] = -2.0f * fN;
+		p_mat[12] = -(right + left) * rL;
+		p_mat[13] = -(top + bottom) * tB;
+		p_mat[14] = -(farZ + nearZ) * fN;
+		p_mat[15] = 1.0f;
+	}
+
+	// Matrice modèle 2D (position + taille + rotation)
+	static void MakeModel2D(float p_mat[16],
+		float px, float py,         // position
+		float sx, float sy,         // scale (taille du sprite)
+		float angle = 0.0f)         // rotation en radians
+	{
+		float c = cosf(angle);
+		float s = sinf(angle);
+
+		for (int i = 0; i < 16; ++i) p_mat[i] = 0.0f;
+
+		p_mat[0] = c * sx;
+		p_mat[1] = s * sx;
+		p_mat[4] = -s * sy;
+		p_mat[5] = c * sy;
+		p_mat[10] = 1.0f;
+		p_mat[12] = px;
+		p_mat[13] = py;
+		p_mat[15] = 1.0f;
+	}
+
+	static void CheckGLError(const char* p_location)
+	{
+		GLenum err;
+		while ((err = glGetError()) != GL_NO_ERROR)
+		{
+			const char* msg = "INCONNU";
+			switch (err)
+			{
+			case GL_INVALID_ENUM:      msg = "INVALID_ENUM";      break;
+			case GL_INVALID_VALUE:     msg = "INVALID_VALUE";     break;
+			case GL_INVALID_OPERATION: msg = "INVALID_OPERATION"; break;
+			case GL_OUT_OF_MEMORY:     msg = "OUT_OF_MEMORY";     break;
+			}
+			SDL_Log("[GL] Erreur %s à %s", msg, p_location);
+		}
+	}
+
+	static void APIENTRY GLDebugCallback(GLenum source, GLenum type, GLuint id,
+		GLenum severity, GLsizei length,
+		const GLchar* message, const void* userParam)
+	{
+		// Ignorer les infos non critiques
+		if (severity == GL_DEBUG_SEVERITY_NOTIFICATION) return;
+
+		const char* srcStr = "?";
+		const char* typeStr = "?";
+		const char* sevStr = "?";
+
+		switch (source) {
+		case GL_DEBUG_SOURCE_API:             srcStr = "API";        break;
+		case GL_DEBUG_SOURCE_SHADER_COMPILER: srcStr = "SHADER";     break;
+		case GL_DEBUG_SOURCE_APPLICATION:     srcStr = "APP";        break;
+		}
+		switch (type) {
+		case GL_DEBUG_TYPE_ERROR:             typeStr = "ERREUR";    break;
+		case GL_DEBUG_TYPE_PERFORMANCE:       typeStr = "PERF";      break;
+		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: typeStr = "DEPRECATED"; break;
+		}
+		switch (severity) {
+		case GL_DEBUG_SEVERITY_HIGH:   sevStr = "HAUTE";   break;
+		case GL_DEBUG_SEVERITY_MEDIUM: sevStr = "MOYENNE"; break;
+		case GL_DEBUG_SEVERITY_LOW:    sevStr = "FAIBLE";  break;
+		}
+
+		SDL_Log("[GL DEBUG] [%s][%s][%s] ID=%u : %s", srcStr, typeStr, sevStr, id, message);
+	}
+
+
+	static void EnableGLDebug()
+	{
+		glEnable(GL_DEBUG_OUTPUT);
+		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); // erreurs synchrones (plus facile à debugger)
+		glDebugMessageCallback(GLDebugCallback, nullptr);
+		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION,
+			0, nullptr, GL_FALSE); // silence les notifications
+	}
+
 };
 
 #include "Utils.inl"

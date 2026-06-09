@@ -3,6 +3,7 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#include "Utils.h"
 
 Window::~Window()
 {
@@ -213,6 +214,8 @@ bool Window::CreateWindow()
 		SDL_Log("Lib/Window.cpp/CreateWindow/gladLoadGLLoader/gladLoadGLLoader non reussie : %s", SDL_GetError());
 		return false;
 	}
+
+	Utils::EnableGLDebug();
 
 	glViewport(0, 0, m_windowDimension.GetX(), m_windowDimension.GetY());
 

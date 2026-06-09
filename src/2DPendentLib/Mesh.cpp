@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Mesh.h"
 #include <SDL.h>
+#include "Utils.h"
+
+#define GL_CHECK(call)  call; Utils::CheckGLError(#call)
 
 Mesh::~Mesh()
 {
@@ -69,9 +72,13 @@ void Mesh::Draw() const
 {
     glBindVertexArray(m_vao);
     if (m_indexCount > 0)
-        glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, nullptr);
+    {
+        GL_CHECK(glDrawElements(GL_TRIANGLES, m_indexCount, GL_UNSIGNED_INT, nullptr));
+    }
     else
-        glDrawArrays(GL_TRIANGLES, 0, m_vertexCount);
+    {
+        GL_CHECK(glDrawArrays(GL_TRIANGLES, 0, m_vertexCount));
+    }
 }
 
 void Mesh::Destroy()

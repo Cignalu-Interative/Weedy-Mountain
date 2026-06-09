@@ -65,6 +65,8 @@ void Application::Init()
 	triangle.Init();
 	shader.LoadFromFiles("../../src/2DPendentLib/Shaders/TestShader.vert", "../../src/2DPendentLib/Shaders/TestShader.frag");
 	quadMesh.Upload(quadVerts, attribs, quadIndices);
+	texture.LoadFromFile("../../res/2DPendentEngine/Assets/Textures/Other/Perceval.png");
+	spriteOpenGL.Init(sizeWindow.GetX(), sizeWindow.GetY());
 	
 
 	std::cerr << "Application initialized successfully." << std::endl;
@@ -169,6 +171,7 @@ void Application::HandleInput()
 
 void Application::Update()
 {
+	std::cerr << "FPS : " + std::to_string(GetCurrentFPS()) << std::endl;
 	/*if (SceneManager::Get()->GetCurrentScene() == nullptr)
 	{
 		return;
@@ -334,11 +337,9 @@ void Application::Draw()
 		m_camera->Draw(&m_render, &m_window, m_camera);
 	}
 
-
-
 	triangle.Draw();
 	quadMesh.Draw();
-
+	spriteOpenGL.DrawSprite(texture, 10, 10, 200, 200);
 
 	//m_render.PresentRenderer();
 	m_render.RenderOpenGL(&m_window);

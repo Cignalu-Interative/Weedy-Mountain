@@ -22,6 +22,8 @@
 #include "2DPendentLib/Triangle.h"
 #include "2DPendentLib/Shader.h"
 #include "2DPendentLib/Mesh.h"
+#include "2DPendentLib/Texture2D.h"
+#include "2DPendentLib/SpriteOpenGL.h"
 //Version 3.4.0
 
 class Entity;
@@ -76,6 +78,8 @@ private:
 	Triangle triangle;
 	Shader shader;
 	Mesh quadMesh;
+	Texture2D texture;
+	SpriteOpenGL spriteOpenGL;
 
 	// Position (x,y,z) + Couleur (r,g,b)
 	std::vector<float> quadVerts = {

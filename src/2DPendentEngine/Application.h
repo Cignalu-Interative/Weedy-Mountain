@@ -21,6 +21,7 @@
 #include "2DPendentLib/glm/gtc/type_ptr.hpp"
 #include "2DPendentLib/Triangle.h"
 #include "2DPendentLib/Shader.h"
+#include "2DPendentLib/Mesh.h"
 //Version 3.4.0
 
 class Entity;
@@ -74,6 +75,24 @@ private:
 
 	Triangle triangle;
 	Shader shader;
+	Mesh quadMesh;
+
+	std::vector<float> quadVerts = {
+	-0.5f, -0.5f, 0.0f,   0.0f, 0.0f,
+	 0.5f, -0.5f, 0.0f,   1.0f, 0.0f,
+	 0.5f,  0.5f, 0.0f,   1.0f, 1.0f,
+	-0.5f,  0.5f, 0.0f,   0.0f, 1.0f,
+	};
+
+	std::vector<unsigned int> quadIndices = {
+		0, 1, 2,
+		2, 3, 0
+	};
+
+	std::vector<VertexAttrib> attribs = {
+		{ 0, 3 },  // location 0 → position (vec3)
+		{ 1, 2 },  // location 1 → texcoord (vec2)
+	};
 
 public:
 

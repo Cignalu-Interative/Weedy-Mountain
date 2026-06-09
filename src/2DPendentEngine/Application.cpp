@@ -64,6 +64,7 @@ void Application::Init()
 
 	triangle.Init();
 	shader.LoadFromFiles("../../src/2DPendentLib/Shaders/TestShader.vert", "../../src/2DPendentLib/Shaders/TestShader.frag");
+	quadMesh.Upload(quadVerts, attribs, quadIndices);
 	
 
 	std::cerr << "Application initialized successfully." << std::endl;
@@ -89,6 +90,7 @@ void Application::Run()
 	}
 
 	triangle.Destroy();
+	quadMesh.Destroy();
 }
 
 void Application::Shutdown()
@@ -335,6 +337,7 @@ void Application::Draw()
 
 
 	triangle.Draw();
+	quadMesh.Draw();
 
 
 	//m_render.PresentRenderer();

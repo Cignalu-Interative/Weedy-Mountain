@@ -11,7 +11,11 @@ constexpr int DAYS_PER_WEEK = 7;
 constexpr int DAYS_PER_MONTH = 30;
 constexpr int MONTHS_PER_YEAR = 4;
 
-
+GameData& GameData::Get()
+{
+	static GameData Instance;
+	return Instance;
+}
 
 void GameData::Initialize()
 {

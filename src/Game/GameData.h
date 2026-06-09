@@ -13,8 +13,12 @@ private:
 
 	float m_timeScale = 1.0f;
 
+	GameData() = default;
+
 
 public:
+
+	static GameData& Get();
 
 	void Initialize();
 	void Update();

@@ -1,40 +1,45 @@
 ﻿#include "pch.h"
 #include "FarmTile.h"
 #include "FarmManager.h"
+#include "SpriteContainer.h"
 #include <iostream>
 #include <cmath>
 
+FarmTile::FarmTile()
+{
+    AddSprite("soil", "", GetDimension(), 0, { 0.f,0.f }, GetIsGUI());
+    AddSprite("crop", "", GetDimension(), 1, { 0.f,0.f }, GetIsGUI());
+}
+
 void FarmTile::UpdateVisuals()
 {
-    RemoveSprite("soil");
-    RemoveSprite("soil_w");
-    RemoveSprite("crop");
-
     switch (m_state)
     {
     case FarmTileState::IDLE:
         break;
 
     case FarmTileState::TILLED:
-        AddSprite("soil", "soil_tilled", GetDimension(), 0, { 0.f,0.f }, GetIsGUI());
-        break;
-
     case FarmTileState::WATERED:
-    case FarmTileState::GROWING:
-    case FarmTileState::READY:
-        AddSprite("soil_w", "soil_watered", GetDimension(), 0, { 0.f,0.f }, GetIsGUI());
+        // Bêché sans graine
+        SetSprite("soil", "soil_hole");
         break;
 
     case FarmTileState::PLANTED:
-        AddSprite("soil", "soil_tilled", GetDimension(), 0, { 0.f,0.f }, GetIsGUI());
+        // Graine plantée, pas arrosé
+        SetSprite("soil", "soil_tilled");
+        break;
+
+    case FarmTileState::GROWING:
+    case FarmTileState::READY:
+        // Graine plantée + arrosé
+        SetSprite("soil", "soil_watered");
         break;
     }
 
-    if (m_crop.has_value() && m_state != FarmTileState::TILLED && m_state != FarmTileState::WATERED && m_state != FarmTileState::IDLE)
+    if (m_crop.has_value() && m_growthStage >= 1)
     {
-        int stage = std::min(m_growthStage, (int)m_crop->m_growthSpritePath.size() - 1);
-        const std::string& cropTex = m_crop->m_growthSpritePath[stage];
-        AddSprite("crop", cropTex, GetDimension(), 1, { 0.f,0.f }, GetIsGUI());
+        int spriteIndex = std::min(m_growthStage - 1, (int)m_crop->m_growthSpritePath.size() - 1);
+        SetSprite("crop", m_crop->m_growthSpritePath[spriteIndex]);
     }
 }
 
@@ -44,10 +49,10 @@ int FarmTile::ComputeGrowthStage(int p_currentDay) const
         return 0;
 
     int daysGrown = p_currentDay - m_dayPlanted;
-    int stages = static_cast<int>(m_crop->m_growthSpritePath.size());
-    float ratio = static_cast<float>(daysGrown) / m_crop->m_daysToGrow;
+    int totalStages = 5;
 
-    return std::min(static_cast<int>(ratio * stages), stages - 1);
+    float ratio = static_cast<float>(daysGrown) / m_crop->m_daysToGrow;
+    return std::min(static_cast<int>(ratio * totalStages), totalStages - 1);
 }
 
 void FarmTile::Till(int p_currentDay)
@@ -111,15 +116,10 @@ void FarmTile::Plant(const CropDefinition& p_crop, int p_currentDay)
 
 void FarmTile::Harvest(int p_currentDay)
 {
-    if (m_state != FarmTileState::READY)
-    {
-        std::cout << "[FarmTile] Pas prêt à récolter" << std::endl;
+    if (m_state != FarmTileState::READY) 
         return;
-    }
 
-    int drop = m_crop->m_minDrop + rand() % (m_crop->m_maxDrop - m_crop->m_minDrop + 1);
-
-    std::cout << "[FarmTile] Récolte : " << m_crop->m_name << " x" << drop << " | XP : " << m_crop->m_xpOnHarvest << std::endl;
+    std::cout << "[FarmTile] Récolte : " << m_crop->m_name << " x" << m_crop->m_dropCount << " | XP : " << m_crop->m_xpOnHarvest << std::endl;
 
     m_crop.reset();
     m_growthStage = 0;
@@ -127,6 +127,7 @@ void FarmTile::Harvest(int p_currentDay)
     m_daysWithoutWater = 0;
     m_wateredToday = false;
     m_state = FarmTileState::TILLED;
+    UpdateVisuals(); 
 }
 
 void FarmTile::OnNewDay(int p_currentDay)

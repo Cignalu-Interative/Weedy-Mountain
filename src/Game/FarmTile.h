@@ -35,6 +35,8 @@ private:
 
 public:
 
+    FarmTile();
+
     void OnInitialize() override {}
 
     // Actions joueur

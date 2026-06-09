@@ -10,6 +10,9 @@ class FarmManager
 private:
     std::vector<FarmTile*> m_farmTiles;
     int m_lastDay = -1;
+    int m_lastAgriDay = -1;
+
+    int ComputeAgriDay() const;
 
     FarmManager() = default;
 
@@ -23,7 +26,7 @@ public:
     void RegisterTile(FarmTile* p_tile);
 
     // Appelé chaque frame — déclenche OnNewDay si le jour a changé
-    void Update(int p_currentDay);
+    void Update();
 
     // Trouve la FarmTile la plus proche d'une position monde
     FarmTile* GetNearestTile(Vector2f p_worldPos, float p_maxDistance = 9999.f) const;

@@ -2,6 +2,7 @@
 #include "FarmManager.h"
 #include "2DPendentLib/MapTiled.h"
 #include "CollisionManager.h"
+#include "GameData.h"
 #include <algorithm>
 
 FarmManager* FarmManager::Get()
@@ -43,18 +44,41 @@ void FarmManager::RegisterTile(FarmTile* p_tile)
         m_farmTiles.push_back(p_tile);
 }
 
-void FarmManager::Update(int p_currentDay)
+int FarmManager::ComputeAgriDay() const
 {
-    if (p_currentDay == m_lastDay) 
-        return;
+    constexpr float IRL_SECONDS_PER_GAME_HOUR = 40.0f;
+    constexpr float HOURS_PER_DAY = 24.f;
+    constexpr float SIX_HOURS = 6.f * IRL_SECONDS_PER_GAME_HOUR;
 
-    if (m_lastDay != -1)
+    float secPerDay = HOURS_PER_DAY * IRL_SECONDS_PER_GAME_HOUR;
+    float timeSpent = GameData::Get().GetTimeSpent();
+
+    float shifted = timeSpent - SIX_HOURS;
+
+    if (shifted < 0.f)
+        shifted = 0.f;
+
+    return static_cast<int>(shifted / secPerDay);
+}
+
+void FarmManager::Update()
+{
+    int agriDay = ComputeAgriDay();
+
+    if (agriDay == m_lastAgriDay) return;
+
+    // Nouveau jour agricole détecté (à 6h)
+    if (m_lastAgriDay != -1)
     {
+        int currentDay = GameData::Get().GetDay();
+
         for (FarmTile* tile : m_farmTiles)
-            tile->OnNewDay(p_currentDay);
+            tile->OnNewDay(currentDay);
+
+        std::cout << "[FarmManager] Nouveau jour agricole : " << currentDay << std::endl;
     }
 
-    m_lastDay = p_currentDay;
+    m_lastAgriDay = agriDay;
 }
 
 FarmTile* FarmManager::GetNearestTile(Vector2f p_worldPos, float p_maxDistance) const

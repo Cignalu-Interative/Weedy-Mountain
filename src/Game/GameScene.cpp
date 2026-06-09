@@ -11,6 +11,8 @@
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
 
+#include "FarmTile.h"
+#include "FarmManager.h"
 
 void GameScene::OnInitialize()
 {
@@ -32,6 +34,23 @@ void GameScene::OnInitialize()
 	Tree->GetCollider()->Resize({ 16,16 });
 	Tree->GetCollider()->SetOffset({ 0,28 });
 	GetCamera()->SetZoom(1.75f);
+
+	// TODO : Charger la map
+
+	MapTiled* map = MapTiledManager::Get()->GetCurrentMap();
+
+	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("canGrow");
+	Vector2i tileDim = map->GetTileDimension();
+
+	for (const TileInfo& info : canGrowTiles)
+	{
+		Vector2f center = {
+			info.worldPos.GetX() + tileDim.GetX() / 2.f,
+			info.worldPos.GetY() + tileDim.GetY() / 2.f
+		};
+		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
+		FarmManager::Get()->RegisterTile(tile);
+	}
 }
 
 void GameScene::OnEvent()
@@ -46,6 +65,7 @@ void GameScene::OnEvent()
 void GameScene::OnUpdate()
 {
 	GetCamera()->SetPosition(m_Player->GetPosition());
+	FarmManager::Get()->Update();
 }
 
 void GameScene::OnDestroy()

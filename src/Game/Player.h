@@ -1,5 +1,6 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
+#include "CropDefinition.h" 
 
 enum class JobType
 {
@@ -50,6 +51,11 @@ private:
 	std::vector<bool> m_Walls = { false, false, false, false }; //Top, Bottom, Left, Right
 
 	std::vector<PlayerJob*> m_Jobs;
+
+
+	// TEMP - AGRI
+	CropDefinition m_selectedCrop = CropCatalog::Wheat(); 
+	void HandleFarmAction();
 
 protected:
 

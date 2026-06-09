@@ -234,8 +234,8 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 	if (it != m_texts.end())
 	{
 		Text* text = m_textsVector[it->second];
-		text->SetPosition(p_position);
 		text->SetText(p_text);
+		text->SetPosition(p_position);
 		text->SetColor(p_color);
 		text->SetIsGUI(p_isGUI);
 		text->SetIsClamp(p_clampToScreen);

@@ -10,6 +10,7 @@ enum class JobType
 	Dealer,
 	Count
 };
+
 struct PlayerJob
 {
 	JobType m_name;
@@ -27,7 +28,6 @@ struct PlayerJob
 
 
 };
-
 
 struct PlayerStats {
 	float m_PlayerSpeed = 50.f;

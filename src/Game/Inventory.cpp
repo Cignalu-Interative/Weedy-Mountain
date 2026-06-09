@@ -2,7 +2,7 @@
 #include "Inventory.h"
 #include "ItemDataBase.h"
 #include "ItemStack.h"
-
+#include "SpriteContainer.h"
 #include <cassert>
 
 Inventory::Inventory(int slotCount)

@@ -12,6 +12,7 @@ class Render;
 class Window;
 class Scene;
 class SpriteContainer;
+class Animation;
 
 class Entity : public Transformable
 {
@@ -24,6 +25,8 @@ protected:
 	PhysicsBody* m_physicsBody = nullptr; //Composant physique de l'entité
 
 	Scene* m_scene = nullptr; //Pointeur vers la scène à laquelle l'entité appartient
+
+	Animation* m_animation = nullptr;
 
 	Vector2f m_direction = { 0.0f, 0.0f };
 
@@ -43,7 +46,7 @@ protected:
 	bool m_isVisible = true; //Bool pour savoir si l'entité doit être dessinée à l'écran
 
 	//Fonction pour initialiser l'entité, notamment en définissant sa position, sa dimension, son sprite et son collider
-	void Initialize(Vector2f p_position, Vector2i p_dimention, const std::string& p_path, Render* f_render, Shape p_shape, bool p_isGUI = false);
+	void Initialize(Vector2f p_position, Vector2i p_dimention, const std::string& p_path, Render* f_render, Shape p_shape, bool p_isGUI = false, bool p_animation = false, const std::string& p_jsonAnimation = "");
 	//Fonction pour mettre à jour l'entité, notamment en mettant à jour son sprite et en gérant sa logique de jeu
 	void Update();
 	//Fonction pour dessiner l'entité à l'écran
@@ -126,6 +129,10 @@ public:
 
 	//Ajouter un sprite à l'entité
 	SpriteContainer* AddSprite(const std::string& p_id, const std::string& p_texturePath, Vector2i p_dimension, int p_zOrder = 0, Vector2f p_offset = { 0.f,0.f }, bool p_isGUI = false);
+	//Changer le premier sprite de l'entité (id "default")
+	void SetSprite(const std::string& p_texturePath);
+	//Changer le sprite de l'entité avec son ID
+	void SetSprite(const std::string& p_id, const std::string& p_texturePath);
 	//Supprimer le sprite de l'entité avec son ID
 	void RemoveSprite(const std::string& p_id);
 
@@ -190,6 +197,8 @@ public:
 	void SetIsVisible(bool p_isVisible);
 
 	bool GetIsVisible() const { return m_isVisible; };
+
+	void SetAnimationByName(const std::string& p_nameAnimation);
 
 	//Liste des class amie avec la class Entity
 	friend class CollisionManager;

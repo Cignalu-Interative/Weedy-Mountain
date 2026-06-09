@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "User.h"
 #include "2DPendentLib/InputManager.h"
+#include "SpriteContainer.h"
 
 void EnviroProps::OnInitialize()
 {
@@ -21,10 +22,20 @@ void EnviroProps::OnEvent()
 		Destroy();
 	}
 
-	if (SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition().GetY() < GetPosition().GetY()+16) {
+	Vector2f playerPos = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition();
+
+	if (playerPos.GetY() < GetPosition().GetY()+16) {
 		SetDrawLayer(3);
+		if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30) {
+			GetSprite()->SetOpacity(100);
+		}
+		else GetSprite()->SetOpacity(255);
 	}
 	else SetDrawLayer(1);
+
+
+
+
 }
 
 void EnviroProps::OnUpdate()

@@ -39,9 +39,7 @@ void DemoScene::OnInitialize()
 	m_player = player1;
 	m_players.push_back(player1);
 
-
-	debug.CreateText("t", { 500,500 }, DialogueManager::Get()->GetDialogueById("test", 1), ColorsNamed::White);
-	
+	DialogueManager::Get()->SetDialogueToDraw("test",1);
 
 	//Player* player2 = new Player();
 	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);

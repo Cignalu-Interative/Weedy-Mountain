@@ -79,7 +79,12 @@ void DialogueManager::AddDialogueByPath(const std::string& p_path)
 
 }
 
-std::string DialogueManager::GetDialogueById(const std::string& p_nameFile, int p_id)
+void DialogueManager::SetDialogueToDraw(const std::string& p_nameFile, int p_id)
+{
+	m_currentDialogue = GetDialogueById(p_nameFile, p_id);
+}
+
+Text* DialogueManager::GetDialogueById(const std::string& p_nameFile, int p_id)
 {
 
 	auto it = m_dialoguesMap.find(p_nameFile);
@@ -89,8 +94,7 @@ std::string DialogueManager::GetDialogueById(const std::string& p_nameFile, int 
 		return nullptr;
 	}
 
-	return m_dialoguesVector[m_dialoguesMap[p_nameFile]]->GetTextById(p_id)->GetText();
-
+	return m_dialoguesVector[m_dialoguesMap[p_nameFile]]->GetTextById(p_id);
 }
 
 

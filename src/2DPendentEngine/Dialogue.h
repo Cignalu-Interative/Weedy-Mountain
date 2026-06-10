@@ -21,7 +21,6 @@ private :
 
 
 	std::unordered_map<int, DialogNode> m_dialogues; // int représente la balise de chaque texte
-
 public : 
 
 	Dialogue() = default;

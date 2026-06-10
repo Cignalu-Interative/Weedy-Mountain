@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Dialogue.h"
+#include "DialogueManager.h"
 #include <regex>
 
 Dialogue::~Dialogue()

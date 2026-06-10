@@ -58,6 +58,7 @@ void Application::Init()
 	// La distance maximale à laquelle un son peut être entendu est définie comme la diagonale de la fenêtre, ce qui permet d'entendre les sons dans toute la fenêtre
 	SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
+	DialogueManager::Get()->SetRenderer(m_render.GetRenderer());
 	m_timerFPS.SetCurrentTime();
 
 	std::cerr << "Application initialized successfully." << std::endl;
@@ -316,6 +317,13 @@ void Application::Draw()
 	if (m_camera->GetIsShow())
 	{
 		m_camera->Draw(&m_render, &m_window, m_camera);
+	}
+
+	Text* dialogue = DialogueManager::Get()->GetCurrentDialogue();
+
+	if (dialogue != nullptr)
+	{
+		dialogue->Draw(&m_render, &m_window, m_camera);
 	}
 
 	m_render.PresentRenderer();

@@ -90,9 +90,9 @@ public:
 	void Draw();
 
 	//Fonction pour définir le nombre de frames par seconde cible
-	void SetFPS(int p_targetFPS); 
+	void SetFPS(int p_targetFPS);
 	//Fonction pour limiter les fps en fonction du nombre de frames par seconde cible et du temps écoulé entre deux frames
-	void CapFPS(); 
+	void CapFPS();
 	//Fonction pour mettre à jour le compteur de FPS en utilisant un lissage exponentiel pour éviter les fluctuations brusques
 	// (doit être appelé à chaque frame avec le temps écoulé depuis la dernière frame en nanosecondes)
 	void UpdateFPSCounter();

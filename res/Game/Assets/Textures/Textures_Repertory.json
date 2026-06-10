@@ -1,6 +1,30 @@
 {
   "textures": [
     {
+      "path": "../../res/Game/Assets/Textures/Egg.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/FishingRod.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Helmet.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Hotbar.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/InventorySlot.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Potatoe.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/SunFlower.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/inventory.png"
     },
     {

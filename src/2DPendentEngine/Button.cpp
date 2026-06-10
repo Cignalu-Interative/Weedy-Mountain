@@ -5,11 +5,15 @@
 
 void Button::InitText(const std::string& p_textID, const std::string& p_text)
 {
-	Debug::Get()->CreateText(p_textID, GetPosition(), p_text, {255, 255, 255, 255}, GetIsGUI());
+	m_textID = p_textID;
+	Debug::Get()->CreateText(p_textID, GetPosition(), p_text, { 255, 255, 255, 255 }, GetIsGUI());
 }
 
 void Button::SetText(const std::string& p_text)
 {
+	if (Debug::Get()->GetText(m_textID) == nullptr)
+		return;
+
 	Debug::Get()->GetText(m_textID)->SetText(p_text);
 }
 

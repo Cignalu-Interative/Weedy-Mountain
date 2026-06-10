@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Timer.h"
 #include "Scene.h"
+#include "2DPendentLib/Utils.h"
 #include "MapTiledManager.h"
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
@@ -57,6 +58,7 @@ void Application::Init()
 	// La distance maximale à laquelle un son peut être entendu est définie comme la diagonale de la fenêtre, ce qui permet d'entendre les sons dans toute la fenêtre
 	SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
+	m_timerFPS.SetCurrentTime();
 
 	std::cerr << "Application initialized successfully." << std::endl;
 }
@@ -127,7 +129,7 @@ void Application::FPSDeltaTime()
 void Application::HandleInput()
 {
 	InputManager::Get()->Update();
-	
+
 	if (SceneManager::Get()->IsSceneInStack() == false)
 	{
 		return;
@@ -218,10 +220,10 @@ void Application::Update()
 
 void Application::UpdatePhysics_Collisions()
 {
-	for (Entity* entity : m_entities)
-	{
-		//entity->UpdateMovement_Forces(m_FIX_UPDATE);
-	}
+	//for (Entity* entity : m_entities)
+	//{
+	//	//entity->UpdateMovement_Forces(m_FIX_UPDATE);
+	//}
 
 	std::set<std::pair<Entity*, Entity*>> resolvedPairs;
 
@@ -231,7 +233,7 @@ void Application::UpdatePhysics_Collisions()
 	}
 
 	return;
-	
+
 	for (auto it1 = m_entities.begin(); it1 != m_entities.end(); ++it1)
 	{
 		auto it2 = it1;
@@ -251,7 +253,7 @@ void Application::UpdatePhysics_Collisions()
 					if (colliderA->IsTrigger() || colliderB->IsTrigger())
 						continue;
 
-					if (colliderA->CanCollideWith(colliderB) == false)  
+					if (colliderA->CanCollideWith(colliderB) == false)
 						continue;
 
 					if (Collision::IsColliding(*colliderA, *colliderB) == false)
@@ -371,14 +373,12 @@ void Application::UpdateFPSCounter()
 
 void Application::IsEneableToUpdate()
 {
-	//0.05 secondes correspond à 20 FPS, cela permet d'éviter les problèmes de physique et de logique du jeu qui peuvent survenir
-	// lorsque le temps entre deux frames est trop long (par exemple, lorsque le jeu est mis en pause ou lorsqu'il y a un ralentissement temporaire)
-	// Vaut mieux un temps de mise à jour plus long que de sauter des mises à jour et de causer des problèmes de logique du jeu
-	//double frametime = Utils::LimitMax((double)m_deltaTime, 0.05);
-	m_accumulator += m_deltaTime;
+	m_accumulator += Utils::LimitMax(m_deltaTime, 0.05f);
+
 	while (m_accumulator >= m_FIX_UPDATE)
 	{
 		UpdatePhysics_Collisions();
 		m_accumulator -= m_FIX_UPDATE;
 	}
+
 }

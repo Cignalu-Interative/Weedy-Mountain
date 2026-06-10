@@ -14,7 +14,7 @@ private:
 
 public:
 
-	Inventory(int slotCount = 40);
+	Inventory(int slotCount = 30);
 
 	void OnInitialize() override;
 

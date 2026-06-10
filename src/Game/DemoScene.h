@@ -5,6 +5,7 @@
 
 class User;
 class Player;
+class Inventory;
 class DemoScene : public Scene
 {
 private:
@@ -19,6 +20,9 @@ private:
 	Entity* lastEntitySelected = nullptr;
 
 	const Vector2i m_levelDimension = { 2000, 2000 }; //Dimension du niveau en pixels
+
+
+	Inventory* m_inv = nullptr;
 
 protected:
 

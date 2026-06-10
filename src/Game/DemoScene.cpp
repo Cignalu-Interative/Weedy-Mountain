@@ -30,20 +30,68 @@ void DemoScene::OnInitialize()
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
 
-	CreateEntity<Inventory>({ 960, 540 }, { 577, 303 }, "inventory", Shape::Rectangle, true);
+	m_inv = CreateEntity<Inventory>({ GetWindowWidth() / 2.0f, GetWindowHeight() / 2.0f}, {636, 306}, "InventoryWeedyMountain", Shape::Rectangle, true);
 }
 
 void DemoScene::OnEvent()
 {
 	if (input.IsKeyboardDown(K_a))
 	{
+		m_inv->AddItem(ItemID::ITEM_EGG, 32, false);
+		std::cout << "adddedd" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_z))
+	{
+		m_inv->AddItem(ItemID::ITEM_POTATOE, 32, false);
+		std::cout << "adddedd" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_e))
+	{
+		m_inv->AddItem(ItemID::ITEM_SUN_FLOWER, 32, false);
+		std::cout << "adddedd" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_r))
+	{
+		m_inv->AddItem(ItemID::ITEM_HELMET, 3, false);
+		std::cout << "adddedd" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_t))
+	{
+		m_inv->AddItem(ItemID::ITEM_FISHING_ROD, 3, false);
+		std::cout << "adddedd" << std::endl;
+	}
 
+
+	if (input.IsKeyboardDown(K_q))
+	{
+		m_inv->RemoveItem(ItemID::ITEM_EGG, 32, false);
+		std::cout << "rmv" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_s))
+	{
+		m_inv->RemoveItem(ItemID::ITEM_POTATOE, 32, false);
+		std::cout << "rmv" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_d))
+	{
+		m_inv->RemoveItem(ItemID::ITEM_SUN_FLOWER, 32, false);
+		std::cout << "rmv" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_f))
+	{
+		m_inv->RemoveItem(ItemID::ITEM_HELMET, 3, false);
+		std::cout << "rmv" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_g))
+	{
+		m_inv->RemoveItem(ItemID::ITEM_FISHING_ROD, 3, false);
+		std::cout << "rmv" << std::endl;
 	}
 }
 
 void DemoScene::OnUpdate()
 {
-	std::cout << /*m_inv->GetSlot(0)->GetStack().GetID()*/ "a" << std::endl;
+	std::cout << m_inv->GetSlot(0)->GetStack().GetAmount() << std::endl;
 }
 
 void DemoScene::OnSleep()

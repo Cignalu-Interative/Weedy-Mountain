@@ -17,6 +17,9 @@
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+	MapTiledManager* mm = MapTiledManager::Get();
+	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	mm->SetCurrentMap("Farm");
 
 	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_Player->GetCollider()->SetDimension({ 16,16 });
@@ -35,9 +38,9 @@ void GameScene::OnInitialize()
 	Tree->GetCollider()->SetOffset({ 0,28 });
 	GetCamera()->SetZoom(1.75f);
 
-	// TODO : Charger la map
+	
 
-	MapTiled* map = MapTiledManager::Get()->GetCurrentMap();
+	MapTiled* map = mm->GetCurrentMap();
 
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("canGrow");
 	Vector2i tileDim = map->GetTileDimension();

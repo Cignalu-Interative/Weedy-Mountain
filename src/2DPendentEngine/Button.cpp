@@ -54,21 +54,38 @@ void Button::OnUpdate()
 			m_onHoverExit();
 	}
 
-	// CLICK
+	// LEFT CLICK
 	if (mouseIn && im->IsMouseUp(BUTTON_LEFT))
 	{
-		if (m_onReleaseClick)
-			m_onReleaseClick();
+		if (m_onReleaseLeftClick)
+			m_onReleaseLeftClick();
 	}
 	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
 	{
-		if (m_onClick)
-			m_onClick();
+		if (m_onLeftClick)
+			m_onLeftClick();
 	}
 	else if (mouseIn && im->IsMouseHeld(BUTTON_LEFT))
 	{
-		if (m_onHeldClick)
-			m_onHeldClick();
+		if (m_onHeldLeftClick)
+			m_onHeldLeftClick();
+	}
+
+	// RIGHT CLICK
+	if (mouseIn && im->IsMouseUp(BUTTON_RIGHT))
+	{
+		if (m_onReleaseRightClick)
+			m_onReleaseRightClick();
+	}
+	else if (mouseIn && im->IsMouseDown(BUTTON_RIGHT))
+	{
+		if (m_onRightClick)
+			m_onRightClick();
+	}
+	else if (mouseIn && im->IsMouseHeld(BUTTON_RIGHT))
+	{
+		if (m_onHeldRightClick)
+			m_onHeldRightClick();
 	}
 
 	m_mouseWasIn = mouseIn;

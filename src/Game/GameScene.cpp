@@ -38,8 +38,6 @@ void GameScene::OnInitialize()
 	Tree->GetCollider()->SetOffset({ 0,28 });
 	GetCamera()->SetZoom(1.75f);
 
-	
-
 	MapTiled* map = mm->GetCurrentMap();
 
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("canGrow");
@@ -52,6 +50,7 @@ void GameScene::OnInitialize()
 			info.worldPos.GetY() + tileDim.GetY() / 2.f
 		};
 		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
+		tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}
 }

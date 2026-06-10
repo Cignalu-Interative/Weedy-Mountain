@@ -24,6 +24,9 @@
 #include "2DPendentLib/Mesh.h"
 #include "2DPendentLib/Texture2D.h"
 #include "2DPendentLib/SpriteOpenGL.h"
+
+#include "2DPendentLib/TVVertex.h"
+
 //Version 3.4.0
 
 class Entity;
@@ -75,31 +78,33 @@ private:
 
 
 
-	Triangle triangle;
-	Shader shader;
-	Mesh quadMesh;
-	Texture2D texture;
-	SpriteOpenGL spriteOpenGL;
+	//Triangle triangle;
+	//Shader shader;
+	//Mesh quadMesh;
+	//Texture2D texture;
+	//SpriteOpenGL spriteOpenGL;
 
-	// Position (x,y,z) + Couleur (r,g,b)
-	std::vector<float> quadVerts = {
-		// pos              couleur
-		0.0f, -0.75f, 0.0f,   1.0f, 0.0f, 0.0f,  // rouge en bas a gauche
-		 0.98f, -0.75f, 0.0f,   0.0f, 1.0f, 0.0f,  // verten bas a droite
-		 0.98f,  0.75f, 0.0f,   0.0f, 0.0f, 1.0f,  // bleu en haut a droite
-		0.0f,  0.75f, 0.0f,   1.0f, 1.0f, 0.0f   // jaune en haut a gauche
-	};
+	//// Position (x,y,z) + Couleur (r,g,b)
+	//std::vector<float> quadVerts = {
+	//	// pos              couleur
+	//	0.0f, -0.75f, 0.0f,   1.0f, 0.0f, 0.0f,  // rouge en bas a gauche
+	//	 0.98f, -0.75f, 0.0f,   0.0f, 1.0f, 0.0f,  // verten bas a droite
+	//	 0.98f,  0.75f, 0.0f,   0.0f, 0.0f, 1.0f,  // bleu en haut a droite
+	//	0.0f,  0.75f, 0.0f,   1.0f, 1.0f, 0.0f   // jaune en haut a gauche
+	//};
 
-	std::vector<unsigned int> quadIndices = {
-		0, 1, 2,
-		2, 3, 0
-	};
+	//std::vector<unsigned int> quadIndices = {
+	//	0, 1, 2,
+	//	2, 3, 0
+	//};
 
-	// Attributs : position (loc 0) + couleur (loc 1)
-	std::vector<VertexAttrib> attribs = {
-		{ 0, 3 },  // location 0 → position (vec3)
-		{ 1, 3 },  // location 1 → couleur (vec3)
-	};
+	//// Attributs : position (loc 0) + couleur (loc 1)
+	//std::vector<VertexAttrib> attribs = {
+	//	{ 0, 3 },  // location 0 → position (vec3)
+	//	{ 1, 3 },  // location 1 → couleur (vec3)
+	//};
+
+	TVVertex m_tvVertex;
 
 public:
 
@@ -153,6 +158,7 @@ public:
 
 	void SetDrawFPS(bool p_drawFPS) { m_drawFPS = p_drawFPS; }
 	bool GetDrawFPS() const { return m_drawFPS; }
+
 
 public:
 

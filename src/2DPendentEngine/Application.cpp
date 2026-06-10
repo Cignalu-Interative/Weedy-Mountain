@@ -62,11 +62,14 @@ void Application::Init()
 	m_timerFPS.SetCurrentTime();
 
 
-	triangle.Init();
+	/*triangle.Init();
 	shader.LoadFromFiles("../../src/2DPendentLib/Shaders/TestShader.vert", "../../src/2DPendentLib/Shaders/TestShader.frag");
 	quadMesh.Upload(quadVerts, attribs, quadIndices);
 	texture.LoadFromFile("../../res/2DPendentEngine/Assets/Textures/Other/Perceval.png");
-	spriteOpenGL.Init(sizeWindow.GetX(), sizeWindow.GetY());
+	spriteOpenGL.Init(sizeWindow.GetX(), sizeWindow.GetY());*/
+
+	m_tvVertex.VertexSpecification();
+	m_tvVertex.CreateGraphicsPipeline();
 	
 
 	std::cerr << "Application initialized successfully." << std::endl;
@@ -90,13 +93,14 @@ void Application::Run()
 
 		//SceneManager::Get()->ChangeCurrentScene();
 	}
-
-	triangle.Destroy();
-	quadMesh.Destroy();
 }
 
 void Application::Shutdown()
 {
+	/*triangle.Destroy();
+	quadMesh.Destroy();*/
+
+
 	//detruire toute les instances de chaque classe et les ressources
 	for (Entity* entity : m_entities)
 	{
@@ -171,7 +175,8 @@ void Application::HandleInput()
 
 void Application::Update()
 {
-	std::cerr << "FPS : " + std::to_string(GetCurrentFPS()) << std::endl;
+	//std::cerr << "FPS : " + std::to_string(GetCurrentFPS()) << std::endl;
+
 	/*if (SceneManager::Get()->GetCurrentScene() == nullptr)
 	{
 		return;
@@ -321,7 +326,15 @@ void Application::UpdatePhysics_Collisions()
 void Application::Draw()
 {
 	//m_render.ClearRenderer();
+	glDisable(GL_DEPTH_TEST);
+	glDisable(GL_CULL_FACE);
+
+	Vector2i windowSize = GetWindow()->GetWindowSize();
+	glViewport(0, 0, windowSize.GetX(), windowSize.GetY());
+
 	m_render.ClearOpenGL();
+
+	glUseProgram(m_tvVertex.GetgGraphicsPipelineShaderProgram());
 
 	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
@@ -337,9 +350,9 @@ void Application::Draw()
 		m_camera->Draw(&m_render, &m_window, m_camera);
 	}
 
-	triangle.Draw();
+	/*triangle.Draw();
 	quadMesh.Draw();
-	spriteOpenGL.DrawSprite(texture, 10, 10, 200, 200);
+	spriteOpenGL.DrawSprite(texture, 10, 10, 200, 200);*/
 
 	//m_render.PresentRenderer();
 	m_render.RenderOpenGL(&m_window);

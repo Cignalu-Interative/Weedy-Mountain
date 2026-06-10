@@ -2,6 +2,13 @@
 #include "GameScene.h"
 #include "EnviroProps.h"
 #include "EnviroSpawn.h"
+
+#include "ItemOnGround.h"
+#include "ItemData.h"
+#include "ItemDataBase.h"
+#include "ItemID.h"
+#include "ItemStack.h"
+
 #include "2DPendentLib/InputManager.h"
 #include "2DPendentLib/Utils.h"
 #include "2DPendentLib/AssetManager.h"

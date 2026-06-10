@@ -60,7 +60,6 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Props->SetType(_name);
 	Props->SetTag(2);
 	Props->SetRigidBody(true);
-	Props->ShowCollider(true);
 
 	switch (_name)
 	{
@@ -71,9 +70,8 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 		break;
 	case EnviroSpawnName::Grass:
 		Props->SetRigidBody(false);
+		Props->GetCollider()->Resize({ 16,16 });
 	default:
 		break;
 	}
-
-
 }

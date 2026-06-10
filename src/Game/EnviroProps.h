@@ -3,6 +3,7 @@
 #include "2DPendentEngine/Button.h"
 #include "Tool.h"
 #include "EnviroSpawn.h"
+#include "ItemStack.h"
 
 struct EnviroStats {
 	int m_HitToDestroy = 1;
@@ -10,10 +11,17 @@ struct EnviroStats {
 	std::vector<ToolType> m_ToolType;
 };
 
+struct EnviroLoots {
+	ItemStack m_item;
+	int m_MinDrop;
+	int m_MaxDrop;
+};
+
 class EnviroProps: public Entity
 {
 	EnviroSpawnName m_Name = EnviroSpawnName::Count;
 	EnviroStats m_Stats;
+	std::vector<EnviroLoots> m_Loots;
 
 	bool m_isInPlayerZone = false;
 
@@ -29,6 +37,8 @@ protected:
 	void OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side) override;
 
 	void OnDestroy() override;
+
+	void CreateItem(int lootPos);
 
 public:
 	EnviroProps() = default;

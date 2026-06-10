@@ -5,15 +5,33 @@
 #include "SpriteContainer.h"
 #include <cassert>
 
+const int columns = 10;
+
+const float startX = 350.f;
+const float startY = 250.f;
+
+const float spacing = 35.f;
+
 Inventory::Inventory(int slotCount)
+{
+	m_slotCount = slotCount;
+}
+
+void Inventory::OnInitialize()
 {
 	SetDrawLayer(100);
 
-	for (int i = 0; i < slotCount; i++)
+	for (int i = 0; i < m_slotCount; i++)
 	{
-		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>({ 0, 0 }, { 30, 30 }, "slot", "slot_" + std::to_string(i), "", true);
-		slot->AddSprite("slot_" + std::to_string(i), "", { 30, 30 }, 1, { 0, 0 }, true);
+		int row = i / columns;
+		int col = i % columns;
+
+		Vector2f pos = { startX + col * spacing, startY + row * spacing };
+
+		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 30,30 }, "slot", "slot_" + std::to_string(i), "", true);
+
 		slot->SetDrawLayer(101);
+
 		m_slots.push_back(slot);
 	}
 }

@@ -10,10 +10,13 @@ private:
 
 	std::vector<InventorySlot*> m_slots;
 
+	int m_slotCount;
+
 public:
 
 	Inventory(int slotCount = 40);
 
+	void OnInitialize() override;
 
 	bool CanAdd(ItemID ID, int amount);
 	bool CanRemove(ItemID ID, int amount);

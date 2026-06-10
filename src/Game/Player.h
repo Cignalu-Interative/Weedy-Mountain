@@ -48,8 +48,6 @@ private:
 
 	PlayerStats m_Stats;
 
-	std::vector<bool> m_Walls = { false, false, false, false }; //Top, Bottom, Left, Right
-
 	std::vector<PlayerJob*> m_Jobs;
 
 

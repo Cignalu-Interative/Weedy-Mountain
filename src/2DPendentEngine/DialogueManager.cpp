@@ -1,52 +1,8 @@
 #include "pch.h"
 #include "DialogueManager.h"
+#include "Dialogue.h"
 #include "json.hpp"
 #include "Utils.h"
-#include <regex>
-
-void DialogueManager::ParserDialogueFile(const std::string& p_path)
-{
-	std::ifstream file(p_path);
-	if (!file.is_open())
-	{
-		std::cout << "Engine/DialogueManager.cpp/ParserDialogueFile/failed to open file: %s" << p_path.c_str() << std::endl;
-		return;
-	}
-
-	std::string line; // pour iterer dans chaque ligne du fichier
-
-	std::regex sentence(R"REGEX(@(\d+)\s+"(.*?)\s-\s(.*?)")REGEX");
-	std::regex conditional(R"REGEX(\s+\[([^=]+)"\s*=\s*@(\d+)\s*\])REGEX");
-	std::smatch match; // permet de stocker les valeurs demander par le regex
-
-	while (std::getline(file, line))
-	{
-		DialogNode node;
-
-		if (std::regex_search(line, match, sentence))
-		{
-			node.s_id = std::stoi(match[1]);
-			node.s_speaker = match[2];
-			node.s_text = match[3];
-
-			for (std::sregex_iterator it(line.begin(), line.end(), conditional);
-				it != std::sregex_iterator();
-				++it)
-			{
-				match = *it;
-
-				Choice choice;
-
-				choice.s_label = match[1];
-				choice.s_target = std::stoi(match[2]);
-
-				node.s_choices.push_back(choice);
-			}
-		}
-		m_dialogues.
-
-	}
-}
 
 DialogueManager* DialogueManager::Get()
 {
@@ -65,40 +21,63 @@ DialogueManager::~DialogueManager()
 
 void DialogueManager::AddDialogueByRepertory(const std::string& p_path)
 {
-	//std::ifstream file(p_path);
-	//if (!file.is_open())
-	//{
-	//	std::cout << "Lib/DialogueManager.cpp/AddDialogueByRepertory/failed to open file: %s" << p_path.c_str() << std::endl;
-	//	return;
-	//}
+	std::ifstream file(p_path);
+	if (!file.is_open())
+	{
+		std::cout << "Engine/DialogueManager.cpp/AddDialogueByRepertory/failed to open file: %s" << p_path.c_str() << std::endl;
+		return;
+	}
 
-	//nlohmann::ordered_json assets_json;
-	//file >> assets_json;
+	nlohmann::ordered_json dialogues_json;
+	file >> dialogues_json;
 
-	//for (auto& [categorie, assets] : assets_json.items())
-	//{
-	//	for (auto& asset : assets)
-	//	{
-	//		std::string path = asset["path"].get<std::string>();
-	//		std::string autoId = Utils::GetNameFromPath(path);
-	//		auto it = m_dialoguesMap.find(autoId);
-	//		if (it != m_dialoguesMap.end())
-	//		{
-	//			std::cout << "Lib/AssetManager.cpp/AddTexture/GetNameFromPath/Texture already loaded with ID : %s" << autoId.c_str() << std::endl;
-	//			continue;
-	//		}
+	for (auto& [categorie, assets] : dialogues_json.items())
+	{
+		for (auto& dialogue : assets)
+		{
+			std::string path = dialogue["path"].get<std::string>();
+			std::string txtName = Utils::GetNameFromPath(path);
+			auto it = m_dialoguesMap.find(txtName);
+			if (it != m_dialoguesMap.end())
+			{
+				std::cout << "Engine/DialogueManager.cpp/AddDialogue/GetNameFromPath/Dialogue already loaded with ID : %s" << txtName.c_str() << std::endl;
+				continue;
+			}
 
+			Dialogue* d = new Dialogue();
+			if (d->ParserDialogueFile(path) == false)
+			{
+				std::cout << "Engine/DialogueManager.cpp/AddDialogue/  ParserDialogueFile error" << std::endl;
+				return;
+			}
 
-
-	//		m_dialoguesMap[autoId] = m_dialoguesMap.size();
-	//		//m_dialoguesMap.push_back(texture);
-	//		m_dialoguesIdsVector.push_back(autoId);
-	//	}
-	//}
+			m_dialoguesMap[txtName] = m_dialoguesMap.size();
+			m_dialoguesVector.push_back(d);
+			m_dialoguesIdsVector.push_back(txtName);
+		}
+	}
 }
 
 void DialogueManager::AddDialogueByPath(const std::string& p_path)
 {
+	std::string txtName = Utils::GetNameFromPath(p_path);
+	auto it = m_dialoguesMap.find(txtName);
+	if (it != m_dialoguesMap.end())
+	{
+		SDL_Log("Engine/DialogueManager.cpp/AddDialogueByPath/GetNameFromPath/Texture already loaded with ID : %s", txtName.c_str());
+		return;
+	}
+
+	Dialogue* d = new Dialogue();
+	if (d->ParserDialogueFile(p_path) == false)
+	{
+		std::cout << "Engine/DialogueManager.cpp/AddDialogue/  ParserDialogueFile error" << std::endl;
+		return;
+	}
+
+	m_dialoguesMap[txtName] = m_dialoguesMap.size();
+	m_dialoguesVector.push_back(d);
+	m_dialoguesIdsVector.push_back(txtName);
 }
 
 std::string* DialogueManager::GetDialogue(const std::string& p_name)

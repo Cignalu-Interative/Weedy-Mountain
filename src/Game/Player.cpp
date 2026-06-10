@@ -103,7 +103,7 @@ void Player::UpdateJobs()
 			case 6:
 				UnlockRecipe(Recipes::EnergizingL2);
 				break;
-			}break;
+			}
 
 		case JobType::Farmer:
 			switch (m_Jobs[i]->m_lvl) {
@@ -124,7 +124,7 @@ void Player::UpdateJobs()
 			case 6:
 				UnlockRecipe(Recipes::AutoWateringL2);
 				break;
-			}break;
+			}
 			break;
 
 		case JobType::Miner:
@@ -148,7 +148,7 @@ void Player::UpdateJobs()
 				UnlockRecipe(Recipes::DiamondTools);
 				
 				break;
-			}break;
+			}
 			break;
 
 		case JobType::Dealer:
@@ -168,7 +168,7 @@ void Player::UpdateJobs()
 			case 6:
 				UnlockRecipe(Recipes::CannabisSeed);
 				break;
-			}break;
+			}
 			break;
 
 		case JobType::Killer:
@@ -188,7 +188,7 @@ void Player::UpdateJobs()
 			case 6:
 				UnlockRecipe(Recipes::Rifle);
 				break;
-			}break;
+			}
 			break;
 		}
 	}

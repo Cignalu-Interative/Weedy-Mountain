@@ -70,10 +70,7 @@ struct PlayerStats {
 	float m_miningSpeed = 1.f;
 
 	float m_drugsSellQuantity = 0.f;
-	float m_drugSellEfficency = 1.f;
-
-	
-
+	float m_drugSellEfficency = 1.f; 
 };
 
 

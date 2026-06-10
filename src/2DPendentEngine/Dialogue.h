@@ -5,7 +5,7 @@ class Dialogue
 {
 private : 
 
-	std::unordered_map<int, DialogNode> m_dialogues; // int représente la balise de chaque texte
+	//std::unordered_map<int, DialogNode> m_dialogues; // int représente la balise de chaque texte
 	std::vector<Text*> m_texts;
 
 	Text* m_currentText = nullptr;

@@ -10,7 +10,7 @@ class DialogueManager
 	struct DialogNode {
 		int s_id;
 		std::string s_speaker;
-		Text text;
+		std::string s_text;
 		std::vector<Choice> s_choices;  // vide = pas de question
 	};
 

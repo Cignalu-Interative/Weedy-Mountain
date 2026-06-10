@@ -27,7 +27,7 @@ void DemoScene::OnInitialize()
 	MapTiledManager::Get()->AddMaps("../../res/2DPendentEngine/Assets/Maps/Maps_Repertory.json");
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
-	DialogueManager::Get()->AddDialogueByRepertory("../../res/2DPendentEngine/Assets/Dialogues/Dialogues_Repertory.json");
+	DialogueManager::Get()->ParserDialogueFile("../../res/2DPendentEngine/Assets/Dialogues/Dialogue/test.txt");
 
 
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "16x16 Idle-Sheet", Shape::Rectangle, false, true, "../../res/2DPendentEngine/Assets/Textures/b.json");

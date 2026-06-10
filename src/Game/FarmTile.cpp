@@ -45,15 +45,13 @@ void FarmTile::UpdateVisuals()
     }
 }
 
-int FarmTile::ComputeGrowthStage(int p_currentDay) const
+int FarmTile::ComputeGrowthStage() const
 {
     if (m_crop.has_value() == false) 
         return 0;
 
-    int daysGrown = p_currentDay - m_dayPlanted;
     int totalStages = 5;
-
-    float ratio = static_cast<float>(daysGrown) / m_crop->m_daysToGrow;
+    float ratio = static_cast<float>(m_daysGrown) / m_crop->m_daysToGrow;
     return std::min(static_cast<int>(ratio * totalStages), totalStages - 1);
 }
 
@@ -126,6 +124,7 @@ void FarmTile::Harvest(int p_currentDay)
     m_crop.reset();
     m_growthStage = 0;
     m_dayPlanted = 0;
+    m_daysGrown = 0;
     m_daysWithoutWater = 0;
     m_wateredToday = false;
     m_state = FarmTileState::TILLED;
@@ -134,31 +133,46 @@ void FarmTile::Harvest(int p_currentDay)
 
 void FarmTile::OnNewDay(int p_currentDay)
 {
-    m_wateredToday = false;
-
-    // ── Sol bêché vide — reset après 3 jours sans rien ───────────────
+    // Sol bêché vide - reset après 2 jours sans rien 
     if ((m_state == FarmTileState::TILLED || m_state == FarmTileState::WATERED) && m_crop.has_value() == false)
     {
         int daysSinceTill = p_currentDay - m_dayTilled;
-        if (daysSinceTill >= 3)
+        if (daysSinceTill >= 2)
         {
             m_state = FarmTileState::IDLE;
             m_dayTilled = -1;
             UpdateVisuals();
-            std::cout << "[FarmTile] Sol retourne a l'etat normal (inactivite)" << std::endl;
+            std::cout << "[FarmTile] Sol retourné à l'état normal" << std::endl;
             return;
         }
     }
 
-    if (m_crop.has_value() == false) 
+    if (m_crop.has_value() == false)
+    {
+        if (m_state == FarmTileState::WATERED)
+        {
+            m_state = FarmTileState::TILLED;
+            UpdateVisuals();
+        }
+        m_wateredToday = false;
         return;
+    }
 
-    m_daysWithoutWater++;
+    if (m_wateredToday)
+    {
+        m_daysGrown++;
+        m_daysWithoutWater = 0;
+    }
+    else
+    {
+        m_daysWithoutWater++;
+    }
 
-    // Calcul de la mort par manque d'eau
-    // Jour 3 sans eau = 50%, croissance exponentielle, jour 6 = 100%
+    m_wateredToday = false;
+
+    // Mort par manque d'eau 
     int threshold = m_crop->m_daysWithoutWaterBeforeDeath;
-    int maxDays = threshold * 2; 
+    int maxDays = threshold * 2;
 
     if (m_daysWithoutWater >= threshold)
     {
@@ -168,40 +182,40 @@ void FarmTile::OnNewDay(int p_currentDay)
             m_crop.reset();
             m_state = FarmTileState::TILLED;
             m_growthStage = 0;
+            m_daysGrown = 0;
             m_daysWithoutWater = 0;
             UpdateVisuals();
             return;
         }
 
-        // Probabilité de mort exponentielle entre threshold et maxDays
-        // jour 3 = 50%, jour 4 ≈ 65%, jour 5 ≈ 82%, jour 6 = 100%
         float t = static_cast<float>(m_daysWithoutWater - threshold) / static_cast<float>(maxDays - threshold);
-        float deathChance = 1.f - std::pow(1.f - t, 2.f); 
-
+        float deathChance = 1.f - std::pow(1.f - t, 2.f);
         float roll = static_cast<float>(rand()) / RAND_MAX;
+
         if (roll < deathChance)
         {
             std::cout << "[FarmTile] Plante morte (chance=" << static_cast<int>(deathChance * 100) << "%)" << std::endl;
             m_crop.reset();
             m_state = FarmTileState::TILLED;
             m_growthStage = 0;
+            m_daysGrown = 0;
             m_daysWithoutWater = 0;
             UpdateVisuals();
             return;
         }
     }
 
-    m_growthStage = ComputeGrowthStage(p_currentDay);
+    // Progression
+    m_growthStage = ComputeGrowthStage();
 
-    int maxStage = static_cast<int>(m_crop->m_growthSpritePath.size()) - 1;
-    if (m_growthStage >= maxStage && p_currentDay - m_dayPlanted >= m_crop->m_daysToGrow)
+    if (m_daysGrown >= m_crop->m_daysToGrow)
     {
         m_state = FarmTileState::READY;
-        std::cout << "[FarmTile] " << m_crop->m_name << " pret a recolter !" << std::endl;
+        std::cout << "[FarmTile] " << m_crop->m_name << " prêt !" << std::endl;
     }
     else
     {
-        m_state = m_wateredToday ? FarmTileState::GROWING : FarmTileState::PLANTED;
+        m_state = FarmTileState::PLANTED;
     }
 
     UpdateVisuals();

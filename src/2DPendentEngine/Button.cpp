@@ -14,6 +14,11 @@ void Button::SetText(const std::string& p_text)
 	Debug::Get()->GetText(m_textID)->SetText(p_text);
 }
 
+void Button::SetTextOffset(const Vector2f& p_offset)
+{
+	Debug::Get()->GetText(m_textID)->SetPosition(GetPosition() + p_offset);
+}
+
 bool Button::IsMouseIn()
 {
 	InputManager* im = InputManager::Get();

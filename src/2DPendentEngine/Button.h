@@ -39,6 +39,7 @@ public:
 
 	void InitText(const std::string& p_textID, const std::string& p_text);
 	void SetText(const std::string& p_text);
+	void SetTextOffset(const Vector2f& p_offset);
 
 	bool IsMouseIn();
 

@@ -18,6 +18,21 @@ class TilesetTiled;
 class PropertyTiled;
 class ObjectGroupTiled;
 class ImageLayerTiled;
+
+// Struct de retour pour les requêtes de tiles
+struct TileInfo
+{
+	int gid = 0;
+	Vector2i gridPos;               // coordonnées grille (colonne, ligne)
+	Vector2f worldPos;              // coin haut-gauche en pixels
+	TilesetTiled* tileset = nullptr;
+	TileTiled* tileTiled = nullptr;   // nullptr si pas de propriétés custom
+	LayerTiled* layer = nullptr;
+
+	bool IsEmpty() const { return gid == 0; }
+	bool IsValid() const { return layer != nullptr && !IsEmpty(); }
+};
+
 class MapTiled : public Transformable
 {
 private:
@@ -103,4 +118,30 @@ public:
 	TilesetTiled* GetTilesetByName(const std::string& p_name);
 	ObjectGroupTiled* GetObjectGroupByName(const std::string& p_name);
 	ImageLayerTiled* GetImageLayerByName(const std::string& p_name);
+
+	// Conversions coordonnées 
+	Vector2i WorldToGrid(Vector2f p_worldPos) const;
+	Vector2f GridToWorld(Vector2i p_gridPos) const;
+
+	// Accès à une tile
+	// p_layerName = "" -> cherche dans tous les layers, retourne le premier GID non nul
+	TileInfo GetTileAtWorld(Vector2f p_worldPos, const std::string& p_layerName = "") const;
+	TileInfo GetTileAtGrid(Vector2i p_gridPos, const std::string& p_layerName = "") const;
+
+	// Propriétés d'une tile 
+	PropertyTiled* GetTilePropertyAtWorld(Vector2f p_worldPos, const std::string& p_propertyName, const std::string& p_layerName = "") const;
+	PropertyTiled* GetTilePropertyAtGrid(Vector2i p_gridPos, const std::string& p_propertyName, const std::string& p_layerName = "") const;
+	bool TileHasPropertyAtWorld(Vector2f p_worldPos, const std::string& p_propertyName, const std::string& p_layerName = "") const;
+	bool TileHasPropertyAtGrid(Vector2i p_gridPos, const std::string& p_propertyName, const std::string& p_layerName = "") const;
+
+	// Recherche par propriété 
+	std::vector<TileInfo> GetAllTilesWithProperty(const std::string& p_propertyName, const std::string& p_layerName = "") const;
+
+	// Helpers internes
+	TilesetTiled* GetTilesetForGID(int p_gid)  const;
+	TileTiled* GetTileTiledForGID(int p_gid) const;
+
+	// Placement d'entités
+	// Retourne les positions monde (coin haut-gauche) de toutes les tiles ayant la propriété
+	std::vector<Vector2f> GetWorldPositionsWithProperty(const std::string& p_propertyName, const std::string& p_layerName = "") const;
 };

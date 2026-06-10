@@ -9,9 +9,13 @@ private:
 
 	bool m_mouseWasIn = false;
 
-	std::function<void()> m_onClick;
-	std::function<void()> m_onHeldClick;
-	std::function<void()> m_onReleaseClick;
+	std::function<void()> m_onLeftClick;
+	std::function<void()> m_onHeldLeftClick;
+	std::function<void()> m_onReleaseLeftClick;
+
+	std::function<void()> m_onRightClick;
+	std::function<void()> m_onHeldRightClick;
+	std::function<void()> m_onReleaseRightClick;
 
 	std::function<void()> m_onHoverEnter;
 	std::function<void()> m_onHoverStay;
@@ -21,9 +25,13 @@ public:
 	Button() = default;
 	~Button() = default;
 
-	void SetOnClick(std::function<void()> p_function) { m_onClick = p_function; }
-	void SetOnHeldClick(std::function<void()> p_function) { m_onHeldClick = p_function; }
-	void SetOnReleaseClick(std::function<void()> p_function) { m_onReleaseClick = p_function; }
+	void SetOnLeftClick(std::function<void()> p_function) { m_onLeftClick = p_function; }
+	void SetOnHeldLeftClick(std::function<void()> p_function) { m_onHeldLeftClick = p_function; }
+	void SetOnReleaseLeftClick(std::function<void()> p_function) { m_onReleaseLeftClick = p_function; }
+
+	void SetOnRightClick(std::function<void()> p_function) { m_onRightClick = p_function; }
+	void SetOnHeldRightClick(std::function<void()> p_function) { m_onHeldRightClick = p_function; }
+	void SetOnReleaseRightClick(std::function<void()> p_function) { m_onReleaseRightClick = p_function; }
 
 	void SetOnHoverEnter(std::function<void()> p_function) { m_onHoverEnter = p_function; }
 	void SetOnHoverStay(std::function<void()> p_function) { m_onHoverStay = p_function; }
@@ -31,6 +39,7 @@ public:
 
 	void InitText(const std::string& p_textID, const std::string& p_text);
 	void SetText(const std::string& p_text);
+	void SetTextOffset(const Vector2f& p_offset);
 
 	bool IsMouseIn();
 

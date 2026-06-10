@@ -2,6 +2,7 @@
 #include "Button.h"
 #include "Debug.h"
 #include "InputManager.h"
+#include "Application.h"
 
 void Button::InitText(const std::string& p_textID, const std::string& p_text)
 {
@@ -17,11 +18,18 @@ void Button::SetText(const std::string& p_text)
 	Debug::Get()->GetText(m_textID)->SetText(p_text);
 }
 
+void Button::SetTextOffset(const Vector2f& p_offset)
+{
+	Debug::Get()->GetText(m_textID)->SetPosition(GetPosition() + p_offset);
+}
+
 bool Button::IsMouseIn()
 {
 	InputManager* im = InputManager::Get();
 	Vector2f mousePos = im->GetMousePosition();
-	Vector2f pos = GetPosition({0.f, 0.f});
+	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetPosition({0.f, 0.f}));
+	std::cout << pos.GetX() << " " << pos.GetY() << std::endl;
+	std::cout << mousePos.GetX() << " " << mousePos.GetY() << std::endl;
 	int w = GetCollider()->GetDimension().GetX();
 	int h = GetCollider()->GetDimension().GetY();
 
@@ -55,21 +63,38 @@ void Button::OnUpdate()
 			m_onHoverExit();
 	}
 
-	// CLICK
+	// LEFT CLICK
 	if (mouseIn && im->IsMouseUp(BUTTON_LEFT))
 	{
-		if (m_onReleaseClick)
-			m_onReleaseClick();
+		if (m_onReleaseLeftClick)
+			m_onReleaseLeftClick();
 	}
 	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
 	{
-		if (m_onClick)
-			m_onClick();
+		if (m_onLeftClick)
+			m_onLeftClick();
 	}
 	else if (mouseIn && im->IsMouseHeld(BUTTON_LEFT))
 	{
-		if (m_onHeldClick)
-			m_onHeldClick();
+		if (m_onHeldLeftClick)
+			m_onHeldLeftClick();
+	}
+
+	// RIGHT CLICK
+	if (mouseIn && im->IsMouseUp(BUTTON_RIGHT))
+	{
+		if (m_onReleaseRightClick)
+			m_onReleaseRightClick();
+	}
+	else if (mouseIn && im->IsMouseDown(BUTTON_RIGHT))
+	{
+		if (m_onRightClick)
+			m_onRightClick();
+	}
+	else if (mouseIn && im->IsMouseHeld(BUTTON_RIGHT))
+	{
+		if (m_onHeldRightClick)
+			m_onHeldRightClick();
 	}
 
 	m_mouseWasIn = mouseIn;

@@ -110,7 +110,7 @@ bool Window::CreateWindow()
 	// avec des fonctionnalités de débogage, un double buffering pour éviter les artefacts visuels, un stencil buffer pour des opérations de masquage avancées,
 	// et le multisampling pour améliorer la qualité visuelle en réduisant les effets d'aliasing.
 	// Ces paramètres sont couramment utilisés dans les applications graphiques modernes pour garantir une expérience de rendu fluide et de haute qualité.
-	if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 2) < 0)
+	if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1) < 0)
 	{
 		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_GL_SetAttribute/SDL_GL_MULTISAMPLEBUFFERS non reussie : %s", SDL_GetError());
 		return false;
@@ -199,8 +199,6 @@ bool Window::CreateWindow()
 		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_CreateWindow/SDL_CreateWindow non reussie : %s", SDL_GetError());
 		return false;
 	}
-
-	//////////////////////////////////////////
 
 	m_glContext = SDL_GL_CreateContext(m_window);
 	if (m_glContext == NULL)

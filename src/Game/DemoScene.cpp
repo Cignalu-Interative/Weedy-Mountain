@@ -98,7 +98,7 @@ void DemoScene::OnInitialize()
 	Vector2f listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
 	Vector2f soundPos = listenerPos + Vector2f(0.0f, -distance);
 	sound.GetSound("Monsieur")->SetPosition(soundPos);
-	SoundManager::Get()->Play("music1", -1);
+	//SoundManager::Get()->Play("music1", -1);
 
 	/*int a = 0;
 	int b = 1;

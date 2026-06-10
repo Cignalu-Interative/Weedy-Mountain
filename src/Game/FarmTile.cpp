@@ -7,12 +7,14 @@
 
 FarmTile::FarmTile()
 {
-    AddSprite("soil", "", GetDimension(), 0, { 0.f,0.f }, GetIsGUI());
-    AddSprite("crop", "", GetDimension(), 1, { 0.f,0.f }, GetIsGUI());
+
 }
 
 void FarmTile::UpdateVisuals()
 {
+    RemoveSprite("soil");
+    RemoveSprite("crop");
+
     switch (m_state)
     {
     case FarmTileState::IDLE:
@@ -21,25 +23,25 @@ void FarmTile::UpdateVisuals()
     case FarmTileState::TILLED:
     case FarmTileState::WATERED:
         // Bêché sans graine
-        SetSprite("soil", "soil_hole");
+        AddSprite("soil", "soil_hole", GetDimension(), 1, { 0.f, 0.f }, GetIsGUI());
         break;
 
     case FarmTileState::PLANTED:
         // Graine plantée, pas arrosé
-        SetSprite("soil", "soil_tilled");
+        AddSprite("soil", "soil_tilled", GetDimension(), 1, { 0.f,0.f }, GetIsGUI());
         break;
 
     case FarmTileState::GROWING:
     case FarmTileState::READY:
         // Graine plantée + arrosé
-        SetSprite("soil", "soil_watered");
+        AddSprite("soil", "soil_watered", GetDimension(), 1, { 0.f,0.f }, GetIsGUI());
         break;
     }
 
     if (m_crop.has_value() && m_growthStage >= 1)
     {
         int spriteIndex = std::min(m_growthStage - 1, (int)m_crop->m_growthSpritePath.size() - 1);
-        SetSprite("crop", m_crop->m_growthSpritePath[spriteIndex]);
+        AddSprite("crop", m_crop->m_growthSpritePath[spriteIndex], GetDimension(), 2, { 0.f,-5.f }, GetIsGUI());
     }
 }
 
@@ -64,7 +66,7 @@ void FarmTile::Till(int p_currentDay)
         m_dayTilled = -1;
         m_wateredToday = false;
         UpdateVisuals();
-        std::cout << "[FarmTile] Dé-bêché" << std::endl;
+        std::cout << "[FarmTile] De-beche" << std::endl;
         return;
     }
 
@@ -74,7 +76,7 @@ void FarmTile::Till(int p_currentDay)
         m_dayTilled = p_currentDay;
         m_wateredToday = false;
         UpdateVisuals();
-        std::cout << "[FarmTile] Bêché" << std::endl;
+        std::cout << "[FarmTile] Beche" << std::endl;
     }
 }
 
@@ -94,14 +96,14 @@ void FarmTile::Water(int p_currentDay)
         m_state = FarmTileState::GROWING;
 
     UpdateVisuals();
-    std::cout << "[FarmTile] Arrosé" << std::endl;
+    std::cout << "[FarmTile] Arrose" << std::endl;
 }
 
 void FarmTile::Plant(const CropDefinition& p_crop, int p_currentDay)
 {
     if (m_state != FarmTileState::TILLED && m_state != FarmTileState::WATERED)
     {
-        std::cout << "[FarmTile] Impossible de planter : sol non bêché" << std::endl;
+        std::cout << "[FarmTile] Impossible de planter : sol non beche" << std::endl;
         return;
     }
 
@@ -111,7 +113,7 @@ void FarmTile::Plant(const CropDefinition& p_crop, int p_currentDay)
     m_state = m_wateredToday ? FarmTileState::GROWING : FarmTileState::PLANTED;
 
     UpdateVisuals();
-    std::cout << "[FarmTile] Planté : " << p_crop.m_name << std::endl;
+    std::cout << "[FarmTile] Plante : " << p_crop.m_name << std::endl;
 }
 
 void FarmTile::Harvest(int p_currentDay)
@@ -119,7 +121,7 @@ void FarmTile::Harvest(int p_currentDay)
     if (m_state != FarmTileState::READY) 
         return;
 
-    std::cout << "[FarmTile] Récolte : " << m_crop->m_name << " x" << m_crop->m_dropCount << " | XP : " << m_crop->m_xpOnHarvest << std::endl;
+    std::cout << "[FarmTile] Recolte : " << m_crop->m_name << " x" << m_crop->m_dropCount << " | XP : " << m_crop->m_xpOnHarvest << std::endl;
 
     m_crop.reset();
     m_growthStage = 0;
@@ -143,7 +145,7 @@ void FarmTile::OnNewDay(int p_currentDay)
             m_state = FarmTileState::IDLE;
             m_dayTilled = -1;
             UpdateVisuals();
-            std::cout << "[FarmTile] Sol retourné à l'état normal (inactivité)" << std::endl;
+            std::cout << "[FarmTile] Sol retourne a l'etat normal (inactivite)" << std::endl;
             return;
         }
     }
@@ -195,7 +197,7 @@ void FarmTile::OnNewDay(int p_currentDay)
     if (m_growthStage >= maxStage && p_currentDay - m_dayPlanted >= m_crop->m_daysToGrow)
     {
         m_state = FarmTileState::READY;
-        std::cout << "[FarmTile] " << m_crop->m_name << " prêt à récolter !" << std::endl;
+        std::cout << "[FarmTile] " << m_crop->m_name << " pret a recolter !" << std::endl;
     }
     else
     {

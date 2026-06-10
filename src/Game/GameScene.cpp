@@ -13,6 +13,8 @@
 
 #include "FarmTile.h"
 #include "FarmManager.h"
+#include "GameData.h"
+#include "2DPendentLib/Debug.h"
 
 void GameScene::OnInitialize()
 {
@@ -20,6 +22,10 @@ void GameScene::OnInitialize()
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Farm");
+
+	GameData& gm = GameData::Get();
+	gm.SetTimeScale(100);
+	gm.Initialize();
 
 	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_Player->GetCollider()->SetDimension({ 16,16 });
@@ -39,11 +45,12 @@ void GameScene::OnInitialize()
 	Tree->GetCollider()->Resize({ 16,16 });
 	Tree->GetCollider()->SetOffset({ 0,28 });
 	
-	GetCamera()->SetZoom(1.75f);
+	GetCamera()->SetZoom(5.f);
 
 	MapTiled* map = mm->GetCurrentMap();
 
-	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("canGrow");
+	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
+	int size = canGrowTiles.size();
 	Vector2i tileDim = map->GetTileDimension();
 
 	for (const TileInfo& info : canGrowTiles)
@@ -53,9 +60,13 @@ void GameScene::OnInitialize()
 			info.worldPos.GetY() + tileDim.GetY() / 2.f
 		};
 		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->ShowCollider(true);
+		tile->GetCollider()->SetLayer(1);
+		tile->GetCollider()->SetMask(2);
+		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}
+
+	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 }
 
 void GameScene::OnEvent()
@@ -71,6 +82,9 @@ void GameScene::OnUpdate()
 {
 	GetCamera()->SetPosition(m_Player->GetPosition());
 	FarmManager::Get()->Update();
+	GameData& gm = GameData::Get();
+	gm.Update();
+	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 }
 
 void GameScene::OnDestroy()

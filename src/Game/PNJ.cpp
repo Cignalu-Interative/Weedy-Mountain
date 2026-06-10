@@ -4,8 +4,17 @@
 
 void PNJ::OnInitialize()
 {
-	GetScene()->CreateText("dialog", Vector2f(GetPosition().GetX(), GetPosition().GetY() + 20), "", Color(255, 255, 255, 255), false);
+	GetScene()->CreateFillRect("dialogBox", Vector2f(GetScene()->GetWindowWidth()/2, GetScene()->GetWindowHeight() - 100), Vector2i(200, 100), Color(255, 255, 255, 255), true);
+	GetScene()->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
+
+	float rectX = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition().GetX();
+	float rectY = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition().GetY();
+	float rectWidth = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetDimension().GetX();
+	float rectHeight = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetDimension().GetY();
+
+	GetScene()->CreateText("dialog", Vector2f(rectX - rectWidth  /3, rectY - rectHeight / 2.5f), "", Color(0, 0, 0, 255), true);
 	Debug::Get()->GetText("dialog")->SetFontSize(17);
+	Debug::Get()->GetText("dialog")->SetIsVisible(false);
 }
 
 void PNJ::OnEvent()
@@ -37,11 +46,15 @@ void PNJ::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side
 void PNJ::Talk(const std::string& p_say)
 {
 	m_isTalking = true;
+	
+	GetScene()->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
 	Debug::Get()->GetText("dialog")->SetText(p_say);
+	Debug::Get()->GetText("dialog")->SetIsVisible(true);
 }
 
 void PNJ::EndTalk()
 {
-	Debug::Get()->GetText("dialog")->SetText("");
+	GetScene()->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
+	Debug::Get()->GetText("dialog")->SetIsVisible(false);
 	m_isTalking = false;
 }

@@ -16,7 +16,7 @@ void DialogueManager::ParserDialogueFile(const std::string& p_path)
 	std::string line; // pour iterer dans chaque ligne du fichier
 
 	std::regex sentence(R"REGEX(@(\d+)\s+"(.*?)\s-\s(.*?)")REGEX");
-	std::regex conditional(R"REGEX(:\s+\[([^=]+)=\s+@(\d+)\s+\])REGEX");
+	std::regex conditional(R"REGEX(\s+\[([^=]+)"\s*=\s*@(\d+)\s*\])REGEX");
 	std::smatch match; // permet de stocker les valeurs demander par le regex
 
 	while (std::getline(file, line))
@@ -28,16 +28,6 @@ void DialogueManager::ParserDialogueFile(const std::string& p_path)
 			node.s_id = std::stoi(match[1]);
 			node.s_speaker = match[2];
 			node.s_text = match[3];
-
-			//while (std::regex_search(line, match, conditional))
-			//{
-			//	Choice choice;
-
-			//	choice.s_label = match[1];
-			//	choice.s_target = std::stoi(match[2]);
-
-			//	node.s_choices.push_back(choice);
-			//}
 
 			for (std::sregex_iterator it(line.begin(), line.end(), conditional);
 				it != std::sregex_iterator();
@@ -52,8 +42,9 @@ void DialogueManager::ParserDialogueFile(const std::string& p_path)
 
 				node.s_choices.push_back(choice);
 			}
-
 		}
+		m_dialogues.
+
 	}
 }
 

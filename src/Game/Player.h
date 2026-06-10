@@ -46,8 +46,9 @@ class Player : public Entity
 private:
 
 	PlayerStats m_Stats;
-
 	std::vector<PlayerJob*> m_Jobs;
+
+	bool m_isInDialog = false;
 
 protected:
 
@@ -68,7 +69,8 @@ public:
 
 
 	std::vector<PlayerJob*>& GetJobs() { return m_Jobs; }
-
 	PlayerStats& GetStats() { return m_Stats; }
+
+	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
 };
 

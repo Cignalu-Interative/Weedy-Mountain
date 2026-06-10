@@ -55,7 +55,7 @@ Text::~Text()
 void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color)
 {
 	SetColor(p_color);
-	if (m_text == "")
+	if (p_text == "")
 	{
 		m_text = " ";
 	}

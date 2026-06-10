@@ -15,8 +15,8 @@ private :
 	{
 		int s_id;
 		std::string s_speaker;
-		std::string s_text;
-		std::vector<Choice> s_choices;  // vide = pas de question
+		Text s_text;
+		std::vector<Choice*> s_choices;  // vide = pas de question
 	};
 
 
@@ -34,9 +34,8 @@ public :
 
 	void JumpToBalise(int p_balise);
 
-	//int GetId();
-	//std::string GetSpeaker();
-	//std::string GetText;
+	std::string* GetSpeakerById(int p_id);
+	Text* GetTextById (int p_id);
 
 };
 

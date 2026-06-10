@@ -8,6 +8,7 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
+#include "DialogueManager.h"
 
 Application::Application()
 {

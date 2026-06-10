@@ -29,7 +29,7 @@ bool Dialogue::ParserDialogueFile(const std::string& p_path)
 		{
 			node.s_id = std::stoi(match[1]);
 			node.s_speaker = match[2];
-			node.s_text = match[3];
+			node.s_text.Initialize({}, match[3]);
 
 			for (std::sregex_iterator it(line.begin(), line.end(), conditional);
 				it != std::sregex_iterator();
@@ -42,7 +42,7 @@ bool Dialogue::ParserDialogueFile(const std::string& p_path)
 				choice.s_label = match[1];
 				choice.s_target = std::stoi(match[2]);
 
-				node.s_choices.push_back(choice);
+				node.s_choices.push_back(&choice);
 			}
 		}
 		m_dialogues[node.s_id] = node;
@@ -59,4 +59,14 @@ void Dialogue::SetNextDialogue()
 
 void Dialogue::JumpToBalise(int p_balise)
 {
+}
+
+std::string* Dialogue::GetSpeakerById(int p_id)
+{
+	return &m_dialogues[p_id].s_speaker;
+}
+
+Text* Dialogue::GetTextById(int p_id)
+{
+	return &m_dialogues[p_id].s_text;
 }

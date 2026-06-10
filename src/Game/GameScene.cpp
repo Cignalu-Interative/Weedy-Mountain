@@ -26,6 +26,14 @@ void GameScene::OnInitialize()
 	m_Player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_Player->ShowCollider(true);
+
+	
+	m_pnj = CreateEntity<PNJ>({ 350,200 }, { 16,32 }, "player", Shape::Rectangle);
+	m_pnj->GetCollider()->SetDimension({ 16,16 });
+	m_pnj->GetCollider()->SetOffset({ 0,8 });
+	m_pnj->SetRigidBody(true);
+	m_pnj->ShowCollider(true);
+
 	EnviroProps* Tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
 	Tree->SetType(EnviroSpawnName::Tree);
 	Tree->ShowCollider(true);
@@ -49,6 +57,10 @@ void GameScene::OnEvent()
 void GameScene::OnUpdate()
 {
 	GetCamera()->SetPosition(m_Player->GetPosition());
+	if (m_pnj->IsTalking())
+		m_Player->SetIsInDialog(true);
+	else
+		m_Player->SetIsInDialog(false);
 }
 
 void GameScene::OnDestroy()

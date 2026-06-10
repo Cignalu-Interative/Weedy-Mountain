@@ -26,14 +26,14 @@ void EnviroProps::OnEvent()
 
 	if (playerPos.GetY() < GetPosition().GetY()+16) {
 		SetDrawLayer(3);
-		if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30) {
-			GetSprite()->SetOpacity(100);
-		}
-		else GetSprite()->SetOpacity(255);
+
 	}
 	else SetDrawLayer(1);
 
-
+	if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30 && GetDrawLayer() == 3 && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
+		GetSprite()->SetOpacity(100);
+	}
+	else GetSprite()->SetOpacity(255);
 
 
 }
@@ -67,31 +67,31 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 
 	switch (p_name) {
 	case EnviroSpawnName::Tree:
-		m_Name = EnviroName::Tree;
+		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 4;
 		m_Stats.m_MinToolsRarity = Rarity::Stone;
 		m_Stats.m_ToolType = { ToolType::Axe };
 		break;
 	case EnviroSpawnName::Shrub:
-		m_Name = EnviroName::Shrub;
+		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 2;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Axe };
 		break;
 	case EnviroSpawnName::Grass:
-		m_Name = EnviroName::Grass;
+		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 1;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Hoe, ToolType::Spade};
 		break;
 	case EnviroSpawnName::Rock:
-		m_Name = EnviroName::Rock;
+		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 2;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Pickaxe };
 		break;
 	case EnviroSpawnName::Stone:
-		m_Name = EnviroName::Stone;
+		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 4;
 		m_Stats.m_MinToolsRarity = Rarity::Iron;
 		m_Stats.m_ToolType = { ToolType::Pickaxe };

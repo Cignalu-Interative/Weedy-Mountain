@@ -59,7 +59,8 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Props = gs->CreateEntity<EnviroProps>({ Aleatory::GetFloat(0.f, 200.f), Aleatory::GetFloat(0.f, 200.f) }, { 128,128 }, "", Shape::Rectangle);
 	Props->SetType(_name);
 	Props->SetTag(2);
-
+	Props->SetRigidBody(true);
+	Props->ShowCollider(true);
 
 	switch (_name)
 	{
@@ -68,6 +69,8 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 		Props->GetCollider()->Resize({ 16,16 });
 		Props->GetCollider()->SetOffset({ 0,28 });
 		break;
+	case EnviroSpawnName::Grass:
+		Props->SetRigidBody(false);
 	default:
 		break;
 	}

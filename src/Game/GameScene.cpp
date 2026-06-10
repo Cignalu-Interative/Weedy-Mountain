@@ -19,18 +19,21 @@ void GameScene::OnInitialize()
 	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_Player->GetCollider()->SetDimension({ 16,16 });
 	m_Player->GetCollider()->SetOffset({ 0,8 });
+	m_Player->SetRigidBody(true);
 	m_Player->GetCollider()->SetID("playerCollider");
 	m_Player->SetTag(1);
 	m_Player->SetDrawLayer(2);
 	m_Player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_Player->ShowCollider(true);
-	EnviroProps* Tree = CreateEntity<EnviroProps>({200,200},{128,128}, "player", Shape::Rectangle);
+	EnviroProps* Tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
 	Tree->SetType(EnviroSpawnName::Tree);
 	Tree->ShowCollider(true);
+	Tree->SetRigidBody(true);
 	Tree->SetTag(2);
 	Tree->GetCollider()->Resize({ 16,16 });
 	Tree->GetCollider()->SetOffset({ 0,28 });
+	
 	GetCamera()->SetZoom(1.75f);
 }
 

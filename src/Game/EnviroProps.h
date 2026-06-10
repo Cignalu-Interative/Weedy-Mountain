@@ -3,20 +3,8 @@
 #include "2DPendentEngine/Button.h"
 #include "Tool.h"
 #include "EnviroSpawn.h"
-enum class EnviroName
-{
-	Tree,
-	Shrub,
-	Grass,
-	Rock,
-	Stone,
-
-	Count
-};
 
 struct EnviroStats {
-	int m_MinSpawn = 0;
-	int m_MaxSpawn = 1;
 	int m_HitToDestroy = 1;
 	Rarity m_MinToolsRarity = Rarity::Wooden;
 	std::vector<ToolType> m_ToolType;
@@ -24,7 +12,7 @@ struct EnviroStats {
 
 class EnviroProps: public Entity
 {
-	EnviroName m_Name = EnviroName::Count;
+	EnviroSpawnName m_Name = EnviroSpawnName::Count;
 	EnviroStats m_Stats;
 
 	bool m_isInPlayerZone = false;

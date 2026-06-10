@@ -25,10 +25,12 @@ DemoScene::DemoScene()
 
 void DemoScene::OnInitialize()
 {
-	AssetManager::Get()->AddTextureByRepertory("../../res/2DPendentEngine/Assets/Textures/Textures_Repertory.json");
+	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 	MapTiledManager::Get()->AddMaps("../../res/2DPendentEngine/Assets/Maps/Maps_Repertory.json");
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
+
+	CreateEntity<Inventory>({ 960, 540 }, { 577, 303 }, "inventory", Shape::Rectangle, true);
 }
 
 void DemoScene::OnEvent()

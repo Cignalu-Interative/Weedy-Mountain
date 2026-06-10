@@ -7,9 +7,6 @@
 
 const int columns = 10;
 
-const float startX = 350.f;
-const float startY = 250.f;
-
 const float spacing = 35.f;
 
 Inventory::Inventory(int slotCount)
@@ -20,6 +17,9 @@ Inventory::Inventory(int slotCount)
 void Inventory::OnInitialize()
 {
 	SetDrawLayer(100);
+
+	float startX = GetPosition({ 0, 0 }).GetX() + 50.f;
+	float startY = GetPosition({ 0, 0 }).GetY() + 50.f;
 
 	for (int i = 0; i < m_slotCount; i++)
 	{

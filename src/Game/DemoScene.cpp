@@ -101,6 +101,8 @@ void DemoScene::OnInitialize()
 	sound.GetSound("Monsieur")->SetPosition(soundPos);
 	SoundManager::Get()->Play("music1", -1);
 
+	GetCamera()->SetSmoothSpeed(5.0f);
+
 	/*int a = 0;
 	int b = 1;
 	Utils::SwapValue(a, b);
@@ -113,49 +115,49 @@ void DemoScene::OnInitialize()
 	debug.CreatePoint("g", { 1150, 250 }, Color(0, 255, 0, 255), true);
 	debug.CreatePoint("b", { 1050, 350 }, Color(0, 0, 250, 255), true);*/
 
-	CreateFillCircle("1", Vector2f(25, 25), { 25, 25 }, ColorsNamed::Black, true);
-	CreateFillCircle("2", Vector2f(75, 25), { 25, 25 }, ColorsNamed::Blue, true);
-	CreateFillCircle("3", Vector2f(125, 25), { 25, 25 }, ColorsNamed::Brown, true);
-	CreateFillCircle("4", Vector2f(175, 25), { 25, 25 }, ColorsNamed::DarkBlue, true);
-	CreateFillCircle("5", Vector2f(225, 25), { 25, 25 }, ColorsNamed::DarkBrown, true);
-	CreateFillCircle("6", Vector2f(275, 25), { 25, 25 }, ColorsNamed::DarkGold, true);
-	CreateFillCircle("7", Vector2f(325, 25), { 25, 25 }, ColorsNamed::DarkGray, true);
-	CreateFillCircle("8", Vector2f(375, 25), { 25, 25 }, ColorsNamed::DarkGreen, true);
-	CreateFillCircle("9", Vector2f(425, 25), { 25, 25 }, ColorsNamed::DarkIndigo, true);
-	CreateFillCircle("10", Vector2f(475, 25), { 25, 25 }, ColorsNamed::DarkOrange, true);
-	CreateFillCircle("11", Vector2f(525, 25), { 25, 25 }, ColorsNamed::DarkPink, true);
-	CreateFillCircle("12", Vector2f(575, 25), { 25, 25 }, ColorsNamed::DarkRed, true);
-	CreateFillCircle("13", Vector2f(625, 25), { 25, 25 }, ColorsNamed::DarkSilver, true);
-	CreateFillCircle("14", Vector2f(675, 25), { 25, 25 }, ColorsNamed::DarkTurquoise, true);
-	CreateFillCircle("15", Vector2f(725, 25), { 25, 25 }, ColorsNamed::DarkViolet, true);
-	CreateFillCircle("16", Vector2f(775, 25), { 25, 25 }, ColorsNamed::DarkYellow, true);
-	CreateFillCircle("17", Vector2f(825, 25), { 25, 25 }, ColorsNamed::DimGray, true);
-	CreateFillCircle("18", Vector2f(875, 25), { 25, 25 }, ColorsNamed::Gold, true);
-	CreateFillCircle("19", Vector2f(925, 25), { 25, 25 }, ColorsNamed::Gray, true);
-	CreateFillCircle("20", Vector2f(975, 25), { 25, 25 }, ColorsNamed::Green, true);
-	CreateFillCircle("21", Vector2f(1025, 25), { 25, 25 }, ColorsNamed::Indigo, true);
-	CreateFillCircle("22", Vector2f(1075, 25), { 25, 25 }, ColorsNamed::LightBlue, true);
-	CreateFillCircle("23", Vector2f(1125, 25), { 25, 25 }, ColorsNamed::LightBrown, true);
-	CreateFillCircle("24", Vector2f(1175, 25), { 25, 25 }, ColorsNamed::LightGold, true);
-	CreateFillCircle("25", Vector2f(1225, 25), { 25, 25 }, ColorsNamed::LightGray, true);
-	CreateFillCircle("26", Vector2f(25, 75), { 25, 25 }, ColorsNamed::LightGreen, true);
-	CreateFillCircle("27", Vector2f(75, 75), { 25, 25 }, ColorsNamed::LightIndigo, true);
-	CreateFillCircle("28", Vector2f(125, 75), { 25, 25 }, ColorsNamed::LightOrange, true);
-	CreateFillCircle("29", Vector2f(175, 75), { 25, 25 }, ColorsNamed::LightPink, true);
-	CreateFillCircle("30", Vector2f(225, 75), { 25, 25 }, ColorsNamed::LightRed, true);
-	CreateFillCircle("31", Vector2f(275, 75), { 25, 25 }, ColorsNamed::LightTurquoise, true);
-	CreateFillCircle("32", Vector2f(325, 75), { 25, 25 }, ColorsNamed::LightViolet, true);
-	CreateFillCircle("33", Vector2f(375, 75), { 25, 25 }, ColorsNamed::LightYellow, true);
-	CreateFillCircle("34", Vector2f(425, 75), { 25, 25 }, ColorsNamed::Orange, true);
-	CreateFillCircle("35", Vector2f(475, 75), { 25, 25 }, ColorsNamed::Pink, true);
-	CreateFillCircle("36", Vector2f(525, 75), { 25, 25 }, ColorsNamed::Red, true);
-	CreateFillCircle("37", Vector2f(575, 75), { 25, 25 }, ColorsNamed::Silver, true);
-	CreateFillCircle("38", Vector2f(625, 75), { 25, 25 }, ColorsNamed::Turquoise, true);
-	CreateFillCircle("39", Vector2f(675, 75), { 25, 25 }, ColorsNamed::VeryLightGray, true);
-	CreateFillCircle("40", Vector2f(725, 75), { 25, 25 }, ColorsNamed::VeryLightSilver, true);
-	CreateFillCircle("41", Vector2f(775, 75), { 25, 25 }, ColorsNamed::Violet, true);
-	CreateFillCircle("42", Vector2f(825, 75), { 25, 25 }, ColorsNamed::White, true);
-	CreateFillCircle("43", Vector2f(875, 75), { 25, 25 }, ColorsNamed::Yellow, true);
+	//CreateFillCircle("1", Vector2f(25, 25), { 25, 25 }, ColorsNamed::Black, true);
+	//CreateFillCircle("2", Vector2f(75, 25), { 25, 25 }, ColorsNamed::Blue, true);
+	//CreateFillCircle("3", Vector2f(125, 25), { 25, 25 }, ColorsNamed::Brown, true);
+	//CreateFillCircle("4", Vector2f(175, 25), { 25, 25 }, ColorsNamed::DarkBlue, true);
+	//CreateFillCircle("5", Vector2f(225, 25), { 25, 25 }, ColorsNamed::DarkBrown, true);
+	//CreateFillCircle("6", Vector2f(275, 25), { 25, 25 }, ColorsNamed::DarkGold, true);
+	//CreateFillCircle("7", Vector2f(325, 25), { 25, 25 }, ColorsNamed::DarkGray, true);
+	//CreateFillCircle("8", Vector2f(375, 25), { 25, 25 }, ColorsNamed::DarkGreen, true);
+	//CreateFillCircle("9", Vector2f(425, 25), { 25, 25 }, ColorsNamed::DarkIndigo, true);
+	//CreateFillCircle("10", Vector2f(475, 25), { 25, 25 }, ColorsNamed::DarkOrange, true);
+	//CreateFillCircle("11", Vector2f(525, 25), { 25, 25 }, ColorsNamed::DarkPink, true);
+	//CreateFillCircle("12", Vector2f(575, 25), { 25, 25 }, ColorsNamed::DarkRed, true);
+	//CreateFillCircle("13", Vector2f(625, 25), { 25, 25 }, ColorsNamed::DarkSilver, true);
+	//CreateFillCircle("14", Vector2f(675, 25), { 25, 25 }, ColorsNamed::DarkTurquoise, true);
+	//CreateFillCircle("15", Vector2f(725, 25), { 25, 25 }, ColorsNamed::DarkViolet, true);
+	//CreateFillCircle("16", Vector2f(775, 25), { 25, 25 }, ColorsNamed::DarkYellow, true);
+	//CreateFillCircle("17", Vector2f(825, 25), { 25, 25 }, ColorsNamed::DimGray, true);
+	//CreateFillCircle("18", Vector2f(875, 25), { 25, 25 }, ColorsNamed::Gold, true);
+	//CreateFillCircle("19", Vector2f(925, 25), { 25, 25 }, ColorsNamed::Gray, true);
+	//CreateFillCircle("20", Vector2f(975, 25), { 25, 25 }, ColorsNamed::Green, true);
+	//CreateFillCircle("21", Vector2f(1025, 25), { 25, 25 }, ColorsNamed::Indigo, true);
+	//CreateFillCircle("22", Vector2f(1075, 25), { 25, 25 }, ColorsNamed::LightBlue, true);
+	//CreateFillCircle("23", Vector2f(1125, 25), { 25, 25 }, ColorsNamed::LightBrown, true);
+	//CreateFillCircle("24", Vector2f(1175, 25), { 25, 25 }, ColorsNamed::LightGold, true);
+	//CreateFillCircle("25", Vector2f(1225, 25), { 25, 25 }, ColorsNamed::LightGray, true);
+	//CreateFillCircle("26", Vector2f(25, 75), { 25, 25 }, ColorsNamed::LightGreen, true);
+	//CreateFillCircle("27", Vector2f(75, 75), { 25, 25 }, ColorsNamed::LightIndigo, true);
+	//CreateFillCircle("28", Vector2f(125, 75), { 25, 25 }, ColorsNamed::LightOrange, true);
+	//CreateFillCircle("29", Vector2f(175, 75), { 25, 25 }, ColorsNamed::LightPink, true);
+	//CreateFillCircle("30", Vector2f(225, 75), { 25, 25 }, ColorsNamed::LightRed, true);
+	//CreateFillCircle("31", Vector2f(275, 75), { 25, 25 }, ColorsNamed::LightTurquoise, true);
+	//CreateFillCircle("32", Vector2f(325, 75), { 25, 25 }, ColorsNamed::LightViolet, true);
+	//CreateFillCircle("33", Vector2f(375, 75), { 25, 25 }, ColorsNamed::LightYellow, true);
+	//CreateFillCircle("34", Vector2f(425, 75), { 25, 25 }, ColorsNamed::Orange, true);
+	//CreateFillCircle("35", Vector2f(475, 75), { 25, 25 }, ColorsNamed::Pink, true);
+	//CreateFillCircle("36", Vector2f(525, 75), { 25, 25 }, ColorsNamed::Red, true);
+	//CreateFillCircle("37", Vector2f(575, 75), { 25, 25 }, ColorsNamed::Silver, true);
+	//CreateFillCircle("38", Vector2f(625, 75), { 25, 25 }, ColorsNamed::Turquoise, true);
+	//CreateFillCircle("39", Vector2f(675, 75), { 25, 25 }, ColorsNamed::VeryLightGray, true);
+	//CreateFillCircle("40", Vector2f(725, 75), { 25, 25 }, ColorsNamed::VeryLightSilver, true);
+	//CreateFillCircle("41", Vector2f(775, 75), { 25, 25 }, ColorsNamed::Violet, true);
+	//CreateFillCircle("42", Vector2f(825, 75), { 25, 25 }, ColorsNamed::White, true);
+	//CreateFillCircle("43", Vector2f(875, 75), { 25, 25 }, ColorsNamed::Yellow, true);
 }
 
 void DemoScene::OnEvent()
@@ -359,9 +361,9 @@ void DemoScene::OnEvent()
 
 	if (entitySelected != nullptr)
 	{
-		if (input.IsKeyboardHeld(K_UP))
+		if (input.IsKeyboardHeld(K_z))
 		{
-			std::cerr << "Jump" << std::endl;
+			//std::cerr << "Jump" << std::endl;
 			if (entitySelected->GetPhysicsBody())
 			{
 				std::cerr << "has physics body" << std::endl;
@@ -378,15 +380,15 @@ void DemoScene::OnEvent()
 				entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), -1.0f });
 			}
 		}
-		if (input.IsKeyboardHeld(K_DOWN))
+		if (input.IsKeyboardHeld(K_s))
 		{
 			entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), 1.0f });
 		}
-		if (input.IsKeyboardHeld(K_LEFT))
+		if (input.IsKeyboardHeld(K_q))
 		{
 			entitySelected->SetDirection({ -1.0f, entitySelected->GetDirection().GetY() });
 		}
-		if (input.IsKeyboardHeld(K_RIGHT))
+		if (input.IsKeyboardHeld(K_d))
 		{
 			entitySelected->SetDirection({ 1.0f, entitySelected->GetDirection().GetY() });
 		}
@@ -519,7 +521,7 @@ void DemoScene::OnEvent()
 		Vector2f after = GetCamera()->ScreenToWorld(mouseScreen);
 		Vector2f delta = before - after;
 
-		GetCamera()->SetPosition(GetCamera()->GetPosition() + delta);
+		//GetCamera()->SetPosition(GetCamera()->GetPosition() + delta);
 		std::cerr << "Mouse Scrolled Up" << std::endl;
 	}
 
@@ -559,10 +561,10 @@ void DemoScene::OnUpdate()
 
 	if (entitySelected != nullptr)
 	{
-		SoundManager::Get()->SetListener(entitySelected);
+		//SoundManager::Get()->SetListener(entitySelected);
 
-		Vector2f camTargetPos = entitySelected->GetPosition();
-		GetCamera()->SetPosition(camTargetPos);
+		//Vector2f camTargetPos = entitySelected->GetPosition();
+		//GetCamera()->SetPosition(camTargetPos);
 
 
 		//std::cerr << "player pos : " << camTargetPos.GetX() << " " << camTargetPos.GetY() << std::endl;

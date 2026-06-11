@@ -19,10 +19,8 @@ private:
 
 	float m_smoothSpeed = 5;
 
-	bool m_follow = true; 
-
 public:
-	bool GetFollow() { return m_follow; }
+
 	//Constructeur de Camera, il prend en paramètre la position et la dimension de la caméra
 	Camera(Vector2i p_dimension, Vector2f p_position = Vector2f(0.0f, 0.0f), Vector2f p_anchor = Vector2f(0.0f, 0.0f), float p_zoomFactor = 1.0f);
 	//Destructeur de Camera
@@ -48,6 +46,9 @@ public:
 
 	void SetIsShow(bool p_isShow) { m_isShow = p_isShow; }
 	bool GetIsShow() const { return m_isShow; }
+
+	void SetSmoothSpeed(float p_smoothSpeed) { m_smoothSpeed = p_smoothSpeed; }
+	float GetSmoothSpeed() const { return m_smoothSpeed; }
 
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 };

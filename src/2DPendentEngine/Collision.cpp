@@ -4,78 +4,6 @@
 #include "Utils.h"
 #include "Entity.h"
 
-//bool Collision::AABB(const Rectangle& p_a, const Rectangle& p_b)
-//{
-//	Vector2f positionA = p_a.GetPosition();
-//	Vector2 dimensionA = p_a.GetDimension();
-//	Vector2f positionB = p_b.GetPosition();
-//	Vector2 dimensionB = p_b.GetDimension();
-//	// Vérifie si les rectangles ne se chevauchent pas
-//	return !(
-//		positionB.GetX() > positionA.GetX() + dimensionA.GetX() ||
-//		positionB.GetX() + dimensionB.GetX() < positionA.GetX() ||
-//		positionB.GetY() > positionA.GetY() + dimensionA.GetY() ||
-//		positionB.GetY() + dimensionB.GetY() < positionA.GetY());
-//}
-//
-//bool Collision::CBC(const Circle& p_a, const Circle& p_b)
-//{
-//	Vector2f positionA = p_a.GetPosition();
-//	Vector2f positionB = p_b.GetPosition();
-//
-//	float dx = positionA.GetX() - positionB.GetX();
-//	float dy = positionA.GetY() - positionB.GetY();
-//
-//	float distance = std::sqrt(dx * dx + dy * dy);
-//
-//	// Les cercles se touchent si la distance entre leurs centres est inférieure à la somme de leurs rayons
-//	return distance < (p_a.GetRadius() + p_b.GetRadius());
-//}
-//
-//bool Collision::ARC(const Rectangle& p_rect, const Circle& p_circle)
-//{
-//	Vector2f rectPosition = p_rect.GetPosition();
-//	Vector2 rectDimension = p_rect.GetDimension();
-//	Vector2f circlePosition = p_circle.GetPosition();
-//	int circleR = p_circle.GetRadius();
-//
-//	float closestX = std::clamp(circlePosition.GetX(), rectPosition.GetX(), rectPosition.GetX() + rectDimension.GetX());
-//	float closestY = std::clamp(circlePosition.GetY(), rectPosition.GetY(), rectPosition.GetY() + rectDimension.GetY());
-//	float dx = circlePosition.GetX() - closestX;
-//	float dy = circlePosition.GetY() - closestY;
-//
-//	// Le cercle et le rectangle se touchent si la distance entre le centre du cercle et le point le plus proche du rectangle est inférieure au rayon du cercle
-//	return (dx * dx + dy * dy) < (circleR * circleR);
-//}
-//
-//bool Collision::IsColliding(const Collider& p_a, const Collider& p_b)
-//{
-//	Shape shapeA = p_a.GetShape();
-//	Shape shapeB = p_b.GetShape();
-//
-//	// Rectangle vs Rectangle = AABB
-//	if (shapeA == Shape::Rectangle && shapeB == Shape::Rectangle)
-//	{
-//		return AABB(p_a.GetShapeCollider<Rectangle>(), p_b.GetShapeCollider<Rectangle>());
-//	}
-//	// Circle vs Circle = CBC
-//	if (shapeA == Shape::Circle && shapeB == Shape::Circle)
-//	{
-//		return CBC(p_a.GetShapeCollider<Circle>(), p_b.GetShapeCollider<Circle>());
-//	}
-//	// Rectangle vs Circle = ARC (les 2 sens)
-//	if (shapeA == Shape::Rectangle && shapeB == Shape::Circle)
-//	{
-//		return ARC(p_a.GetShapeCollider<Rectangle>(), p_b.GetShapeCollider<Circle>());
-//	}
-//	// Circle vs Rectangle = ARC (les 2 sens)
-//	if (shapeA == Shape::Circle && shapeB == Shape::Rectangle)
-//	{
-//		return ARC(p_b.GetShapeCollider<Rectangle>(), p_a.GetShapeCollider<Circle>());
-//	}
-//	return false;
-//}
-
 // Projette les coins sur un axe et retourne [min, max]
 std::pair<float, float> Collision::Project(const std::array<Vector2f, 4>& p_corners, Vector2f p_axis)
 {
@@ -109,18 +37,14 @@ bool Collision::Collision_AABB(const Collider& p_rectA, const Collider& p_rectB)
 
 bool Collision::Collision_CBC(const Collider& p_circleA, const Collider& p_circleB)
 {
-Vector2f positionA = p_circleA.GetPosition();
+	Vector2f positionA = p_circleA.GetPosition();
     Vector2f positionB = p_circleB.GetPosition();
 
     float distance = Utils::Distance(positionA, positionB);
-    float sommeDimention = p_circleA.GetDimension().GetX() / 2 + p_circleB.GetDimension().GetX() / 2;
-    float carreDimention = sommeDimention * sommeDimention;
-    /*float dx = positionA.GetX() - positionB.GetX();
-    float dy = positionA.GetY() - positionB.GetY();
+    float sommeDimension = p_circleA.GetDimension().GetX() / 2 + p_circleB.GetDimension().GetX() / 2;
+    float carreDimension = sommeDimension * sommeDimension;
 
-    float distance = std::sqrt(dx dx + dy * dy);*/
-
-    return distance < carreDimention; 
+    return distance < carreDimension; 
 }
 
 bool Collision::Collision_ARC(const Collider& p_rect, const Collider& p_circle)

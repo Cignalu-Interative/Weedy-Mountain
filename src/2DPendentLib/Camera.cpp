@@ -47,10 +47,6 @@ void Camera::Follow(Entity* p_entity, float p_deltaTime)
     SetPosition({ lerpX,lerpY });
 }
 
-void Camera::ClampToWorld()
-{
-}
-
 void Camera::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
     Vector2i margin = { 2, 2 };

@@ -34,8 +34,6 @@ public:
 
 	void Follow(Entity* p_entity, float p_deltaTime);
 
-	void ClampToWorld();
-
 	//MONDE -> ECRAN
 	template<typename T>
 	Vector2<T> WorldToScreen(Vector2<T> p_worldPos) const;

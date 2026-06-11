@@ -31,6 +31,7 @@ void DemoScene::OnInitialize()
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "Perceval", Shape::Rectangle);
 	//player1->GetSprite()->SetOpacity(128);
 	player1->SetAngle(85.0f);
+	player1->SetSpeed(50.f);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
 	m_player = player1;
@@ -554,6 +555,7 @@ void DemoScene::OnUpdate()
 {
 	//TestVélocité();
 	float dt = GetDeltaTime();
+	std::cout << dt << std::endl;
 	Vector2f positionSound = sound.GetSoundPosition("Monsieur");
 	if (m_player != nullptr)
 		GetCamera()->Follow(m_player, dt);

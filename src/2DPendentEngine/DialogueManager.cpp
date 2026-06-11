@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "DialogueManager.h"
-#include "Dialogue.h"
 #include "json.hpp"
 #include "Utils.h"
 
@@ -79,12 +78,7 @@ void DialogueManager::AddDialogueByPath(const std::string& p_path)
 
 }
 
-void DialogueManager::SetDialogueToDraw(const std::string& p_nameFile, int p_id)
-{
-	m_currentDialogue = GetDialogueById(p_nameFile, p_id);
-}
-
-Text* DialogueManager::GetDialogueById(const std::string& p_nameFile, int p_id)
+std::string* DialogueManager::GetDialogueById(const std::string& p_nameFile, int p_id)
 {
 
 	auto it = m_dialoguesMap.find(p_nameFile);
@@ -94,7 +88,18 @@ Text* DialogueManager::GetDialogueById(const std::string& p_nameFile, int p_id)
 		return nullptr;
 	}
 
-	return m_dialoguesVector[m_dialoguesMap[p_nameFile]]->GetTextById(p_id);
+	return m_dialoguesVector[it->second]->GetTextById(p_id);
+}
+
+std::vector<Dialogue::Choice> DialogueManager::GetChoicesById(const std::string& p_nameFile, int p_id)
+{
+	auto it = m_dialoguesMap.find(p_nameFile);
+	if (it == m_dialoguesMap.end())
+	{
+		SDL_Log("Engine/DialogueManager.cpp/GetDialogueById/find/Choices with id '%s' not found", p_nameFile.c_str());
+	}
+
+	return m_dialoguesVector[it->second]->GetChoicesById(p_id);
 }
 
 

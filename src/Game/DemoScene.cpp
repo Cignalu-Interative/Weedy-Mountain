@@ -12,6 +12,8 @@
 #include "2DPendentLib/FontManager.h"
 #include "2DPendentEngine/DialogueManager.h"
 
+#include "Dialogue.h"
+
 inline Debug& debug = *Debug::Get();
 inline InputManager& input = *InputManager::Get();
 inline SoundManager& sound = *SoundManager::Get();
@@ -39,7 +41,17 @@ void DemoScene::OnInitialize()
 	m_player = player1;
 	m_players.push_back(player1);
 
-	DialogueManager::Get()->SetDialogueToDraw("test",1);
+	debug.CreateText("test", {},*DialogueManager::Get()->GetDialogueById("test", 1), ColorsNamed::White);
+
+	std::vector test = DialogueManager::Get()->GetChoicesById("test", 2);
+	for(Dialogue::Choice choice : test)
+	{
+		static int i = 1;
+		std::string id = choice.s_label + std::to_string(i++);
+		CreateButton({ 960, 960 }, { 150, 50 }, "", id, choice.s_label, true)->SetOnClick([id, choice] {
+			Debug::Get()->GetText(id)->SetText(*DialogueManager::Get()->GetDialogueById("test", choice.s_target));
+			});
+	}
 
 	//Player* player2 = new Player();
 	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
@@ -161,6 +173,7 @@ void DemoScene::OnInitialize()
 	//CreateFillCircle("41", Vector2f(775, 75), { 25, 25 }, ColorsNamed::Violet, true);
 	//CreateFillCircle("42", Vector2f(825, 75), { 25, 25 }, ColorsNamed::White, true);
 	//CreateFillCircle("43", Vector2f(875, 75), { 25, 25 }, ColorsNamed::Yellow, true);
+
 }
 
 void DemoScene::OnEvent()

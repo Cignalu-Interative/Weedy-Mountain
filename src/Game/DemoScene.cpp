@@ -10,6 +10,9 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
+#include "2DPendentEngine/DialogueManager.h"
+
+#include "Dialogue.h"
 
 inline Debug& debug = *Debug::Get();
 inline InputManager& input = *InputManager::Get();
@@ -26,6 +29,8 @@ void DemoScene::OnInitialize()
 	MapTiledManager::Get()->AddMaps("../../res/2DPendentEngine/Assets/Maps/Maps_Repertory.json");
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
+	//DialogueManager::Get()->AddDialogueByRepertory("../../res/2DPendentEngine/Assets/Dialogues/Dialogues_Repertory.json");
+	DialogueManager::Get()->AddDialogueByPath("../../res/2DPendentEngine/Assets/Dialogues/Dialogue/test.txt");
 
 
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "16x16 Idle-Sheet", Shape::Rectangle, false, true, "../../res/2DPendentEngine/Assets/Textures/b.json");
@@ -35,6 +40,22 @@ void DemoScene::OnInitialize()
 	player1->ShowCollider(true);
 	m_player = player1;
 	m_players.push_back(player1);
+
+	debug.CreateText("test", { 550,550},*DialogueManager::Get()->GetDialogueById("test", 1), ColorsNamed::White);
+
+	std::vector test = DialogueManager::Get()->GetChoicesById("test", 2);
+
+	std::cout << test[0].s_label << std::endl;
+
+	for(Dialogue::Choice choice : test)
+	{
+		static int i = 1;
+		std::string id = choice.s_label + std::to_string(i++);
+		CreateButton({ 100+ 250.f*i, 500 }, { 150, 50 }, "", id, choice.s_label, true)->SetOnClick([id, choice] {
+			std::cout << "clicked" << std::endl;
+			Debug::Get()->GetText("test")->SetText(*DialogueManager::Get()->GetDialogueById("test", choice.s_target));
+			});
+	}
 
 	//Player* player2 = new Player();
 	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
@@ -156,6 +177,7 @@ void DemoScene::OnInitialize()
 	//CreateFillCircle("41", Vector2f(775, 75), { 25, 25 }, ColorsNamed::Violet, true);
 	//CreateFillCircle("42", Vector2f(825, 75), { 25, 25 }, ColorsNamed::White, true);
 	//CreateFillCircle("43", Vector2f(875, 75), { 25, 25 }, ColorsNamed::Yellow, true);
+
 }
 
 void DemoScene::OnEvent()

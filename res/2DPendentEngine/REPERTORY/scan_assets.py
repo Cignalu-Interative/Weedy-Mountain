@@ -11,6 +11,7 @@ EXTENSIONS_IMAGES = [".png"]
 EXTENSIONS_MAPS   = [".tmx"]
 EXTENSIONS_SONS   = [".mp3", ".wav"]
 EXTENSIONS_FONTS  = [".ttf"]
+EXTENSIONS_DIALOGUES = [".txt"]
 
 # ---------------------------------------------------------------------------
 # CHEMINS DU PROJET
@@ -33,6 +34,7 @@ DOSSIER_REFERENCE = os.path.join(RACINE, "ide", "Game")
 
 # Dossier racine de tous les assets a scanner
 DOSSIER_ASSETS = os.path.join(RACINE, "res", "2DPendentEngine")
+DOSSIER_DIALOGUES = os.path.join(RACINE, "res", "2DPendentEngine","Assets", "Dialogues")
 
 # ---------------------------------------------------------------------------
 # DOSSIERS DE SORTIE DES JSON
@@ -43,6 +45,7 @@ DOSSIER_JSON_TEXTURES = os.path.join(RACINE, "res", "2DPendentEngine", "Assets",
 DOSSIER_JSON_MAPS     = os.path.join(RACINE, "res", "2DPendentEngine", "Assets", "Maps")
 DOSSIER_JSON_SOUNDS   = os.path.join(RACINE, "res", "2DPendentEngine", "Assets", "Sounds")
 DOSSIER_JSON_FONTS    = os.path.join(RACINE, "res", "2DPendentEngine", "Assets", "Fonts")
+DOSSIER_JSON_DIALOGUES = os.path.join(RACINE, "res", "2DPendentEngine", "Assets", "Dialogues")
 
 
 def main():
@@ -69,6 +72,7 @@ def main():
     chemins_maps     = set()
     chemins_sons     = set()
     chemins_fonts    = set()
+    chemins_dialogues    = set()
 
     # --- Scan recursif du dossier assets ---
     # os.walk() parcourt le dossier et tous ses sous-dossiers automatiquement
@@ -103,6 +107,9 @@ def main():
                 chemins_sons.add(chemin_relatif)
             elif ext in EXTENSIONS_FONTS:
                 chemins_fonts.add(chemin_relatif)
+            elif ext in EXTENSIONS_DIALOGUES:
+                if os.path.commonpath([chemin_absolu, DOSSIER_DIALOGUES]) == DOSSIER_DIALOGUES:
+                    chemins_dialogues.add(chemin_relatif)
 
     # --- Fonction locale d'ecriture JSON ---
     # Definie a l'interieur de main() pour avoir acces a ses variables
@@ -148,6 +155,7 @@ def main():
     ecrire_json(chemins_maps,     "maps",     "Maps_Repertory.json",     DOSSIER_JSON_MAPS)
     ecrire_json(chemins_sons,     "sounds",   "Sounds_Repertory.json",   DOSSIER_JSON_SOUNDS)
     ecrire_json(chemins_fonts,    "fonts",    "Fonts_Repertory.json",    DOSSIER_JSON_FONTS)
+    ecrire_json(chemins_dialogues,    "dialogues",    "Dialogues_Repertory.json",    DOSSIER_JSON_DIALOGUES)
 
     print("\nScan termine !")
     input("Appuie sur Entree pour fermer...")

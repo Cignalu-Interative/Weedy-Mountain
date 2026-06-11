@@ -54,8 +54,10 @@ Text::~Text()
 
 void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color)
 {
+	SDL_Log("renderer=%p", m_renderer);
+
 	SetColor(p_color);
-	if (m_text == "")
+	if (p_text == "")
 	{
 		m_text = " ";
 	}
@@ -149,17 +151,20 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 	{
 		return;
 	}
+
 	Uint8 r, g, b, a;
 	if (SDL_GetTextureColorMod(m_textTexture, &r, &g, &b) < 0)
 	{
 		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureColorMod/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
+
 	if (SDL_GetTextureAlphaMod(m_textTexture, &a) < 0)
 	{
 		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureAlphaMod/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
+
 	if (r != m_color.r || g != m_color.g || b != m_color.b || a != m_color.a)
 	{
 		if (SDL_SetTextureColorMod(m_textTexture, m_color.r, m_color.g, m_color.b) < 0)

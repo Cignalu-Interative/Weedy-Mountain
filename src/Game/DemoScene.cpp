@@ -27,8 +27,7 @@ void DemoScene::OnInitialize()
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
 
-
-	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "Perceval", Shape::Rectangle);
+	Player* player1 = CreateEntity<Player>({ 100, +50 }, { 20, 20 }, "Perceval", Shape::Rectangle);
 	//player1->GetSprite()->SetOpacity(128);
 	player1->SetAngle(85.0f);
 	player1->SetSpeed(50.f);
@@ -37,6 +36,9 @@ void DemoScene::OnInitialize()
 	m_player = player1;
 	m_players.push_back(player1);
 
+	GetCamera()->SetZoom(6.f);
+	MapTiledManager::Get()->SetCurrentMap("MapTest1");
+	Application::Get()->SetClampCameraToCurrentMap(true);
 	//Player* player2 = new Player();
 	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
 	//player2->GetSprite()->SetOpacity(45);
@@ -102,7 +104,7 @@ void DemoScene::OnInitialize()
 	sound.GetSound("Monsieur")->SetPosition(soundPos);
 	SoundManager::Get()->Play("music1", -1);
 
-	GetCamera()->SetSmoothSpeed(5.0f);
+	//GetCamera()->SetSmoothSpeed(5.0f);
 
 	/*int a = 0;
 	int b = 1;
@@ -555,7 +557,6 @@ void DemoScene::OnUpdate()
 {
 	//TestVélocité();
 	float dt = GetDeltaTime();
-	std::cout << dt << std::endl;
 	Vector2f positionSound = sound.GetSoundPosition("Monsieur");
 	if (m_player != nullptr)
 		GetCamera()->Follow(m_player, dt);

@@ -336,6 +336,16 @@ void Application::Draw()
 
 	glUseProgram(m_tvVertex.GetgGraphicsPipelineShaderProgram());
 
+	glBindVertexArray(m_tvVertex.GetgVertexArrayObject());
+	//glBindBuffer(GL_ARRAY_BUFFER, m_tvVertex.GetgVertexBufferObject());
+
+	glDrawArrays(GL_TRIANGLES, 0, 3);
+
+	glBindVertexArray(0);
+	glUseProgram(0);
+
+	////////////////////////////////////////////////////////////
+
 	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
 	for (Entity* entity : m_entities)
@@ -349,6 +359,7 @@ void Application::Draw()
 	{
 		m_camera->Draw(&m_render, &m_window, m_camera);
 	}
+
 
 	/*triangle.Draw();
 	quadMesh.Draw();

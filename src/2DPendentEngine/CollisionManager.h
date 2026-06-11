@@ -1,9 +1,8 @@
 #pragma once
 #include <vector>
 #include <set>
-#include <map>
-#include <tuple>
 #include "Collider.h"
+#include "CollisionManifold.h"
 
 class Entity;
 
@@ -31,8 +30,6 @@ private:
     CollisionManager() = default;
 
     ColliderPair MakePair(Collider* a, Collider* b) const;
-    CollisionSide ComputeSide(Collider* self, Collider* other) const;
-    bool Overlaps(Collider* a, Collider* b) const;
 
 public:
     static CollisionManager* Get();

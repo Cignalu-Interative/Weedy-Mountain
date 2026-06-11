@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CollisionManager.h"
+#include "PhysicsManager.h"
 #include "Entity.h"
 #include "RectangleCollider.h"
 #include "CircleCollider.h"
@@ -41,67 +42,6 @@ void CollisionManager::UnregisterCollider(Collider* p_collider)
     removePairs(m_previousPairs);
 }
 
-bool CollisionManager::Overlaps(Collider* a, Collider* b) const
-{
-    // Rectangle vs Rectangle
-    if (a->GetShape() == Shape::Rectangle && b->GetShape() == Shape::Rectangle)
-    {
-        Vector2f posA = a->GetPosition({ 0.f, 0.f });
-        Vector2i dimA = a->GetDimension();
-        Vector2f posB = b->GetPosition({ 0.f, 0.f });
-        Vector2i dimB = b->GetDimension();
-
-        return !(posA.GetX() + dimA.GetX() < posB.GetX() ||
-            posB.GetX() + dimB.GetX() < posA.GetX() ||
-            posA.GetY() + dimA.GetY() < posB.GetY() ||
-            posB.GetY() + dimB.GetY() < posA.GetY());
-    }
-
-    // Circle vs Circle
-    if (a->GetShape() == Shape::Circle && b->GetShape() == Shape::Circle)
-    {
-        Vector2f ca = a->GetPosition({ 0.5f, 0.5f });
-        Vector2f cb = b->GetPosition({ 0.5f, 0.5f });
-        float ra = a->GetDimension().GetX() / 2.f;
-        float rb = b->GetDimension().GetX() / 2.f;
-        float dx = ca.GetX() - cb.GetX();
-        float dy = ca.GetY() - cb.GetY();
-        return (dx * dx + dy * dy) < (ra + rb) * (ra + rb);
-    }
-
-    // Rectangle vs Circle (on délègue au cercle)
-    Collider* rect = (a->GetShape() == Shape::Rectangle) ? a : b;
-    Collider* circle = (a->GetShape() == Shape::Circle) ? a : b;
-
-    Vector2f cr = circle->GetPosition({ 0.5f, 0.5f });
-    float rad = circle->GetDimension().GetX() / 2.f;
-    Vector2f rp = rect->GetPosition({ 0.f, 0.f });
-    Vector2i rd = rect->GetDimension();
-
-    float testX = std::max(rp.GetX(), std::min(cr.GetX(), rp.GetX() + rd.GetX()));
-    float testY = std::max(rp.GetY(), std::min(cr.GetY(), rp.GetY() + rd.GetY()));
-    float dx = cr.GetX() - testX;
-    float dy = cr.GetY() - testY;
-    return (dx * dx + dy * dy) < (rad * rad);
-}
-
-CollisionSide CollisionManager::ComputeSide(Collider* self, Collider* other) const
-{
-    // Overlap minimal sur chaque axe -> détermine la face
-    Vector2f posS = self->GetPosition({ 0.5f, 0.5f });
-    Vector2f posO = other->GetPosition({ 0.5f, 0.5f });
-    Vector2i dimS = self->GetDimension();
-    Vector2i dimO = other->GetDimension();
-
-    float overlapX = (dimS.GetX() / 2.f + dimO.GetX() / 2.f) - std::abs(posS.GetX() - posO.GetX());
-    float overlapY = (dimS.GetY() / 2.f + dimO.GetY() / 2.f) - std::abs(posS.GetY() - posO.GetY());
-
-    if (overlapX < overlapY)
-        return (posS.GetX() < posO.GetX()) ? CollisionSide::RIGHT : CollisionSide::LEFT;
-    else
-        return (posS.GetY() < posO.GetY()) ? CollisionSide::BOTTOM : CollisionSide::TOP;
-}
-
 void CollisionManager::SyncAll()
 {
     for (Collider* c : m_colliders)
@@ -127,7 +67,9 @@ void CollisionManager::Update()
             if (a->CanCollideWith(b) == false)
                 continue;
 
-            if (Overlaps(a, b) == false)
+            CollisionManifold manifold = Collision::ComputeManifold(*a, *b);
+
+            if (manifold.valid == false)
                 continue;
 
             ColliderPair pair = MakePair(a, b);
@@ -136,39 +78,46 @@ void CollisionManager::Update()
             Entity* ownerA = a->GetOwner();
             Entity* ownerB = b->GetOwner();
 
+            // Résolution physique uniquement pour les colliders non-trigger
+            if (a->IsTrigger() == false && b->IsTrigger() == false)
+            {
+                PhysicsManager::Get()->Repulse(ownerA, ownerB, manifold);
+                PhysicsManager::Get()->ResolveCollision(ownerA, ownerB, manifold);
+            }
+
+            // Callback Enter / Stay
             if (m_previousPairs.count(pair) == 0)
             {
-                CollisionSide sideA = ComputeSide(a, b);
-                CollisionSide sideB = ComputeSide(b, a);
-
                 if (ownerA) 
-                    ownerA->OnCollisionEnter(a, b, sideA);
+                    ownerA->OnCollisionEnter(a, b, manifold.sideA);
 
                 if (ownerB) 
-                    ownerB->OnCollisionEnter(b, a, sideB);
+                    ownerB->OnCollisionEnter(b, a, manifold.sideB);
             }
             else
             {
-                CollisionSide sideA = ComputeSide(a, b);
-                CollisionSide sideB = ComputeSide(b, a);
-
                 if (ownerA)
-                    ownerA->OnCollisionStay(a, b, sideA);
+                    ownerA->OnCollisionStay(a, b, manifold.sideA);
 
                 if (ownerB)
-                    ownerB->OnCollisionStay(b, a, sideB);
+                    ownerB->OnCollisionStay(b, a, manifold.sideB);
             }
         }
     }
 
+    // Callback Exit
     for (const ColliderPair& pair : m_previousPairs)
     {
         if (m_currentPairs.count(pair) == 0)
         {
             Entity* ownerA = pair.first->GetOwner();
             Entity* ownerB = pair.second->GetOwner();
-            if (ownerA) ownerA->OnCollisionExit(pair.first, pair.second, CollisionSide::NONE);
-            if (ownerB) ownerB->OnCollisionExit(pair.second, pair.first, CollisionSide::NONE);
+
+            if (ownerA)
+                ownerA->OnCollisionExit(pair.first, pair.second, CollisionSide::NONE);
+
+            if (ownerB)
+                ownerB->OnCollisionExit(pair.second, pair.first, CollisionSide::NONE);
         }
     }
 

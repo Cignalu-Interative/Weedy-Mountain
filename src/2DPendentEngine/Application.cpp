@@ -310,7 +310,7 @@ void Application::ClampCameraToCurrentMap()
 	if (map->GetCurrentMap() == nullptr)
 		std::cerr << "CurrentMap is nullptr" << std::endl;
 
-	Vector2f mapDimensions = (Vector2f)map->GetCurrentMap()->GetMapDimension();
+	Vector2f mapDimensions = (Vector2f)map->GetCurrentMap()->GetDimension();
 	Vector2f cameraDimensions = (Vector2f)m_camera->GetDimension();
 
 	Vector2f cameraPos = m_camera->GetPosition();

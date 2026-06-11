@@ -1,7 +1,688 @@
 {
   "textures": [
     {
+      "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc_Actions.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Egg.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Backgrounds/Harvest BG.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Bridge_Wood.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Buildings.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Campfire.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Fences_Batiments.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/House.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/House_1_Wood_Base_Blue.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Houses Sprite Sheet.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Objects_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Props.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/premade-buildings_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Decor/Outdoor_Decor_Free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Decor/chest 2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Beige Vending Machine.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Bush1.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Bush2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Closed Trashbin.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Fire Hidrant.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Green Vending Machine.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Light Pole.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Opened Trashbin.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Red Vending machine.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Sign1.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Sign2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Trashbag.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Tree1.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Tree2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Tree3.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Exterior/Yellow Vending Machine.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Back chair.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Back red chair.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Chest-Sheet.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Chest.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Circular table.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Front chair.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Front red chair.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Horizental cardboard box.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Interior.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Opened Cardboard box.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Plant1.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Plant2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Plant3.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Plant4.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Plant5.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Red Table.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Side chair.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Side red chair.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/Square table.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/furniture free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Interior/vertical cardboardbox.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Item/Some Objects.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Chain - Bronze.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Chain - Silver.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 1 SHORT.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 1 Silver  TALL.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 1 Silver SHORT.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 1 TALL.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 2 SHORT.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 2 Silver  TALL.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 2 Silver SHORT.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lamp Post 2 TALL.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 - Beonze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 - Beonze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 - Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 - Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 Small - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 Small - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 Small - Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 Small - Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 Small - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 1 Small - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 Small - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 Small - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 Small - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 2 Small - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 - Bronze  and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 - Bronze  and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 - Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 - Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 Small - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 Small - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 Small - Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 Small - Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 Small - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 3 Small - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 Small - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 Small - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 Small - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 4 Small - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5 Small - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5 Small - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5 Small - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5 Small - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5- Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5- Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5- Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 5- Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Bronze Purple Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Bronze Purple Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Bronze Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Bronze Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Silver Purple Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Silver Purple Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Silver Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Silver Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Bronze Purple Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Bronze Purple Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Bronze Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Bronze Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Silver Purple Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Silver Purple Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Silver Red Roof and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Silver Red Roof and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 6 Small - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 Small - Bronze and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 Small - Bronze and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 Small - Silver and Orange.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Lantern/Lantern 7 Small - Silver and Yellow.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Crops_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Flowers_Red.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Flowers_White.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Maple Tree.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Natural_Decor_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Oak_Tree.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Oak_Tree_Small.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Road copiar.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Rocks.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Spring Crops.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Trees 3.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Trees_Bushes.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/Trees_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/forage_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/objects.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/plants free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/spr_deco_mushroom_blue_02_strip4.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/spr_deco_mushroom_red_01_strip4.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/spr_deco_tree_01_strip4.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Props/Nature/spr_deco_tree_02_strip4.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/Pixel 16 v2 village free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/Set 1.0.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/Set 1.1.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/farm objects free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/full.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/spr_tileset_sunnysideworld_16px.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/spring farm tilemap.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/All/tileset.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Beach/Beach_Tile.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Bridges.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Building1.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Building2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Building3.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Building4.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Building5.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Building6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Building7.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Fence_s copiar.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/Fences_Building.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/farm bridges free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Building/fences and ladders etc.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/FarmLand/FarmLand_Tile.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Cliff_Tile.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Grass_Middle.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Grass_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Set 1.2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Surplus Trees.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Tileset Spring.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Tileset_Ground.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/Trees+.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Grass/spr_tileset_sunnysideworld_forest_32px.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Path/Path_Middle.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Path/Path_Tile.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Path/Path_spring.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Path/Tileset_Road.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Rocks/Tileset_RockSlope.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Rocks/Tileset_RockSlope_Simple.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Traps/fire_trap.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Traps/trap_plate.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Traps/trap_saw.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/Tileset_Water.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/Water_Middle.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/Water_Tile.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/Water_free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation11.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation12.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation13.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation3.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation4.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation5.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation8.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Water/swap_color/Water_animation9.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Weapon/Spritesheet_Weapon.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/Other_objects.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/farm inside free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/interior free.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/interiors_demo.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/pedestals.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/supplies_objects.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/FishingRod.png"
@@ -19,16 +700,55 @@
       "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Oak_Tree.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Potatoe.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/SunFlower.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/carrot_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/carrot_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/carrot_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/carrot_04.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/inventory.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/player.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/slot.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/soil_hole.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/soil_tilled.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/soil_watered.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/wheat_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/wheat_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/wheat_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/wheat_04.png"
     }
   ]
 }

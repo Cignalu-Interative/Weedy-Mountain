@@ -33,6 +33,7 @@ void InventorySlot::RefreshVisual()
     if (m_stack.IsEmpty())
     {
         SetSprite("InventorySlot");
+        SetText(" ");
         return;
     }
 
@@ -42,5 +43,6 @@ void InventorySlot::RefreshVisual()
     {
         SetSprite(data->GetPath());
         SetText(std::to_string(m_stack.GetAmount()));
+        SetTextOffset({ 18.0f, 22.0f });
     }
 }

@@ -91,7 +91,7 @@ void DemoScene::OnEvent()
 
 void DemoScene::OnUpdate()
 {
-	std::cout << m_inv->GetSlot(0)->GetStack().GetAmount() << std::endl;
+	//std::cout << m_inv->GetSlot(0)->GetStack().GetAmount() << std::endl;
 }
 
 void DemoScene::OnSleep()

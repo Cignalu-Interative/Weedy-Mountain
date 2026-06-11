@@ -9,8 +9,8 @@ namespace Launcher
 {
 	void Launch()
 	{
-		//SceneManager::Get()->AddScene<DemoScene>("demo");
+		SceneManager::Get()->AddScene<DemoScene>("demo");
 		//SceneManager::Get()->AddScene<TestScene>("test");
-		SceneManager::Get()->AddScene<GameScene>("game");
+		//SceneManager::Get()->AddScene<GameScene>("game");
 	}
 }

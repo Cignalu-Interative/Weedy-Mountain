@@ -1,4 +1,5 @@
 #pragma once
+#include "2DPendentLib/glm/glm.hpp"
 #include <SDL.h>
 #include "Color.h"
 //Version 2.2.0
@@ -10,9 +11,13 @@ private:
 	//Pointeur qui stock le render
 	SDL_Renderer* m_renderer = nullptr;
 
-	Color m_backgroundColor = ColorsNamed::Black;
+	Color m_backgroundColor;
+
+	glm::vec4 m_OpenGLColor;
 
 public:
+
+	Render();
 
 	~Render(); //Destructeur du render
 

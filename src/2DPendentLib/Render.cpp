@@ -2,6 +2,11 @@
 #include "Render.h"
 #include "Window.h"
 
+Render::Render()
+{
+	SetBackgroundColor(ColorsNamed::Black);
+}
+
 Render::~Render()
 {
 	SDL_DestroyRenderer(m_renderer);
@@ -39,8 +44,8 @@ void Render::PresentRenderer()
 
 void Render::ClearOpenGL()
 {
-	glClearColor(m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClearColor(m_OpenGLColor.r, m_OpenGLColor.g, m_OpenGLColor.b, m_OpenGLColor.a);
+	glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 }
 
 void Render::RenderOpenGL(Window* f_window)
@@ -51,4 +56,11 @@ void Render::RenderOpenGL(Window* f_window)
 void Render::SetBackgroundColor(Color p_backgroundColor)
 {
 	m_backgroundColor = p_backgroundColor;
+
+	m_OpenGLColor = glm::vec4(
+		m_backgroundColor.r / 255.f,
+		m_backgroundColor.g / 255.f,
+		m_backgroundColor.b / 255.f,
+		m_backgroundColor.a / 255.f
+	);
 }

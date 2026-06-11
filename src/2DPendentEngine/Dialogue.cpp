@@ -18,7 +18,7 @@ bool Dialogue::ParserDialogueFile(const std::string& p_path)
 	std::string line; // pour iterer dans chaque ligne du fichier
 
 	std::regex sentence(R"REGEX(@(\d+)\s+"(.*?)\s-\s(.*?)")REGEX"); // permet de "filtrer" les informations que l on veut recupere 
-	std::regex conditional(R"REGEX(\s+\[([^=]+)"\s*=\s*@(\d+)\s*\])REGEX");
+	std::regex conditional(R"REGEX(\s+\[\s+\"([^=]+)"\s*=\s*@(\d+)\s*\])REGEX");
 	std::smatch match; // permet de stocker les valeurs demander par le regex
 
 	while (std::getline(file, line))

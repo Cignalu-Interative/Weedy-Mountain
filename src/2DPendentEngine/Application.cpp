@@ -347,7 +347,7 @@ void Application::Draw()
 
 	////////////////////////////////////////////////////////////
 
-	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
+	/*MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
 	for (Entity* entity : m_entities)
 	{
@@ -359,7 +359,7 @@ void Application::Draw()
 	if (m_camera->GetIsShow())
 	{
 		m_camera->Draw(&m_render, &m_window, m_camera);
-	}
+	}*/
 
 
 	/*triangle.Draw();

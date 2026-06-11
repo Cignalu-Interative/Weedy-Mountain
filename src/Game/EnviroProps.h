@@ -21,7 +21,7 @@ class EnviroProps: public Entity
 {
 	EnviroSpawnName m_Name = EnviroSpawnName::Count;
 	EnviroStats m_Stats;
-	std::vector<EnviroLoots> m_Loots;
+	std::vector<EnviroLoots*> m_Loots;
 
 	bool m_isInPlayerZone = false;
 

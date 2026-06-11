@@ -6,6 +6,7 @@
 #include "2DPendentLib/InputManager.h"
 #include "SpriteContainer.h"
 #include "ItemOnGround.h"
+#include "ItemDataBase.h"
 
 
 void EnviroProps::OnInitialize()
@@ -64,13 +65,12 @@ void EnviroProps::OnDestroy()
 {
 	for (int i = 0; i < m_Loots.size(); i++) {
 
-		int numLoots = Aleatory::GetInt(m_Loots[i].m_MinDrop, m_Loots[i].m_MaxDrop);
+		int numLoots = Aleatory::GetInt(m_Loots[i]->m_MinDrop, m_Loots[i]->m_MaxDrop);
 
 		for (int j = 0; j < numLoots; j++) {
 			CreateItem(i);
 		}
 	}
-	
 }
 
 void EnviroProps::CreateItem(int lootPos)
@@ -78,60 +78,72 @@ void EnviroProps::CreateItem(int lootPos)
 	Scene* sc = GetScene();
 	float posX = GetPosition().GetX();
 	float posY = GetPosition().GetY();
-
 	ItemOnGround* Loot;
-	Loot = sc->CreateEntity<ItemOnGround>({ Aleatory::GetFloat(posX,posX + 50),Aleatory::GetFloat(posY, posY + 50) }, { 16,16 }, "", Shape::Rectangle);
-	Loot->SetItem(&m_Loots[lootPos].m_item);
+	std::string path = ItemDataBase::Get()->GetItem(m_Loots[lootPos]->m_item.GetID())->GetPath();
+	Loot = sc->CreateEntity<ItemOnGround>({ Aleatory::GetFloat(posX,posX + 50),Aleatory::GetFloat(posY, posY + 50) }, { 16,16 }, path, Shape::Circle);
+	Loot->SetItem(m_Loots[lootPos]->m_item);
+	Loot->SetTag(3);
+	Loot->GetCollider()->Resize({ 20,20 });
+	Loot->ShowCollider(true);
+	
 }
 
 void EnviroProps::SetType(EnviroSpawnName p_name)
 {
-	EnviroLoots Loot1{ (ItemStack(ITEM_WOOD,1)), 3,4 };
-	EnviroLoots Loot2{ (ItemStack(ITEM_FIBER,1)), 1,2 };
 	switch (p_name) {
 	case EnviroSpawnName::Tree:
+	{
 		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 4;
 		m_Stats.m_MinToolsRarity = Rarity::Stone;
 		m_Stats.m_ToolType = { ToolType::Axe };
-		Loot1 = { (ItemStack(ITEM_WOOD,1)), 3,4 };
-		Loot2 = { (ItemStack(ITEM_FIBER,1)), 1,2 };
+		EnviroLoots* Loot1 = new EnviroLoots{ (ItemStack(ITEM_WOOD,1)), 3,4 };
+		EnviroLoots* Loot2 = new EnviroLoots{ (ItemStack(ITEM_FIBER,1)), 1,2 };
 		m_Loots.push_back(Loot1);
-		m_Loots.push_back(Loot2);
+		//m_Loots.push_back(Loot2);
 		break;
+	}
 	case EnviroSpawnName::Shrub:
+	{
 		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 2;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Axe };
-		Loot1 = { (ItemStack(ITEM_WOOD,1)), 1,2 };
-		Loot2 = { (ItemStack(ITEM_FIBER,1)), 0,2 };
+		EnviroLoots* Loot1 = new EnviroLoots{ (ItemStack(ITEM_WOOD,1)), 1,2 };
+		EnviroLoots* Loot2 = new EnviroLoots{ (ItemStack(ITEM_FIBER,1)), 0,2 };
 		m_Loots.push_back(Loot1);
 		m_Loots.push_back(Loot2);
 		break;
+	}
 	case EnviroSpawnName::Grass:
+	{
 		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 1;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
-		m_Stats.m_ToolType = { ToolType::Hoe, ToolType::Spade};
-		Loot1 = { (ItemStack(ITEM_FIBER,1)), 1,3 };
+		m_Stats.m_ToolType = { ToolType::Hoe, ToolType::Spade };
+		EnviroLoots* Loot1 = new EnviroLoots{ (ItemStack(ITEM_FIBER,1)), 1,3 };
 		m_Loots.push_back(Loot1);
 		break;
+	}
 	case EnviroSpawnName::Rock:
+	{
 		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 2;
 		m_Stats.m_MinToolsRarity = Rarity::Wooden;
 		m_Stats.m_ToolType = { ToolType::Pickaxe };
-		Loot1 = { (ItemStack(ITEM_ROCK,1)), 1,3 };
+		EnviroLoots* Loot1 = new EnviroLoots{ (ItemStack(ITEM_ROCK,1)), 1,3 };
 		m_Loots.push_back(Loot1);
 		break;
+	}
 	case EnviroSpawnName::Stone:
+	{
 		m_Name = p_name;
 		m_Stats.m_HitToDestroy = 4;
 		m_Stats.m_MinToolsRarity = Rarity::Iron;
 		m_Stats.m_ToolType = { ToolType::Pickaxe };
-		Loot1 = { (ItemStack(ITEM_ROCK,1)), 2,5 };
+		EnviroLoots* Loot1 = new EnviroLoots{ (ItemStack(ITEM_ROCK,1)), 2,5 };
 		m_Loots.push_back(Loot1);
 		break;
+	}
 	}
 }

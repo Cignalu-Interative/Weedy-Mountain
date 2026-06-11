@@ -56,6 +56,7 @@ void GameScene::OnEvent()
 void GameScene::OnUpdate()
 {
 	GetCamera()->SetPosition(m_Player->GetPosition());
+	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 
 void GameScene::OnDestroy()

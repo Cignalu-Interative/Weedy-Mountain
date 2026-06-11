@@ -14,6 +14,8 @@ public:
 
 	ItemStack(ItemID ID, int amount);
 
+	ItemStack() = default;
+
 	bool IsEmpty();
 	void Clear();
 

@@ -13,6 +13,7 @@ private:
 	std::vector<Player*> m_players;
 	User* m_user = nullptr;
 
+	Player* m_player = nullptr;
 	Player* m_playerToCamera = nullptr;
 
 	Entity* entitySelected = nullptr;

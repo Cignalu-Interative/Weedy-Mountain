@@ -4,6 +4,7 @@
 #include "2DPendentLib/Drawable.h"
 #include "Color.h"
 
+class Entity;
 class Camera : public Transformable, public Drawable
 {
 private:
@@ -16,8 +17,12 @@ private:
 
 	bool m_isShow = false;
 
-public:
+	float m_smoothSpeed = 5;
 
+	bool m_follow = true; 
+
+public:
+	bool GetFollow() { return m_follow; }
 	//Constructeur de Camera, il prend en paramètre la position et la dimension de la caméra
 	Camera(Vector2i p_dimension, Vector2f p_position = Vector2f(0.0f, 0.0f), Vector2f p_anchor = Vector2f(0.0f, 0.0f), float p_zoomFactor = 1.0f);
 	//Destructeur de Camera
@@ -28,6 +33,10 @@ public:
 	float GetZoom() const { return m_zoomFactor; }
 	void ZoomIn(float p_amount);
 	void ZoomOut(float p_amount);
+
+	void Follow(Entity* p_entity, float p_deltaTime);
+
+	void ClampToWorld();
 
 	//MONDE -> ECRAN
 	template<typename T>

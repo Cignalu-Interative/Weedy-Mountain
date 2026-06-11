@@ -21,6 +21,7 @@ void ItemOnGround::OnEvent()
 
 void ItemOnGround::OnUpdate()
 {
+
 }
 
 void ItemOnGround::OnDestroy()
@@ -59,8 +60,12 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		float diffX = _other->GetPosition().GetX() - GetPosition().GetX();
 		float diffY = _other->GetPosition().GetY() - GetPosition().GetY();
 		SetDirection({ diffX / Utils::Distance(GetPosition(),_other->GetPosition()), diffY / Utils::Distance(GetPosition(),_other->GetPosition()) });
-		//Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
-		//if (text) text->SetPosition(this->GetPosition());
+
+		Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
+		if (text && this->m_toDestroy == false) {
+			text->SetPosition(this->GetPosition());
+		}
+
 		SetSpeed(3);
 	}
 	else SetSpeed(0);

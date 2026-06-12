@@ -18,6 +18,13 @@ void TVVertex::VBO()
 
 	glBufferData(GL_ARRAY_BUFFER, m_vertexData.size() * sizeof(GLfloat), m_vertexData.data(), GL_STATIC_DRAW);
 
+	const std::vector<GLuint> indexBufferData{ 2,0,1, 3,2,1 };
+
+	glGenBuffers(1, &m_gIndexBufferObject);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_gIndexBufferObject);
+
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferData.size() * sizeof(GLuint), indexBufferData.data(), GL_STATIC_DRAW);
+
 	glEnableVertexAttribArray(0);
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 6 * sizeof(GLfloat), (void*)0);
 
@@ -150,4 +157,33 @@ std::string TVVertex::LoadShaderSourceFromFile(const std::string& p_filePath)
 	shaderFile.close();
 
 	return shaderStream.str();
+}
+
+void TVVertex::GLCheck(const std::function<void()>& glFunction)
+{
+	GLClearAllErrors();
+
+	glFunction();
+
+	GLCheckErrorStatus("Fonction Lambda de GLCheck", 0);
+}
+
+void TVVertex::GLClearAllErrors()
+{
+	while (glGetError() != GL_NO_ERROR)
+	{
+
+	}
+}
+
+bool TVVertex::GLCheckErrorStatus(const char* function, int line)
+{
+	while (GLenum error = glGetError())
+	{
+		std::cerr << "OpenGL Error:" << error
+				  << "\tLine: " << __LINE__ 
+			      << "\tfunction: " << function << std::endl;
+		return true;
+	}
+	return false;
 }

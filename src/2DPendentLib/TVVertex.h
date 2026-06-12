@@ -1,8 +1,9 @@
 #pragma once
-#include <vector>
-#include <string>
 #include "glad/glad.h"
 #include <SDL.h>
+#include <vector>
+#include <string>
+#include <functional>
 
 class TVVertex
 {
@@ -10,17 +11,11 @@ private:
 
 	const std::vector<GLfloat> m_vertexData
 	{
-		// FIRST TRIANGLE
 	//    x      y     r     g     b     a
-		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 1 left vertex
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 2 right vertex
-		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f, // vertex 3 top vertex
-
-		// SECOND TRIANGLE
-	//    x      y     r     g     b     a
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 1 right vertex
-		0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 2 top vertex
-		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f // vertex 3 left vertex
+		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f,// vertex 1 left down vertex
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 2 right down vertex
+		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f,// vertex 3 left top vertex
+		0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,  // vertex 4 right top vertex
 	};
 
 	// VAO
@@ -28,6 +23,9 @@ private:
 
 	// VBO
 	GLuint m_gVertexBufferObject = 0;
+
+	// IBO
+	GLuint m_gIndexBufferObject = 0;
 
 	// GraphicsPipeline
 	GLuint m_gGraphicsPipelineShaderProgram = 0;
@@ -53,6 +51,12 @@ public:
 	GLuint GetgVertexBufferObject() { return m_gVertexBufferObject; };
 
 	GLuint GetgGraphicsPipelineShaderProgram() { return m_gGraphicsPipelineShaderProgram; };
+
+	void GLCheck(const std::function<void()>& glFunction);
+
+	static void GLClearAllErrors();
+
+	static bool GLCheckErrorStatus(const char* function, int line);
 
 
 };

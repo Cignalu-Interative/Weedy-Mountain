@@ -20,12 +20,12 @@ void Player::OnInitialize()
 	PlayerJob* miner = new PlayerJob();
 	miner->m_name = JobType::Miner;
 	m_Jobs.push_back(miner);
-	PlayerJob* killer = new PlayerJob();
+	/*PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
 	m_Jobs.push_back(killer);
 	PlayerJob* dealer = new PlayerJob();
 	dealer->m_name = JobType::Dealer;
-	m_Jobs.push_back(dealer);
+	m_Jobs.push_back(dealer);*/
 }
 
 void Player::OnEvent()
@@ -65,7 +65,7 @@ void Player::OnEvent()
 
 	// TEMP - AGRI
 
-	// Sélection plante 
+	// Sï¿½lection plante 
 	if (InputManager::Get()->IsKeyboardDown(K_1))
 		m_selectedCrop = CropCatalog::Wheat();
 	if (InputManager::Get()->IsKeyboardDown(K_2))
@@ -94,12 +94,12 @@ void Player::HandleFarmAction()
 	switch (target->GetState())
 	{
 	case FarmTileState::IDLE:
-		// Bêcher
+		// Bï¿½cher
 		target->Till(currentDay);
 		break;
 
 	case FarmTileState::TILLED:
-		// T maintenu = arroser, Y maintenu = planter, sinon = dé-bêcher
+		// T maintenu = arroser, Y maintenu = planter, sinon = dï¿½-bï¿½cher
 		if (InputManager::Get()->IsKeyboardHeld(K_t))
 			target->Water(currentDay);
 		else if (InputManager::Get()->IsKeyboardHeld(K_y))
@@ -121,7 +121,7 @@ void Player::HandleFarmAction()
 		break;
 
 	case FarmTileState::READY:
-		// Récolter
+		// Rï¿½colter
 		target->Harvest(currentDay);
 		break;
 	}
@@ -129,9 +129,7 @@ void Player::HandleFarmAction()
 
 void Player::OnUpdate()
 {
-	for (int i = 0; i < m_Jobs.size(); i++) {
-		m_Jobs[i]->levelUp();
-	}
+	UpdateJobs();
 }
 
 void Player::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
@@ -147,4 +145,141 @@ void Player::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _s
 void Player::OnDestroy()
 {
 
+}
+
+void Player::UpdateJobs()
+{
+	for (int i = 0; i < m_Jobs.size(); i++) {
+		m_Jobs[i]->levelUp();
+		switch (m_Jobs[i]->m_name)
+		{
+		case JobType::Gatherer:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				UnlockRecipe(Recipes::BandageL1);
+				break;
+			case 3:
+				UnlockRecipe(Recipes::EnergizingL1);
+				break;
+			case 4:
+				GetStats().m_harvestEffiency *= 1.067f;
+				break;
+			case 5:
+				UnlockRecipe(Recipes::BandageL2);
+				break;
+			case 6:
+				UnlockRecipe(Recipes::EnergizingL2);
+				break;
+			}
+
+		case JobType::Farmer:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				UnlockRecipe(Recipes::FertilizerL1);
+				break;
+			case 3:
+				UnlockRecipe(Recipes::AutoWateringL1);
+				
+				break;
+			case 4:
+				GetStats().m_farmerSpeed *= 1.067f;
+				break;
+			case 5:
+				UnlockRecipe(Recipes::FertilizerL2);
+				
+				break;
+			case 6:
+				UnlockRecipe(Recipes::AutoWateringL2);
+				break;
+			}
+			break;
+
+		case JobType::Miner:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				UnlockRecipe(Recipes::StoneTools);
+				
+				break;
+			case 3:
+				UnlockRecipe(Recipes::IronTools);
+				
+				break;
+			case 4:
+				GetStats().m_miningSpeed *= 1.067f;
+				break;
+			case 5:
+				UnlockRecipe(Recipes::GoldTools);
+				
+				break;
+			case 6:
+				UnlockRecipe(Recipes::DiamondTools);
+				
+				break;
+			}
+			break;
+
+		case JobType::Dealer:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				GetStats().m_drugsSellQuantity += 15;
+				break;
+			case 3:
+				UnlockRecipe(Recipes::WeedSeed);
+				break;
+			case 4:
+				GetStats().m_drugSellEfficency *= 1.067f;
+				break;
+			case 5:
+				GetStats().m_drugsSellQuantity += 40;
+				break;
+			case 6:
+				UnlockRecipe(Recipes::CannabisSeed);
+				break;
+			}
+			break;
+
+		case JobType::Killer:
+			switch (m_Jobs[i]->m_lvl) {
+			case 2:
+				UnlockRecipe(Recipes::Knife);
+				break;
+			case 3:
+				UnlockRecipe(Recipes::Sword);
+				break;
+			case 4:
+				GetStats().m_PlayerSpeed *= 1.067f;
+				break;
+			case 5:
+				UnlockRecipe(Recipes::Glock);
+				break;
+			case 6:
+				UnlockRecipe(Recipes::Rifle);
+				break;
+			}
+			break;
+		}
+	}
+}
+
+void Player::UnlockRecipe(Recipes _toUnlock)
+{
+	if (!IsRecipeUnlocked(_toUnlock))
+	{
+		m_unlockedRecipes.push_back(_toUnlock);
+		std::cout << "item unlocked" << std::endl;
+	}
+		
+}
+
+bool Player::IsRecipeUnlocked(Recipes _toUnlock)
+{
+	for (int i = 0; i < m_unlockedRecipes.size(); i++)
+	{
+		if (m_unlockedRecipes[i] == _toUnlock)
+		{
+			return true;
+		}
+
+	}
+	return false;
 }

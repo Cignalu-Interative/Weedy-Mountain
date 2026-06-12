@@ -34,10 +34,11 @@ void EnviroProps::OnEvent()
 	else SetDrawLayer(1);
 
 	if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30 && GetDrawLayer() == 3 && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
-		GetSprite()->SetOpacity(100);
+		if(Sprite* sprite = GetSprite("default"))sprite->SetOpacity(100);
 	}
-	else GetSprite()->SetOpacity(255);
-
+	else {
+		if (Sprite* sprite = GetSprite("default"))sprite->SetOpacity(255);
+	}
 
 }
 

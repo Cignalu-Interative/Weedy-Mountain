@@ -12,7 +12,7 @@ void ItemOnGround::OnInitialize()
 	if (m_id == UINT32_MAX)
 		m_id = 0;
 
-	GetScene()->CreateText("item_" + std::to_string(m_myID), GetPosition({ 1, 1 }), "", { 255, 255, 255, 255 });
+	GetScene()->CreateText("item_" + std::to_string(m_myID), GetPosition({ 1, 1 }), "", { 255, 255, 255, 255 }, false, false);
 }
 
 void ItemOnGround::OnEvent()
@@ -63,7 +63,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 
 		Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
 		if (text) {
-			text->SetPosition(this->GetPosition());
+			text->SetPosition(this->GetPosition({1,1}));
 		}
 
 		SetSpeed(3);

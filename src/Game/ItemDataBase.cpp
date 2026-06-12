@@ -42,6 +42,23 @@ ItemDataBase::ItemDataBase()
             3,
             64
         }
+
+    );
+
+    m_items.try_emplace
+    (
+        ITEM_ROCK,
+
+        ItemData
+        {
+            ITEM_ROCK,
+            "Rock",
+            "Rock",
+            "Rock",
+            1,
+            3,
+            64
+        }
     );
 }
 

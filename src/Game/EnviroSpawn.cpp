@@ -26,7 +26,7 @@ void EnviroSpawn::InitEnviroSpawn()
 			break;
 		case 4:
 			Enviro->m_name = EnviroSpawnName::Stone;
-			Enviro->m_stats = { 0,0 };
+			Enviro->m_stats = {0,0 };
 			break;
 		default:
 			break;
@@ -57,20 +57,38 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
 	Props = gs->CreateEntity<EnviroProps>({ Aleatory::GetFloat(0.f, 200.f), Aleatory::GetFloat(0.f, 200.f) }, { 128,128 }, "", Shape::Rectangle);
+	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);
 	Props->SetRigidBody(true);
+	Props->ShowCollider(true);
 
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:
-		Props->SetSprite("Oak_Tree");
+		Props->AddSprite("default", "Oak_Tree", {128, 128}, 0);
 		Props->GetCollider()->Resize({ 16,16 });
 		Props->GetCollider()->SetOffset({ 0,28 });
 		break;
+	case EnviroSpawnName::Shrub:
+		Props->AddSprite("default", "Oak_Shrub", { 46, 68 }, 0);
+		Props->GetCollider()->Resize({ 8,8 });
+		Props->GetCollider()->SetOffset({ 0,18 });
+		break;
 	case EnviroSpawnName::Grass:
+		Props->AddSprite("default", "Grass", { 18, 18 }, 0);
 		Props->SetRigidBody(false);
 		Props->GetCollider()->Resize({ 16,16 });
+		break;
+	case EnviroSpawnName::Rock:
+		Props->AddSprite("default", "Rock", { 18, 18 }, 0);
+		Props->GetCollider()->Resize({ 16,16 });
+		break;
+	case EnviroSpawnName::Stone:
+		Props->AddSprite("default", "Stone", { 32, 32 }, 0);
+		Props->GetCollider()->Resize({ 32,16 });
+		Props->GetCollider()->SetOffset({ 0,8 });
+		break;
 	default:
 		break;
 	}

@@ -41,21 +41,6 @@ void DemoScene::OnInitialize()
 	m_player = player1;
 	m_players.push_back(player1);
 
-	debug.CreateText("test", { 550,550},*DialogueManager::Get()->GetDialogueById("test", 1), ColorsNamed::White);
-
-	std::vector test = DialogueManager::Get()->GetChoicesById("test", 2);
-
-	std::cout << test[0].s_label << std::endl;
-
-	for(Dialogue::Choice choice : test)
-	{
-		static int i = 1;
-		std::string id = choice.s_label + std::to_string(i++);
-		CreateButton({ 100+ 250.f*i, 500 }, { 150, 50 }, "", id, choice.s_label, true)->SetOnClick([id, choice] {
-			std::cout << "clicked" << std::endl;
-			Debug::Get()->GetText("test")->SetText(*DialogueManager::Get()->GetDialogueById("test", choice.s_target));
-			});
-	}
 
 	//Player* player2 = new Player();
 	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);

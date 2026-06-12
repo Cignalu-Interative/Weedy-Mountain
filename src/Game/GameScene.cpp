@@ -41,6 +41,7 @@ void GameScene::OnInitialize()
 	m_Player->GetCollider()->SetID("playerCollider");
 	m_Player->SetTag(1);
 	m_Player->SetDrawLayer(2);
+	m_Player->GetCollider()->SetLayer(1);
 	m_Player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_Player->ShowCollider(true);
@@ -48,11 +49,14 @@ void GameScene::OnInitialize()
 	Tree->SetType(EnviroSpawnName::Tree);
 	Tree->ShowCollider(true);
 	Tree->SetRigidBody(true);
+	Tree->SetIsStatic(true);
 	Tree->SetTag(2);
 	Tree->GetCollider()->Resize({ 16,16 });
 	Tree->GetCollider()->SetOffset({ 0,28 });
 	
 	GetCamera()->SetZoom(5.f);
+	GetCamera()->Follow(m_Player, GetDeltaTime());
+	Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
 
@@ -67,8 +71,8 @@ void GameScene::OnInitialize()
 			info.worldPos.GetY() + tileDim.GetY() / 2.f
 		};
 		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->GetCollider()->SetLayer(1);
-		tile->GetCollider()->SetMask(2);
+		tile->GetCollider()->SetLayer(30);
+		tile->GetCollider()->SetMask(1);
 		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}

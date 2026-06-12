@@ -61,7 +61,10 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Props->SetType(_name);
 	Props->SetTag(2);
 	Props->SetRigidBody(true);
+	Props->SetIsStatic(true);
 	Props->ShowCollider(true);
+	Props->GetCollider()->SetLayer(5);
+	Props->GetCollider()->SetMask(1);
 
 	switch (_name)
 	{

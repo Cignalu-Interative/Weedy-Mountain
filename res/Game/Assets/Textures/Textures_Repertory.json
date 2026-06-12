@@ -682,7 +682,22 @@
       "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/supplies_objects.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Grass.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Item_Wood.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Oak_Shrub.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Oak_Tree.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Rock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Stone.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/carrot_01.png"

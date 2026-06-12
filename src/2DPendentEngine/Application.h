@@ -64,6 +64,8 @@ private:
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
 
 	bool m_cameraIsClamp = false;
+
+	void ClampCameraToCurrentMap();
 public:
 
 	//Constructeur de l'Application
@@ -118,9 +120,6 @@ public:
 	bool GetDrawFPS() const { return m_drawFPS; }
 
 	void SetClampCameraToCurrentMap(bool p_isClamp) { m_cameraIsClamp = p_isClamp; }
-	void ClampCameraToCurrentMap();
-
-public:
 
 	//Liste des classes amies avec la classe Application, ces classes peuvent accéder aux membres privés de l'Application
 	friend class Entity;

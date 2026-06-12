@@ -8,12 +8,12 @@ class TVVertex
 {
 private:
 
-	const std::vector<GLfloat> m_vertexPosition
+	const std::vector<GLfloat> m_vertexData
 	{
-		//   x      y     z     w
-		   -0.8f, -0.8f, 0.0f, 1.0f, // vertex 1
-			0.8f, -0.8f, 0.0f, 1.0f, // vertex 2
-			0.0f,  0.8f, 0.0f, 1.0f  // vertex 3
+	//    x      y     z     w     r     g     b     a
+		-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 1 left vertex
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 2 right vertex
+		0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f // vertex 3 top vertex
 	};
 
 	// VAO

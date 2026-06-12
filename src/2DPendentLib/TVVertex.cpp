@@ -10,17 +10,22 @@ void TVVertex::VAO()
 
 void TVVertex::VBO()
 {
+	//Position (location = 0)
+	//Color (location = 1)
+
 	glGenBuffers(1, &m_gVertexBufferObject);
 	glBindBuffer(GL_ARRAY_BUFFER, m_gVertexBufferObject);
-	glBufferData(GL_ARRAY_BUFFER, m_vertexPosition.size() * sizeof(GLfloat), m_vertexPosition.data(), GL_STATIC_DRAW);
+
+	glBufferData(GL_ARRAY_BUFFER, m_vertexData.size() * sizeof(GLfloat), m_vertexData.data(), GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0);
 
+	glEnableVertexAttribArray(1);
+	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(4 * sizeof(GLfloat)));
+
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
-	glDisableVertexAttribArray(0);
-
-
 }
 
 void TVVertex::VertexSpecification()
@@ -70,10 +75,16 @@ GLuint TVVertex::CreateShaderProgram(const std::string& p_vertexShadersource, co
 	if (programObject == 0) {
 		// Échec de création
 		std::cerr << "erreur glCreateProgram" << std::endl;
+		return 0;
 	}
 
 	GLuint myVertexShader = CompileShader(GL_VERTEX_SHADER, p_vertexShadersource);
 	GLuint myFragmentShader = CompileShader(GL_FRAGMENT_SHADER, p_fragmentShadersource);
+
+	if (myVertexShader == 0 || myFragmentShader == 0) {
+		std::cerr << "Échec critique : Un des shaders n'a pas pu être compilé. Impossible de lier le programme." << std::endl;
+		return 0;
+	}
 
 	glAttachShader(programObject, myVertexShader);
 	glAttachShader(programObject, myFragmentShader);
@@ -94,7 +105,17 @@ GLuint TVVertex::CreateShaderProgram(const std::string& p_vertexShadersource, co
 		std::cerr << "=== PROGRAM LINKING FAILED ===\n";
 		std::cerr << errorLog.data() << std::endl;
 		std::cerr << "=== END OF ERROR ===\n";
+
+		glDeleteShader(myVertexShader);
+		glDeleteShader(myFragmentShader);
+		glDeleteProgram(programObject);
+		return 0;
 	}
+
+	glDetachShader(programObject, myVertexShader);
+	glDetachShader(programObject, myFragmentShader);
+	glDeleteShader(myVertexShader);
+	glDeleteShader(myFragmentShader);
 
 	return programObject;
 

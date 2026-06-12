@@ -53,7 +53,7 @@ void ItemOnGround::OnCollisionEnter(Collider* _self, Collider* _other, Collision
 
 void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	if (_other->GetOwner()->GetTag() != 1)
+	if (_other->GetOwner()->GetTag() != 1 || this->m_toDestroy)
 		return;
 
 	if (_other->GetID() == "interact") {
@@ -62,7 +62,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		SetDirection({ diffX / Utils::Distance(GetPosition(),_other->GetPosition()), diffY / Utils::Distance(GetPosition(),_other->GetPosition()) });
 
 		Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
-		if (text && this->m_toDestroy == false) {
+		if (text) {
 			text->SetPosition(this->GetPosition());
 		}
 

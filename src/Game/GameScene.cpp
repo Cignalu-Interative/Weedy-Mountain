@@ -2,6 +2,13 @@
 #include "GameScene.h"
 #include "EnviroProps.h"
 #include "EnviroSpawn.h"
+
+#include "ItemOnGround.h"
+#include "ItemData.h"
+#include "ItemDataBase.h"
+#include "ItemID.h"
+#include "ItemStack.h"
+
 #include "2DPendentLib/InputManager.h"
 #include "2DPendentLib/Utils.h"
 #include "2DPendentLib/AssetManager.h"
@@ -85,6 +92,7 @@ void GameScene::OnUpdate()
 	GameData& gm = GameData::Get();
 	gm.Update();
 	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
+	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 
 void GameScene::OnDestroy()

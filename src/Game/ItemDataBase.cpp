@@ -19,9 +19,42 @@ ItemDataBase::ItemDataBase()
         ItemData
         {
             ITEM_WOOD,
-            "Wood",
+            "Item_Wood",
             "Wood",
             "Wood plank",
+            1,
+            3,
+            64
+        }
+    );
+
+    m_items.try_emplace
+    (
+        ITEM_FIBER,
+
+        ItemData
+        {
+            ITEM_FIBER,
+            "Fiber",
+            "Fiber",
+            "Fiber",
+            1,
+            3,
+            64
+        }
+
+    );
+
+    m_items.try_emplace
+    (
+        ITEM_ROCK,
+
+        ItemData
+        {
+            ITEM_ROCK,
+            "Rock",
+            "Rock",
+            "Rock",
             1,
             3,
             64

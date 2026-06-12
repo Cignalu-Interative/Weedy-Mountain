@@ -23,22 +23,24 @@ DemoScene::DemoScene()
 void DemoScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/2DPendentEngine/Assets/Textures/Textures_Repertory.json");
-	MapTiledManager::Get()->AddMaps("../../res/2DPendentEngine/Assets/Maps/Maps_Repertory.json");
+	MapTiledManager::Get()->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
 
 	Player* player1 = CreateEntity<Player>({ 100, +50 }, { 20, 20 }, "Perceval", Shape::Rectangle);
 	//player1->GetSprite()->SetOpacity(128);
-	player1->SetAngle(85.0f);
-	player1->SetSpeed(50.f);
+	player1->SetSpeed(25.f);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
 	m_player = player1;
 	m_players.push_back(player1);
+	GetCamera()->SetZoom(5.f);
+	GetCamera()->SetSmoothSpeed(10.f);
+	GetCamera()->SetIsShow(true);
 
-	GetCamera()->SetZoom(6.f);
-	MapTiledManager::Get()->SetCurrentMap("MapTest1");
-	Application::Get()->SetClampCameraToCurrentMap(true);
+	MapTiledManager::Get()->SetCurrentMap("Farm");
+
+
 	//Player* player2 = new Player();
 	//player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
 	//player2->GetSprite()->SetOpacity(45);
@@ -85,24 +87,24 @@ void DemoScene::OnInitialize()
 
 	//m_playerToCamera = CreateEntity<Player>({ 600, 200 }, { 80, 80 }, "Perceval", Shape::Rectangle);
 
-	CreatePoint("test1", Vector2f(600, 150), Color(0, 0, 255, 255));
-	CreateLine("test2", Vector2f(456.0f, 15.0f), Vector2f(400.0f, 7005.0f), Color(0, 0, 255, 255));
-	CreateRect("test3", Vector2f(0, 0), Vector2(100, 100), Color(0, 0, 255, 255), false, true);
-	CreateFillRect("test4", Vector2f(800.0f, 200.0f), Vector2(64, 32), Color(0, 0, 255, 255));
-	GetGeometry<Rectangle>("test4")->SetAngle(700);
-	CreateCircle("test5", Vector2f(150, 100), Vector2i(50, 100), Color(0, 0, 255, 255), false, true);
-	GetGeometry<Circle>("test5")->SetAngle(64);
-	CreateFillCircle("test6", Vector2f(500.0f, 300.0f), Vector2i(240, 64), Color(0, 0, 255, 255));
-	GetGeometry<Circle>("test6")->SetAngle(45.0f);
-	CreateText("HW", Vector2f(970, 90), "Hello World !", Color(0, 0, 255, 255));
-	GetGeometry<Text>("HW")->SetAngle(45.0f);
-	CreateFillCircle("88", Vector2f(1000.0f, 500.0f), Vector2i(16, 16), Color(255, 255, 255, 255));	
+	//CreatePoint("test1", Vector2f(600, 150), Color(0, 0, 255, 255));
+	//CreateLine("test2", Vector2f(456.0f, 15.0f), Vector2f(400.0f, 7005.0f), Color(0, 0, 255, 255));
+	//CreateRect("test3", Vector2f(0, 0), Vector2(100, 100), Color(0, 0, 255, 255), false, true);
+	//CreateFillRect("test4", Vector2f(800.0f, 200.0f), Vector2(64, 32), Color(0, 0, 255, 255));
+	//GetGeometry<Rectangle>("test4")->SetAngle(700);
+	//CreateCircle("test5", Vector2f(150, 100), Vector2i(50, 100), Color(0, 0, 255, 255), false, true);
+	//GetGeometry<Circle>("test5")->SetAngle(64);
+	//CreateFillCircle("test6", Vector2f(500.0f, 300.0f), Vector2i(240, 64), Color(0, 0, 255, 255));
+	//GetGeometry<Circle>("test6")->SetAngle(45.0f);
+	//CreateText("HW", Vector2f(970, 90), "Hello World !", Color(0, 0, 255, 255));
+	//GetGeometry<Text>("HW")->SetAngle(45.0f);
+	//CreateFillCircle("88", Vector2f(1000.0f, 500.0f), Vector2i(16, 16), Color(255, 255, 255, 255));	
 
-	float distance = 100.0f;
-	Vector2f listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
-	Vector2f soundPos = listenerPos + Vector2f(0.0f, -distance);
-	sound.GetSound("Monsieur")->SetPosition(soundPos);
-	SoundManager::Get()->Play("music1", -1);
+	//float distance = 100.0f;
+	//Vector2f listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
+	//Vector2f soundPos = listenerPos + Vector2f(0.0f, -distance);
+	//sound.GetSound("Monsieur")->SetPosition(soundPos);
+	//SoundManager::Get()->Play("music1", -1);
 
 	//GetCamera()->SetSmoothSpeed(5.0f);
 
@@ -212,14 +214,16 @@ void DemoScene::OnEvent()
 
 	if (input.IsKeyboardDown(K_f))
 	{
-		if(GetAutoFPS() == false)
-		{
-			ChangeAutoFPS();
-		}
-		else
-		{
-			ChangeAutoFPS();
-		}
+		m_test = !m_test;
+		Application::Get()->SetClampCameraToCurrentMap(m_test);
+		//if(GetAutoFPS() == false)
+		//{
+		//	ChangeAutoFPS();
+		//}
+		//else
+		//{
+		//	ChangeAutoFPS();
+		//}
 	}
 	if (input.IsKeyboardDown(K_v))
 	{
@@ -560,7 +564,7 @@ void DemoScene::OnUpdate()
 	Vector2f positionSound = sound.GetSoundPosition("Monsieur");
 	if (m_player != nullptr)
 		GetCamera()->Follow(m_player, dt);
-	GetGeometry<Circle>("88")->SetPosition(positionSound);
+	//GetGeometry<Circle>("88")->SetPosition(positionSound);
 
 	if (entitySelected != nullptr)
 	{

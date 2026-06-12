@@ -38,7 +38,6 @@ void Camera::ZoomOut(float p_amount)
 
 void Camera::Follow(Entity* p_entity, float p_deltaTime)
 {
-    float test = exp(-m_smoothSpeed * p_deltaTime);
     float factor = 1 - exp(-m_smoothSpeed * p_deltaTime);
 
     float lerpX = std::lerp(GetPosition().GetX(), p_entity->GetPosition().GetX(), factor);

@@ -21,6 +21,8 @@ private:
 
 	const Vector2i m_levelDimension = { 2000, 2000 }; //Dimension du niveau en pixels
 
+	bool m_test = false;
+
 protected:
 
 	//Fonctions virtuelles héritées de Scene pour définir la logique d'initialisation, de gestion des événements, de mise à jour et de destruction de la scène

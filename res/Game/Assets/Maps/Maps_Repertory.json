@@ -1,3 +1,10 @@
 {
-  "maps": []
+  "maps": [
+    {
+      "path": "../../res/Game/Assets/Maps/tmx/Farm.tmx"
+    },
+    {
+      "path": "../../res/Game/Assets/Maps/tmx/Village.tmx"
+    }
+  ]
 }

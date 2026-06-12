@@ -163,6 +163,7 @@ void Application::Update()
 		return;
 	}*/
 
+
 	if (SceneManager::Get()->IsSceneInStack() == false)
 	{
 		return;
@@ -203,10 +204,6 @@ void Application::Update()
 		}
 	}
 
-	if (m_cameraIsClamp)
-		ClampCameraToCurrentMap();
-
-
 	for (auto it = m_entityToDestroy.begin(); it != m_entityToDestroy.end(); ++it)
 	{
 		delete* it;
@@ -219,6 +216,9 @@ void Application::Update()
 		m_entities.push_back(*it);
 	}
 	m_entityToAdd.clear();
+
+	if (m_cameraIsClamp)
+		ClampCameraToCurrentMap();
 }
 
 void Application::UpdatePhysics_Collisions()
@@ -315,7 +315,15 @@ void Application::ClampCameraToCurrentMap()
 
 	Vector2f cameraPos = m_camera->GetPosition();
 
-	Vector2f clampPosition = Utils::Clamp(cameraPos, cameraDimensions, mapDimensions); 
+	Vector2f realCamDim = cameraDimensions / m_camera->GetZoom();
+
+	Vector2f min = realCamDim / 2.f;
+	Vector2f max = mapDimensions - min;
+
+	Vector2f clampPosition = {}; // Utils::Clamp(cameraPos, Vector2f{}, max);
+
+	clampPosition.SetX(std::clamp(cameraPos.GetX(), min.GetX(), max.GetX()));
+	clampPosition.SetY(std::clamp(cameraPos.GetY(), min.GetY(), max.GetY()));
 
 	m_camera->SetPosition(clampPosition);
 }

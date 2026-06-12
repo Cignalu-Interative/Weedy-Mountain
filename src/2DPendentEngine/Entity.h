@@ -46,6 +46,7 @@ protected:
 
 	bool m_isVisible = true; //Bool pour savoir si l'entité doit être dessinée à l'écran
 
+	bool m_isStatic = false;
 	//Fonction pour initialiser l'entité, notamment en définissant sa position, sa dimension, son sprite et son collider
 	void Initialize(Vector2f p_position, Vector2i p_dimention, const std::string& p_path, Render* f_render, Shape p_shape, bool p_isGUI = false, bool p_animation = false, const std::string& p_jsonAnimation = "");
 	//Fonction pour mettre à jour l'entité, notamment en mettant à jour son sprite et en gérant sa logique de jeu
@@ -204,6 +205,8 @@ public:
 
 	void SetAnimationByName(const std::string& p_nameAnimation);
 
+	void SetIsStatic(bool p_isStatic) { m_isStatic = p_isStatic; }
+	bool GetIsStatic() { return m_isStatic; }
 	//Liste des class amie avec la class Entity
 	friend class CollisionManager;
 	friend class Application;

@@ -18,9 +18,9 @@ bool Button::IsMouseIn()
 {
 	InputManager* im = InputManager::Get();
 	Vector2f mousePos = im->GetMousePosition();
-	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetPosition({0.f, 0.f}));
-	std::cout << pos.GetX() << " " << pos.GetY() << std::endl;
-	std::cout << mousePos.GetX() << " " << mousePos.GetY() << std::endl;
+	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetCollider()->GetPosition({0.f, 0.f}));
+	//std::cout << pos.GetX() << " " << pos.GetY() << std::endl;
+	//std::cout << mousePos.GetX() << " " << mousePos.GetY() << std::endl;
 	int w = GetCollider()->GetDimension().GetX();
 	int h = GetCollider()->GetDimension().GetY();
 

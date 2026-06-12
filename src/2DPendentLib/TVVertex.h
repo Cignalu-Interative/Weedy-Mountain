@@ -10,10 +10,17 @@ private:
 
 	const std::vector<GLfloat> m_vertexData
 	{
-	//    x      y     z     w     r     g     b     a
-		-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 1 left vertex
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 2 right vertex
-		0.0f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f // vertex 3 top vertex
+		// FIRST TRIANGLE
+	//    x      y     r     g     b     a
+		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 1 left vertex
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 2 right vertex
+		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f, // vertex 3 top vertex
+
+		// SECOND TRIANGLE
+	//    x      y     r     g     b     a
+		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 1 right vertex
+		0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f, // vertex 2 top vertex
+		-0.5f, 0.5f, 0.0f, 0.0f, 1.0f, 1.0f // vertex 3 left vertex
 	};
 
 	// VAO

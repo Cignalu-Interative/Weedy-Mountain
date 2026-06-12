@@ -340,7 +340,7 @@ void Application::Draw()
 	glBindVertexArray(m_tvVertex.GetgVertexArrayObject());
 	//glBindBuffer(GL_ARRAY_BUFFER, m_tvVertex.GetgVertexBufferObject());
 
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 
 	glBindVertexArray(0);
 	glUseProgram(0);

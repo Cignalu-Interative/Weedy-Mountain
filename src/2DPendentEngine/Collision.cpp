@@ -37,18 +37,14 @@ bool Collision::Collision_AABB(const Collider& p_rectA, const Collider& p_rectB)
 
 bool Collision::Collision_CBC(const Collider& p_circleA, const Collider& p_circleB)
 {
-Vector2f positionA = p_circleA.GetPosition();
+	Vector2f positionA = p_circleA.GetPosition();
     Vector2f positionB = p_circleB.GetPosition();
 
     float distance = Utils::Distance(positionA, positionB);
-    float sommeDimention = p_circleA.GetDimension().GetX() / 2 + p_circleB.GetDimension().GetX() / 2;
-    float carreDimention = sommeDimention * sommeDimention;
-    /*float dx = positionA.GetX() - positionB.GetX();
-    float dy = positionA.GetY() - positionB.GetY();
+    float sommeDimension = p_circleA.GetDimension().GetX() / 2 + p_circleB.GetDimension().GetX() / 2;
+    float carreDimension = sommeDimension * sommeDimension;
 
-    float distance = std::sqrt(dx dx + dy * dy);*/
-
-    return distance < carreDimention; 
+    return distance < carreDimension; 
 }
 
 bool Collision::Collision_ARC(const Collider& p_rect, const Collider& p_circle)

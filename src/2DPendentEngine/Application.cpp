@@ -164,6 +164,7 @@ void Application::Update()
 		return;
 	}*/
 
+
 	if (SceneManager::Get()->IsSceneInStack() == false)
 	{
 		return;
@@ -216,6 +217,9 @@ void Application::Update()
 		m_entities.push_back(*it);
 	}
 	m_entityToAdd.clear();
+
+	if (m_cameraIsClamp)
+		ClampCameraToCurrentMap();
 }
 
 void Application::UpdatePhysics_Collisions()
@@ -296,6 +300,31 @@ void Application::UpdatePhysics_Collisions()
 
 	for (Entity* entity : m_entities)
 		entity->UpdateMovement_Velocity(m_deltaTime);
+}
+
+void Application::ClampCameraToCurrentMap()
+{
+	MapTiledManager* map = MapTiledManager::Get();
+
+	if (map->GetCurrentMap() == nullptr)
+		std::cerr << "CurrentMap is nullptr" << std::endl;
+
+	Vector2f mapDimensions = (Vector2f)map->GetCurrentMap()->GetDimension();
+	Vector2f cameraDimensions = (Vector2f)m_camera->GetDimension();
+
+	Vector2f cameraPos = m_camera->GetPosition();
+
+	Vector2f realCamDim = cameraDimensions / m_camera->GetZoom();
+
+	Vector2f min = realCamDim / 2.f;
+	Vector2f max = mapDimensions - min;
+
+	Vector2f clampPosition = {}; // Utils::Clamp(cameraPos, Vector2f{}, max);
+
+	clampPosition.SetX(std::clamp(cameraPos.GetX(), min.GetX(), max.GetX()));
+	clampPosition.SetY(std::clamp(cameraPos.GetY(), min.GetY(), max.GetY()));
+
+	m_camera->SetPosition(clampPosition);
 }
 
 void Application::Draw()

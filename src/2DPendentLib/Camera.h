@@ -4,6 +4,7 @@
 #include "2DPendentLib/Drawable.h"
 #include "Color.h"
 
+class Entity;
 class Camera : public Transformable, public Drawable
 {
 private:
@@ -15,6 +16,8 @@ private:
 	Color m_color = ColorsNamed::DarkTurquoise; // Couleur de la caméra pour le debug
 
 	bool m_isShow = false;
+
+	float m_smoothSpeed = 5;
 
 public:
 
@@ -29,6 +32,8 @@ public:
 	void ZoomIn(float p_amount);
 	void ZoomOut(float p_amount);
 
+	void Follow(Entity* p_entity, float p_deltaTime);
+
 	//MONDE -> ECRAN
 	template<typename T>
 	Vector2<T> WorldToScreen(Vector2<T> p_worldPos) const;
@@ -39,6 +44,9 @@ public:
 
 	void SetIsShow(bool p_isShow) { m_isShow = p_isShow; }
 	bool GetIsShow() const { return m_isShow; }
+
+	void SetSmoothSpeed(float p_smoothSpeed) { m_smoothSpeed = p_smoothSpeed; }
+	float GetSmoothSpeed() const { return m_smoothSpeed; }
 
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 };

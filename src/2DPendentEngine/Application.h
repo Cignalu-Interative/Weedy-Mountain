@@ -63,6 +63,7 @@ private:
 	bool m_autoFPS = true; // Si true, le jeu ajustera automatiquement le nombre de frames par seconde par rapport au fps trouvé grace à la fonction V_Sync
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
 
+	bool m_cameraIsClamp = false;
 public:
 
 	//Constructeur de l'Application
@@ -115,6 +116,9 @@ public:
 
 	void SetDrawFPS(bool p_drawFPS) { m_drawFPS = p_drawFPS; }
 	bool GetDrawFPS() const { return m_drawFPS; }
+
+	void SetClampCameraToCurrentMap(bool p_isClamp) { m_cameraIsClamp = p_isClamp; }
+	void ClampCameraToCurrentMap();
 
 public:
 

@@ -126,9 +126,10 @@ void PhysicsManager::Repulse(Entity* p_entityA, Entity* p_entityB, const Collisi
 	if (bodyA != nullptr && bodyA->GetBodyType() != ShapeBodyPhysics::Static)
 	{
 		Vector2f posA = p_entityA->GetPosition({ 0.5f, 0.5f });
+
 		p_entityA->SetPosition({
-			posA.GetX() + correction.GetX() * invMassA,
-			posA.GetY() + correction.GetY() * invMassA
+			posA.GetX() - correction.GetX() * invMassA,
+			posA.GetY() - correction.GetY() * invMassA
 			});
 	}
 
@@ -137,8 +138,8 @@ void PhysicsManager::Repulse(Entity* p_entityA, Entity* p_entityB, const Collisi
 	{
 		Vector2f posB = p_entityB->GetPosition({ 0.5f, 0.5f });
 		p_entityB->SetPosition({
-			posB.GetX() - correction.GetX() * invMassB,
-			posB.GetY() - correction.GetY() * invMassB
+			posB.GetX() + correction.GetX() * invMassB,
+			posB.GetY() + correction.GetY() * invMassB
 			});
 	}
 

@@ -251,8 +251,8 @@ void Collision::ComputeManifold_AABB(const Collider& p_rectA, const Collider& p_
 	Vector2f centerA = { posA.GetX() + dimA.GetX() * 0.5f, posA.GetY() + dimA.GetY() * 0.5f };
 	Vector2f centerB = { posB.GetX() + dimB.GetX() * 0.5f, posB.GetY() + dimB.GetY() * 0.5f };
 
-	float dx = centerA.GetX() - centerB.GetX();
-	float dy = centerA.GetY() - centerB.GetY();
+	float dx = centerB.GetX() - centerA.GetX();
+	float dy = centerB.GetY() - centerA.GetY();
 
 	float overlapX = (dimA.GetX() * 0.5f + dimB.GetX() * 0.5f) - Utils::AbsValue(dx);
 	float overlapY = (dimA.GetY() * 0.5f + dimB.GetY() * 0.5f) - Utils::AbsValue(dy);

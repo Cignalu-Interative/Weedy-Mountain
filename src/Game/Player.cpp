@@ -14,7 +14,7 @@ void Player::OnEvent()
 
 void Player::OnUpdate()
 {
-
+	MoveKinematic();
 }
 
 void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)

@@ -14,7 +14,7 @@ private:
 
 	const float m_PIXELS_PER_METER = 10.f;
 
-	const float m_GRAVITY = 981.f;
+	const float m_GRAVITY = 98.1f;
 
 	PhysicsManager() = default;
 

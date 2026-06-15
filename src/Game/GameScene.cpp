@@ -34,28 +34,29 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	m_Player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
-	m_Player->GetCollider()->SetDimension({ 16,16 });
-	m_Player->GetCollider()->SetOffset({ 0,8 });
-	m_Player->SetRigidBody(true);
-	m_Player->GetCollider()->SetID("playerCollider");
-	m_Player->SetTag(1);
-	m_Player->SetDrawLayer(2);
-	m_Player->GetCollider()->SetLayer(1);
-	m_Player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
-	m_Player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
-	m_Player->ShowCollider(true);
-	EnviroProps* Tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
-	Tree->SetType(EnviroSpawnName::Tree);
-	Tree->ShowCollider(true);
-	Tree->SetRigidBody(true);
-	Tree->SetIsStatic(true);
-	Tree->SetTag(2);
-	Tree->GetCollider()->Resize({ 16,16 });
-	Tree->GetCollider()->SetOffset({ 0,28 });
+	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
+	m_player->GetCollider()->SetDimension({ 16,16 });
+	m_player->GetCollider()->SetOffset({ 0,8 });
+	m_player->SetRigidBody(true);
+	m_player->GetCollider()->SetID("playerCollider");
+	m_player->SetTag(1);
+	m_player->SetDrawLayer(2);
+	m_player->GetCollider()->SetLayer(1);
+	m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
+	m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
+	m_player->ShowCollider(true);
+
+	EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
+	tree->SetType(EnviroSpawnName::Tree);
+	tree->ShowCollider(true);
+	tree->SetRigidBody(true);
+	tree->SetIsStatic(true);
+	tree->SetTag(2);
+	tree->GetCollider()->Resize({ 16,16 });
+	tree->GetCollider()->SetOffset({ 0,28 });
 	
 	GetCamera()->SetZoom(5.f);
-	GetCamera()->Follow(m_Player, GetDeltaTime());
+	GetCamera()->Follow(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
@@ -91,7 +92,7 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
-	GetCamera()->SetPosition(m_Player->GetPosition());
+	GetCamera()->SetPosition(m_player->GetPosition());
 	FarmManager::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();

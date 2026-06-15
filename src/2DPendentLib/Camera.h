@@ -17,7 +17,7 @@ private:
 
 	bool m_isShow = false;
 
-	float m_smoothSpeed = 5;
+	float m_smoothSpeed = 1;
 
 public:
 
@@ -32,7 +32,7 @@ public:
 	void ZoomIn(float p_amount);
 	void ZoomOut(float p_amount);
 
-	void Follow(Entity* p_entity, float p_deltaTime);
+	void Follow(Entity* p_entity);
 
 	//MONDE -> ECRAN
 	template<typename T>

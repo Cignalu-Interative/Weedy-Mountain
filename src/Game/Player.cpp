@@ -13,13 +13,13 @@ void Player::OnInitialize()
 {
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
-	m_Jobs.push_back(gatherer);
+	m_jobs.push_back(gatherer);
 	PlayerJob* farmer = new PlayerJob();
 	farmer->m_name = JobType::Farmer;
-	m_Jobs.push_back(farmer);
+	m_jobs.push_back(farmer);
 	PlayerJob* miner = new PlayerJob();
 	miner->m_name = JobType::Miner;
-	m_Jobs.push_back(miner);
+	m_jobs.push_back(miner);
 	/*PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
 	m_Jobs.push_back(killer);
@@ -31,30 +31,32 @@ void Player::OnInitialize()
 void Player::OnEvent()
 {
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
-		SetSpeed(m_Stats.m_PlayerSpeed * 2);
+		SetSpeed(m_stats.m_playerSpeed * 2);
 	}
-	else SetSpeed(m_Stats.m_PlayerSpeed);
+	else SetSpeed(m_stats.m_playerSpeed);
 
+	Vector2f direction = GetDirection();
+	Collider* boxCollider = GetCollider("actionBox");
 	//Input Clavier
 	if (InputManager::Get()->IsKeyboardHeld(K_z)) {
-		SetDirection({ GetDirection().GetX(), -1.0f });
-		GetCollider("actionBox")->SetOffset({ 0, -8 });
-		GetCollider("actionBox")->SyncWithOwner();
+		SetDirection({ direction.GetX(), -1.0f });
+		boxCollider->SetOffset({ 0, -8 });
+		boxCollider->SyncWithOwner();
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_s)) {
-		SetDirection({ GetDirection().GetX(), 1.0f });
-		GetCollider("actionBox")->SetOffset({ 0, 24 });
-		GetCollider("actionBox")->SyncWithOwner();
+		SetDirection({ direction.GetX(), 1.0f });
+		boxCollider->SetOffset({ 0, 24 });
+		boxCollider->SyncWithOwner();
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_q)) {
-		SetDirection({ -1.0f, GetDirection().GetY() });
-		GetCollider("actionBox")->SetOffset({ -16, 8 });
-		GetCollider("actionBox")->SyncWithOwner();
+		SetDirection({ -1.0f, direction.GetY() });
+		boxCollider->SetOffset({ -16, 8 });
+		boxCollider->SyncWithOwner();
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_d)) {
-		SetDirection({ 1.0f, GetDirection().GetY() });
-		GetCollider("actionBox")->SetOffset({ 16, 8 });
-		GetCollider("actionBox")->SyncWithOwner();
+		SetDirection({ 1.0f, direction.GetY() });
+		boxCollider->SetOffset({ 16, 8 });
+		boxCollider->SyncWithOwner();
 	}
 
 	//input souris
@@ -149,12 +151,12 @@ void Player::OnDestroy()
 
 void Player::UpdateJobs()
 {
-	for (int i = 0; i < m_Jobs.size(); i++) {
-		m_Jobs[i]->levelUp();
-		switch (m_Jobs[i]->m_name)
+	for (int i = 0; i < m_jobs.size(); i++) {
+		m_jobs[i]->levelUp();
+		switch (m_jobs[i]->m_name)
 		{
 		case JobType::Gatherer:
-			switch (m_Jobs[i]->m_lvl) {
+			switch (m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::BandageL1);
 				break;
@@ -173,7 +175,7 @@ void Player::UpdateJobs()
 			}
 
 		case JobType::Farmer:
-			switch (m_Jobs[i]->m_lvl) {
+			switch (m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::FertilizerL1);
 				break;
@@ -195,7 +197,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Miner:
-			switch (m_Jobs[i]->m_lvl) {
+			switch (m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::StoneTools);
 				
@@ -219,7 +221,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Dealer:
-			switch (m_Jobs[i]->m_lvl) {
+			switch (m_jobs[i]->m_lvl) {
 			case 2:
 				GetStats().m_drugsSellQuantity += 15;
 				break;
@@ -239,7 +241,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Killer:
-			switch (m_Jobs[i]->m_lvl) {
+			switch (m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::Knife);
 				break;
@@ -247,7 +249,7 @@ void Player::UpdateJobs()
 				UnlockRecipe(Recipes::Sword);
 				break;
 			case 4:
-				GetStats().m_PlayerSpeed *= 1.067f;
+				GetStats().m_playerSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::Glock);

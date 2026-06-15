@@ -4,7 +4,7 @@
 class GameScene : public Scene
 {
 private:
-	Player* m_Player = nullptr;
+	Player* m_player = nullptr;
 
 protected:
 

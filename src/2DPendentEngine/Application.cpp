@@ -237,6 +237,8 @@ void Application::UpdatePhysics_Collisions()
 		entity->UpdateMovement_Velocity(m_FIX_UPDATE);
 	}
 	
+	return;
+
 	for (auto it1 = m_entities.begin(); it1 != m_entities.end(); ++it1)
 	{
 		auto it2 = it1;

@@ -55,16 +55,16 @@ enum class Recipes
 };
 
 struct PlayerStats {
-	float m_PlayerSpeed = 10.f;
+	float m_playerSpeed = 10.f;
 
-	float m_MaxHp = 100.f;
-	float m_Hp = m_MaxHp;
+	float m_maxHp = 100.f;
+	float m_Hp = m_maxHp;
 
-	float m_MaxStamina = 100.f;
-	float m_Stamina = m_MaxStamina;
+	float m_maxStamina = 100.f;
+	float m_Stamina = m_maxStamina;
 
-	float m_MaxToxicity = 100.f;
-	float m_Toxicity = 0.f;
+	float m_maxToxicity = 100.f;
+	float m_toxicity = 0.f;
 
 	float m_harvestEffiency = 1.f;
 	float m_farmerSpeed = 1.f;
@@ -78,8 +78,8 @@ struct PlayerStats {
 class Player : public Entity
 {
 private:
-	PlayerStats m_Stats;
-	std::vector<PlayerJob*> m_Jobs;
+	PlayerStats m_stats;
+	std::vector<PlayerJob*> m_jobs;
 
 
 	// TEMP - AGRI
@@ -103,8 +103,8 @@ protected:
 	void OnDestroy() override;
 
 public:
-	std::vector<PlayerJob*>& GetJobs() { return m_Jobs; }
-	PlayerStats& GetStats() { return m_Stats; }
+	std::vector<PlayerJob*>& GetJobs() { return m_jobs; }
+	PlayerStats& GetStats() { return m_stats; }
 
 	void UpdateJobs();
 	void UnlockRecipe(Recipes _toUnlock);

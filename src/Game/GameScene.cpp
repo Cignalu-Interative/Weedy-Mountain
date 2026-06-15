@@ -60,10 +60,7 @@ void GameScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_e) && m_pnj->IsInPlayerZone() && !m_pnj->IsTalking())
 	{
-		m_pnj->Talk(1, 2);
-
-		
-
+		m_pnj->Talk(1,2);
 	}
 }
 
@@ -77,18 +74,7 @@ void GameScene::OnUpdate()
 
 	if (m_pnj->IsFinished() && m_pnj->IsTalking())
 	{
-		for (Dialogue::Choice choice : m_pnj->GetChoices())
-		{
-			static int i = 1;
-			std::string id = choice.s_label + std::to_string(i++);
-			Button* button = CreateButton({ 250.f * i, 200 }, { 50, 25 }, "", id, choice.s_label, true);
-			button->SetOnClick([this, id, choice] {
-				m_pnj->Talk(choice.s_target, 2);
-
-				});
-			button->ShowCollider(true);
-			button->SyncColliders();
-		}
+		
 
 	}
 }

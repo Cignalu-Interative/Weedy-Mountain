@@ -69,8 +69,18 @@ void Application::Init()
 	texture.LoadFromFile("../../res/2DPendentEngine/Assets/Textures/Other/Perceval.png");
 	spriteOpenGL.Init(sizeWindow.GetX(), sizeWindow.GetY());*/
 
-	m_tvVertex.VertexSpecification();
-	m_tvVertex.CreateGraphicsPipeline();
+	for (int i = 0; i < 0; ++i)
+	{
+		TVVertex tvvertex;
+		tvvertex.VertexSpecification();
+		tvvertex.CreateGraphicsPipeline();
+		m_tvVertexVector.push_back(tvvertex);
+	}
+
+	m_testTVVertex.VertexSpecification();
+	m_testTVVertex.CreateGraphicsPipeline();
+
+	std::cerr << "Count geometry for OpenGL: " << m_tvVertexVector.size() << std::endl;
 	
 
 	std::cerr << "Application initialized successfully." << std::endl;
@@ -176,6 +186,17 @@ void Application::HandleInput()
 
 void Application::Update()
 {
+
+	if (InputManager::Get()->IsKeyboardHeld(K_o))
+	{
+		m_testTVVertex.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() + 0.01f);
+		std::cerr << "g_uOffset K_o : " << m_testTVVertex.GetUOffesetGL() << std::endl;
+	}
+	if (InputManager::Get()->IsKeyboardHeld(K_l))
+	{
+		m_testTVVertex.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() - 0.01f);
+		std::cerr << "g_uOffset K_l : " << m_testTVVertex.GetUOffesetGL() << std::endl;
+	}
 	//std::cerr << "FPS : " + std::to_string(GetCurrentFPS()) << std::endl;
 
 	/*if (SceneManager::Get()->GetCurrentScene() == nullptr)
@@ -335,16 +356,48 @@ void Application::Draw()
 
 	m_render.ClearOpenGL();
 
-	glUseProgram(m_tvVertex.GetgGraphicsPipelineShaderProgram());
+	for (TVVertex& tvvertex : m_tvVertexVector)
+	{
+		glUseProgram(tvvertex.GetgGraphicsPipelineShaderProgram());
 
-	glBindVertexArray(m_tvVertex.GetgVertexArrayObject());
+		glBindVertexArray(tvvertex.GetgVertexArrayObject());
+		//glBindBuffer(GL_ARRAY_BUFFER, m_tvVertex.GetgVertexBufferObject());
+
+		//glDrawArrays(GL_TRIANGLES, 0, 6);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
+
+	glUseProgram(m_testTVVertex.GetgGraphicsPipelineShaderProgram());
+	GLint location = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_offset");
+	if (location >= 0)
+	{
+		glUniform1f(location, m_testTVVertex.GetUOffesetGL());
+	}
+	else
+	{
+		std::cerr << "Not find u_offset" << std::endl;
+	}
+
+	glBindVertexArray(m_testTVVertex.GetgVertexArrayObject());
 	//glBindBuffer(GL_ARRAY_BUFFER, m_tvVertex.GetgVertexBufferObject());
 
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
+
 	glBindVertexArray(0);
 	glUseProgram(0);
+
+	//glUseProgram(m_tvVertex.GetgGraphicsPipelineShaderProgram());
+
+	//glBindVertexArray(m_tvVertex.GetgVertexArrayObject());
+	////glBindBuffer(GL_ARRAY_BUFFER, m_tvVertex.GetgVertexBufferObject());
+
+	////glDrawArrays(GL_TRIANGLES, 0, 6);
+	//glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	//glBindVertexArray(0);
+	//glUseProgram(0);
 
 	////////////////////////////////////////////////////////////
 

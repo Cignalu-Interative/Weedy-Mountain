@@ -30,6 +30,8 @@ private:
 	// GraphicsPipeline
 	GLuint m_gGraphicsPipelineShaderProgram = 0;
 
+	float g_uOffset = 0.0f;
+
 public:
 
 	void VAO();
@@ -57,6 +59,10 @@ public:
 	static void GLClearAllErrors();
 
 	static bool GLCheckErrorStatus(const char* function, int line);
+
+	void SetUOffsetGL(float p_newOffsetGL) { g_uOffset = p_newOffsetGL; };
+
+	float GetUOffesetGL() { return g_uOffset; };
 
 
 };

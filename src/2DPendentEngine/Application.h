@@ -104,7 +104,9 @@ private:
 	//	{ 1, 3 },  // location 1 → couleur (vec3)
 	//};
 
-	TVVertex m_tvVertex;
+	std::vector<TVVertex> m_tvVertexVector;
+
+	TVVertex m_testTVVertex;
 
 public:
 

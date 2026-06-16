@@ -82,11 +82,13 @@ bool Window::CreateWindow()
 	// et des avertissements détaillés lors du développement d'applications graphiques. Lorsque le contexte de débogage est activé,
 	// OpenGL peut fournir des informations sur les erreurs de rendu, les problèmes de performance, les violations de spécifications, etc.
 	// Cela peut être extrêmement utile pour identifier et résoudre les problèmes dans le code OpenGL.
+#ifdef _DEBUG
 	if (SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG) < 0)
 	{
 		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_GL_SetAttribute/SDL_GL_CONTEXT_FLAGS non reussie : %s", SDL_GetError());
 		return false;
 	}
+#endif
 
 	// Activer le double buffering
 	// Le double buffering est une technique qui utilise deux tampons pour le rendu :
@@ -96,6 +98,29 @@ bool Window::CreateWindow()
 	if (SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1) < 0)
 	{
 		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_GL_SetAttribute/SDL_GL_DOUBLEBUFFER non reussie : %s", SDL_GetError());
+		return false;
+	}
+
+	// Définir la taille du tampon de profondeur (depth buffer)
+	// Pour un jeux un jeux 2D, un tampon de profondeur n'est pas strictement nécessaire, mais il peut être utile dans certaines situations.
+	// Par exemple, si vous utilisez des effets de profondeur ou si vous avez des éléments qui se chevauchent
+	// et que vous souhaitez contrôler quel élément est affiché au-dessus des autres,
+	// un tampon de profondeur peut vous aider à gérer cela. Il permet de déterminer quel pixel est le plus proche de la caméra
+	// et donc quel pixel doit être affiché à l'écran.
+	if (SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24) < 0)
+	{
+		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_GL_SetAttribute/SDL_GL_DEPTH_SIZE non reussie : %s", SDL_GetError());
+		return false;
+	}
+
+	// Définir la taille du tampon de stencil (stencil buffer)
+	// Le tampon de stencil est un tampon supplémentaire qui peut être utilisé pour effectuer des opérations de masquage et de découpage dans le rendu.
+	// Il est souvent utilisé pour créer des effets de masque, des ombres, des reflets, etc.
+	// En définissant la taille du tampon de stencil à 8 bits, vous indiquez que vous souhaitez utiliser un tampon de stencil avec une profondeur de 8 bits,
+	// ce qui permet de stocker des valeurs de stencil allant de 0 à 255. Cela peut être suffisant pour de nombreuses applications graphiques.
+	if (SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8) < 0)
+	{
+		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_GL_SetAttribute/SDL_GL_STENCIL_SIZE non reussie : %s", SDL_GetError());
 		return false;
 	}
 
@@ -113,6 +138,16 @@ bool Window::CreateWindow()
 	if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1) < 0)
 	{
 		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_GL_SetAttribute/SDL_GL_MULTISAMPLEBUFFERS non reussie : %s", SDL_GetError());
+		return false;
+	}
+
+	// Définir le nombre d'échantillons de multisampling à 4
+	// Le multisampling est une technique d'anti-aliasing qui permet de réduire les effets d'aliasing (bords dentelés) dans les images rendues.
+	// En définissant le nombre d'échantillons de multisampling à 4, vous demandez à OpenGL de prendre 4 échantillons par pixel,
+	// ce qui peut fournir une amélioration significative de la qualité visuelle tout en restant performant pour la plupart des applications graphiques.
+	if (SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4) < 0)
+	{
+		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_GL_SetAttribute/SDL_GL_MULTISAMPLESAMPLES non reussie : %s", SDL_GetError());
 		return false;
 	}
 
@@ -217,9 +252,10 @@ bool Window::CreateWindow()
 
 	glViewport(0, 0, m_windowDimension.GetX(), m_windowDimension.GetY());
 
-	SDL_Log("OpenGL version : %s", glGetString(GL_VERSION));
-	SDL_Log("GPU : %s", glGetString(GL_RENDERER));
-	SDL_Log("GLSL : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	SDL_Log("[OpenGL] Version : %s", glGetString(GL_VERSION));
+	SDL_Log("[OpenGL] GPU     : %s", glGetString(GL_RENDERER));
+	SDL_Log("[OpenGL] Vendor  : %s", glGetString(GL_VENDOR));
+	SDL_Log("[OpenGL] GLSL    : %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	if(m_windowDimension.GetX() < m_displayMode.w && m_windowDimension.GetY() < m_displayMode.h)
 	{

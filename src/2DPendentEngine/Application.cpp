@@ -211,18 +211,18 @@ void Application::Update()
 	{
 		for (TVVertex tvvertx : m_tvVertexVector)
 		{
-			tvvertx.SetURotate(m_testTVVertex.GetURotate() + 0.45f);
+			tvvertx.SetURotate(m_testTVVertex.GetURotate() + 0.80f);
 		}
-		m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() + 0.45f);
+		m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() + 0.80f);
 		std::cerr << "g_uRotate K_k : " << m_testTVVertex.GetURotate() << std::endl;
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_m))
 	{
 		for (TVVertex tvvertx : m_tvVertexVector)
 		{
-			tvvertx.SetURotate(m_testTVVertex.GetURotate() - 0.45f);
+			tvvertx.SetURotate(m_testTVVertex.GetURotate() - 0.80f);
 		}
-		m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() - 0.45f);
+		m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() - 0.80f);
 		std::cerr << "g_uRotate K_m : " << m_testTVVertex.GetURotate() << std::endl;
 	}
 	//std::cerr << "FPS : " + std::to_string(GetCurrentFPS()) << std::endl;
@@ -397,10 +397,10 @@ void Application::Draw()
 
 	glUseProgram(m_testTVVertex.GetgGraphicsPipelineShaderProgram());
 
-	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, m_testTVVertex.GetUOffesetGL()));
-
-	model = glm::rotate(model, glm::radians(m_testTVVertex.GetURotate()), glm::vec3(0.0f, 1.0f, 0.0f));
 	float scale = m_testTVVertex.GetUScale();
+
+	glm::mat4 model = glm::rotate(glm::mat4(1.0f), glm::radians(m_testTVVertex.GetURotate()), glm::vec3(0.0f, 1.0f, 0.0f));
+	model = glm::translate(model, glm::vec3(0.0f, 0.0f, m_testTVVertex.GetUOffesetGL()));
 	model = glm::scale(model, glm::vec3(scale, scale, scale));
 
 	GLint u_ModelMatrixLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_ModelMatrix");

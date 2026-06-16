@@ -13,10 +13,11 @@ static int LENGHT = 94;
 
 void PNJ::OnInitialize()
 {
+	m_scene = GetScene();
 	m_scene->CreateFillRect("dialogBox", Vector2f(GetScene()->GetWindowWidth() / 2, GetScene()->GetWindowHeight() - 100), Vector2i(GetScene()->GetWindowWidth() / 1.9f, 100), Color(255, 255, 255, 255), true);
 	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
 	Vector2f dialogBoxPos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 0,0 });
-	Vector2f pressSpacePos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 1,1 });
+	m_pressSpacePos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 1,1 });
 
 	float m_rectX = dialogBoxPos.GetX();
 	float m_rectY = dialogBoxPos.GetY();
@@ -44,9 +45,9 @@ void PNJ::OnInitialize()
 	m_scene->GetGeometry<Text>("button")->SetFontSize(19);
 	m_scene->GetGeometry<Text>("button")->SetIsVisible(false);
 	
-	m_scene->CreateText("pressSpace", Vector2f(pressSpacePos.GetX()- 10, pressSpacePos.GetY() - 10), "Press SPACE to continue", Color(0, 0, 0, 200), true);
+	m_scene->CreateText("pressSpace", Vector2f(m_pressSpacePos.GetX()- 10, m_pressSpacePos.GetY() - 10), "Press SPACE to continue", Color(0, 0, 0, 200), true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetFontSize(17);
-	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ pressSpacePos.GetX() - 10, pressSpacePos.GetY()  }, {1,1});
+	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY()  }, {1,1});
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 }
@@ -100,6 +101,7 @@ void PNJ::Talk(const std::string& p_say)
 	m_scene->GetGeometry<Text>("dialog3")->SetText("");
 	m_scene->GetGeometry<Text>("dialog4")->SetText("");
 
+
 	m_isTalking = true;
 	m_isFinished = false;
 
@@ -116,16 +118,17 @@ void PNJ::Talk(const std::string& p_say)
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
 }
 
-void PNJ::Talk(int p_dialogID, int p_choiceID)
+void PNJ::Talk(int p_dialogID)
 {
 	m_scene->GetGeometry<Text>("dialog1")->SetText("");
 	m_scene->GetGeometry<Text>("dialog2")->SetText("");
 	m_scene->GetGeometry<Text>("dialog3")->SetText("");
 	m_scene->GetGeometry<Text>("dialog4")->SetText("");
+
 	m_isTalking = true;
 	m_isFinished = false;
 
-	m_choices = DialogueManager::Get()->GetChoicesById(m_dialogPath, p_choiceID);
+	m_choices = DialogueManager::Get()->GetChoicesById(m_dialogPath, p_dialogID);
 	m_initial = *DialogueManager::Get()->GetDialogueById(m_dialogPath, p_dialogID);
 	m_lines = SplitDialogue(m_initial, LENGHT);
 
@@ -167,16 +170,16 @@ void PNJ::UpdateDialog()
 	if (m_index >= m_initial.size())
 	{
 		m_isFinished = true;
-		if (m_choices.size() > 0)
+		if (!m_choices.empty())
 		{
+			m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 			int i = 1;
 			for (Dialogue::Choice choice : m_choices)
 			{
 				std::string id = choice.s_label + std::to_string(i++);
-				m_button = m_scene->CreateButton({ 250.f * i, 200 }, { 50, 25 }, "", id, choice.s_label, true);
+				m_button = m_scene->CreateButton({ 250.f * i, m_pressSpacePos.GetY() + 40}, {50, 25}, "", id, choice.s_label, true);
 				m_button->SetOnClick([this, id, choice] {
-					Talk(choice.s_target, choice.s_target);
-					m_button->SetIsVisible(false);
+					Talk(choice.s_target);
 					});
 			}
 		}

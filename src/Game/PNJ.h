@@ -5,7 +5,11 @@
 class PNJ : public Entity
 {
 private : 
-	Scene* m_scene = GetScene();
+	Scene* m_scene = nullptr;
+	Button* m_button = nullptr;
+
+	Vector2f m_pressSpacePos = {};
+
 	bool m_isInPlayerZone = false;
 	bool m_isTalking = false;
 	bool m_isFinished = true;
@@ -23,7 +27,6 @@ private :
 
 	std::string m_initial = "";
 	std::string m_dialogPath = "";
-	Button* m_button = nullptr;
 public : 
 
 	void OnInitialize() override;
@@ -36,7 +39,7 @@ public :
 	void SetDialogPath(std::string p_path) { m_dialogPath = p_path; }
 
 	void Talk(const std::string& p_say);
-	void Talk(int p_dialogueID, int p_choiceID);
+	void Talk(int p_dialogueID);
 	void EndTalk();
 	void UpdateDialog();
 

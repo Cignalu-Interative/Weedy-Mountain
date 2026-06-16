@@ -86,7 +86,7 @@ void EnviroProps::CreateItem(int lootPos)
 	Loot->SetTag(3);
 	Loot->GetCollider()->Resize({ 20,20 });
 	Loot->ShowCollider(true);
-	
+	Loot->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
 }
 
 void EnviroProps::SetType(EnviroSpawnName p_name)

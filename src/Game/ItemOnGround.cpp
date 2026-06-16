@@ -21,7 +21,7 @@ void ItemOnGround::OnEvent()
 
 void ItemOnGround::OnUpdate()
 {
-
+	MoveKinematic();
 }
 
 void ItemOnGround::OnDestroy()
@@ -66,7 +66,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 			text->SetPosition(this->GetPosition({1,1}));
 		}
 
-		SetSpeed(3);
+		SetSpeed(15);
 	}
 	else SetSpeed(0);
 

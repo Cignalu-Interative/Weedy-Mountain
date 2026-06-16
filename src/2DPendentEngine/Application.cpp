@@ -207,6 +207,24 @@ void Application::Update()
 		m_testTVVertex.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() - 0.01f);
 		std::cerr << "g_uOffset K_l : " << m_testTVVertex.GetUOffesetGL() << std::endl;
 	}
+	if (InputManager::Get()->IsKeyboardHeld(K_k))
+	{
+		for (TVVertex tvvertx : m_tvVertexVector)
+		{
+			tvvertx.SetURotate(m_testTVVertex.GetURotate() + 0.45f);
+		}
+		m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() + 0.45f);
+		std::cerr << "g_uRotate K_k : " << m_testTVVertex.GetURotate() << std::endl;
+	}
+	if (InputManager::Get()->IsKeyboardHeld(K_m))
+	{
+		for (TVVertex tvvertx : m_tvVertexVector)
+		{
+			tvvertx.SetURotate(m_testTVVertex.GetURotate() - 0.45f);
+		}
+		m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() - 0.45f);
+		std::cerr << "g_uRotate K_m : " << m_testTVVertex.GetURotate() << std::endl;
+	}
 	//std::cerr << "FPS : " + std::to_string(GetCurrentFPS()) << std::endl;
 
 	/*if (SceneManager::Get()->GetCurrentScene() == nullptr)
@@ -379,13 +397,15 @@ void Application::Draw()
 
 	glUseProgram(m_testTVVertex.GetgGraphicsPipelineShaderProgram());
 
-	glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, m_testTVVertex.GetUOffesetGL()));
+	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, m_testTVVertex.GetUOffesetGL()));
+
+	model = glm::rotate(model, glm::radians(m_testTVVertex.GetURotate()), glm::vec3(0.0f, 1.0f, 0.0f));
 
 	GLint u_ModelMatrixLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_ModelMatrix");
 
 	if (u_ModelMatrixLocation >= 0)
 	{
-		glUniformMatrix4fv(u_ModelMatrixLocation, 1, GL_FALSE, &translate[0][0]);
+		glUniformMatrix4fv(u_ModelMatrixLocation, 1, GL_FALSE, &model[0][0]);
 	}
 	else
 	{
@@ -435,12 +455,16 @@ void Application::Draw()
 		std::cerr << "Not find u_ColorOffset" << std::endl;
 	}
 
+
+
+
+
+
 	glBindVertexArray(m_testTVVertex.GetgVertexArrayObject());
-	//glBindBuffer(GL_ARRAY_BUFFER, m_tvVertex.GetgVertexBufferObject());
+	//glBindBuffer(GL_ARRAY_BUFFER, m_testTVVertex.GetgVertexBufferObject());
 
 	//glDrawArrays(GL_TRIANGLES, 0, 6);
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
 
 	glBindVertexArray(0);
 	glUseProgram(0);

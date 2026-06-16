@@ -31,6 +31,7 @@ private:
 	GLuint m_gGraphicsPipelineShaderProgram = 0;
 
 	float g_uOffset = 0.0f;
+	float g_uRotate = 0.0f;
 
 public:
 
@@ -63,6 +64,10 @@ public:
 	void SetUOffsetGL(float p_newOffsetGL) { g_uOffset = p_newOffsetGL; };
 
 	float GetUOffesetGL() { return g_uOffset; };
+
+	void SetURotate(float p_rotate) { g_uRotate = p_rotate; };
+
+	float GetURotate() { return g_uRotate; };
 
 
 };

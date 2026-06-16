@@ -4,14 +4,20 @@
 #include "InputManager.h"
 #include "Application.h"
 
+Button::~Button()
+{
+	GetScene()->RemoveGeometry(m_textID);
+}
+
 void Button::InitText(const std::string& p_textID, const std::string& p_text)
 {
-	Debug::Get()->CreateText(p_textID, GetPosition(), p_text, {255, 255, 255, 255}, GetIsGUI());
+	m_textID = p_textID;
+	GetScene()->CreateText(p_textID, GetPosition(), p_text, {255, 255, 255, 255}, GetIsGUI());
 }
 
 void Button::SetText(const std::string& p_text)
 {
-	Debug::Get()->GetText(m_textID)->SetText(p_text);
+	GetScene()->GetGeometry<Text>(m_textID)->SetText(p_text);
 }
 
 bool Button::IsMouseIn()

@@ -24,6 +24,7 @@ private :
 
 	std::vector<std::string> m_lines;
 	std::vector<Dialogue::Choice> m_choices;
+	std::vector<Button*> m_buttons;
 
 	std::string m_initial = "";
 	std::string m_dialogPath = "";

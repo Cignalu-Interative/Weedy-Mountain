@@ -19,7 +19,7 @@ private:
 
 public:
 	Button() = default;
-	~Button() = default;
+	~Button();
 
 	void SetOnClick(std::function<void()> p_function) { m_onClick = p_function; }
 	void SetOnHeldClick(std::function<void()> p_function) { m_onHeldClick = p_function; }

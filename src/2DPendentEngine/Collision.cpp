@@ -193,14 +193,13 @@ bool Collision::Collision_OBB(const Collider& p_rectA, const Collider& p_rectB)
 bool Collision::Collision_OBC(const Collider& p_rect, const Collider& p_circle)
 {
 	//rectangle 
-	Vector2i rectDimension = p_rect.GetDimension();
-	Vector2f rectPosition = { p_rect.GetPosition() };
-	Vector2f rectCenter = { rectPosition.GetX(), rectPosition.GetY()};
+	Vector2f rectDimension = (Vector2f)p_rect.GetDimension();
+	Vector2f rectCenter = p_rect.GetPosition();
 	
 	float angle = p_rect.GetAngle();
 
 	//circle
-	Vector2f circleCenter = { p_circle.GetPosition().GetX(), p_circle.GetPosition().GetY()};
+	Vector2f circleCenter = p_circle.GetPosition();
 	float circleRadius = p_circle.GetDimension().GetX() / 2;
 
 	//vecteur center circle-rectangle
@@ -313,8 +312,8 @@ void Collision::ComputeManifold_CBC(const Collider& p_circleA, const Collider& p
 	if (distance > 0.0001f)
 	{
 		p_manifold.normal = {
-			(centerA.GetX() - centerB.GetX()) / distance,
-			(centerA.GetY() - centerB.GetY()) / distance
+			(centerB.GetX() - centerA.GetX()) / distance,
+			(centerB.GetY() - centerA.GetY()) / distance
 		};
 	}
 	else
@@ -392,7 +391,7 @@ void Collision::ComputeManifold_OBB(const Collider& p_rectA, const Collider& p_r
 		}
 	}
 
-	Vector2f direction = p_rectA.GetPosition() - p_rectB.GetPosition();
+	Vector2f direction = p_rectB.GetPosition() - p_rectA.GetPosition();
 	if (Utils::Dot(direction, bestAxis) < 0.f)
 		bestAxis = { -bestAxis.GetX(), -bestAxis.GetY() };
 

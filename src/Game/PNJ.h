@@ -5,6 +5,7 @@
 class PNJ : public Entity
 {
 private : 
+	Scene* m_scene = GetScene();
 	bool m_isInPlayerZone = false;
 	bool m_isTalking = false;
 	bool m_isFinished = true;

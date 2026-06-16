@@ -60,7 +60,7 @@ void GameScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_e) && m_pnj->IsInPlayerZone() && !m_pnj->IsTalking())
 	{
-		m_pnj->Talk(1,2);
+		m_pnj->Talk("Tandis que les premiers rayons d'un soleil doré perçaient timidement la brume matinale qui flottait encore sur la vallée endormie, le vieux voyageur, assis sur le rebord d'un muret de pierre moussue, ajusta sa lourde cape usée par les ans et prit une profonde inspiration, savourant le silence précieux de cet instant suspendu avant de reprendre sa route.");
 	}
 }
 

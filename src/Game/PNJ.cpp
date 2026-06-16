@@ -13,8 +13,8 @@ static int LENGHT = 94;
 
 void PNJ::OnInitialize()
 {
-	GetScene()->CreateFillRect("dialogBox", Vector2f(GetScene()->GetWindowWidth() / 2, GetScene()->GetWindowHeight() - 100), Vector2i(GetScene()->GetWindowWidth() / 1.9f, 100), Color(255, 255, 255, 255), true);
-	GetScene()->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
+	m_scene->CreateFillRect("dialogBox", Vector2f(GetScene()->GetWindowWidth() / 2, GetScene()->GetWindowHeight() - 100), Vector2i(GetScene()->GetWindowWidth() / 1.9f, 100), Color(255, 255, 255, 255), true);
+	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
 	Vector2f dialogBoxPos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 0,0 });
 	Vector2f pressSpacePos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 1,1 });
 
@@ -24,30 +24,30 @@ void PNJ::OnInitialize()
 	m_textX = m_rectX + 10;
 	m_textY = m_rectY + 10;
 
-	GetScene()->CreateText("dialog1", Vector2f(m_textX, m_textY), "", Color(0, 0, 0, 255), true);
-	GetScene()->GetGeometry<Text>("dialog1")->SetFontSize(19);
-	GetScene()->GetGeometry<Text>("dialog1")->SetIsVisible(false);
+	m_scene->CreateText("dialog1", Vector2f(m_textX, m_textY), "", Color(0, 0, 0, 255), true);
+	m_scene->GetGeometry<Text>("dialog1")->SetFontSize(19);
+	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(false);
 
-	GetScene()->CreateText("dialog2", Vector2f(m_textX, m_textY + 20), "", Color(0, 0, 0, 255), true);
-	GetScene()->GetGeometry<Text>("dialog2")->SetFontSize(19);
-	GetScene()->GetGeometry<Text>("dialog2")->SetIsVisible(false);
-
-	GetScene()->CreateText("dialog3", Vector2f(m_textX, m_textY + 40), "", Color(0, 0, 0, 255), true);
-	GetScene()->GetGeometry<Text>("dialog3")->SetFontSize(19);
-	GetScene()->GetGeometry<Text>("dialog3")->SetIsVisible(false);
-
-	GetScene()->CreateText("dialog4", Vector2f(m_textX, m_textY + 60), "", Color(0, 0, 0, 255), true);
-	GetScene()->GetGeometry<Text>("dialog4")->SetFontSize(19);
-	GetScene()->GetGeometry<Text>("dialog4")->SetIsVisible(false);
-
-	GetScene()->CreateText("button", Vector2f(m_textX + 100, m_textY + 50), "", Color(255,255, 255, 255));
-	GetScene()->GetGeometry<Text>("button")->SetFontSize(19);
-	GetScene()->GetGeometry<Text>("button")->SetIsVisible(false);
+	m_scene->CreateText("dialog2", Vector2f(m_textX, m_textY + 20), "", Color(0, 0, 0, 255), true);
+	m_scene->GetGeometry<Text>("dialog2")->SetFontSize(19);
+	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(false);
 	
-	GetScene()->CreateText("pressSpace", Vector2f(pressSpacePos.GetX()- 10, pressSpacePos.GetY() - 10), "Appuyer sur ESPACE pour continuer", Color(0, 0, 0, 230), true);
-	GetScene()->GetGeometry<Text>("pressSpace")->SetFontSize(17);
-	GetScene()->GetGeometry<Text>("pressSpace")->SetPosition({ pressSpacePos.GetX() - 10, pressSpacePos.GetY()  }, {1,1});
-	GetScene()->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
+	m_scene->CreateText("dialog3", Vector2f(m_textX, m_textY + 40), "", Color(0, 0, 0, 255), true);
+	m_scene->GetGeometry<Text>("dialog3")->SetFontSize(19);
+	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(false);
+	
+	m_scene->CreateText("dialog4", Vector2f(m_textX, m_textY + 60), "", Color(0, 0, 0, 255), true);
+	m_scene->GetGeometry<Text>("dialog4")->SetFontSize(19);
+	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(false);
+	
+	m_scene->CreateText("button", Vector2f(m_textX + 100, m_textY + 50), "", Color(255,255, 255, 255));
+	m_scene->GetGeometry<Text>("button")->SetFontSize(19);
+	m_scene->GetGeometry<Text>("button")->SetIsVisible(false);
+	
+	m_scene->CreateText("pressSpace", Vector2f(pressSpacePos.GetX()- 10, pressSpacePos.GetY() - 10), "Press SPACE to continue", Color(0, 0, 0, 200), true);
+	m_scene->GetGeometry<Text>("pressSpace")->SetFontSize(17);
+	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ pressSpacePos.GetX() - 10, pressSpacePos.GetY()  }, {1,1});
+	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 }
 
@@ -60,8 +60,8 @@ void PNJ::OnEvent()
 	{
 		for (int i = 0; i < m_lines.size(); i++)
 		{
-			GetScene()->GetGeometry<Text>("dialog" + std::to_string(i + 1))->SetText(m_lines[i]);
-			GetScene()->GetGeometry<Text>("dialog" + std::to_string(i + 1))->SetPosition(Vector2f(m_textX, m_textY + (i * 20)), { 0,0.5f });
+			m_scene->GetGeometry<Text>("dialog" + std::to_string(i + 1))->SetText(m_lines[i]);
+			m_scene->GetGeometry<Text>("dialog" + std::to_string(i + 1))->SetPosition(Vector2f(m_textX, m_textY + (i * 20)), { 0,0.5f });
 			m_isFinished = true;
 		}
 		return;
@@ -95,6 +95,11 @@ void PNJ::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side
 
 void PNJ::Talk(const std::string& p_say)
 {
+	m_scene->GetGeometry<Text>("dialog1")->SetText("");
+	m_scene->GetGeometry<Text>("dialog2")->SetText("");
+	m_scene->GetGeometry<Text>("dialog3")->SetText("");
+	m_scene->GetGeometry<Text>("dialog4")->SetText("");
+
 	m_isTalking = true;
 	m_isFinished = false;
 
@@ -103,16 +108,20 @@ void PNJ::Talk(const std::string& p_say)
 
 	m_index = 0;
 
-	GetScene()->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog1")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog2")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog3")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog4")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
+	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
 }
 
 void PNJ::Talk(int p_dialogID, int p_choiceID)
 {
+	m_scene->GetGeometry<Text>("dialog1")->SetText("");
+	m_scene->GetGeometry<Text>("dialog2")->SetText("");
+	m_scene->GetGeometry<Text>("dialog3")->SetText("");
+	m_scene->GetGeometry<Text>("dialog4")->SetText("");
 	m_isTalking = true;
 	m_isFinished = false;
 
@@ -122,24 +131,24 @@ void PNJ::Talk(int p_dialogID, int p_choiceID)
 
 	m_index = 0;
 
-	GetScene()->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog1")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog2")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog3")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("dialog4")->SetIsVisible(true);
-	GetScene()->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
+	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
 
 }
 
 void PNJ::EndTalk()
 {
-	GetScene()->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
-	GetScene()->GetGeometry<Text>("dialog1")->SetIsVisible(false);
-	GetScene()->GetGeometry<Text>("dialog2")->SetIsVisible(false);
-	GetScene()->GetGeometry<Text>("dialog3")->SetIsVisible(false);
-	GetScene()->GetGeometry<Text>("dialog4")->SetIsVisible(false);
-	GetScene()->GetGeometry<Text>("button")->SetIsVisible(false);
-	GetScene()->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
+	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("button")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 	
 
@@ -164,7 +173,7 @@ void PNJ::UpdateDialog()
 			for (Dialogue::Choice choice : m_choices)
 			{
 				std::string id = choice.s_label + std::to_string(i++);
-				m_button = GetScene()->CreateButton({ 250.f * i, 200 }, { 50, 25 }, "", id, choice.s_label, true);
+				m_button = m_scene->CreateButton({ 250.f * i, 200 }, { 50, 25 }, "", id, choice.s_label, true);
 				m_button->SetOnClick([this, id, choice] {
 					Talk(choice.s_target, choice.s_target);
 					m_button->SetIsVisible(false);
@@ -185,7 +194,7 @@ void PNJ::UpdateDialog()
 		size_t charsForThisLine =
 			std::min(displayedChars, m_lines[0].size());
 
-		GetScene()->GetGeometry<Text>("dialog1")
+		m_scene->GetGeometry<Text>("dialog1")
 			->SetText(m_lines[0].substr(0, charsForThisLine));
 
 		accumulatedChars += m_lines[0].size();
@@ -198,7 +207,7 @@ void PNJ::UpdateDialog()
 			std::min(displayedChars - accumulatedChars,
 				m_lines[1].size());
 
-		GetScene()->GetGeometry<Text>("dialog2")
+		m_scene->GetGeometry<Text>("dialog2")
 			->SetText(m_lines[1].substr(0, charsForThisLine));
 
 		accumulatedChars += m_lines[1].size();
@@ -211,7 +220,7 @@ void PNJ::UpdateDialog()
 			std::min(displayedChars - accumulatedChars,
 				m_lines[2].size());
 
-		GetScene()->GetGeometry<Text>("dialog3")
+		m_scene->GetGeometry<Text>("dialog3")
 			->SetText(m_lines[2].substr(0, charsForThisLine));
 
 		accumulatedChars += m_lines[2].size();
@@ -224,25 +233,25 @@ void PNJ::UpdateDialog()
 			std::min(displayedChars - accumulatedChars,
 				m_lines[3].size());
 
-		GetScene()->GetGeometry<Text>("dialog4")
+		m_scene->GetGeometry<Text>("dialog4")
 			->SetText(m_lines[3].substr(0, charsForThisLine));
 	}
 
 	m_timer = m_interval;
 
-	GetScene()->GetGeometry<Text>("dialog1")->SetPosition(
+	m_scene->GetGeometry<Text>("dialog1")->SetPosition(
 		Vector2f(m_textX, m_textY),
 		{ 0, 0.5f });
 
-	GetScene()->GetGeometry<Text>("dialog2")->SetPosition(
+	m_scene->GetGeometry<Text>("dialog2")->SetPosition(
 		Vector2f(m_textX, m_textY + 20),
 		{ 0, 0.5f });
 
-	GetScene()->GetGeometry<Text>("dialog3")->SetPosition(
+	m_scene->GetGeometry<Text>("dialog3")->SetPosition(
 		Vector2f(m_textX, m_textY + 40),
 		{ 0, 0.5f });
 
-	GetScene()->GetGeometry<Text>("dialog4")->SetPosition(
+	m_scene->GetGeometry<Text>("dialog4")->SetPosition(
 		Vector2f(m_textX, m_textY + 60),
 		{ 0, 0.5f });
 }

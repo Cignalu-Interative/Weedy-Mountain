@@ -134,7 +134,7 @@ void PNJ::Talk(int p_dialogID)
 		{
 			std::string id = choice.s_label + std::to_string(i++);
 			Button* button = m_scene->CreateButton({ 250.f * i, m_pressSpacePos.GetY() + 40 }, { 50, 25 }, "", id, choice.s_label, true);
-			button->SetOnClick([this, choice] {
+			button->SetOnRightClick([this, choice] {
 				for (int i = 0; i < m_buttons.size(); i++)
 				{
 					m_buttons[i]->Destroy();

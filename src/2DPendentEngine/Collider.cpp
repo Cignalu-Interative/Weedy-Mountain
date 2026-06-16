@@ -20,5 +20,10 @@ void Collider::SyncWithOwner()
     else
         ownerCenter = m_owner->GetPosition({ 0.5f, 0.5f });
 
+	m_cachedAABB.minX = ownerCenter.GetX() + m_offset.GetX() - GetDimension().GetX() / 2.f;
+	m_cachedAABB.maxX = ownerCenter.GetX() + m_offset.GetX() + GetDimension().GetX() / 2.f;
+	m_cachedAABB.minY = ownerCenter.GetY() + m_offset.GetY() - GetDimension().GetY() / 2.f;
+	m_cachedAABB.maxY = ownerCenter.GetY() + m_offset.GetY() + GetDimension().GetY() / 2.f;
+
     SetPosition({ ownerCenter.GetX() + m_offset.GetX(), ownerCenter.GetY() + m_offset.GetY() });
 }

@@ -8,7 +8,10 @@
 #include "Camera.h"
 #include "Debug.h"
 #include "Geometry.h"
-
+#include "CollisionManager.h"
+#include "PhysicsManager.h"
+#include "Button.h"
+#include "Slider.h"
 
 void Scene::Initialize()
 {
@@ -46,6 +49,21 @@ void Scene::Sleep()
 	}
 	m_isOnStateSleep = true;
 	m_isOnStateWake = false;
+
+	for (Entity* entity : m_entities)
+	{
+		std::vector<Collider*> collider = entity->GetColliders(); 
+
+		for(Collider* col : collider)
+		{
+			if (col != nullptr)
+				CollisionManager::Get()->UnregisterCollider(col);
+		}
+
+		if (entity->GetPhysicsBody() != nullptr)
+			PhysicsManager::Get()->UnregisterBody(entity);
+	}
+
 	OnSleep();
 }
 
@@ -57,17 +75,44 @@ void Scene::Wake()
 	}
 	m_isOnStateWake = true;
 	m_isOnStateSleep = false;
+
+	for (Entity* entity : m_entities)
+	{
+		std::vector<Collider*> collider = entity->GetColliders();
+
+		for (Collider* col : collider)
+		{
+			if (col != nullptr)
+				CollisionManager::Get()->RegisterCollider(col);
+		}
+
+		if (entity->GetPhysicsBody() != nullptr)
+			PhysicsManager::Get()->RegisterBody(entity);
+	}
+
 	OnWake();
 }
 
 void Scene::Destroy()
 {
 	m_isInCache = false;
+
+	for (Entity* entity : m_entities)
+	{
+		std::vector<Collider*> collider = entity->GetColliders();
+
+		for (Collider* col : collider)
+		{
+			if (col != nullptr)
+				CollisionManager::Get()->UnregisterCollider(col);
+		}
+
+		if (entity->GetPhysicsBody() != nullptr)
+			PhysicsManager::Get()->UnregisterBody(entity);
+	}
+
 	OnDestroy();
 }
-
-#include "Button.h"
-#include "Slider.h"
 
 Button* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
 {

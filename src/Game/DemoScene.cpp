@@ -32,6 +32,8 @@ void DemoScene::OnInitialize()
 	//player1->GetSprite()->SetOpacity(128);
 	player1->SetAngle(0.0f);
 	player1->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
+	player1->RemoveCollider("default");
+	player1->AddCollider("default", { 200, 200 }, Shape::Rectangle, { 0, 0 }, true);
 	player1->GetPhysicsBody()->SetMass(20.f);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
@@ -104,7 +106,7 @@ void DemoScene::OnInitialize()
 	Vector2f listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
 	Vector2f soundPos = listenerPos + Vector2f(0.0f, -distance);
 	sound.GetSound("Monsieur")->SetPosition(soundPos);
-	SoundManager::Get()->Play("music1", -1);
+	//SoundManager::Get()->Play("music1", -1);
 
 	/*int a = 0;
 	int b = 1;

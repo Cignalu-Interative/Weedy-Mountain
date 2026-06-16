@@ -77,7 +77,6 @@ private:
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
 
 
-
 	//Triangle triangle;
 	//Shader shader;
 	//Mesh quadMesh;

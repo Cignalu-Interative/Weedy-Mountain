@@ -400,6 +400,8 @@ void Application::Draw()
 	glm::mat4 model = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, m_testTVVertex.GetUOffesetGL()));
 
 	model = glm::rotate(model, glm::radians(m_testTVVertex.GetURotate()), glm::vec3(0.0f, 1.0f, 0.0f));
+	float scale = m_testTVVertex.GetUScale();
+	model = glm::scale(model, glm::vec3(scale, scale, scale));
 
 	GLint u_ModelMatrixLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_ModelMatrix");
 

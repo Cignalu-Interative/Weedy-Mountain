@@ -30,8 +30,9 @@ private:
 	// GraphicsPipeline
 	GLuint m_gGraphicsPipelineShaderProgram = 0;
 
-	float g_uOffset = 0.0f;
+	float g_uOffset = -2.0f;
 	float g_uRotate = 0.0f;
+	float g_uScale = 0.5f;
 
 public:
 
@@ -62,12 +63,13 @@ public:
 	static bool GLCheckErrorStatus(const char* function, int line);
 
 	void SetUOffsetGL(float p_newOffsetGL) { g_uOffset = p_newOffsetGL; };
-
 	float GetUOffesetGL() { return g_uOffset; };
 
 	void SetURotate(float p_rotate) { g_uRotate = p_rotate; };
-
 	float GetURotate() { return g_uRotate; };
+
+	void SetUScale(float p_scale) { g_uOffset = p_scale; };
+	float GetUScale() { return g_uScale; };
 
 
 };

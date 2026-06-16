@@ -145,6 +145,7 @@ void Player::OnUpdate()
 void Player::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
 
+	MoveKinematic();
 }
 
 void Player::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)

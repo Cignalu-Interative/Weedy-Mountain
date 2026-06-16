@@ -104,7 +104,7 @@ public:
 
 	void IsEneableToUpdate();
 
-	void UpdatePhysics_Collisions();
+	void FixedUpdate();
 
 	//Obtention du render
 	Render* GetRender() { return &m_render; }

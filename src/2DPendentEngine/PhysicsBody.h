@@ -1,9 +1,10 @@
 #pragma once
 #include "2DPendentLib/Vector2.h"
 #include "ShapeBodyPhysics.h"
-#include "2DPendentLib/Transformable.h"
 
-class PhysicsBody : public Transformable
+class PhysicsManager;
+
+class PhysicsBody
 {
 private:
 
@@ -79,14 +80,14 @@ private:
 
     // Empêche tout déplacement sur l'axe X.
     // Utile pour un personnage qui ne doit pas être poussé latéralement.
-    bool m_freezePositionX = false;
+    bool m_freezeX = false;
 
     // Empêche tout déplacement sur l'axe Y.
-    bool m_freezePositionY = false;
+    bool m_freezeY = false;
 
     // Empêche toute rotation physique.
     // Presque toujours true pour les personnages jouables.
-    bool m_freezeRotation = false;
+    bool m_freezeRot = false;
   
     // Seuil de vitesse en dessous duquel un objet s'arrête de rebondir pour éviter les rebonds infinis à basse vitesse.
 	float m_seuilToBounce = 20.0f;
@@ -158,28 +159,6 @@ public:
     Vector2f GetLinearVelocity() const { return m_linearVelocity; }
 	float GetAngularVelocity() const { return m_angularVelocity; }
 
-	// Résout une collision entre deux bodies en appliquant les forces d'impulsion nécessaires pour les séparer et les faire rebondir.
-	// Cette fonction prend en paramètres les deux bodies impliqués dans la collision, le point de contact, la normale de collision, et la pénétration (profondeur de chevauchement).
-	// La Normale de collision est un vecteur unitaire qui pointe de bodyA vers bodyB
-	static void ResolveCollisionPhysics(PhysicsBody* p_bodyA, PhysicsBody* p_bodyB, const Vector2f& p_contactPoint, const Vector2f& p_normal);
-
-	// Intègre les forces accumulées pour calculer la nouvelle vélocité du body.
-    // Cette fonction est appelée à chaque frame pour mettre à jour la vélocité en fonction des forces appliquées.
-	// Si la gravité est activée pour ce body, elle sera appliquée en ajoutant une force vers le bas proportionnelle à la masse du body et à l'échelle de gravité.
-	// Ensuite, la force accumulée sera utilisée pour calculer l'accélération linéaire, puis la vélocité linéaire sera mise à jour en fonction de cette accélération.
-	// De même, le couple accumulé sera utilisé pour calculer l'accélération angulaire, puis la vélocité angulaire sera mise à jour en fonction de cette accélération.
-	// Enfin, le damping linéaire et angulaire sera appliqué pour simuler la friction de l'air,
-    // en réduisant progressivement les vélocités linéaire et angulaire au fil du temps.
-	// Si le body est Static ou Kinematic, cette fonction n'aura aucun effet, car ces types de corps ne sont pas affectés par les forces.
-	void IntegrateForces(float p_deltaTime);
-
-    // Intègre la vélocité pour calculer la nouvelle position du body.
-	// Cette fonction est appelée à chaque frame après IntegrateForces pour déplacer le body en fonction de sa vélocité.
-	// La vélocité linéaire est utilisée pour calculer le déplacement du body en fonction du temps écoulé (deltaTime).
-	// La vélocité angulaire est utilisée pour calculer la rotation du body en fonction du temps écoulé.
-	// Si le body est Static ou Kinematic, cette fonction n'aura aucun effet, car ces types de corps ne sont pas déplacés par la vélocité.
-	void IntegrateVelocity(float p_deltaTime);
-
     // Permet de définir la vélocité linéaire du body. Par exemple, si vous appelez SetLinearVelocity({ 5.0f, 0.0f }),
 	// le body aura une vélocité de 5 unités vers la droite.
 	// Par Exemple pour sauter car la vélocité sera mise à jour instantanément, contrairement à ApplyForce qui applique une force sur la durée.
@@ -189,37 +168,36 @@ public:
 	// le body ne tournera plus du tout, même s'il reçoit des forces de rotation ou des impulsions.
 	// Cela est particulièrement utile pour les personnages jouables, qui ne doivent pas tourner physiquement, mais peuvent toujours être affectés par les forces linéaires.
 	void SetFreezeRotation(bool p_freeze);
+	bool GetFreezeRotation() const { return m_freezeRot; }
 
-   /* const Vector2f& GetVelocity() const { return m_velocity; }
+	void SetFreezeX(bool p_freeze) { m_freezeX = p_freeze; }
+	bool GetFreezeX() const { return m_freezeX; }
 
-    void SetVelocity(const Vector2f& p_vel) { m_velocity = p_vel; }
+	void SetFreezeY(bool p_freeze) { m_freezeY = p_freeze; }
+	bool GetFreezeY() const { return m_freezeY; }
 
-    void AddVelocity(const Vector2f& p_vel) { m_velocity = m_velocity + p_vel; }
+	void SetGravityEnabled(bool p_enabled) { m_gravityEnabled = p_enabled; }
+	bool GetGravityEnabled() const { return m_gravityEnabled; }
 
-    void SetVelocityX(float p_x) { m_velocity.SetX(p_x); }
-    void SetVelocityY(float p_y) { m_velocity.SetY(p_y); }
+	void SetGravityScale(float p_scale) { m_gravityScale = p_scale; }
+	float GetGravityScale() const { return m_gravityScale; }
 
-    bool IsGrounded() const { return m_isGrounded; }
-    void SetGrounded(bool p_grounded) { m_isGrounded = p_grounded; }
+	void SetRestitution(float p_restitution) { m_restitution = p_restitution; }
+	float GetRestitution() const { return m_restitution; }
 
-    float GetGravity() const { return m_gravity; }
-    void  SetGravity(float p_gravity) { m_gravity = p_gravity; }
+	void SetFriction(float p_friction) { m_friction = p_friction; }
+	float GetFriction() const { return m_friction; }
 
-    bool  IsGravityEnabled() const { return m_gravityEnabled; }
-    void  SetGravityEnabled(bool p_enabled) { m_gravityEnabled = p_enabled; }
+	void SetLinearDamping(float p_damping) { m_linearDamping = p_damping; }
+	float GetLinearDamping() const { return m_linearDamping; }
 
-    float GetMass() const { return m_mass; }
-    void  SetMass(float p_mass) { m_mass = p_mass; }
+	void SetAngularDamping(float p_damping) { m_angularDamping = p_damping; }
+	float GetAngularDamping() const { return m_angularDamping; }
 
-    float GetFriction() const { return m_friction; }
-    void  SetFriction(float p_friction) { m_friction = p_friction; }
+	void SetSeuilToBounce(float p_seuil) { m_seuilToBounce = p_seuil; }
+	float GetSeuilToBounce() const { return m_seuilToBounce; }
 
-    void ApplyForce(const Vector2f& p_force);
-
-    void ApplyImpulse(const Vector2f& p_impulse);
-
-    void ResetVelocity() { m_velocity = { 0.0f, 0.0f }; }
-
-    bool IsFalling() const { return m_velocity.GetY() > 0.0f; }
-    bool IsRising()  const { return m_velocity.GetY() < 0.0f; } */
+	// PhysicsManager accède directement aux membres privés pour l'intégration
+	// afin d'éviter le surcoût des getters/setters dans la boucle fixe
+	friend class PhysicsManager;
 };

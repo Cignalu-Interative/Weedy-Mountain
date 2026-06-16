@@ -32,8 +32,6 @@ protected:
 
 	float m_speed = 100;
 
-	const float m_PIXELS_PER_METER = 10; // Constante pour convertir les pixels en mètres pour la physique
-
 	int m_tag = 0; //Tag de l'entité, utilisé pour identifier le type de l'entité (ex: 0 = joueur, 1 = ennemi, 2 = plateforme, etc...)
 	int m_drawLayer = 1;
 
@@ -69,15 +67,12 @@ protected:
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique de destruction
 	virtual void OnDestroy() {};
 
-	//Fonction pour mettre à jour la position de l'entité en fonction des forces appliquées sur son corps physique
-	//Cette fonction est appelée à chaque frame pour intégrer les forces et mettre à jour la position de l'entité en fonction de sa vélocité.
-	//Elle utilise les fonctions IntegrateForces et IntegrateVelocity de la classe PhysicsBody
-	// pour calculer la nouvelle position de l'entité en fonction des forces appliquées et de sa vélocité actuelle.
-	void UpdateMovement_Forces(float p_deltaTime);
-	//Fonction pour mettre à jour la position de l'entité en fonction de sa vélocité
-	//Cette fonction est appelée à chaque frame pour mettre à jour la position de l'entité en fonction de sa vélocité actuelle.
-	//Elle utilise la fonction SetPosition de la classe Transformable pour déplacer l'entité en fonction de sa vélocité et du temps écoulé (deltaTime).
-	void UpdateMovement_Velocity(float p_deltaTime);
+	// Déplace l'entité à la vélocité de son PhysicsBody (Kinematic uniquement).
+	// Pour un déplacement cinématique contrôlé par script, appelez cette fonction
+	// depuis OnUpdate() en passant la direction et la vitesse souhaitées.
+	// Elle traduit m_direction * m_speed en SetLinearVelocity sur le PhysicsBody,
+	// sans passer par l'intégration des forces (pas de gravité, pas de damping).
+	void MoveKinematic();
 
 public:
 
@@ -211,6 +206,7 @@ public:
 	friend class CollisionManager;
 	friend class Application;
 	friend class Scene;
+	friend class PhysicsManager;
 };
 
 #include "Entity.inl"

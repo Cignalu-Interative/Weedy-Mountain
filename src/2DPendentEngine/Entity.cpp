@@ -6,6 +6,7 @@
 #include "RectangleCollider.h"
 #include "CircleCollider.h"
 #include "CollisionManager.h"
+#include "PhysicsManager.h"
 #include "SpriteContainer.h"
 #include "Animation.h"
 
@@ -24,7 +25,12 @@ Entity::~Entity()
 	}
 	m_colliders.clear();
 
-	delete m_physicsBody;
+	if (m_physicsBody != nullptr)
+	{
+		PhysicsManager::Get()->UnregisterBody(this);
+		delete m_physicsBody;
+		m_physicsBody = nullptr;
+	}
 }
 
 void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Render* f_render, Shape p_shape, bool p_isGUI, bool p_animation, const std::string& p_jsonAnimation)
@@ -47,10 +53,7 @@ void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::st
 
 void Entity::Update()
 {
-	//OnEvent();
-
 	float deltatime = GetDeltaTime();
-	//UpdateMovement(deltatime);
 	if (m_animation != nullptr)
 		m_animation->Update(deltatime);
 
@@ -131,217 +134,43 @@ void Entity::Destroy()
 	GetScene()->RemoveEntity(this);
 }
 
-void Entity::UpdateMovement_Forces(float p_deltaTime)
+void Entity::MoveKinematic()
 {
-	if (p_deltaTime == 0.0f || !m_physicsBody)
+	if (m_physicsBody == nullptr)
+		return;
+
+	if (m_physicsBody->GetBodyType() != ShapeBodyPhysics::Kinematic)
 		return;
 
 	if (m_direction.GetX() != 0.0f || m_direction.GetY() != 0.0f)
 	{
 		Vector2f dirNorm = Utils::NormalizeVector(m_direction);
-		m_physicsBody->SetLinearVelocity({ dirNorm.GetX() * m_speed * m_PIXELS_PER_METER, m_physicsBody->GetLinearVelocity().GetY() });
-	}
-	m_physicsBody->IntegrateForces(p_deltaTime);
-}
-
-void Entity::UpdateMovement_Velocity(float p_deltaTime)
-{
-	if (p_deltaTime == 0.0f)
-		return;
-
-	if (m_physicsBody)
-	{
-		/*std::cout << "AVANT IntegrateVelocity, physicsBody pos="
-			<< m_physicsBody->GetPosition().GetX() << " "
-			<< m_physicsBody->GetPosition().GetY() << std::endl;*/
-
-		m_physicsBody->IntegrateVelocity(p_deltaTime);
-
-		/*std::cout << "APRES IntegrateVelocity, physicsBody pos="
-			<< m_physicsBody->GetPosition().GetX() << " "
-			<< m_physicsBody->GetPosition().GetY() << std::endl;*/
-
-		Vector2f newPosition = m_physicsBody->GetPosition();
-		//std::cout << "newPos depuis physicsBody=" << newPosition.GetX() << " " << newPosition.GetY() << std::endl;
-		SetPosition(newPosition);
-		float newAngle = m_physicsBody->GetAngle();
-		SetAngle(newAngle);
-
-		/*std::cout << "position entity apres SetPosition="
-			<< GetPosition().GetX() << " " << GetPosition().GetY() << std::endl;*/
+		m_physicsBody->SetLinearVelocity({
+			dirNorm.GetX() * m_speed,
+			dirNorm.GetY() * m_speed
+			});
 	}
 	else
 	{
-		if (m_speed == 0.0f || m_direction == Vector2<float>{ 0.f, 0.f })
-			return;
-		float distance = p_deltaTime * m_speed * m_PIXELS_PER_METER;
-		Vector2f dirNorm = Utils::NormalizeVector(m_direction);
-		Vector2f translation = dirNorm * distance;
-		Move(translation);
+		m_physicsBody->SetLinearVelocity({ 0.0f, 0.0f });
 	}
-
-	const float windowWidth = static_cast<float>(m_scene->GetWindowWidth());
-	const float windowHeight = static_cast<float>(m_scene->GetWindowHeight());
-
-	const float PosLeft = GetPosition({ 0.0f, 0.5f }).GetX();
-	const float PosRight = GetPosition({ 1.0f, 0.5f }).GetX();
-	const float PosTop = GetPosition({ 0.5f, 0.0f }).GetY();
-	const float PosBottom = GetPosition({ 0.5f, 1.0f }).GetY();
-
-	const float centerX = GetPosition().GetX();
-	const float centerY = GetPosition().GetY();
-
-	const bool outX = PosLeft < 0.0f || PosRight > windowWidth;
-	const bool outY = PosTop < 0.0f || PosBottom > windowHeight;
-
-	if (outX || outY)
-	{
-		if (m_clampToWindow)
-		{
-			if (PosLeft < 0.0f)
-			{
-				SetPosition({ 0.0f, centerY }, { 0.0f, 0.5f });
-			}
-			else if (PosRight > windowWidth)
-			{
-				SetPosition({ windowWidth, centerY }, { 1.0f, 0.5f });
-			}
-
-			if (PosTop < 0.0f)
-			{
-				SetPosition({ centerX, 0.0f }, { 0.5f, 0.0f });
-			}
-			else if (PosBottom > windowHeight)
-			{
-				SetPosition({ centerX, windowHeight }, { 0.5f, 1.0f });
-			}
-			if (m_physicsBody)
-			{
-				// Si l'entit� est sortie horizontalement, on met la v�locit� horizontale � 0, sinon on la conserve
-					// Si l'entit� est sortie verticalement, on met la v�locit� verticale � 0, sinon on la conserve
-				m_physicsBody->SetLinearVelocity({
-					outX ? 0.0f : m_physicsBody->GetLinearVelocity().GetX(),
-					outY ? 0.0f : m_physicsBody->GetLinearVelocity().GetY() }
-					);
-			}
-		}
-		else
-		{
-			OnOutBorder();
-		}
-	}
-
-	Vector2f actualPosition = GetPosition();
-	SetPosition(actualPosition);
 
 	if (m_resetDirection)
-	{
 		m_direction = { 0.0f, 0.0f };
-	}
 }
-//void Entity::UpdateMovement(float p_deltaTime)
-//{
-//	if (p_deltaTime == 0.0f)
-//		return;
-//
-//	Vector2f dirNorm;
-//	if (m_physicsBody)
-//	{
-//		if (m_direction.GetX() != 0.0f || m_direction.GetY() != 0.0f)
-//		{
-//			dirNorm = Utils::NormalizeVector(m_direction);
-//			m_physicsBody->SetLinearVelocity({ dirNorm.GetX() * m_speed * m_PIXELS_PER_METER, m_physicsBody->GetLinearVelocity().GetY() });
-//		}
-//		m_physicsBody->IntegrateForces(p_deltaTime);
-//		// To Do faire la gestion des collisions dans application
-//		m_physicsBody->IntegrateVelocity(p_deltaTime);
-//		Vector2f newPosition = m_physicsBody->GetPosition();
-//		SetPosition(newPosition);	
-//		float newAngle = m_physicsBody->GetAngle();
-//		SetAngle(newAngle);
-//	}
-//	else
-//	{
-//		if (m_speed == 0.0f || m_direction == Vector2<float>{0.f, 0.f})
-//			return;
-//
-//		float distance = p_deltaTime * m_speed * m_PIXELS_PER_METER;
-//		dirNorm = Utils::NormalizeVector(m_direction);
-//		Vector2f translation = dirNorm * distance;
-//		Move(translation);
-//	}
-//
-//	const float windowWidth = static_cast<float>(m_scene->GetWindowWidth());
-//	const float windowHeight = static_cast<float>(m_scene->GetWindowHeight());
-//
-//	const float PosLeft = GetPosition({ 0.0f, 0.5f }).GetX();
-//	const float PosRight = GetPosition({ 1.0f, 0.5f }).GetX();
-//	const float PosTop = GetPosition({ 0.5f, 0.0f }).GetY();
-//	const float PosBottom = GetPosition({ 0.5f, 1.0f }).GetY();
-//
-//	const float centerX = GetPosition().GetX();
-//	const float centerY = GetPosition().GetY();
-//
-//	const bool outX = PosLeft < 0.0f || PosRight > windowWidth;
-//	const bool outY = PosTop < 0.0f || PosBottom > windowHeight;
-//
-//	if (outX || outY)
-//	{
-//		if (m_clampToWindow)
-//		{
-//			if (PosLeft < 0.0f)
-//			{
-//				SetPosition({ 0.0f, centerY }, { 0.0f, 0.5f });
-//			}
-//			else if (PosRight > windowWidth)
-//			{
-//				SetPosition({ windowWidth, centerY }, { 1.0f, 0.5f });
-//			}
-//
-//			if (PosTop < 0.0f)
-//			{
-//				SetPosition({ centerX, 0.0f }, { 0.5f, 0.0f });
-//			}
-//			else if (PosBottom > windowHeight)
-//			{
-//				SetPosition({ centerX, windowHeight }, { 0.5f, 1.0f });
-//			}
-//			if (m_physicsBody)
-//			{
-//				// Si l'entit� est sortie horizontalement, on met la v�locit� horizontale � 0, sinon on la conserve
-//					// Si l'entit� est sortie verticalement, on met la v�locit� verticale � 0, sinon on la conserve
-//				m_physicsBody->SetLinearVelocity({
-//					outX ? 0.0f : m_physicsBody->GetLinearVelocity().GetX(),
-//					outY ? 0.0f : m_physicsBody->GetLinearVelocity().GetY() }
-//				);
-//			}
-//		}
-//		else
-//		{
-//			OnOutBorder();
-//		}
-//	}
-//
-//	Vector2f actualPosition = GetPosition();
-//	SetPosition(actualPosition);
-//	
-//	if (m_resetDirection)
-//	{
-//		m_direction = { 0.0f, 0.0f };
-//	}
-//}
 
 void Entity::InitialisePhysicsBody(ShapeBodyPhysics p_shapeBodyPhysics)
 {
 	if (!m_physicsBody)
 	{
-		PhysicsBody* physicsBody = new PhysicsBody(p_shapeBodyPhysics);
-		m_physicsBody = physicsBody;
+		m_physicsBody = new PhysicsBody(p_shapeBodyPhysics);
+		PhysicsManager::Get()->RegisterBody(this);
 	}
-	m_physicsBody->SetBodyType(p_shapeBodyPhysics);
-	m_physicsBody->SetPosition(GetPosition());
-	m_physicsBody->SetDimension(GetDimension());
-	m_physicsBody->SetAngle(GetAngle());
+	else
+	{
+		m_physicsBody->SetBodyType(p_shapeBodyPhysics);
+	}
+
 	SetRigidBody(true);
 }
 
@@ -354,23 +183,12 @@ float Entity::GetDeltaTime() const
 	return m_scene->GetDeltaTime();
 }
 
-//bool Entity::IsCollidingWith(Entity* p_other)
-//{
-//	if (m_collider == nullptr || p_other->m_collider == nullptr || p_other == nullptr)
-//		return false;
-//
-//	return m_collider->IsColliding(p_other->m_collider);
-//}
-
 void Entity::SetPosition(Vector2f p_position, Vector2f p_anchor)
 {
 	Transformable::SetPosition(p_position, p_anchor);
 
 	SyncColliders();
 	SyncSprites();
-
-	if (m_physicsBody)
-		m_physicsBody->SetPosition(p_position, p_anchor);
 }
 
 void Entity::SetDimension(Vector2i p_newDimension)
@@ -396,9 +214,6 @@ void Entity::SetDimension(Vector2i p_newDimension)
 		Vector2i oldSpriteDim = col->GetDimension();
 		col->SetDimension({static_cast<int>(oldSpriteDim.GetX() * ratioX), static_cast<int>(oldSpriteDim.GetY() * ratioY)});
 	}
-
-	if (m_physicsBody) 
-		m_physicsBody->SetDimension(p_newDimension);
 }
 
 void Entity::SetAngle(float p_angle)
@@ -413,9 +228,6 @@ void Entity::SetAngle(float p_angle)
 		if (sc->m_sprite)
 			sc->m_sprite->SetAngle(p_angle);
 	}
-
-	if (m_physicsBody)
-		m_physicsBody->SetAngle(p_angle);
 }
 
 void Entity::Move(Vector2f p_translation)
@@ -424,9 +236,6 @@ void Entity::Move(Vector2f p_translation)
 		return;
 
 	Transformable::Move(p_translation);
-
-	if (m_physicsBody) 
-		m_physicsBody->Move(p_translation);
 
 	SyncColliders();
 	SyncSprites();
@@ -489,8 +298,10 @@ Collider* Entity::AddCollider(const std::string& p_id, Vector2i p_dimension,Shap
 Collider* Entity::GetCollider(const std::string& p_id) const
 {
 	for (Collider* c : m_colliders)
+	{
 		if (c->GetID() == p_id)
 			return c;
+	}
 	return nullptr;
 }
 

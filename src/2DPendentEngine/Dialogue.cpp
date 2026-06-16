@@ -65,5 +65,6 @@ std::vector<Dialogue::Choice> Dialogue::GetChoicesById(int p_id)
 		return m_dialogues[p_id].s_choices;
 
 	std::cout << "le vector de Choice est vide" << std::endl;
+	return {};
 }
 

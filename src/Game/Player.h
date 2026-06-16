@@ -87,6 +87,9 @@ private:
 	void HandleFarmAction();
 
 	std::vector<Recipes> m_unlockedRecipes;
+
+	bool m_isInDialog = false;
+
 protected:
 
 
@@ -109,5 +112,7 @@ public:
 	void UpdateJobs();
 	void UnlockRecipe(Recipes _toUnlock);
 	bool IsRecipeUnlocked(Recipes _toUnlock);
+
+	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
 };
 

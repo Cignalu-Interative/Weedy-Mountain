@@ -30,6 +30,8 @@ void Player::OnInitialize()
 
 void Player::OnEvent()
 {
+
+
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
 		SetSpeed(m_stats.m_playerSpeed * 2);
 	}
@@ -38,25 +40,31 @@ void Player::OnEvent()
 	Vector2f direction = GetDirection();
 	Collider* boxCollider = GetCollider("actionBox");
 	//Input Clavier
-	if (InputManager::Get()->IsKeyboardHeld(K_z)) {
-		SetDirection({ direction.GetX(), -1.0f });
-		boxCollider->SetOffset({ 0, -8 });
-		boxCollider->SyncWithOwner();
-	}
-	if (InputManager::Get()->IsKeyboardHeld(K_s)) {
-		SetDirection({ direction.GetX(), 1.0f });
-		boxCollider->SetOffset({ 0, 24 });
-		boxCollider->SyncWithOwner();
-	}
-	if (InputManager::Get()->IsKeyboardHeld(K_q)) {
-		SetDirection({ -1.0f, direction.GetY() });
-		boxCollider->SetOffset({ -16, 8 });
-		boxCollider->SyncWithOwner();
-	}
-	if (InputManager::Get()->IsKeyboardHeld(K_d)) {
-		SetDirection({ 1.0f, direction.GetY() });
-		boxCollider->SetOffset({ 16, 8 });
-		boxCollider->SyncWithOwner();
+	// lock les mouvements pendant les dialogues
+	if (m_isInDialog == false)
+	{
+		//Input Clavier
+		if (InputManager::Get()->IsKeyboardHeld(K_z)) {
+			SetDirection({ GetDirection().GetX(), -1.0f });
+			GetCollider("actionBox")->SetOffset({ 0, -8 });
+		}
+		if (InputManager::Get()->IsKeyboardHeld(K_s)) {
+			SetDirection({ GetDirection().GetX(), 1.0f });
+			GetCollider("actionBox")->SetOffset({ 0, 24 });
+		}
+		if (InputManager::Get()->IsKeyboardHeld(K_q)) {
+			SetDirection({ -1.0f, GetDirection().GetY() });
+			GetCollider("actionBox")->SetOffset({ -16, 8 });
+		}
+		if (InputManager::Get()->IsKeyboardHeld(K_d)) {
+			SetDirection({ 1.0f, GetDirection().GetY() });
+			GetCollider("actionBox")->SetOffset({ 16, 8 });
+		}
+		//input souris
+		if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
+			//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
+		}
+
 	}
 
 	//input souris

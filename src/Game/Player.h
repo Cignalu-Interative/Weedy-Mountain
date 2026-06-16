@@ -55,7 +55,7 @@ enum class Recipes
 };
 
 struct PlayerStats {
-	float m_playerSpeed = 10.f;
+	float m_playerSpeed = 100.f;
 
 	float m_maxHp = 100.f;
 	float m_Hp = m_maxHp;

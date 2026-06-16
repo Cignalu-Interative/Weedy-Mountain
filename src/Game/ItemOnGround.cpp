@@ -70,7 +70,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 	}
 	else SetSpeed(0);
 
-	if (_other->GetID() == "playerCollider") {
+	if (_other->GetID() == "default") {
 		std::cout << "Item Collected" << std::endl;
 		Destroy();
 	}

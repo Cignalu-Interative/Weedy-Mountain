@@ -35,7 +35,7 @@ ItemDataBase::ItemDataBase()
         ItemData
         {
             ITEM_FIBER,
-            "Fiber",
+            "Item_Fiber",
             "Fiber",
             "Fiber",
             1,
@@ -52,7 +52,7 @@ ItemDataBase::ItemDataBase()
         ItemData
         {
             ITEM_ROCK,
-            "Rock",
+            "Item_Rock",
             "Rock",
             "Rock",
             1,

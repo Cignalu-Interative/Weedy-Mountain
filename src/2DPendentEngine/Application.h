@@ -108,6 +108,8 @@ private:
 
 	TVVertex m_testTVVertex;
 
+	Timer m_timeOpenGL;
+
 public:
 
 	//Constructeur de l'Application

@@ -15,7 +15,7 @@ private:
 		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f,// vertex 1 left down vertex
 		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 2 right down vertex
 		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f,// vertex 3 left top vertex
-		0.5f, 0.5f, 1.0f, 0.0f, 0.0f, 1.0f,  // vertex 4 right top vertex
+		0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f,  // vertex 4 right top vertex
 	};
 
 	// VAO

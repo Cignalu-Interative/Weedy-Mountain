@@ -2,11 +2,15 @@
 
 in vec4 vertexColor;
 
-out vec4 color;
+uniform vec3 u_ColorOffset;
 
-uniform float u_offset;
+out vec4 color;
 
 void main()
 {
-	color = vec4(vertexColor.r - u_offset, vertexColor.g, vertexColor.b, vertexColor.a);
+	float newR = clamp(vertexColor.r + u_ColorOffset.r, 0.0, 1.0);
+    float newG = clamp(vertexColor.g + u_ColorOffset.g, 0.0, 1.0);
+    float newB = clamp(vertexColor.b + u_ColorOffset.b, 0.0, 1.0);
+
+	color = vec4(newR, newG, newB, vertexColor.a);
 }

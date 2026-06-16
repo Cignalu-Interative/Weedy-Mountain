@@ -81,6 +81,8 @@ void Application::Init()
 	m_testTVVertex.CreateGraphicsPipeline();
 
 	std::cerr << "Count geometry for OpenGL: " << m_tvVertexVector.size() << std::endl;
+
+	m_timeOpenGL.SetCurrentTime();
 	
 
 	std::cerr << "Application initialized successfully." << std::endl;
@@ -189,11 +191,19 @@ void Application::Update()
 
 	if (InputManager::Get()->IsKeyboardHeld(K_o))
 	{
+		for (TVVertex tvvertx : m_tvVertexVector)
+		{
+			tvvertx.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() + 0.01f);
+		}
 		m_testTVVertex.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() + 0.01f);
 		std::cerr << "g_uOffset K_o : " << m_testTVVertex.GetUOffesetGL() << std::endl;
 	}
 	if (InputManager::Get()->IsKeyboardHeld(K_l))
 	{
+		for (TVVertex tvvertx : m_tvVertexVector)
+		{
+			tvvertx.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() - 0.01f);
+		}
 		m_testTVVertex.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() - 0.01f);
 		std::cerr << "g_uOffset K_l : " << m_testTVVertex.GetUOffesetGL() << std::endl;
 	}
@@ -368,14 +378,61 @@ void Application::Draw()
 	}
 
 	glUseProgram(m_testTVVertex.GetgGraphicsPipelineShaderProgram());
-	GLint location = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_offset");
-	if (location >= 0)
+
+	glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, m_testTVVertex.GetUOffesetGL()));
+
+	GLint u_ModelMatrixLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_ModelMatrix");
+
+	if (u_ModelMatrixLocation >= 0)
 	{
-		glUniform1f(location, m_testTVVertex.GetUOffesetGL());
+		glUniformMatrix4fv(u_ModelMatrixLocation, 1, GL_FALSE, &translate[0][0]);
 	}
 	else
 	{
-		std::cerr << "Not find u_offset" << std::endl;
+		std::cerr << "Not find u_ModelMatrix" << std::endl;
+	}
+
+	/*glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)windowSize.GetX() / (float)windowSize.GetY(), 0.1f, 10.0f);
+
+	GLint u_PerspectiveLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_Perspective");
+
+	if (u_PerspectiveLocation >= 0)
+	{
+		glUniformMatrix4fv(u_PerspectiveLocation, 1, GL_FALSE, &perspective[0][0]);
+	}
+	else
+	{
+		std::cerr << "Not find u_Perspective" << std::endl;
+	}*/
+
+	glm::mat4 perspective = glm::perspective(glm::radians(45.0f), (float)windowSize.GetX() / (float)windowSize.GetY(), 0.1f, 10.0f);
+
+	GLint u_ProjectionLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_Projection");
+
+	if (u_ProjectionLocation >= 0)
+	{
+		glUniformMatrix4fv(u_ProjectionLocation, 1, GL_FALSE, &perspective[0][0]);
+	}
+	else
+	{
+		std::cerr << "Not find u_Perspective" << std::endl;
+	}
+
+	GLint u_ColorOffsetLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_ColorOffset");
+
+	if (u_ColorOffsetLocation >= 0)
+	{
+		auto now = std::chrono::steady_clock::now();
+		double elapsed = std::chrono::duration<double>(now - m_timeOpenGL.GetLastTime()).count();
+
+		float offsetR = std::sin(elapsed) * 0.5f;          // Normal
+		float offsetG = std::sin(elapsed + 1.0f) * 0.5f;   // Décalé de 1 radian
+		float offsetB = std::sin(elapsed + 2.0f) * 0.5f;   // Décalé de 2 radians
+
+		glUniform3f(u_ColorOffsetLocation, offsetR, offsetG, offsetB);
+	}
+	else {
+		std::cerr << "Not find u_ColorOffset" << std::endl;
 	}
 
 	glBindVertexArray(m_testTVVertex.GetgVertexArrayObject());

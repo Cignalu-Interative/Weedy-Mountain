@@ -3,13 +3,17 @@
 layout(location=0) in vec2 position;
 layout(location=1) in vec4 color;
 
-uniform float u_offset;
+uniform mat4 u_ModelMatrix;
+uniform mat4 u_Projection;
+
 
 out vec4 vertexColor;
 
 void main()
 {
-    gl_Position = vec4(position.x, position.y + u_offset, 0.0f, 1.0f);
-
     vertexColor = color;
+
+    vec4 NewPosition = u_Projection * u_ModelMatrix * vec4(position, 0.0, 1.0);
+
+    gl_Position = vec4(NewPosition.x, NewPosition.y, NewPosition.z, NewPosition.w);
 }

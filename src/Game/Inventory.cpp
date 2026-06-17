@@ -20,7 +20,7 @@ Inventory::Inventory(int slotCount)
 
 
 
-bool Inventory::CanAdd(ItemID ID, int amount)
+bool Inventory::CanAdd(const std::string& ID, int amount)
 {
 	ItemData* data = ItemDataBase::Get()->GetItem(ID);
 
@@ -52,12 +52,12 @@ bool Inventory::CanAdd(ItemID ID, int amount)
 	return false;
 }
 
-bool Inventory::CanRemove(ItemID ID, int amount)
+bool Inventory::CanRemove(const std::string& ID, int amount)
 {
 	return CountItem(ID) >= amount;
 }
 
-int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
+int Inventory::AddItem(const std::string& ID, int amount, bool requireFull)
 {
 	/*
 	
@@ -127,7 +127,7 @@ int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 
 
 
-int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
+int Inventory::RemoveItem(const std::string& ID, int amount, bool requireFull)
 {
 	/*
 	
@@ -172,7 +172,7 @@ int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 
 
 
-int Inventory::CountItem(ItemID ID)
+int Inventory::CountItem(const std::string& ID)
 {
 	int total = 0;
 
@@ -200,7 +200,7 @@ void Inventory::SetVisible(bool visible)
 
 InventorySlot* Inventory::GetSlot(int index)
 {
-	assert(index >= 0 && index < m_slots.size());
+	assert(index >= 0 && index < static_cast<int>(m_slots.size()));
 	return m_slots[index];
 }
 

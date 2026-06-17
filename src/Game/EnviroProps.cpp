@@ -99,8 +99,8 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_stats.m_hitToDestroy = 4;
 		m_stats.m_minToolsRarity = Rarity::Stone;
 		m_stats.m_toolType = { ToolType::Axe };
-		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack(ITEM_WOOD,1)), 3,4 };
-		EnviroLoots* loot2 = new EnviroLoots{ (ItemStack(ITEM_FIBER,1)), 1,2 };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_WOOD",1)), 3,4 };
+		EnviroLoots* loot2 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 1,2 };
 		m_loots.push_back(loot1);
 		//m_Loots.push_back(loot2);
 		break;
@@ -111,8 +111,8 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_stats.m_hitToDestroy = 2;
 		m_stats.m_minToolsRarity = Rarity::Wooden;
 		m_stats.m_toolType = { ToolType::Axe };
-		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack(ITEM_WOOD,1)), 1,2 };
-		EnviroLoots* Loot2 = new EnviroLoots{ (ItemStack(ITEM_FIBER,1)), 0,2 };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_WOOD",1)), 1,2 };
+		EnviroLoots* Loot2 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 0,2 };
 		m_loots.push_back(loot1);
 		m_loots.push_back(Loot2);
 		break;
@@ -123,7 +123,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_stats.m_hitToDestroy = 1;
 		m_stats.m_minToolsRarity = Rarity::Wooden;
 		m_stats.m_toolType = { ToolType::Hoe, ToolType::Spade };
-		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack(ITEM_FIBER,1)), 1,3 };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 1,3 };
 		m_loots.push_back(loot1);
 		break;
 	}
@@ -133,7 +133,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_stats.m_hitToDestroy = 2;
 		m_stats.m_minToolsRarity = Rarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
-		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack(ITEM_ROCK,1)), 1,3 };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_ROCK",1)), 1,3 };
 		m_loots.push_back(loot1);
 		break;
 	}
@@ -143,7 +143,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_stats.m_hitToDestroy = 4;
 		m_stats.m_minToolsRarity = Rarity::Iron;
 		m_stats.m_toolType = { ToolType::Pickaxe };
-		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack(ITEM_ROCK,1)), 2,5 };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_ROCK",1)), 2,5 };
 		m_loots.push_back(loot1);
 		break;
 	}

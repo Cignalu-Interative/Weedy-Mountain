@@ -1,13 +1,11 @@
 #pragma once
-
-#include "ItemID.h"
 #include <string>
 
 class ItemData
 {
 private:
 	
-	ItemID m_ID = ItemID::ITEM_NOTHING;
+	std::string m_ID;
 
 	std::string m_path;
 
@@ -21,9 +19,9 @@ private:
 
 public:
 
-	ItemData(ItemID ID, std::string path, std::string name, std::string description, int buyPrice, int sellPrice, int maxStack);
+	ItemData(const std::string& ID, const std::string& path, const std::string& name, const std::string& description, int buyPrice, int sellPrice, int maxStack);
 
-	ItemID GetID();
+	std::string& GetID();
 	std::string& GetPath();
 	std::string& GetName();
 	std::string& GetDescription();

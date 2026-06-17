@@ -1,0 +1,20 @@
+[
+    {
+        "buyPrice": 3,
+        "description": "Simple piece of Wood",
+        "id": 1,
+        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Wood.png",
+        "maxStack": 64,
+        "name": "Wood",
+        "sellPrice": 2
+    },
+    {
+        "buyPrice": 4,
+        "description": "fiber",
+        "id": 2,
+        "imagePath": "",
+        "maxStack": 64,
+        "name": "Fiber",
+        "sellPrice": 1
+    }
+]

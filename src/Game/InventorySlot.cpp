@@ -2,7 +2,8 @@
 #include "InventorySlot.h"
 
 InventorySlot::InventorySlot()
-	: m_stack(ITEM_NOTHING, 0){}
+	: m_stack("ITEM_NOTHING", 0) {
+}
 
 bool InventorySlot::IsEmpty()
 {

@@ -17,7 +17,7 @@ private :
 	Button* m_minusButton = nullptr;
 
 	Button* m_playerInventory = nullptr;
-	Button* m_cendorInventory = nullptr;
+	Button* m_vendorInventory = nullptr;
 
 	//ne pas mettre en variable membre
 	std::string m_quantitesItem;

@@ -30,6 +30,7 @@ void Inventory::OnInitialize()
 		Vector2f pos = { startX + col * spacing, startY + row * spacing };
 
 		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i), "", true);
+		slot->SetOnLeftClick([] {std::cout << "clicked" << std::endl; });
 
 		slot->InitText("slot_" + std::to_string(i) + "_amount_text", "");
 
@@ -87,13 +88,13 @@ bool Inventory::CanRemove(ItemID ID, int amount)
 int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 {
 	/*
-	
+
 	requireFull :
 	true = on ajoute uniquement si TOUT rentre dans l'inventaire
-	false =  on ajoute le plus possible meme si tout ne rentre pas 
+	false =  on ajoute le plus possible meme si tout ne rentre pas
 
 	retroune le d'item ajoutes
-	
+
 	*/
 
 
@@ -155,11 +156,11 @@ int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 {
 	/*
-	
+
 	Meme principe que addItem mais en retirant les items
-		
+
 	*/
-	
+
 	if (amount <= 0)
 		return 0;
 
@@ -219,6 +220,7 @@ void Inventory::SetVisible(bool visible)
 	for (InventorySlot* slot : m_slots)
 	{
 		slot->SetIsVisible(visible);
+		GetScene()->GetGeometry<Text>(slot->GetTextID())->SetIsVisible(visible);
 	}
 }
 

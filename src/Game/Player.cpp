@@ -8,9 +8,21 @@
 
 #include "FarmManager.h"   
 #include "GameData.h" 
+#include "Inventory.h"
 
 void Player::OnInitialize()
 {
+	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 436, 256 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_inventory->GetCollider()->SetIsTrigger(true);
+
+	std::vector<InventorySlot*> slots = m_inventory->GetSlots();
+	for (InventorySlot* slot : slots)
+	{
+		slot->GetCollider()->SetIsTrigger(true);
+		std::cout << slot->GetCollider()->GetDimension().GetX() << std::endl;
+	}
+	m_inventory->SetVisible(true);
+
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
 	m_jobs.push_back(gatherer);
@@ -82,8 +94,8 @@ void Player::OnEvent()
 		m_selectedCrop = CropCatalog::Carrot();
 
 	// Action farm 
-	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
-		HandleFarmAction();
+	/*if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		HandleFarmAction();*/
 }
 
 // TEMP - AGRI
@@ -141,12 +153,29 @@ void Player::OnUpdate()
 {
 	UpdateJobs();
 
+	std::vector<InventorySlot*> slots = m_inventory->GetSlots();
+	for (InventorySlot* slot : slots)
+	{
+		slot->GetCollider()->SetIsTrigger(true);
+		std::cout << slot->GetCollider()->GetPosition().GetX() << std::endl;
+	}
+	std::cout << m_inventory->GetDimension().GetX() << " " << m_inventory->GetDimension().GetY() << std::endl;
+
 	MoveKinematic();
+}
+
+void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)
+{
+	if (_other->GetOwner()->GetTag() == 3)
+	{
+		m_inventory->AddItem(ITEM_WOOD, 1, false);
+		std::cout << "enter" << std::endl;
+	}
 }
 
 void Player::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
-
+	
 }
 
 void Player::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)

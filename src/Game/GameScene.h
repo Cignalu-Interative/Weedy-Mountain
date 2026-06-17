@@ -10,13 +10,12 @@ enum CollisionLayers : uint32_t
 	FARMTILE = 1 << 2,
 };
 
-class Inventory;
+
 class GameScene : public Scene
 {
 private:
 	Player* m_player = nullptr;
 
-	Inventory* m_inventory = nullptr;
 
 protected:
 

@@ -44,5 +44,6 @@ public:
 	bool IsMouseIn();
 
 	void OnUpdate() override;
+	std::string GetTextID() { return m_textID; }
 };
 

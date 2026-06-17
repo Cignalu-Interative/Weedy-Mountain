@@ -23,7 +23,6 @@
 #include "GameData.h"
 #include "2DPendentLib/Debug.h" 
 
-#include "Inventory.h"
 
 void GameScene::OnInitialize()
 {
@@ -58,9 +57,8 @@ void GameScene::OnInitialize()
 	tree->GetCollider()->SetOffset({ 0,28 });
 	tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 	
-	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
-	Application::Get()->SetClampCameraToCurrentMap(true);
+	//Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
 
@@ -83,16 +81,6 @@ void GameScene::OnInitialize()
 
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
-	m_inventory = CreateEntity<Inventory>(m_player->GetPosition(), {636, 306}, "InventoryWeedyMountain", Shape::Rectangle, true);
-	m_inventory->GetCollider()->SetIsTrigger(true);
-
-	std::vector<InventorySlot*> slots = m_inventory->GetSlots();
-	for (InventorySlot* slot : slots)
-	{
-		slot->GetCollider()->SetIsTrigger(true);
-	}	
-	m_inventory->SetVisible(true);
-
 }
 
 
@@ -104,6 +92,12 @@ void GameScene::OnEvent()
 		spawn->InitEnviroSpawn();
 		spawn->SpawnEnviroProps();
 	}
+
+	if(im->IsKeyboardDown(K_a))
+		GetCamera()->SetZoom(5.f);
+
+	if (im->IsKeyboardDown(K_e))
+		GetCamera()->SetZoom(1.f);
 
 }
 

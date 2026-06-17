@@ -74,13 +74,13 @@ struct PlayerStats {
 	float m_drugSellEfficency = 1.f; 
 };
 
-
+class Inventory;
 class Player : public Entity
 {
 private:
 	PlayerStats m_stats;
 	std::vector<PlayerJob*> m_jobs;
-
+	Inventory* m_inventory;
 
 	// TEMP - AGRI
 	CropDefinition m_selectedCrop = CropCatalog::Wheat(); 
@@ -99,9 +99,10 @@ protected:
 
 	void OnUpdate() override;
 	
+	void OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side) override;
 	void OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side) override;
-
 	void OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side) override;
+
 
 	void OnDestroy() override;
 
@@ -114,5 +115,7 @@ public:
 	bool IsRecipeUnlocked(Recipes _toUnlock);
 
 	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
+
+	Inventory* GetInventory() { return m_inventory; }
 };
 

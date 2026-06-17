@@ -5,6 +5,8 @@
 #include <string>
 #include <functional>
 
+#include "CameraOpenGL.h"
+
 class TVVertex
 {
 private:
@@ -33,6 +35,8 @@ private:
 	float g_uOffset = -2.0f;
 	float g_uRotate = 0.0f;
 	float g_uScale = 0.5f;
+
+	CameraOpenGL g_CameraOpenGL;
 
 public:
 
@@ -70,6 +74,8 @@ public:
 
 	void SetUScale(float p_scale) { g_uOffset = p_scale; };
 	float GetUScale() { return g_uScale; };
+
+	CameraOpenGL* GetCameraOpenGL() { return &g_CameraOpenGL; };
 
 
 };

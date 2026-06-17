@@ -2,6 +2,7 @@
 #include "InputManager.h"
 #include "Debug.h"
 #include "AssetManager.h"
+#include "Window.h"
 
 InputManager* InputManager::Get()
 {
@@ -75,6 +76,8 @@ void InputManager::Update()
 		m_gameControllerAxisStates[i].s_isUp = false;
 	}
 
+	ClearMouseRelative();
+
 	while (SDL_PollEvent(&m_event))
 	{
 		switch (m_event.type)
@@ -103,13 +106,20 @@ void InputManager::Update()
 			break;
 
 		case SDL_MOUSEBUTTONDOWN:
-			int x, y;
-			SDL_GetMouseState(&x, &y);
+			/*int x, y;
+			SDL_GetMouseState(&x, &y);*/
 			m_mouseStates[m_event.button.button].s_isDown = true;
 			break;
 
 		case SDL_MOUSEBUTTONUP:
 			m_mouseStates[m_event.button.button].s_isUp = true;
+			break;
+
+		case SDL_MOUSEMOTION:
+			m_ABSMousePosition.SetX(m_event.motion.x);   // Position X absolue dans la fenêtre
+			m_ABSMousePosition.SetY(m_event.motion.y);   // Position Y absolue dans la fenêtre
+			m_RELMousePosition.SetX(m_event.motion.xrel); // Déplacement relatif sur l'axe X
+			m_RELMousePosition.SetY(m_event.motion.yrel); // Déplacement relatif sur l'axe Y
 			break;
 
 		case SDL_MOUSEWHEEL:
@@ -306,6 +316,16 @@ Vector2f InputManager::GetMousePosition()
 	return Vector2f((float)x, (float)y);
 }
 
+Vector2i InputManager::GetABSMousePosition()
+{
+	return m_ABSMousePosition;
+}
+
+Vector2i InputManager::GetRELMousePosition()
+{
+	return m_RELMousePosition;
+}
+
 int InputManager::GetMouseWheelX()
 {
 	return m_mouseWheelX;
@@ -432,6 +452,36 @@ void InputManager::DebugControllerAxis()
 	}
 }
 #endif
+
+void InputManager::SetSDLWarpMouseInWindow(Vector2f p_position)
+{
+	SDL_WarpMouseInWindow(m_window->GetWindow(), (int)p_position.GetX(), (int)p_position.GetY());
+}
+void InputManager::SetRelativeMouseMode(bool p_bool)
+{
+	SDL_SetRelativeMouseMode(p_bool ? SDL_TRUE : SDL_FALSE);
+}
+
+void InputManager::ClearMouseRelative()
+{
+	m_RELMousePosition.SetX(0);
+	m_RELMousePosition.SetY(0);
+}
+
+void InputManager::SetWindow(Window* p_window)
+{
+	m_window = p_window;
+}
+
+InputManager::InputManager()
+{
+	std::memset(m_keyboardStates, 0, sizeof(State) * NUM_SCANCODES);
+	std::memset(m_mouseStates, 0, sizeof(State) * MOUSE_BUTTON_MAX);
+	std::memset(m_mouseScrollStates, 0, sizeof(State) * SCROLL_MAX);
+	std::memset(m_gameControllerButtonStates, 0, sizeof(State) * CONTROLLER_BUTTON_MAX);
+	std::memset(m_gameControllerAxisStates, 0, sizeof(State) * CONTROLLER_AXIS_MAX);
+	std::memset(m_gameControllerAxisStatesFloat, 0, sizeof(float) * CONTROLLER_AXIS_MAX);
+}
 
 InputManager::~InputManager()
 {

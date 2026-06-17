@@ -26,6 +26,7 @@
 #include "2DPendentLib/SpriteOpenGL.h"
 
 #include "2DPendentLib/TVVertex.h"
+#include "2DPendentLib/CameraOpenGL.h"
 
 //Version 3.4.0
 

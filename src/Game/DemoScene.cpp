@@ -159,11 +159,11 @@ void DemoScene::OnInitialize()
 
 void DemoScene::OnEvent()
 {
-//	if (input.IsGameControllerButtonDown(CONTROLLER_BUTTON_GUIDE))
-//	{
-//		ChangeisRunning(false);
-//	}
-//
+	if (input.IsGameControllerButtonDown(CONTROLLER_BUTTON_GUIDE) || input.IsKeyboardDown(K_ESCAPE))
+	{
+		ChangeisRunning(false);
+	}
+
 //	if (input.IsKeyboardDown(K_a))
 //	{
 //		int entier = Aleatory::GetInt(1, 100);

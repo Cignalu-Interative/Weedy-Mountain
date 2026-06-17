@@ -28,7 +28,9 @@ void Inventory::OnInitialize()
 
 		Vector2f pos = { startX + col * spacing, startY + row * spacing };
 
-		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i), "", true);
+		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i) + "_background", "", true);
+
+		slot->AddSprite("slot_" + std::to_string(i) + "_item", "", { 54, 54 }, 0, { 0.0f, 0.0f }, true);
 
 		slot->InitText("slot_" + std::to_string(i) + "_amount_text", "");
 
@@ -216,6 +218,7 @@ void Inventory::SetVisible(bool visible)
 	for (InventorySlot* slot : m_slots)
 	{
 		slot->SetIsVisible(visible);
+		slot->RefreshVisual();
 	}
 }
 

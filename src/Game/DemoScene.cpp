@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "User.h"
 #include "Inventory.h"
+#include "Hotbar.h"
 #include "2DPendentLib/InputManager.h"
 #include "2DPendentLib/Utils.h"
 #include "2DPendentLib/AssetManager.h"
@@ -11,6 +12,9 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
+
+
+#include "PlayerInventory.h"
 
 #include <iostream>
 
@@ -30,61 +34,68 @@ void DemoScene::OnInitialize()
 	SoundManager::Get()->AddSound("../../res/2DPendentEngine/Assets/Sounds/Sounds_Repertory.json");
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
 
-	m_inv = CreateEntity<Inventory>({ GetWindowWidth() / 2.0f, GetWindowHeight() / 2.0f}, {636, 306}, "InventoryWeedyMountain", Shape::Rectangle, true);
+
+	m_inv = CreateEntity<Inventory>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+
+	m_hotbar = CreateEntity<Hotbar>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 92 }, "Hotbar", Shape::Rectangle, true);
+
+	m_playerInventory = new PlayerInventory(m_inv, m_hotbar);
+
+	m_playerInventory->Close();
 }
 
 void DemoScene::OnEvent()
 {
 	if (input.IsKeyboardDown(K_a))
 	{
-		m_inv->AddItem(ItemID::ITEM_EGG, 32, false);
+		m_playerInventory->AddItem(ItemID::ITEM_EGG, 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_z))
 	{
-		m_inv->AddItem(ItemID::ITEM_POTATOE, 32, false);
+		m_playerInventory->AddItem(ItemID::ITEM_POTATOE, 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_e))
 	{
-		m_inv->AddItem(ItemID::ITEM_SUN_FLOWER, 32, false);
+		m_playerInventory->AddItem(ItemID::ITEM_SUN_FLOWER, 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_r))
 	{
-		m_inv->AddItem(ItemID::ITEM_HELMET, 3, false);
+		m_playerInventory->AddItem(ItemID::ITEM_HELMET, 3, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_t))
 	{
-		m_inv->AddItem(ItemID::ITEM_FISHING_ROD, 3, false);
+		m_playerInventory->AddItem(ItemID::ITEM_FISHING_ROD, 3, false);
 		std::cout << "adddedd" << std::endl;
 	}
 
 
 	if (input.IsKeyboardDown(K_q))
 	{
-		m_inv->RemoveItem(ItemID::ITEM_EGG, 32, false);
+		m_playerInventory->RemoveItem(ItemID::ITEM_EGG, 32, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_s))
 	{
-		m_inv->RemoveItem(ItemID::ITEM_POTATOE, 32, false);
+		m_playerInventory->RemoveItem(ItemID::ITEM_POTATOE, 32, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_d))
 	{
-		m_inv->RemoveItem(ItemID::ITEM_SUN_FLOWER, 32, false);
+		m_playerInventory->RemoveItem(ItemID::ITEM_SUN_FLOWER, 32, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_f))
 	{
-		m_inv->RemoveItem(ItemID::ITEM_HELMET, 3, false);
+		m_playerInventory->RemoveItem(ItemID::ITEM_HELMET, 3, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_g))
 	{
-		m_inv->RemoveItem(ItemID::ITEM_FISHING_ROD, 3, false);
+		m_playerInventory->RemoveItem(ItemID::ITEM_FISHING_ROD, 3, false);
 		std::cout << "rmv" << std::endl;
 	}
 }
@@ -92,6 +103,9 @@ void DemoScene::OnEvent()
 void DemoScene::OnUpdate()
 {
 	//std::cout << m_inv->GetSlot(0)->GetStack().GetAmount() << std::endl;
+
+
+	m_playerInventory->OnUpdate(); //PAS BEAU
 }
 
 void DemoScene::OnSleep()

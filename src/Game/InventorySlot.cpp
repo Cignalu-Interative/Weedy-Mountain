@@ -41,8 +41,31 @@ void InventorySlot::RefreshVisual()
 
     if (data) 
     {
-        SetSprite(data->GetPath());
-        SetText(std::to_string(m_stack.GetAmount()));
-        SetTextOffset({ 18.0f, 22.0f });
+        if (m_isVisible)
+        {
+            SetSprite(data->GetPath());
+            SetText(std::to_string(m_stack.GetAmount()));
+            SetTextOffset({ 18.0f, 22.0f });
+        }
+        else
+        {
+            SetSprite("");
+            SetText("");
+            SetTextOffset({ 18.0f, 22.0f });
+        }
+    }
+}
+
+void InventorySlot::OnUpdate()
+{
+    Button::OnUpdate();
+
+    if (IsMouseIn()) //FIX 
+    {
+        SetSprite("InventorySlotHover");
+    }
+    else
+    {
+        SetSprite("InventorySlot");
     }
 }

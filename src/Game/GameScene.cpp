@@ -44,7 +44,10 @@ void GameScene::OnInitialize()
 	m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_player->ShowCollider(true);
-	m_player->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
+	m_player->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
+	m_player->GetPhysicsBody()->SetGravityEnabled(false);
+	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
+	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
 	tree->SetType(EnviroSpawnName::Tree);

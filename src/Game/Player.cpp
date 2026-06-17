@@ -30,34 +30,34 @@ void Player::OnInitialize()
 
 void Player::OnEvent()
 {
+	float currentSpeed = InputManager::Get()->IsKeyboardHeld(K_LSHIFT) ? m_stats.m_playerSpeed * 2.f : m_stats.m_playerSpeed;
+	SetSpeed(currentSpeed);
 
-
-	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
-		SetSpeed(m_stats.m_playerSpeed * 2);
-	}
-	else SetSpeed(m_stats.m_playerSpeed);
-
-	Vector2f direction = GetDirection();
+	Vector2f dir = {0.f, 0.f};
 	Collider* boxCollider = GetCollider("actionBox");
 	//Input Clavier
 	// lock les mouvements pendant les dialogues
 	if (m_isInDialog == false)
 	{
 		//Input Clavier
-		if (InputManager::Get()->IsKeyboardHeld(K_z)) {
-			SetDirection({ GetDirection().GetX(), -1.0f });
+		if (InputManager::Get()->IsKeyboardHeld(K_z))
+		{
+			dir.SetY(dir.GetY() - 1.f);
 			GetCollider("actionBox")->SetOffset({ 0, -8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_s)) {
-			SetDirection({ GetDirection().GetX(), 1.0f });
+		if (InputManager::Get()->IsKeyboardHeld(K_s)) 
+		{
+			dir.SetY(dir.GetY() + 1.f);
 			GetCollider("actionBox")->SetOffset({ 0, 24 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_q)) {
-			SetDirection({ -1.0f, GetDirection().GetY() });
+		if (InputManager::Get()->IsKeyboardHeld(K_q)) 
+		{
+			dir.SetX(dir.GetX() - 1.f);
 			GetCollider("actionBox")->SetOffset({ -16, 8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_d)) {
-			SetDirection({ 1.0f, GetDirection().GetY() });
+		if (InputManager::Get()->IsKeyboardHeld(K_d))
+		{
+			dir.SetX(dir.GetX() + 1.f);
 			GetCollider("actionBox")->SetOffset({ 16, 8 });
 		}
 		//input souris
@@ -67,11 +67,15 @@ void Player::OnEvent()
 
 	}
 
-	//input souris
-	if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
-		//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
-	}
+	float len = std::sqrtf(dir.GetX() * dir.GetX() + dir.GetY() * dir.GetY());
+	if (len > 0.f)
+		dir = { dir.GetX() / len, dir.GetY() / len };
 
+	PhysicsBody* body = GetPhysicsBody();
+	if (body != nullptr)
+	{
+		body->SetLinearVelocity({dir.GetX() * currentSpeed, dir.GetY() * currentSpeed});
+	}
 
 	// TEMP - AGRI
 

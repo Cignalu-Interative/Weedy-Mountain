@@ -65,7 +65,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		if (text) {
 			text->SetPosition(this->GetPosition({1,1}));
 		}
-
+		SetResetDirection(false);
 		SetSpeed(15);
 	}
 	else SetSpeed(0);
@@ -73,5 +73,12 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 	if (_other->GetID() == "default") {
 		std::cout << "Item Collected" << std::endl;
 		Destroy();
+	}
+}
+
+void ItemOnGround::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
+{
+	if (_other->GetID() == "interact") {
+		SetResetDirection(true);
 	}
 }

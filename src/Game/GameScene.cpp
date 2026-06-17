@@ -60,6 +60,8 @@ void GameScene::OnInitialize()
 	GetCamera()->Follow(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
+	EnviroSpawn::Get()->InitEnviroSpawn();
+
 	MapTiled* map = mm->GetCurrentMap();
 
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
@@ -85,9 +87,9 @@ void GameScene::OnInitialize()
 void GameScene::OnEvent()
 {
 	if(InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
-		EnviroSpawn* spawn = new EnviroSpawn();
-		spawn->InitEnviroSpawn();
-		spawn->SpawnEnviroProps();
+		//EnviroSpawn* spawn = new EnviroSpawn();
+		//spawn->InitEnviroSpawn();
+		//spawn->SpawnEnviroProps();
 	}
 }
 
@@ -95,6 +97,7 @@ void GameScene::OnUpdate()
 {
 	GetCamera()->SetPosition(m_player->GetPosition());
 	FarmManager::Get()->Update();
+	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
 	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));

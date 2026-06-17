@@ -28,12 +28,22 @@ class EnviroSpawn
 	int m_numOfEnviro = 0;
 	std::vector<EnviroInfo*> m_enviroList;
 
+	int m_lastDay = -1;
+protected:
+
+	void CreateEnviroProps(EnviroSpawnName _name);
+
+	void SpawnEnviroProps();
+
+	int GetEnviroDay();
+
 public:
 
 	void InitEnviroSpawn();
 
-	void SpawnEnviroProps();
-	
-	void CreateEnviroProps(EnviroSpawnName _name);
+	static EnviroSpawn* Get();
+
+	void Update();
+
 };
 

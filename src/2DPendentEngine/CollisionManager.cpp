@@ -21,20 +21,13 @@ ColliderPair CollisionManager::MakePair(Collider* a, Collider* b) const
 
 void CollisionManager::RegisterCollider(Collider* p_collider)
 {
-    Entity* owner = p_collider->GetOwner();
-    PhysicsBody* body = owner ? owner->GetPhysicsBody() : nullptr;
-
-    if (body == nullptr || body->GetBodyType() == ShapeBodyPhysics::Static)
-        m_staticColliders.push_back(p_collider);
-    else
-        m_dynamicColliders.push_back(p_collider);
+    m_colliders.push_back(p_collider);
 }
 
 void CollisionManager::UnregisterCollider(Collider* p_collider)
 {
 
-    m_staticColliders.erase(std::remove(m_staticColliders.begin(), m_staticColliders.end(), p_collider), m_staticColliders.end());
-    m_dynamicColliders.erase(std::remove(m_dynamicColliders.begin(), m_dynamicColliders.end(), p_collider), m_dynamicColliders.end());
+    m_colliders.erase(std::remove(m_colliders.begin(), m_colliders.end(), p_collider), m_colliders.end());
 
     auto removePairs = [&](ColliderPairSet& p_set)
         {
@@ -53,11 +46,25 @@ void CollisionManager::UnregisterCollider(Collider* p_collider)
 
 void CollisionManager::SyncAll()
 {
-    for (Collider* c : m_staticColliders)
+    for (Collider* c : m_colliders)
         c->SyncWithOwner();
+}
 
-    for (Collider* c : m_dynamicColliders)
-        c->SyncWithOwner();
+void CollisionManager::ClassifyColliders()
+{
+    m_staticColliders.clear();
+    m_dynamicColliders.clear();
+
+    for (Collider* c : m_colliders)
+    {
+        Entity* owner = c->GetOwner();
+        PhysicsBody* body = owner ? owner->GetPhysicsBody() : nullptr;
+
+        if (body == nullptr || body->GetBodyType() == ShapeBodyPhysics::Static)
+            m_staticColliders.push_back(c);
+        else
+            m_dynamicColliders.push_back(c); 
+    }
 }
 
 void CollisionManager::RebuildQuadTree()
@@ -106,13 +113,18 @@ void CollisionManager::TestPair(Collider* a, Collider* b)
 
     if (m_previousPairs.count(pair) == 0)
     {
-        if (ownerA) ownerA->OnCollisionEnter(a, b, manifold.sideA);
-        if (ownerB) ownerB->OnCollisionEnter(b, a, manifold.sideB);
+        if (ownerA) 
+            ownerA->OnCollisionEnter(a, b, manifold.sideA);
+
+        if (ownerB)
+            ownerB->OnCollisionEnter(b, a, manifold.sideB);
     }
     else
     {
-        if (ownerA) ownerA->OnCollisionStay(a, b, manifold.sideA);
-        if (ownerB) ownerB->OnCollisionStay(b, a, manifold.sideB);
+        if (ownerA) 
+            ownerA->OnCollisionStay(a, b, manifold.sideA);
+        if (ownerB) 
+            ownerB->OnCollisionStay(b, a, manifold.sideB);
     }
 }
 
@@ -120,6 +132,8 @@ void CollisionManager::Update()
 {
     m_currentPairs.clear();
     m_currentPairs.reserve(m_previousPairs.size() + 64);
+
+    ClassifyColliders();
 
     RebuildQuadTree();
 

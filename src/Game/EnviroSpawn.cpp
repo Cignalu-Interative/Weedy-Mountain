@@ -2,6 +2,7 @@
 #include "EnviroSpawn.h"
 #include "EnviroProps.h"
 #include "SpriteContainer.h"
+#include "GameScene.h"
 
 void EnviroSpawn::InitEnviroSpawn()
 {
@@ -60,11 +61,10 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);
-	Props->SetRigidBody(true);
-	Props->SetIsStatic(true);
 	Props->ShowCollider(true);
-	Props->GetCollider()->SetLayer(5);
-	Props->GetCollider()->SetMask(1);
+	Props->GetCollider()->SetLayer(ENVIRO);
+	Props->GetCollider()->SetMask(PLAYER);
+	Props->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 
 	switch (_name)
 	{
@@ -80,7 +80,7 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 		break;
 	case EnviroSpawnName::Grass:
 		Props->AddSprite("default", "Grass", { 18, 18 }, 0);
-		Props->SetRigidBody(false);
+		Props->GetCollider()->SetIsTrigger(true);
 		Props->GetCollider()->Resize({ 16,16 });
 		break;
 	case EnviroSpawnName::Rock:

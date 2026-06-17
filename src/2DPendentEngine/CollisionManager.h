@@ -32,9 +32,9 @@ struct CollisionInfo
 class CollisionManager
 {
 private:
-    // Colliders statiques (jamais testes entre eux, ne bougent pas)
+    std::vector<Collider*> m_colliders;
+
     std::vector<Collider*> m_staticColliders;
-    // Colliders dynamiques / kinematiques (mobiles)
     std::vector<Collider*> m_dynamicColliders;
 
     // Paires en collision la frame precedente
@@ -55,6 +55,8 @@ private:
         return !(a.maxX < b.minX || b.maxX < a.minX ||
             a.maxY < b.minY || b.maxY < a.minY);
     }
+
+    void ClassifyColliders();
 
     void RebuildQuadTree();
 

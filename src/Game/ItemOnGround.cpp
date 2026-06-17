@@ -66,6 +66,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 			text->SetPosition(this->GetPosition({1,1}));
 		}
 
+		SetResetDirection(false);
 		SetSpeed(15);
 	}
 	else SetSpeed(0);
@@ -74,4 +75,9 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		std::cout << "Item Collected" << std::endl;
 		Destroy();
 	}
+}
+
+void ItemOnGround::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
+{
+	SetResetDirection(true);
 }

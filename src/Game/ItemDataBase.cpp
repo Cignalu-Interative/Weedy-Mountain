@@ -30,6 +30,22 @@ ItemDataBase::ItemDataBase()
 
     m_items.try_emplace
     (
+        ITEM_WOOD,
+
+        ItemData
+        {
+            ITEM_WOOD,
+            "Item_Wood",
+            "Wood",
+            "Wood plank",
+            1,
+            3,
+            64
+        }
+    );
+
+    m_items.try_emplace
+    (
         ITEM_FIBER,
 
         ItemData

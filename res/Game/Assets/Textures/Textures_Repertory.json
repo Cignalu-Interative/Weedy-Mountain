@@ -7,6 +7,9 @@
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc_Actions.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Egg.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Environment/Backgrounds/Harvest BG.png"
     },
     {
@@ -682,7 +685,22 @@
       "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/supplies_objects.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/FishingRod.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Grass.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Helmet.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Hotbar.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/InventorySlot.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Item_Wood.png"
@@ -694,10 +712,16 @@
       "path": "../../res/Game/Assets/Textures/Oak_Tree.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Potatoe.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Rock.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Stone.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/SunFlower.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/carrot_01.png"
@@ -712,7 +736,13 @@
       "path": "../../res/Game/Assets/Textures/carrot_04.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/inventory.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/player.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/slot.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/soil_hole.png"

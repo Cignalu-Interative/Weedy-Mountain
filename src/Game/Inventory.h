@@ -18,6 +18,8 @@ public:
 
 	void OnInitialize() override;
 
+	void OnEvent() override;
+
 	bool CanAdd(ItemID ID, int amount);
 	bool CanRemove(ItemID ID, int amount);
 	int AddItem(ItemID ID, int amount, bool requireFull);

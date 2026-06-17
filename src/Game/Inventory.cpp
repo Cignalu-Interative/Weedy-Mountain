@@ -3,6 +3,7 @@
 #include "ItemDataBase.h"
 #include "ItemStack.h"
 #include "SpriteContainer.h"
+#include "2DPendentLib/InputManager.h"
 #include <cassert>
 
 const int columns = 10;
@@ -38,7 +39,13 @@ void Inventory::OnInitialize()
 	}
 }
 
-
+void Inventory::OnEvent()
+{
+	if (InputManager::Get()->IsKeyboardDown(K_TAB))
+	{
+		SetVisible(!m_isVisible);
+	}
+}
 
 bool Inventory::CanAdd(ItemID ID, int amount)
 {
@@ -145,8 +152,6 @@ int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 	return amount - remaining;
 }
 
-
-
 int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 {
 	/*
@@ -190,8 +195,6 @@ int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 
 	return amount - remaining;
 }
-
-
 
 int Inventory::CountItem(ItemID ID)
 {

@@ -2,6 +2,24 @@
 #include "2DPendentEngine/Entity.h"
 #include "CropDefinition.h" 
 
+enum class PlayerState
+{
+	IDLE,
+	WALKUP,
+	WALKDOWN,
+	WALKRIGHT,
+	WALKLEFT,
+
+	WATERING,
+	DIGGING,
+	MINING,
+
+
+
+	COUNT
+};
+
+
 enum class JobType
 {
 	Gatherer,

@@ -10,6 +10,7 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
+#include "2DPendentEngine/Animation.h"
 
 inline Debug& debug = *Debug::Get();
 inline InputManager& input = *InputManager::Get();

@@ -232,7 +232,10 @@ void Application::FixedUpdate()
 
 	// 3. Détecter les collisions, résoudre (répulsion + impulsions), fire les callbacks
 	//    CollisionManager appelle PhysicsManager::Repulse et ResolveCollision en interne
+	Timer time;
+	time.SetCurrentTime();
 	CollisionManager::Get()->Update();
+	//std::cout << "Collision time: " << time.GetElapsed() << " s" << std::endl;
 
 	// 4. Appliquer les vélocités corrigées -> déplacer les entités
 	PhysicsManager::Get()->IntegrateVelocities(m_FIX_UPDATE);

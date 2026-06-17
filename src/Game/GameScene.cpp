@@ -21,7 +21,7 @@
 #include "FarmTile.h"
 #include "FarmManager.h"
 #include "GameData.h"
-#include "2DPendentLib/Debug.h"
+#include "2DPendentLib/Debug.h" 
 
 void GameScene::OnInitialize()
 {
@@ -40,7 +40,7 @@ void GameScene::OnInitialize()
 	m_player->SetRigidBody(true);
 	m_player->SetTag(1);
 	m_player->SetDrawLayer(2);
-	m_player->GetCollider()->SetLayer(1);
+	m_player->GetCollider()->SetLayer(PLAYER);
 	m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_player->ShowCollider(true);
@@ -54,6 +54,7 @@ void GameScene::OnInitialize()
 	tree->SetTag(2);
 	tree->GetCollider()->Resize({ 16,16 });
 	tree->GetCollider()->SetOffset({ 0,28 });
+	tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 	
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->Follow(m_player);
@@ -72,8 +73,8 @@ void GameScene::OnInitialize()
 			info.worldPos.GetY() + tileDim.GetY() / 2.f
 		};
 		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->GetCollider()->SetLayer(30);
-		tile->GetCollider()->SetMask(1);
+		tile->GetCollider()->SetLayer(FARMTILE);
+		tile->GetCollider()->SetMask(NoNE);
 		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}

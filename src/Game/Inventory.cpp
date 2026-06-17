@@ -5,15 +5,35 @@
 #include "SpriteContainer.h"
 #include <cassert>
 
+const int columns = 10;
+
+const float spacing = 60.f;
+
 Inventory::Inventory(int slotCount)
+{
+	m_slotCount = slotCount;
+}
+
+void Inventory::OnInitialize()
 {
 	SetDrawLayer(100);
 
-	for (int i = 0; i < slotCount; i++)
+	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
+	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
+
+	for (int i = 0; i < m_slotCount; i++)
 	{
-		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>({ 0, 0 }, { 30, 30 }, "slot", "slot_" + std::to_string(i), "", true);
-		slot->AddSprite("slot_" + std::to_string(i), "", { 30, 30 }, 1, { 0, 0 }, true);
+		int row = i / columns;
+		int col = i % columns;
+
+		Vector2f pos = { startX + col * spacing, startY + row * spacing };
+
+		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i), "", true);
+
+		slot->InitText("slot_" + std::to_string(i) + "_amount_text", "");
+
 		slot->SetDrawLayer(101);
+
 		m_slots.push_back(slot);
 	}
 }
@@ -99,6 +119,7 @@ int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 		int toAdd = std::min(freeSpace, remaining);
 
 		stack.SetAmount(stack.GetAmount() + toAdd);
+		slot->RefreshVisual();
 		remaining -= toAdd;
 
 		if (remaining <= 0)
@@ -120,7 +141,6 @@ int Inventory::AddItem(ItemID ID, int amount, bool requireFull)
 		if (remaining <= 0)
 			return amount;
 	}
-
 
 	return amount - remaining;
 }
@@ -157,6 +177,7 @@ int Inventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 		int toRemove = std::min(available, remaining);
 
 		stack.SetAmount(available - toRemove);
+		slot->RefreshVisual();
 
 		if (stack.GetAmount() <= 0)
 			slot->Clear();

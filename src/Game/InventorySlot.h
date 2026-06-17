@@ -23,4 +23,6 @@ public:
 
 	ItemStack& GetStack();
 	void SetStack(const ItemStack& stack);
+
+	void RefreshVisual();
 };

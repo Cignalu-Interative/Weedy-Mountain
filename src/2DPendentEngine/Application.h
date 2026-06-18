@@ -107,6 +107,7 @@ private:
 	std::vector<TVVertex> m_tvVertexVector;
 
 	TVVertex m_testTVVertex;
+	TVVertex m_TVVertex2;
 
 	Timer m_timeOpenGL;
 

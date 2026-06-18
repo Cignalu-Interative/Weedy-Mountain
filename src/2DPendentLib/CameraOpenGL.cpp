@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "CameraOpenGL.h"
 #include "InputManager.h"
-#include "Vector2.h"
 #include "Window.h"
 
 CameraOpenGL::CameraOpenGL()
@@ -11,6 +10,21 @@ CameraOpenGL::CameraOpenGL()
 	m_ViewDirection = glm::vec3(0.0f,0.0f,-1.0f);
 
 	m_UpVector = glm::vec3(0.0f,1.0f,0.0f);
+}
+
+glm::mat4 CameraOpenGL::GetViewMatrix() const
+{
+    return glm::lookAt(m_Eye, m_Eye + m_ViewDirection, m_UpVector);
+}
+
+void CameraOpenGL::SetProjectionMatrix(float p_fovy, float p_aspect, float p_near, float p_far)
+{
+    m_ProjectionMatrix = glm::perspective(p_fovy, p_aspect, p_near, p_far);
+}
+
+glm::mat4 CameraOpenGL::GetProjectionMatrix() const
+{
+    return m_ProjectionMatrix;
 }
 
 void CameraOpenGL::MouseLook()

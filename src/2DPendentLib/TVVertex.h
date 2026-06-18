@@ -36,6 +36,8 @@ private:
 	float g_uRotate = 0.0f;
 	float g_uScale = 0.5f;
 
+	glm::vec3 m_translation{ 0.0f, 0.0f, -2.0f };
+
 	CameraOpenGL g_CameraOpenGL;
 
 public:
@@ -72,8 +74,13 @@ public:
 	void SetURotate(float p_rotate) { g_uRotate = p_rotate; };
 	float GetURotate() { return g_uRotate; };
 
-	void SetUScale(float p_scale) { g_uOffset = p_scale; };
+	void SetUScale(float p_scale) { g_uScale = p_scale; };
 	float GetUScale() { return g_uScale; };
 
 	CameraOpenGL* GetCameraOpenGL() { return &g_CameraOpenGL; };
+
+	void SetTranslation(glm::vec3 p_translation) { m_translation = p_translation; };
+	glm::vec3 GetTranslation() { return m_translation; };
+
+	//int FindUniformLocation(GLuint p_pipeline, const GLchar* p_name);
 };

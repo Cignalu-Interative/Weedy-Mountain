@@ -4,11 +4,14 @@
 #include "glm/ext/matrix_transform.hpp"
 //#include "glm/ext/vector_relational.hpp"
 #include "glm/gtx/rotate_vector.hpp"
+#include "Vector2.h"
 
 
 class CameraOpenGL
 {
 private:
+
+	glm::mat4 m_ProjectionMatrix;
 
 	glm::vec3 m_Eye;
 	glm::vec3 m_ViewDirection;
@@ -18,11 +21,15 @@ private:
 
 	glm::mat4 m_ViewMatrix;
 
+
 public:
 
 	CameraOpenGL();
 
-	glm::mat4 GetViewMatrix() const { return glm::lookAt(m_Eye, m_Eye + m_ViewDirection, m_UpVector); };
+	glm::mat4 GetViewMatrix() const;
+
+	void SetProjectionMatrix(float p_fovy, float p_aspect, float p_near, float p_far);
+	glm::mat4 GetProjectionMatrix() const;
 
 	void MouseLook();
 	void MoveForward(float p_speed);

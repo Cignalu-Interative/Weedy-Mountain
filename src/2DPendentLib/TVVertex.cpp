@@ -187,3 +187,14 @@ bool TVVertex::GLCheckErrorStatus(const char* function, int line)
 	}
 	return false;
 }
+
+//int TVVertex::FindUniformLocation(GLuint p_pipeline, const GLchar* p_name)
+//{
+//	GLint location = glGetUniformLocation(p_pipeline, p_name);
+//	if (location < 0)
+//	{
+//		std::cerr << "Could not find " << p_name << std::endl;
+//		return -67;
+//	}
+//	return location;
+//}

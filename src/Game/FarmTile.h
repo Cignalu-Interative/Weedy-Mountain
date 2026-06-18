@@ -23,6 +23,7 @@ private:
     std::optional<CropDefinition> m_crop;
 
     int m_dayPlanted = 0;  
+    int m_daysGrown = 0;
     int m_growthStage = 0; 
     int m_dayLastWatered = -1; 
     int m_daysWithoutWater = 0;  
@@ -31,7 +32,7 @@ private:
     bool m_wateredToday = false;
 
     void UpdateVisuals();
-    int ComputeGrowthStage(int p_currentDay) const;
+    int ComputeGrowthStage() const;
 
 public:
 

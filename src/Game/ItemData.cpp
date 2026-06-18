@@ -1,12 +1,10 @@
 #include "pch.h"
 #include "ItemData.h"
 
-ItemData::ItemData(ItemID ID, std::string path, std::string name, std::string description, int buyPrice, int sellPrice, int maxStack) 
-	: m_ID(ID), m_path(path), m_name(name), m_description(description), m_buyPrice(buyPrice), m_sellPrice(sellPrice), m_maxStack(maxStack) {}
+ItemData::ItemData(const std::string& ID, const std::string& path, const std::string& name, const std::string& description, int buyPrice, int sellPrice, int maxStack) 
+: m_ID(ID), m_path(path), m_name(name), m_description(description), m_buyPrice(buyPrice), m_sellPrice(sellPrice), m_maxStack(maxStack) {}
 
-
-
-ItemID ItemData::GetID()
+std::string& ItemData::GetID()
 {
 	return m_ID;
 }

@@ -125,6 +125,7 @@ void MapTiled::ReadMap(tinyxml2::XMLElement* p_map)
 
     m_MapDimension = { XMLSafe::GetInt(p_map, "width"), XMLSafe::GetInt(p_map, "height") };
     m_TileDimension = { XMLSafe::GetInt(p_map, "tilewidth"), XMLSafe::GetInt(p_map, "tileheight") };
+    SetDimension({ m_MapDimension * m_TileDimension });
 }
 void MapTiled::ReadMapProperties(tinyxml2::XMLElement* p_mapElement)
 {

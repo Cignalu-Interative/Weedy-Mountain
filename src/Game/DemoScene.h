@@ -17,6 +17,8 @@ private:
 	User* m_user = nullptr;
 
 	Player* m_playerToCamera = nullptr;
+	Player* m_player1 = nullptr;
+	Player* m_player2 = nullptr;
 
 	Entity* entitySelected = nullptr;
 	Entity* lastEntitySelected = nullptr;

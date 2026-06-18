@@ -3,17 +3,25 @@
 #include "2DPendentEngine/Button.h"
 #include "Tool.h"
 #include "EnviroSpawn.h"
+#include "ItemStack.h"
 
 struct EnviroStats {
-	int m_HitToDestroy = 1;
-	Rarity m_MinToolsRarity = Rarity::Wooden;
-	std::vector<ToolType> m_ToolType;
+	int m_hitToDestroy = 1;
+	Rarity m_minToolsRarity = Rarity::Wooden;
+	std::vector<ToolType> m_toolType;
+};
+
+struct EnviroLoots {
+	ItemStack m_item;
+	int m_minDrop;
+	int m_maxDrop;
 };
 
 class EnviroProps: public Entity
 {
-	EnviroSpawnName m_Name = EnviroSpawnName::Count;
-	EnviroStats m_Stats;
+	EnviroSpawnName m_name = EnviroSpawnName::Count;
+	EnviroStats m_stats;
+	std::vector<EnviroLoots*> m_loots;
 
 	bool m_isInPlayerZone = false;
 
@@ -29,6 +37,8 @@ protected:
 	void OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side) override;
 
 	void OnDestroy() override;
+
+	void CreateItem(int lootPos);
 
 public:
 	EnviroProps() = default;

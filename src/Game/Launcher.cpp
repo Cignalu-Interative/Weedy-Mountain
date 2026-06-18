@@ -1,9 +1,9 @@
 #include "pch.h"
 #include "Launcher.h"
 #include "SceneManager.h"
-#include "GameScene.h"
 #include "DemoScene.h"
 #include "TestScene.h"
+#include "GameScene.h"
 
 namespace Launcher
 {

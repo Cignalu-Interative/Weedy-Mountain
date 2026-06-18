@@ -2,8 +2,10 @@
 #include "2DPendentLib/Rectangle.h"
 #include "2DPendentLib/Circle.h"
 #include "2DPendentEngine/Collider.h"
+#include "CollisionManifold.h"
 
 class Entity;
+
 class Collision
 {
 private:
@@ -38,20 +40,20 @@ private:
 	//Collision entre Oriented Box et un cercle 
 	static bool Collision_OBC(const Collider& p_rect, const Collider& p_circle);
 
+	//Manifold pour deux rectangles axis-aligned : overlap minimal sur X ou Y
+	static void ComputeManifold_AABB(const Collider& p_rectA, const Collider& p_rectB, CollisionManifold& p_manifold);
 
-	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle et Rectangle
-	static void Repulse_AABB(Entity* p_entityRectA, Entity* p_entityRectB);
+	//Manifold pour deux cercles : normale = axe centre-centre, pénétration = radii - distance
+	static void ComputeManifold_CBC(const Collider& p_circleA, const Collider& p_circleB, CollisionManifold& p_manifold);
 
-	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Cercle et Cercle
-	static void Repulse_CBC(Entity* p_entityCircleA, Entity* p_entityCircleB);
+	//Manifold pour un rectangle axis-aligned et un cercle : normale depuis le point le plus proche
+	static void ComputeManifold_ARC(const Collider& p_rect, const Collider& p_circle, CollisionManifold& p_manifold);
 
-	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle et Cercle
-	static void Repulse_ARC(Entity* p_entityRect, Entity* p_entityCircle);
+	//Manifold pour deux OBB : axe de pénétration minimale via SAT
+	static void ComputeManifold_OBB(const Collider& p_rectA, const Collider& p_rectB, CollisionManifold& p_manifold);
 
-	//Fonctions de répulsion pour séparer les entités en collision pour des collider de type Rectangle avec un angle et Cercle 
-	static void Repulse_OBC(Entity* p_entityRect, Entity* p_entityCircle);
-
-	static void Repulse_OBB(Entity* p_entityRect, Entity* p_entityRectB);
+	//Manifold pour un OBB et un cercle : normale dans le repère local du rectangle puis retransformée
+	static void ComputeManifold_OBC(const Collider& p_rect, const Collider& p_circle, CollisionManifold& p_manifold);
 
 public:
 
@@ -59,6 +61,6 @@ public:
 	//Vérifie si deux colliders sont en collision
 	static bool IsColliding(const Collider& p_colliderA, const Collider& p_colliderB);
 
-	static void Repulse(Entity* p_entityA, Entity* p_entityB);
+	static CollisionManifold ComputeManifold(const Collider& p_colliderA, const Collider& p_colliderB);
 
 };

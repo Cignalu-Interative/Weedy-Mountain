@@ -4,30 +4,32 @@
 #include "InputManager.h"
 #include "Application.h"
 
+Button::~Button()
+{
+	GetScene()->RemoveGeometry(m_textID);
+}
+
 void Button::InitText(const std::string& p_textID, const std::string& p_text)
 {
 	m_textID = p_textID;
-	Debug::Get()->CreateText(p_textID, GetPosition(), p_text, { 255, 255, 255, 255 }, GetIsGUI());
+	GetScene()->CreateText(p_textID, GetPosition(), p_text, {255, 255, 255, 255}, GetIsGUI());
 }
 
 void Button::SetText(const std::string& p_text)
 {
-	if (Debug::Get()->GetText(m_textID) == nullptr)
-		return;
-
-	Debug::Get()->GetText(m_textID)->SetText(p_text);
+	GetScene()->GetGeometry<Text>(m_textID)->SetText(p_text);
 }
 
 void Button::SetTextOffset(const Vector2f& p_offset)
 {
-	Debug::Get()->GetText(m_textID)->SetPosition(GetPosition() + p_offset);
+	GetScene()->GetGeometry<Text>(m_textID)->SetPosition(GetPosition() + p_offset);
 }
 
 bool Button::IsMouseIn()
 {
 	InputManager* im = InputManager::Get();
 	Vector2f mousePos = im->GetMousePosition();
-	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetPosition({0.f, 0.f}));
+	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetCollider()->GetPosition({0.f, 0.f}));
 	//std::cout << pos.GetX() << " " << pos.GetY() << std::endl;
 	//std::cout << mousePos.GetX() << " " << mousePos.GetY() << std::endl;
 	int w = GetCollider()->GetDimension().GetX();

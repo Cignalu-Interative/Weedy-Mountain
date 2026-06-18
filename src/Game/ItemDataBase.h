@@ -7,13 +7,16 @@ class ItemDataBase
 {
 private:
 
-	std::unordered_map<ItemID, ItemData> m_items;
+	std::unordered_map<std::string, ItemData> m_items;
+	ItemDataBase() = default;
 
 public:
 
 	static ItemDataBase* Get();
 
-	ItemDataBase();
+	bool LoadFromJSON(const std::string& filePath);
 
-	ItemData* GetItem(ItemID ID);
+	ItemData* GetItem(const std::string& ID);
+
+	const std::unordered_map<std::string, ItemData>& GetAll() const;
 };

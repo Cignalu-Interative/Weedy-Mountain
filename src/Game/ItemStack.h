@@ -1,25 +1,26 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
-#include "ItemID.h"
 
 class ItemStack
 {
 private:
 
-	ItemID m_IDD = ITEM_NOTHING;
+	std::string m_ID = "ITEM_NOTHING";
 
 	int m_amount = 0;
 
 public:
 
-	ItemStack(ItemID ID, int amount);
+	ItemStack(const std::string& ID, int amount);
 
-	bool IsEmpty();
+	ItemStack() = default;
+
+	bool IsEmpty() const;
 	void Clear();
 
-	ItemID GetID();
-	void SetID(ItemID newID);
+	const std::string& GetID() const;
+	void SetID(const std::string& newID);
 
-	int GetAmount();
+	int GetAmount() const;
 	void SetAmount(int newAmount);
 };

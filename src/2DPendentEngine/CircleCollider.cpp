@@ -3,6 +3,7 @@
 #include "Collision.h"
 #include "2DPendentLib/Render.h"
 #include "2DPendentLib/Camera.h"
+#include "Entity.h"
 
 void CircleCollider::Initialize(Vector2f p_position, Vector2i p_dimension)
 {
@@ -19,14 +20,24 @@ void CircleCollider::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     {
         return;
     }
+
+    Vector2f pos = GetPosition();
+    Vector2i dim = GetDimension();
+    Color col = GetColor();
+
+    if (GetOwner()->GetIsGUI())
+    {
+        dim /= p_camera->GetZoom();
+    }
+
     if (m_circle == nullptr)
     {
 		m_circle = new Circle();
-		m_circle->Initialize(GetPosition(), GetDimension(), GetColor());
+		m_circle->Initialize(pos, dim, col);
     }
-	m_circle->SetDimension(GetDimension());
-	m_circle->SetPosition(GetPosition());
-	m_circle->SetColor(GetColor());
+	m_circle->SetDimension(dim);
+	m_circle->SetPosition(pos);
+	m_circle->SetColor(col);
 	m_circle->Draw(f_render, f_window, p_camera);
 }
     

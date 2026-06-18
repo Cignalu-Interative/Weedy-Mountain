@@ -52,7 +52,7 @@ void Application::Init()
 	InputManager::Get()->SetQuitCallback([this]()
 		{ m_isRunning = false; });
 	FontManager::Get()->AddFontByPath("../../res/2DPendentEngine/Assets/Fonts/DefaultPolice.ttf");
-	InputManager::Get()->SetCursor("../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_c.png", { 0.0f, 0.0f });
+	//InputManager::Get()->SetCursor("../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_c.png", { 0.0f, 0.0f });
 	Vector2i sizeWindow = m_window.GetWindowSize();
 	m_camera = new Camera(sizeWindow);
 	AssetManager::Get()->SetRenderer(m_render.GetRenderer());

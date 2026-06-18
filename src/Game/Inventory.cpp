@@ -30,7 +30,7 @@ void Inventory::OnInitialize()
 
 		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i) + "_background", "", true);
 
-		slot->AddSprite("slot_" + std::to_string(i) + "_item", "", { 54, 54 }, 0, { 0.0f, 0.0f }, true);
+		slot->AddSprite("item_texture", "", { 54, 54 }, 1, { 0.0f, 0.0f }, true);
 
 		slot->InitText("slot_" + std::to_string(i) + "_amount_text", "");
 

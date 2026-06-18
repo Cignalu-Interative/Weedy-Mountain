@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Hotbar.h"
 #include "ItemDataBase.h"
+#include "SpriteContainer.h"
 
 #include <cassert>
 
@@ -30,6 +31,8 @@ void Hotbar::OnInitialize()
 		Vector2f pos = { startX + col * spacing, startY + row * spacing };
 
 		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i + m_invSlotCount) + "_background", "", true);
+
+		slot->AddSprite("item_texture", "", { 54, 54 }, 1, { 0.0f, 0.0f }, true);
 
 		slot->InitText("slot_" + std::to_string(i + m_invSlotCount) + "_amount_text", "");
 

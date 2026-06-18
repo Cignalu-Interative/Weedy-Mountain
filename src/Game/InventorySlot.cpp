@@ -43,13 +43,13 @@ void InventorySlot::RefreshVisual()
     {
         if (m_isVisible)
         {
-            SetSprite(data->GetPath());
+            SetSprite("item_texture", data->GetPath());
             SetText(std::to_string(m_stack.GetAmount()));
             SetTextOffset({ 18.0f, 22.0f });
         }
         else
         {
-            SetSprite("");
+            SetSprite("item_texture", "");
             SetText("");
             SetTextOffset({ 18.0f, 22.0f });
         }

@@ -21,8 +21,7 @@ void CameraOpenGL::MouseLook()
     float deltaX = static_cast<float>(mouseDeltaRaw.GetX()) * sensitivity;
     float deltaY = static_cast<float>(mouseDeltaRaw.GetY()) * sensitivity;
     
-    m_ViewDirection = glm::rotate(m_ViewDirection, glm::radians(deltaX), m_UpVector);
-
+    m_ViewDirection = glm::rotate(m_ViewDirection, glm::radians(-deltaX), m_UpVector);
 }
 
 void CameraOpenGL::MoveForward(float p_speed)
@@ -37,10 +36,12 @@ void CameraOpenGL::MoveBackward(float p_speed)
 
 void CameraOpenGL::MoveLeft(float p_speed)
 {
-
+    glm::vec3 rightVector = glm::cross(m_ViewDirection, m_UpVector);
+    m_Eye -= rightVector * p_speed;
 }
 
 void CameraOpenGL::MoveRight(float p_speed)
 {
-
+    glm::vec3 rightVector = glm::cross(m_ViewDirection, m_UpVector);
+    m_Eye += rightVector * p_speed;
 }

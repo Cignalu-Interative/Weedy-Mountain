@@ -76,7 +76,4 @@ public:
 	float GetUScale() { return g_uScale; };
 
 	CameraOpenGL* GetCameraOpenGL() { return &g_CameraOpenGL; };
-
-
 };
-

@@ -3,7 +3,7 @@
 
 #include "Inventory.h"
 
-class Vendor : public PNJ
+class UiShop : public PNJ
 {
 
 private :

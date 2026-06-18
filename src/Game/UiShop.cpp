@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Vendor.h"
+#include "UiShop.h"
 
-void Vendor::OnInitialize()
+void UiShop::OnInitialize()
 {
 	Scene* scene = GetScene();
 

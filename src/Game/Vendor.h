@@ -1,14 +1,16 @@
 #pragma once
-#include "Entity.h"
-#include "InventorySlot.h"
-#include "Button.h"
+#include "PNJ.h"
 
-class Vendor : public Entity
+#include "Inventory.h"
+
+class Vendor : public PNJ
 {
 
 private :
 
 	InventorySlot* m_slot = nullptr;
+
+	Inventory* m_inventory = nullptr;
 
 	Button* m_sellButton = nullptr;
 	Button* m_buyButton = nullptr;

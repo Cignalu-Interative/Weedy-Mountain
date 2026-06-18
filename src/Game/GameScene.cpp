@@ -23,6 +23,8 @@
 #include "GameData.h"
 #include "2DPendentLib/Debug.h" 
 
+#include "PNJ.h"
+#include "Vendor.h"
 
 void GameScene::OnInitialize()
 {
@@ -35,28 +37,29 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
-	m_player->GetCollider()->SetDimension({ 16,16 });
-	m_player->GetCollider()->SetOffset({ 0,8 });
-	m_player->SetRigidBody(true);
-	m_player->SetTag(1);
-	m_player->SetDrawLayer(2);
-	m_player->GetCollider()->SetLayer(PLAYER);
-	m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
-	m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
-	m_player->ShowCollider(true);
-	m_player->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
+	//m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
+	//m_player->GetCollider()->SetDimension({ 16,16 });
+	//m_player->GetCollider()->SetOffset({ 0,8 });
+	//m_player->SetRigidBody(true);
+	//m_player->SetTag(1);
+	//m_player->SetDrawLayer(2);
+	//m_player->GetCollider()->SetLayer(PLAYER);
+	//m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
+	//m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
+	//m_player->ShowCollider(true);
+	//m_player->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
 
-	EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
-	tree->SetType(EnviroSpawnName::Tree);
-	tree->ShowCollider(true);
-	tree->SetRigidBody(true);
-	tree->SetIsStatic(true);
-	tree->SetTag(2);
-	tree->GetCollider()->Resize({ 16,16 });
-	tree->GetCollider()->SetOffset({ 0,28 });
-	tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
+	//EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
+	//tree->SetType(EnviroSpawnName::Tree);
+	//tree->ShowCollider(true);
+	//tree->SetRigidBody(true);
+	//tree->SetIsStatic(true);
+	//tree->SetTag(2);
+	//tree->GetCollider()->Resize({ 16,16 });
+	//tree->GetCollider()->SetOffset({ 0,28 });
+	//tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 	
+	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
 	//Application::Get()->SetClampCameraToCurrentMap(true);
 
@@ -81,6 +84,11 @@ void GameScene::OnInitialize()
 
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
+	Vendor* pnj = CreateEntity<Vendor>({ 100,200 }, { 16,32 }, "player", Shape::Rectangle);
+	pnj->GetCollider()->SetDimension({ 16,16 });
+	pnj->GetCollider()->SetOffset({ 0,8 });
+	pnj->SetRigidBody(true);
+	GetCamera()->SetPosition(pnj->GetPosition());
 }
 
 
@@ -99,11 +107,23 @@ void GameScene::OnEvent()
 	if (im->IsKeyboardDown(K_e))
 		GetCamera()->SetZoom(1.f);
 
+	if (im->IsKeyboardHeld(K_z))
+		GetCamera()->Move({ 0,-1 });
+
+	if (im->IsKeyboardHeld(K_s))
+		GetCamera()->Move({ 0,1 });
+
+	if (im->IsKeyboardHeld(K_d))
+		GetCamera()->Move({ 1,0 });
+
+	if (im->IsKeyboardHeld(K_q))
+		GetCamera()->Move({- 1,0 });
+
 }
 
 void GameScene::OnUpdate()
 {
-	GetCamera()->Follow(m_player);
+	//GetCamera()->Follow(m_player);
 	FarmManager::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();

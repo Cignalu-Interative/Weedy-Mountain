@@ -42,10 +42,7 @@ void Inventory::OnInitialize()
 
 void Inventory::OnEvent()
 {
-	if (InputManager::Get()->IsKeyboardDown(K_TAB))
-	{
-		SetVisible(!m_isVisible);
-	}
+
 }
 
 bool Inventory::CanAdd(ItemID ID, int amount)

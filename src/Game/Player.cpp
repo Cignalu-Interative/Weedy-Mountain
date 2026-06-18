@@ -12,7 +12,7 @@
 
 void Player::OnInitialize()
 {
-	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 436, 256 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 636, 306 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_inventory->GetCollider()->SetIsTrigger(true);
 
 	std::vector<InventorySlot*> slots = m_inventory->GetSlots();
@@ -26,12 +26,15 @@ void Player::OnInitialize()
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
 	m_jobs.push_back(gatherer);
+
 	PlayerJob* farmer = new PlayerJob();
 	farmer->m_name = JobType::Farmer;
 	m_jobs.push_back(farmer);
+
 	PlayerJob* miner = new PlayerJob();
 	miner->m_name = JobType::Miner;
 	m_jobs.push_back(miner);
+
 	/*PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
 	m_Jobs.push_back(killer);
@@ -43,6 +46,10 @@ void Player::OnInitialize()
 void Player::OnEvent()
 {
 
+	if (InputManager::Get()->IsKeyboardDown(K_TAB))
+	{
+		m_inventory->SetVisible(!m_inventory->GetIsVisible());
+	}
 
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
 		SetSpeed(m_stats.m_playerSpeed * 2);
@@ -153,24 +160,19 @@ void Player::OnUpdate()
 {
 	UpdateJobs();
 
-	std::vector<InventorySlot*> slots = m_inventory->GetSlots();
-	for (InventorySlot* slot : slots)
-	{
-		slot->GetCollider()->SetIsTrigger(true);
-		std::cout << slot->GetCollider()->GetPosition().GetX() << std::endl;
-	}
-	std::cout << m_inventory->GetDimension().GetX() << " " << m_inventory->GetDimension().GetY() << std::endl;
+	//std::vector<InventorySlot*> slots = m_inventory->GetSlots();
+	//for (InventorySlot* slot : slots)
+	//{
+	//	slot->GetCollider()->SetIsTrigger(true);
+	//	std::cout << slot->GetCollider()->GetPosition().GetX() << std::endl;
+	//}
+	//std::cout << m_inventory->GetDimension().GetX() << " " << m_inventory->GetDimension().GetY() << std::endl;
 
 	MoveKinematic();
 }
 
 void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	if (_other->GetOwner()->GetTag() == 3)
-	{
-		m_inventory->AddItem(ITEM_WOOD, 1, false);
-		std::cout << "enter" << std::endl;
-	}
 }
 
 void Player::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)

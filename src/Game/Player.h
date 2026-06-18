@@ -1,6 +1,7 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
-#include "CropDefinition.h" 
+#include "CropDefinition.h"
+
 
 enum class PlayerState
 {
@@ -92,10 +93,12 @@ struct PlayerStats {
 	float m_drugSellEfficency = 1.f; 
 };
 
-
+class StateMachine;
 class Player : public Entity
 {
 private:
+	StateMachine<Player> m_stateMachine;
+
 	PlayerStats m_stats;
 	std::vector<PlayerJob*> m_jobs;
 

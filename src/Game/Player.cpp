@@ -9,6 +9,10 @@
 #include "FarmManager.h"   
 #include "GameData.h" 
 
+#include "StateMachine.h"
+
+#include "PlayerState.h"
+
 void Player::OnInitialize()
 {
 	PlayerJob* gatherer = new PlayerJob();
@@ -26,6 +30,13 @@ void Player::OnInitialize()
 	PlayerJob* dealer = new PlayerJob();
 	dealer->m_name = JobType::Dealer;
 	m_Jobs.push_back(dealer);*/
+
+
+
+	m_stateMachine.AddState(new PlayerIdleState);
+	m_stateMachine.AddState(new PlayerWalkDownState);
+	m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN);
+
 }
 
 void Player::OnEvent()

@@ -47,7 +47,7 @@ class PlayerWalkUpState : public StateBase<Player>
 	};
 	
 	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
+	void End(Player* p_player) { };
 	bool CanTransitionFrom(Player* p_player, int currentState)
 	{
 		switch (currentState)

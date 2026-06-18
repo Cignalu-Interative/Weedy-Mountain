@@ -45,7 +45,7 @@ bool PlayerInventory::IsOpen()
 
 
 
-bool PlayerInventory::CanAdd(ItemID ID, int amount)
+bool PlayerInventory::CanAdd(const std::string& ID, int amount)
 {
 	//-----------------------------WARNING WARNING-----------------------------
 	//METHODE CODED WITH THE CUL:
@@ -77,12 +77,12 @@ bool PlayerInventory::CanAdd(ItemID ID, int amount)
 	return remaining <= 0;
 }
 
-bool PlayerInventory::CanRemove(ItemID ID, int amount)
+bool PlayerInventory::CanRemove(const std::string& ID, int amount)
 {
 	return CountItem(ID) >= amount;
 }
 
-int PlayerInventory::AddItem(ItemID ID, int amount, bool requireFull)
+int PlayerInventory::AddItem(const std::string& ID, int amount, bool requireFull)
 {
 	if (amount <= 0)
 		return 0;
@@ -102,7 +102,7 @@ int PlayerInventory::AddItem(ItemID ID, int amount, bool requireFull)
 	return amount - remaining;
 }
 
-int PlayerInventory::RemoveItem(ItemID ID, int amount, bool requireFull)
+int PlayerInventory::RemoveItem(const std::string& ID, int amount, bool requireFull)
 {
 	if (amount <= 0)
 		return 0;
@@ -124,17 +124,17 @@ int PlayerInventory::RemoveItem(ItemID ID, int amount, bool requireFull)
 
 
 
-int PlayerInventory::CountItem(ItemID ID)
+int PlayerInventory::CountItem(const std::string& ID)
 {
 	return m_hotbar->CountItem(ID) + m_inventory->CountItem(ID);
 }
 
-bool PlayerInventory::HasItem(ItemID ID)
+bool PlayerInventory::HasItem(const std::string& ID)
 {
 	return CountItem(ID) > 0;
 }
 
-bool PlayerInventory::HasItems(ItemID ID, int amount)
+bool PlayerInventory::HasItems(const std::string& ID, int amount)
 {
 	return CountItem(ID) >= amount;
 }
@@ -188,7 +188,7 @@ ItemStack& PlayerInventory::GetSelectedStack()
 	return m_hotbar->GetSelectedStack();
 }
 
-ItemID PlayerInventory::GetSelectedItemID()
+const std::string& PlayerInventory::GetSelectedItemID()
 {
 	return m_hotbar->GetSelectedItemID();
 }

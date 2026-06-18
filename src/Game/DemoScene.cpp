@@ -13,7 +13,7 @@
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
 
-
+#include "ItemDataBase.h"
 #include "PlayerInventory.h"
 
 #include <iostream>
@@ -42,60 +42,62 @@ void DemoScene::OnInitialize()
 	m_playerInventory = new PlayerInventory(m_inv, m_hotbar);
 
 	m_playerInventory->Close();
+
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 }
 
 void DemoScene::OnEvent()
 {
 	if (input.IsKeyboardDown(K_a))
 	{
-		m_playerInventory->AddItem(ItemID::ITEM_EGG, 32, false);
+		m_playerInventory->AddItem("ITEM_EGG", 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_z))
 	{
-		m_playerInventory->AddItem(ItemID::ITEM_POTATOE, 32, false);
+		m_playerInventory->AddItem("ITEM_POTATOE", 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_e))
 	{
-		m_playerInventory->AddItem(ItemID::ITEM_SUN_FLOWER, 32, false);
+		m_playerInventory->AddItem("ITEM_SUN_FLOWER", 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_r))
 	{
-		m_playerInventory->AddItem(ItemID::ITEM_HELMET, 3, false);
+		m_playerInventory->AddItem("ITEM_HELMET", 3, false);
 		std::cout << "adddedd" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_t))
 	{
-		m_playerInventory->AddItem(ItemID::ITEM_FISHING_ROD, 3, false);
+		m_playerInventory->AddItem("ITEM_FISHING_ROD", 3, false);
 		std::cout << "adddedd" << std::endl;
 	}
 
 
 	if (input.IsKeyboardDown(K_q))
 	{
-		m_playerInventory->RemoveItem(ItemID::ITEM_EGG, 32, false);
+		m_playerInventory->RemoveItem("ITEM_EGG", 32, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_s))
 	{
-		m_playerInventory->RemoveItem(ItemID::ITEM_POTATOE, 32, false);
+		m_playerInventory->RemoveItem("ITEM_POTATOE", 32, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_d))
 	{
-		m_playerInventory->RemoveItem(ItemID::ITEM_SUN_FLOWER, 32, false);
+		m_playerInventory->RemoveItem("ITEM_SUN_FLOWER", 32, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_f))
 	{
-		m_playerInventory->RemoveItem(ItemID::ITEM_HELMET, 3, false);
+		m_playerInventory->RemoveItem("ITEM_HELMET", 3, false);
 		std::cout << "rmv" << std::endl;
 	}
 	if (input.IsKeyboardDown(K_g))
 	{
-		m_playerInventory->RemoveItem(ItemID::ITEM_FISHING_ROD, 3, false);
+		m_playerInventory->RemoveItem("ITEM_FISHING_ROD", 3, false);
 		std::cout << "rmv" << std::endl;
 	}
 }

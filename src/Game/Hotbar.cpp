@@ -57,7 +57,7 @@ void Hotbar::OnUpdate()
 
 
 
-bool Hotbar::CanAdd(ItemID ID, int amount)
+bool Hotbar::CanAdd(const std::string& ID, int amount)
 {
 	ItemData* data = ItemDataBase::Get()->GetItem(ID);
 
@@ -91,14 +91,14 @@ bool Hotbar::CanAdd(ItemID ID, int amount)
 
 
 
-bool Hotbar::CanRemove(ItemID ID, int amount)
+bool Hotbar::CanRemove(const std::string& ID, int amount)
 {
 	return CountItem(ID) >= amount;
 }
 
 
 
-int Hotbar::AddItem(ItemID ID, int amount, bool requireFull)
+int Hotbar::AddItem(const std::string& ID, int amount, bool requireFull)
 {
 	/*
 
@@ -168,7 +168,7 @@ int Hotbar::AddItem(ItemID ID, int amount, bool requireFull)
 
 
 
-int Hotbar::RemoveItem(ItemID ID, int amount, bool requireFull)
+int Hotbar::RemoveItem(const std::string& ID, int amount, bool requireFull)
 {
 	/*
 
@@ -214,7 +214,7 @@ int Hotbar::RemoveItem(ItemID ID, int amount, bool requireFull)
 
 
 
-int Hotbar::CountItem(ItemID ID)
+int Hotbar::CountItem(const std::string& ID)
 {
 	int total = 0;
 
@@ -284,12 +284,12 @@ ItemStack& Hotbar::GetSelectedStack()
 
 
 
-ItemID Hotbar::GetSelectedItemID()
+const std::string& Hotbar::GetSelectedItemID()
 {
 	auto& stack = GetSelectedStack();
 
 	if (stack.IsEmpty())
-		return ITEM_NOTHING;
+		return "ITEM_NOTHING";
 	
 	return stack.GetID();
 }

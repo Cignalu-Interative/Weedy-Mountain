@@ -33,7 +33,7 @@ void InventorySlot::RefreshVisual()
 {
     if (m_stack.IsEmpty())
     {
-        SetSprite("InventorySlot");
+        SetSprite("item_texture", "");
         SetText(" ");
         return;
     }

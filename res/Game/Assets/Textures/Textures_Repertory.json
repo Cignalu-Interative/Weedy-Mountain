@@ -688,13 +688,13 @@
       "path": "../../res/Game/Assets/Textures/FishingRod.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Grass.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Helmet.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Hotbar.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/HotbarSlotSelected.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/InventorySlot.png"
@@ -706,10 +706,28 @@
       "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Item_Fiber.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Item_Rock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Item_Wood.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Oak_Shrub.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Oak_Tree.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Potatoe.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Rock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Stone.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/SunFlower.png"

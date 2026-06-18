@@ -31,17 +31,17 @@ public:
 
 
 
-	bool CanAdd(ItemID ID, int amount);
-	bool CanRemove(ItemID ID, int amount);
-	int AddItem(ItemID ID, int amount, bool requireFull);
-	int RemoveItem(ItemID ID, int amount, bool requireFull);
+	bool CanAdd(const std::string& ID, int amount);
+	bool CanRemove(const std::string& ID, int amount);
+	int AddItem(const std::string& ID, int amount, bool requireFull);
+	int RemoveItem(const std::string& ID, int amount, bool requireFull);
 
 
 
-	int CountItem(ItemID ID);
+	int CountItem(const std::string& ID);
 
-	bool HasItem(ItemID ID);
-	bool HasItems(ItemID ID, int amount);
+	bool HasItem(const std::string& ID);
+	bool HasItems(const std::string& ID, int amount);
 
 	bool IsEmpty();
 
@@ -53,7 +53,7 @@ public:
 	void GoNext(int dir);
 	int GetSelectedIndex();
 	ItemStack& GetSelectedStack();
-	ItemID GetSelectedItemID();
+	const std::string& GetSelectedItemID();
 	InventorySlot* GetInventorySlot(int index);
 	InventorySlot* GetHotbarSlot(int index);
 

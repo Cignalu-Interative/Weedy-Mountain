@@ -232,9 +232,6 @@ void Entity::SetAngle(float p_angle)
 
 void Entity::Move(Vector2f p_translation)
 {
-	if (m_isStatic)
-		return;
-
 	Transformable::Move(p_translation);
 
 	SyncColliders();

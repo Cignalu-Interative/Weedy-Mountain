@@ -19,6 +19,7 @@ void ItemOnGround::OnInitialize()
 
 void ItemOnGround::OnEvent()
 {
+
 }
 
 void ItemOnGround::OnUpdate()
@@ -51,12 +52,6 @@ void ItemOnGround::OnCollisionEnter(Collider* _self, Collider* _other, Collision
 		if(text) text->SetText(std::to_string(m_ItemInfo.GetAmount()));
 		otherItem->Destroy();
 	}
-
-	if (_other->GetID() == "default" && ToDestroy() == false) {
-		std::cout << "Item Collected" << std::endl;
-		static_cast<Player*>(GetScene()->GetEntityByTag(1))->GetInventory()->AddItem(m_ItemInfo.GetID(), m_ItemInfo.GetAmount(), false);
-		Destroy();
-	}
 }
 
 void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
@@ -78,6 +73,12 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		SetSpeed(15);
 	}
 	else SetSpeed(0);
+
+	if (_other->GetID() == "default" && ToDestroy() == false) {
+		std::cout << "Item Collected" << std::endl;
+		static_cast<Player*>(GetScene()->GetEntityByTag(1))->GetInventory()->AddItem(m_ItemInfo.GetID(), m_ItemInfo.GetAmount(), false);
+		Destroy();
+	}
 }
 
 void ItemOnGround::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)

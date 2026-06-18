@@ -98,7 +98,7 @@ void Entity::Draw(Render* f_render, Window* f_window)
 	Vector2f screenTL = p_camera->WorldToScreen(Vector2f{ minX, minY });
 	Vector2f screenBR = p_camera->WorldToScreen(Vector2f{ maxX, maxY });
 
-	if (screenBR.GetX() < 0 || screenTL.GetX() > dimensionWindow.GetX() || screenBR.GetY() < 0 || screenTL.GetY() > dimensionWindow.GetY())
+	if (GetIsGUI() == false && (screenBR.GetX() < 0 || screenTL.GetX() > dimensionWindow.GetX() || screenBR.GetY() < 0 || screenTL.GetY() > dimensionWindow.GetY()))
 		return;
 
 	// Dessin dans l'ordre zOrder 

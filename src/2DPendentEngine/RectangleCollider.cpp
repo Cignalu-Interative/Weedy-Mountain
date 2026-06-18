@@ -4,6 +4,7 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/Utils.h"
 #include "Rectangle.h"
+#include "Entity.h"
 
 void RectangleCollider::Initialize(Vector2f p_position, Vector2i p_dimension)
 {
@@ -105,14 +106,23 @@ void RectangleCollider::Draw(Render* f_render, Window* f_window, Camera* p_camer
         return;
     }
 
+    Vector2f pos = GetPosition();
+    Vector2i dim = GetDimension();
+    Color col = GetColor();
+
+    if (GetOwner()->GetIsGUI())
+    {
+        dim /= p_camera->GetZoom();
+    }
+
     if (m_rectangle == nullptr)
     {
         m_rectangle = new Rectangle();
-        m_rectangle->Initialize(GetPosition(), GetDimension(), GetColor());
+        m_rectangle->Initialize(pos, dim, col);
     }
-    m_rectangle->SetDimension(GetDimension());
-    m_rectangle->SetPosition(GetPosition());
+    m_rectangle->SetDimension(dim);
+    m_rectangle->SetPosition(pos);
 	m_rectangle->SetAngle(GetAngle());
-    m_rectangle->SetColor(GetColor());
+    m_rectangle->SetColor(col);
     m_rectangle->Draw(f_render, f_window, p_camera);
 }

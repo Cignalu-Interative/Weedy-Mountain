@@ -685,6 +685,12 @@
       "path": "../../res/Game/Assets/Textures/Grass.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Item_Fiber.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Item_Rock.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Item_Wood.png"
     },
     {

@@ -37,17 +37,20 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	//m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
-	//m_player->GetCollider()->SetDimension({ 16,16 });
-	//m_player->GetCollider()->SetOffset({ 0,8 });
-	//m_player->SetRigidBody(true);
-	//m_player->SetTag(1);
-	//m_player->SetDrawLayer(2);
-	//m_player->GetCollider()->SetLayer(PLAYER);
-	//m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
-	//m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
-	//m_player->ShowCollider(true);
-	//m_player->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
+	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
+	m_player->GetCollider()->SetDimension({ 16,16 });
+	m_player->GetCollider()->SetOffset({ 0,8 });
+	m_player->SetRigidBody(true);
+	m_player->SetTag(1);
+	m_player->SetDrawLayer(2);
+	m_player->GetCollider()->SetLayer(PLAYER);
+	m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
+	m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
+	m_player->ShowCollider(true);
+	m_player->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
+	m_player->GetPhysicsBody()->SetGravityEnabled(false);
+	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
+	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	//EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
 	//tree->SetType(EnviroSpawnName::Tree);

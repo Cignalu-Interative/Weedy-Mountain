@@ -38,8 +38,8 @@ PhysicsBody::PhysicsBody(ShapeBodyPhysics p_shapeBodyPhysics)
 
         m_gravityEnabled = false;
 
-		m_mass = 1.0f;
-		m_invMass = 1.0f;
+		m_mass = 0.0f;
+		m_invMass = 0.0f;
 
 		m_momentOfInertia = 0.0f;
 		m_invMomentOfInertia = 0.0f;

@@ -12,6 +12,7 @@
 #include "StateMachine.h"
 
 #include "PlayerState.h"
+#include "PlayerConditions.h"
 
 void Player::OnInitialize()
 {
@@ -35,7 +36,12 @@ void Player::OnInitialize()
 
 	m_stateMachine.AddState(new PlayerIdleState);
 	m_stateMachine.AddState(new PlayerWalkDownState);
-	m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN);
+	m_stateMachine.AddState(new PlayerWalkUpState);
+	m_stateMachine.AddState(new PlayerRightState);
+	m_stateMachine.AddState(new PlayerLeftState);
+	m_stateMachine.AddState(new PlayerLeftState);
+	m_stateMachine.AddState(new PlayerDiggingState);
+	m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING)->AddCondition(new HasSpadeInHands);
 
 }
 
@@ -95,6 +101,9 @@ void Player::OnEvent()
 	// Action farm 
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
 		HandleFarmAction();
+
+	/*if (InputManager::Get()->IsKeyboardDown(K_u))*/
+
 }
 
 // TEMP - AGRI

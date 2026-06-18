@@ -9,7 +9,7 @@
 #include <sstream>
 
 
-static int LENGHT = 94;
+const int LENGHT = 94;
 
 void PNJ::OnInitialize()
 {

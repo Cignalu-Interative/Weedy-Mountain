@@ -6,7 +6,7 @@ class HasSpadeInHands : public Condition<Player>
 {
 	bool TestBool(Player* p_player)
 	{
-		// check if current item in hands is spoade
+		// check if current item in hands is spade
 		return true;
 	}
 };

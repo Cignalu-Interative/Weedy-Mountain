@@ -503,7 +503,7 @@ void Application::Draw()
 
 	if (u_ModelMatrixLocation >= 0)
 	{
-		glUniformMatrix4fv(u_ModelMatrixLocation, 1, GL_FALSE, &model[0][0]);
+		glUniformMatrix4fv(u_ModelMatrixLocation, 1, false, &model[0][0]);
 	}
 	else
 	{
@@ -528,7 +528,7 @@ void Application::Draw()
 	GLint u_ViewLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_ViewMatrix");
 	if (u_ViewLocation >= 0)
 	{
-		glUniformMatrix4fv(u_ViewLocation, 1, GL_FALSE, &view[0][0]);
+		glUniformMatrix4fv(u_ViewLocation, 1, false, &view[0][0]);
 	}
 	else
 	{
@@ -540,7 +540,7 @@ void Application::Draw()
 	GLint u_ProjectionLocation = glGetUniformLocation(m_testTVVertex.GetgGraphicsPipelineShaderProgram(), "u_Projection");
 	if (u_ProjectionLocation >= 0)
 	{
-		glUniformMatrix4fv(u_ProjectionLocation, 1, GL_FALSE, &perspective[0][0]);
+		glUniformMatrix4fv(u_ProjectionLocation, 1, false, &perspective[0][0]);
 	}
 	else
 	{

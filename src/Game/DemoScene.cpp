@@ -39,7 +39,7 @@ void DemoScene::OnInitialize()
 
 	m_inv = CreateEntity<Inventory>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 
-	m_hotbar = CreateEntity<Hotbar>({ GetWindowWidth() / 2.0f, (GetWindowHeight() + (72.0f * 3.0f)) / 2.0f }, { 636, 96 }, "Hotbar", Shape::Rectangle, true);
+	m_hotbar = CreateEntity<Hotbar>({ GetWindowWidth() / 2.0f, (GetWindowHeight() + (70.0f * 3.0f)) / 2.0f }, { 636, 96 }, "Hotbar", Shape::Rectangle, true);
 
 	m_playerInventory = new PlayerInventory(m_inv, m_hotbar);
 

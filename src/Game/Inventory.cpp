@@ -3,6 +3,7 @@
 #include "ItemDataBase.h"
 #include "ItemStack.h"
 #include "SpriteContainer.h"
+#include "Button.h"
 #include <cassert>
 
 const int columns = 10;
@@ -236,4 +237,15 @@ std::vector<InventorySlot*>& Inventory::GetSlots()
 int Inventory::GetSlotCount()
 {
 	return (int)m_slots.size();
+}
+
+void Inventory::OnUpdate()
+{
+	for (InventorySlot* slot : m_slots)
+	{
+		if (slot->IsMouseIn())
+			slot->SetSprite("InventorySlotHover");
+		else
+			slot->SetSprite("InventorySlot");
+	}
 }

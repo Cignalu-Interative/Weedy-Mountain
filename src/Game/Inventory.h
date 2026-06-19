@@ -32,4 +32,6 @@ public:
 	std::vector<InventorySlot*>& GetSlots();
 
 	int GetSlotCount();
+
+	void OnUpdate() override;
 };

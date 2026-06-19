@@ -48,7 +48,7 @@ void Hotbar::OnUpdate()
 {
 	for (int i = 0; i < m_slots.size(); i++)//FIX multisprite
 	{
-		if (i == m_selectedIndex)
+		if ((i == m_selectedIndex && m_inventoryOpen == false) || m_slots[i]->IsMouseIn() == true)
 			m_slots[i]->SetSprite("InventorySlotHover");
 		else
 			m_slots[i]->SetSprite("InventorySlot"); 
@@ -299,7 +299,7 @@ void Hotbar::RealignSlots()
 	const float spacing = 60.f;
 
 	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
-	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
+	float startY = GetPosition({ 0, 0 }).GetY() + 48.f;
 
 	int c = 0;
 
@@ -316,4 +316,14 @@ void Hotbar::RealignSlots()
 
 		c++; //Haha xD
 	}
+}
+
+void Hotbar::SetIsInventoryOpen(bool inventory)
+{
+	m_inventoryOpen = inventory;
+}
+
+bool Hotbar::GetIsInventoryOpen()
+{
+	return m_inventoryOpen;
 }

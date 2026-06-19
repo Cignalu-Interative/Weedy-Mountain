@@ -23,6 +23,7 @@ void PlayerInventory::Open()
 	m_inventory->SetVisible(true);
 	m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, (m_hotbar->GetScene<DemoScene>()->GetWindowHeight() + (70.0f * 3.0f)) / 2.0f });
 	m_hotbar->RealignSlots();
+	m_hotbar->SetIsInventoryOpen(true);
 }
 
 void PlayerInventory::Close()
@@ -31,6 +32,7 @@ void PlayerInventory::Close()
 	m_inventory->SetVisible(false);
 	m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, ((float) m_hotbar->GetScene<DemoScene>()->GetWindowHeight())}, {0.5f, 1.0f});
 	m_hotbar->RealignSlots();
+	m_hotbar->SetIsInventoryOpen(false);
 }
 
 void PlayerInventory::Toggle()
@@ -223,48 +225,47 @@ void PlayerInventory::OnUpdate()
 {
 	InputManager* input = InputManager::Get();
 
-	//refaire mouse
-	if (input->IsMouseScrollDown(SCROLL_UP))
-	{
-		GoNext(1);
-	}
-	else if (input->IsMouseScrollDown(SCROLL_DOWN))
-	{
-		GoNext(-1);
-	}
 
-
-	if (input->IsKeyboardDown(K_1)) 
-		Select(0);
-	if (input->IsKeyboardDown(K_2)) 
-		Select(1);
-	if (input->IsKeyboardDown(K_3)) 
-		Select(2);
-	if (input->IsKeyboardDown(K_4)) 
-		Select(3);
-	if (input->IsKeyboardDown(K_5)) 
-		Select(4);
-	if (input->IsKeyboardDown(K_6)) 
-		Select(5);
-	if (input->IsKeyboardDown(K_7)) 
-		Select(6);
-	if (input->IsKeyboardDown(K_8)) 
-		Select(7);
-	if (input->IsKeyboardDown(K_9)) 
-		Select(8);
-	if (input->IsKeyboardDown(K_0)) 
-		Select(9);
 	if (input->IsKeyboardDown(K_TAB))
 		Toggle();
 
-
-	if (input->IsMouseDown(BUTTON_LEFT) == false)
-		return;
-
 	if (m_isInventoryOpen == false)
 	{
+		if (input->IsMouseScrollDown(SCROLL_UP))
+		{
+			GoNext(1);
+		}
+		else if (input->IsMouseScrollDown(SCROLL_DOWN))
+		{
+			GoNext(-1);
+		}
+
+
+		if (input->IsKeyboardDown(K_1))
+			Select(0);
+		if (input->IsKeyboardDown(K_2))
+			Select(1);
+		if (input->IsKeyboardDown(K_3))
+			Select(2);
+		if (input->IsKeyboardDown(K_4))
+			Select(3);
+		if (input->IsKeyboardDown(K_5))
+			Select(4);
+		if (input->IsKeyboardDown(K_6))
+			Select(5);
+		if (input->IsKeyboardDown(K_7))
+			Select(6);
+		if (input->IsKeyboardDown(K_8))
+			Select(7);
+		if (input->IsKeyboardDown(K_9))
+			Select(8);
+		if (input->IsKeyboardDown(K_0))
+			Select(9);
 
 		int c = 0;
+
+		if (input->IsMouseDown(BUTTON_LEFT) == false)
+			return;
 
 		for (InventorySlot* slot : m_hotbar->GetSlots())
 		{

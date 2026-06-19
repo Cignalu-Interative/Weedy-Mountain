@@ -13,6 +13,8 @@ class Hotbar : public Entity
 
 	int m_selectedIndex = 0;
 
+	bool m_inventoryOpen = false;
+
 public:
 
 	Hotbar(int slotcount = 10, int invSlotCount = 30);
@@ -39,4 +41,7 @@ public:
 	const std::string& GetSelectedItemID();
 
 	void RealignSlots();
+
+	void SetIsInventoryOpen(bool inventory);
+	bool GetIsInventoryOpen();
 };

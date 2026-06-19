@@ -12,17 +12,10 @@
 
 void Player::OnInitialize()
 {
-	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 636, 306 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	m_inventory->GetCollider()->SetIsTrigger(true);
 
-	std::vector<InventorySlot*> slots = m_inventory->GetSlots();
-	for (InventorySlot* slot : slots)
-	{
-		slot->GetCollider()->SetIsTrigger(true);
-		std::cout << slot->GetCollider()->GetDimension().GetX() << std::endl;
-	}
-	m_inventory->SetVisible(true);
-
+	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_inventory->SetVisible(false);
+	
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
 	m_jobs.push_back(gatherer);

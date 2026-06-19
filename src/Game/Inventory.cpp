@@ -29,6 +29,7 @@ void Inventory::OnInitialize()
 		Vector2f pos = { startX + col * spacing, startY + row * spacing };
 
 		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i) + "_background", "", true);
+		slot->GetCollider()->SetIsTrigger(true);
 
 		slot->AddSprite("item_texture", "", { 54, 54 }, 1, { 0.0f, 0.0f }, true);
 
@@ -38,6 +39,7 @@ void Inventory::OnInitialize()
 
 		m_slots.push_back(slot);
 	}
+	GetCollider()->SetIsTrigger(true);
 }
 
 

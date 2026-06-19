@@ -71,7 +71,7 @@ protected:
 	// depuis OnUpdate() en passant la direction et la vitesse souhaitées.
 	// Elle traduit m_direction * m_speed en SetLinearVelocity sur le PhysicsBody,
 	// sans passer par l'intégration des forces (pas de gravité, pas de damping).
-	void e();
+	void MoveKinematic();
 
 public:
 

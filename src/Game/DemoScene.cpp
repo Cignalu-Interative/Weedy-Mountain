@@ -37,11 +37,11 @@ void DemoScene::OnInitialize()
 
 	m_inv = CreateEntity<Inventory>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 
-	m_hotbar = CreateEntity<Hotbar>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 92 }, "Hotbar", Shape::Rectangle, true);
+	//m_hotbar = CreateEntity<Hotbar>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 92 }, "Hotbar", Shape::Rectangle, true);
 
-	m_playerInventory = new PlayerInventory(m_inv, m_hotbar);
+	//m_playerInventory = new PlayerInventory(m_inv, m_hotbar);
 
-	m_playerInventory->Close();
+	//m_playerInventory->Close();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 }
@@ -107,7 +107,7 @@ void DemoScene::OnUpdate()
 	//std::cout << m_inv->GetSlot(0)->GetStack().GetAmount() << std::endl;
 
 
-	m_playerInventory->OnUpdate(); //PAS BEAU
+	//m_playerInventory->OnUpdate(); //PAS BEAU
 }
 
 void DemoScene::OnSleep()

@@ -57,7 +57,6 @@ void GameScene::OnInitialize()
 	tree->SetType(EnviroSpawnName::Tree);
 	tree->ShowCollider(true);
 	tree->SetRigidBody(true);
-	tree->SetIsStatic(true);
 	tree->SetTag(2);
 	tree->GetCollider()->Resize({ 16,16 });
 	tree->GetCollider()->SetOffset({ 0,28 });
@@ -98,7 +97,11 @@ void GameScene::OnEvent()
 		spawn->InitEnviroSpawn();
 		spawn->SpawnEnviroProps();
 	}
-
+	//370 252
+	if (im->IsKeyboardDown(K_r))
+	{
+		std::cout << im->GetMouseX() << " " << im->GetMouseY() << std::endl;
+	}
 }
 
 void GameScene::OnUpdate()

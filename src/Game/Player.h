@@ -138,5 +138,9 @@ public:
 	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
 	void SetState(PlayerState p_state);
 
+
+	bool hasSpade = false;
+	bool hasPickaxe = false;
+	bool hasWateringCan = false;
 };
 

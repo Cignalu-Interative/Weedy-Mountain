@@ -47,14 +47,12 @@ void Player::OnInitialize()
 	{
 		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING)->AddCondition(new HasSpadeInHands);
 		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING)->AddCondition(new HasPickaxeInHands);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING)->AddCondition(new HasWateringCanInHands);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKUP);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WATERING)->AddCondition(new HasWateringCanInHands);
+		/*m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKUP);
 		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN);
 		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKLEFT);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKRIGHT);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKRIGHT);*/
 	}
-
-	
 
 	SetState(PlayerState::IDLE);
 }
@@ -62,11 +60,11 @@ void Player::OnInitialize()
 void Player::OnEvent()
 {
 	if (InputManager::Get()->IsKeyboardDown(K_n))
-		SetState(PlayerState::DIGGING);
+		hasWateringCan = !hasWateringCan;
 	if (InputManager::Get()->IsKeyboardDown(K_b))
-		SetState(PlayerState::MINING);
+		hasSpade = !hasSpade;
 	if (InputManager::Get()->IsKeyboardDown(K_i))
-		SetState(PlayerState::IDLE);
+		hasPickaxe = !hasPickaxe;
 
 
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
@@ -180,7 +178,7 @@ void Player::HandleFarmAction()
 void Player::OnUpdate()
 {
 	UpdateJobs();
-
+	m_stateMachine.Update(this, GetDeltaTime());
 	MoveKinematic();
 }
 

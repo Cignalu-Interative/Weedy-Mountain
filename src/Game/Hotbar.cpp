@@ -293,3 +293,27 @@ const std::string& Hotbar::GetSelectedItemID()
 	
 	return stack.GetID();
 }
+
+void Hotbar::RealignSlots()
+{
+	const float spacing = 60.f;
+
+	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
+	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
+
+	int c = 0;
+
+	for (InventorySlot* slot : m_slots)
+	{
+		int row = c / 10;
+		int col = c % 10;
+
+		Vector2f pos = { startX + col * spacing, startY + row * spacing };
+
+		slot->SetPosition(pos);
+
+		slot->RefreshVisual();
+
+		c++; //Haha xD
+	}
+}

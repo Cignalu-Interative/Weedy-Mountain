@@ -37,4 +37,6 @@ public:
 	int GetSelectedIndex();
 	ItemStack& GetSelectedStack();
 	const std::string& GetSelectedItemID();
+
+	void RealignSlots();
 };

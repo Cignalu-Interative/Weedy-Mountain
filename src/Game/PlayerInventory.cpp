@@ -5,6 +5,7 @@
 #include "InventorySlot.h"
 #include "ItemDataBase.h"
 #include "2DPendentLib/InputManager.h"
+#include "DemoScene.h"
 
 #include <iostream>
 
@@ -19,15 +20,17 @@ PlayerInventory::PlayerInventory(Inventory* inv, Hotbar* hot)
 void PlayerInventory::Open()
 {
 	m_isInventoryOpen = true;
-	m_inventory->SetVisible(true);;
-	m_hotbar->SetPosition({ 500, 700 });
+	m_inventory->SetVisible(true);
+	m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, (m_hotbar->GetScene<DemoScene>()->GetWindowHeight() + (70.0f * 3.0f)) / 2.0f });
+	m_hotbar->RealignSlots();
 }
 
 void PlayerInventory::Close()
 {
 	m_isInventoryOpen = false;
 	m_inventory->SetVisible(false);
-	m_hotbar->SetPosition({ 100, 100 });
+	m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, ((float) m_hotbar->GetScene<DemoScene>()->GetWindowHeight())}, {0.5f, 1.0f});
+	m_hotbar->RealignSlots();
 }
 
 void PlayerInventory::Toggle()
@@ -254,51 +257,24 @@ void PlayerInventory::OnUpdate()
 	if (input->IsKeyboardDown(K_TAB))
 		Toggle();
 
-	if (m_isInventoryOpen == false)
-		return;
 
 	if (input->IsMouseDown(BUTTON_LEFT) == false)
 		return;
 
-	InventorySlot* clickedSlot = nullptr;
-
-	for (InventorySlot* slot : m_hotbar->GetSlots())
+	if (m_isInventoryOpen == false)
 	{
-		if (slot->IsMouseIn())
-		{
-			clickedSlot = slot;
-			break;
-		}
-	}
 
-	if (clickedSlot == nullptr)
-	{
-		for (InventorySlot* slot : m_inventory->GetSlots())
+		int c = 0;
+
+		for (InventorySlot* slot : m_hotbar->GetSlots())
 		{
 			if (slot->IsMouseIn())
 			{
-				clickedSlot = slot;
+				m_hotbar->Select(c);
 				break;
 			}
+
+			c++;
 		}
 	}
-
-	if (clickedSlot == nullptr)
-		return;
-
-	if (m_selectedSlot == nullptr)
-	{
-		m_selectedSlot = clickedSlot;
-		return;
-	}
-
-	ItemStack temp =
-		m_selectedSlot->GetStack();
-
-	m_selectedSlot->SetStack(
-		clickedSlot->GetStack());
-
-	clickedSlot->SetStack(temp);
-
-	m_selectedSlot = nullptr;
 }

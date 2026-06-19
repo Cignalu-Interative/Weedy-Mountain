@@ -13,11 +13,11 @@ private:
 
 	const std::vector<GLfloat> m_vertexData
 	{
-	//    x      y     r     g     b     a
-		-0.5f, -0.5f, 1.0f, 0.0f, 0.0f, 1.0f,// vertex 1 left down vertex
-		0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, // vertex 2 right down vertex
-		-0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 1.0f,// vertex 3 left top vertex
-		0.5f, 0.5f, 1.0f, 1.0f, 0.0f, 1.0f,  // vertex 4 right top vertex
+	//    x      y      r     g     b     a      u     v
+		-0.5f, -0.5f,  1.0f, 0.0f, 0.0f, 1.0f,  0.0f, 0.0f,// vertex 1 left down vertex
+		0.5f, -0.5f,   0.0f, 1.0f, 0.0f, 1.0f,  1.0f, 0.0f, // vertex 2 right down vertex
+		-0.5f, 0.5f,   0.0f, 0.0f, 1.0f, 1.0f,  0.0f, 1.0f,// vertex 3 left top vertex
+		0.5f, 0.5f,    1.0f, 1.0f, 0.0f, 1.0f,  1.0f, 1.0f  // vertex 4 right top vertex
 	};
 
 	// VAO
@@ -39,6 +39,8 @@ private:
 	glm::vec3 m_translation{ 0.0f, 0.0f, -2.0f };
 
 	CameraOpenGL g_CameraOpenGL;
+
+	unsigned int m_textureID = 0;
 
 public:
 
@@ -83,4 +85,6 @@ public:
 	glm::vec3 GetTranslation() { return m_translation; };
 
 	//int FindUniformLocation(GLuint p_pipeline, const GLchar* p_name);
+
+	unsigned int GetTextureID() { return m_textureID; };
 };

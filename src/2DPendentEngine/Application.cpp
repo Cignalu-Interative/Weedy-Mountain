@@ -423,6 +423,9 @@ void Application::Draw()
 
 	m_render.ClearOpenGL();
 
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_2D, m_testTVVertex.GetTextureID());
+
 	for (TVVertex& tvvertex : m_tvVertexVector)
 	{
 		glUseProgram(tvvertex.GetgGraphicsPipelineShaderProgram());
@@ -505,12 +508,14 @@ void Application::Draw()
 
 	CameraOpenGL* g_camera = m_testTVVertex.GetCameraOpenGL();
 
-	float scale = m_testTVVertex.GetUScale();
 
 	/*glm::mat4 model;
 	model = glm::rotate(glm::mat4(1.0f), glm::radians(m_testTVVertex.GetURotate()), glm::vec3(0.0f, 1.0f, 0.0f));
 	model = glm::translate(model, glm::vec3(0.0f, 0.0f, m_testTVVertex.GetUOffesetGL()));
 	model = glm::scale(model, glm::vec3(scale, scale, scale));*/
+
+	
+	float scale = m_testTVVertex.GetUScale();
 
 	glm::mat4 model;
 	model = glm::translate(glm::mat4(1.0f), glm::vec3(m_testTVVertex.GetTranslation().x, m_testTVVertex.GetTranslation().y, m_testTVVertex.GetTranslation().z));

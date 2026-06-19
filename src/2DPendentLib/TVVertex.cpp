@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "TVVertex.h"
+#include "stb_image.h"
 
 void TVVertex::VAO()
 {
@@ -26,10 +27,40 @@ void TVVertex::VBO()
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, indexBufferData.size() * sizeof(GLuint), indexBufferData.data(), GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, 2, GL_FLOAT, false, 6 * sizeof(GLfloat), (void*)0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, false, 8 * sizeof(GLfloat), (void*)0);
 
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, 4, GL_FLOAT, false, 6 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+	glVertexAttribPointer(1, 4, GL_FLOAT, false, 8 * sizeof(GLfloat), (void*)(2 * sizeof(GLfloat)));
+
+
+	glVertexAttribPointer(2, 2, GL_FLOAT, false, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat)));
+	glEnableVertexAttribArray(2);
+
+
+	glGenTextures(1, &m_textureID);
+	glBindTexture(GL_TEXTURE_2D, m_textureID);
+
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTextureParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+
+	int width, height, nrChannels;
+	stbi_set_flip_vertically_on_load(true);
+	unsigned char* data = stbi_load("../../res/2DPendentEngine/Assets/Textures/Other/Perceval.png", &width, &height, &nrChannels, 4);
+
+	if (data)
+	{
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+		glGenerateMipmap(GL_TEXTURE_2D);
+	}
+	else
+	{
+		std::cerr << "Failed to load texture" << std::endl;
+	}
+
+	stbi_image_free(data);
 
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);

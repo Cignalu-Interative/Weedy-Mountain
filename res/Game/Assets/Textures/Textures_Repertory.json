@@ -700,7 +700,16 @@
       "path": "../../res/Game/Assets/Textures/InventorySlot.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/InventorySlotHover.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Item_Fiber.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Item_Rock.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Item_Wood.png"

@@ -36,6 +36,8 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });
 	m_player->GetCollider()->SetOffset({ 0,8 });

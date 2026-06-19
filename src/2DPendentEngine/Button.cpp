@@ -22,15 +22,16 @@ void Button::SetText(const std::string& p_text)
 
 void Button::SetTextOffset(const Vector2f& p_offset)
 {
-	Debug::Get()->GetText(m_textID)->SetPosition(GetPosition() + p_offset);
+	GetScene()->GetGeometry<Text>(m_textID)->SetPosition(GetPosition() + p_offset);
 }
 
 bool Button::IsMouseIn()
 {
 	InputManager* im = InputManager::Get();
 	Vector2f mousePos = im->GetMousePosition();
-	Vector2f pos = GetPosition({0.f, 0.f});
-
+	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetCollider()->GetPosition({0.f, 0.f}));
+	//std::cout << pos.GetX() << " " << pos.GetY() << std::endl;
+	//std::cout << mousePos.GetX() << " " << mousePos.GetY() << std::endl;
 	int w = GetCollider()->GetDimension().GetX();
 	int h = GetCollider()->GetDimension().GetY();
 

@@ -18,14 +18,12 @@ public:
 
 	void OnInitialize() override;
 
-	void OnEvent() override;
+	bool CanAdd(const std::string& ID, int amount);
+	bool CanRemove(const std::string& ID, int amount);
+	int AddItem(const std::string& ID, int amount, bool requireFull);
+	int RemoveItem(const std::string& ID, int amount, bool requireFull);
 
-	bool CanAdd(ItemID ID, int amount);
-	bool CanRemove(ItemID ID, int amount);
-	int AddItem(ItemID ID, int amount, bool requireFull);
-	int RemoveItem(ItemID ID, int amount, bool requireFull);
-
-	int CountItem(ItemID ID);
+	int CountItem(const std::string& ID);
 
 	void SetVisible(bool visible);
 

@@ -6,6 +6,8 @@
 class User;
 class Player;
 class Inventory;
+class Hotbar;
+class PlayerInventory;
 class DemoScene : public Scene
 {
 private:
@@ -24,7 +26,13 @@ private:
 	const Vector2i m_levelDimension = { 2000, 2000 }; //Dimension du niveau en pixels
 
 
+
+
+
 	Inventory* m_inv = nullptr;
+	Hotbar* m_hotbar = nullptr;
+
+	PlayerInventory* m_playerInventory = nullptr;
 
 protected:
 

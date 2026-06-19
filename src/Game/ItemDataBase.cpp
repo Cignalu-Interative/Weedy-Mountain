@@ -1,7 +1,29 @@
 #include "pch.h"
 #include "ItemDataBase.h"
 
-//Initialiser les items dans le constructeur
+#include "2DpendentLib/json.hpp"
+#include <fstream>
+#include <filesystem>
+
+using json = nlohmann::json;
+
+static std::string ExtractStemFromPath(const std::string& raw)
+{
+    return std::filesystem::path(raw).stem().string();
+}
+
+static std::string MakeItemID(const std::string& name)
+{
+    std::string id = "ITEM_";
+    for (char c : name)
+    {
+        if (c == ' ' || c == '-')
+            id += '_';
+        else
+            id += static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+    }
+    return id;
+}
 
 ItemDataBase* ItemDataBase::Get()
 {
@@ -9,129 +31,51 @@ ItemDataBase* ItemDataBase::Get()
 	return &instance;
 }
 
-
-ItemDataBase::ItemDataBase()
+bool ItemDataBase::LoadFromJSON(const std::string& filePath)
 {
-    m_items.try_emplace
-    (
-        ITEM_EGG,
+    std::ifstream file(filePath);
+    if (!file.is_open())
+        return false;
 
-        ItemData
-        {
-            ITEM_WOOD,
-            "Item_Wood",
-            "Wood",
-            "Wood plank",
-            1,
-            3,
-            64
-        }
-    );
+    json root;
+    try { root = json::parse(file); }
+    catch (...) { return false; }
 
-    m_items.try_emplace
-    (
-        ITEM_WOOD,
+    if (!root.is_array())
+        return false;
 
-        ItemData
-        {
-            ITEM_WOOD,
-            "Item_Wood",
-            "Wood",
-            "Wood plank",
-            1,
-            3,
-            64
-        }
-    );
+    m_items.clear();
 
-    m_items.try_emplace
-    (
-        ITEM_FIBER,
+    for (const auto& obj : root)
+    {
+        std::string name = obj.value("name", "");
+        std::string rawPath = obj.value("imagePath", "");
+        std::string description = obj.value("description", "");
+        int buyPrice = obj.value("buyPrice", 0);
+        int sellPrice = obj.value("sellPrice", 0);
+        int maxStack = obj.value("maxStack", 64);
 
-        ItemData
-        {
-            ITEM_FIBER,
-            "Fiber",
-            "Fiber",
-            "Fiber",
-            1,
-            3,
-            64
-        }
+        if (name.empty()) 
+            continue;
 
-    );
+        std::string id = MakeItemID(name);
+        std::string stem = ExtractStemFromPath(rawPath);
 
-    m_items.try_emplace
-    (
-        ITEM_ROCK,
+        m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack });
+    }
 
-        ItemData
-        {
-            ITEM_ROCK,
-            "Rock",
-            "Rock",
-            "Rock",
-            1,
-            3,
-            64
-        }
-    );
-
-    m_items.try_emplace
-    (
-        ITEM_SUN_FLOWER,
-
-        ItemData
-        {
-            ITEM_SUN_FLOWER,
-            "SunFlower",
-            "Tournesol",
-            "Quasiment necessaire contre les zombies",
-            1,
-            3,
-            64
-        }
-    );
-
-    m_items.try_emplace
-    (
-        ITEM_FISHING_ROD,
-
-        ItemData
-        {
-            ITEM_FISHING_ROD,
-            "FishingRod",
-            "Canne A Peche",
-            "T'as vu de l'eau quelque part ???",
-            5,
-            30,
-            1
-        }
-    );
-
-    m_items.try_emplace
-    (
-        ITEM_HELMET,
-
-        ItemData
-        {
-            ITEM_HELMET,
-            "Helmet",
-            "Casque",
-            "J'ai pas d'idee de connerie a mettre ici :/",
-            5,
-            30,
-            1
-        }
-    );
+    return true;
 }
 
-ItemData* ItemDataBase::GetItem(ItemID ID)
+ItemData* ItemDataBase::GetItem(const std::string& ID)
 {
     auto it = m_items.find(ID);
-
     if (it != m_items.end())
         return &it->second;
-
     return nullptr;
+}
+
+const std::unordered_map<std::string, ItemData>& ItemDataBase::GetAll() const
+{
+    return m_items;
 }

@@ -6,9 +6,43 @@
     "activeFile": "",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
+        "D:/Repo_GitHub/aberny-oss/Cignalu-Engine-2Dpendent/res/Game/Assets/Maps/tmx/drdrtitre.tmx": {
+            "scale": 1.23203125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480.10145846544077,
+                "y": 319.79708306911857
+            }
+        },
+        "D:/Repo_GitHub/aberny-oss/Cignalu-Engine-2Dpendent/res/Game/Assets/Maps/tmx/ss titre.tmx": {
+            "scale": 1.23203125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480.10145846544077,
+                "y": 319.79708306911857
+            }
+        },
+        "D:/Repo_GitHub/aberny-oss/Cignalu-Engine-2Dpendent/res/Game/Assets/Maps/tmx/tftyftfttmx.tmx": {
+            "scale": 1.23203125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480.10145846544077,
+                "y": 319.79708306911857
+            }
+        },
+        "D:/Repo_GitHub/aberny-oss/Cignalu-Engine-2Dpendent/res/Game/Assets/res/Game/Assets/Maps/tsx/fruit.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Repo_GitHub/aberny-oss/Cignalu-Engine-2Dpendent/res/Game/Assets/res/Game/Assets/Maps/tsx/platforms.tsx": {
+            "scaleInDock": 1
+        },
+        "D:/Repo_GitHub/aberny-oss/Cignalu-Engine-2Dpendent/res/Game/Assets/res/Game/Assets/Maps/tsx/world_tileset.tsx": {
+            "scaleInDock": 1
+        }
     },
-    "last.imagePath": "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Textures",
+    "last.imagePath": "D:/Repo_GitHub/aberny-oss/Cignalu-Engine-2Dpendent/res/Game/Assets/Textures/dr/huh",
     "map.lastUsedFormat": "tmx",
     "openFiles": [
     ],

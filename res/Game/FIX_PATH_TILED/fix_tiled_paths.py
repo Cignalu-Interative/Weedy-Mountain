@@ -80,7 +80,7 @@ SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 # Chemin EN DUR vers la racine du repo (le dossier parent commun a "ide" et "res").
 # A MODIFIER ICI si l'emplacement du script change un jour.
-REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
+REPO_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..", ".."))
 
 # Dossiers reels sur le disque (toujours les memes, qu'on soit en mode
 # -tiled ou -visual : on lit/ecrit toujours les MEMES fichiers physiques,

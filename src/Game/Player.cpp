@@ -139,6 +139,8 @@ void Player::HandleFarmAction()
 
 void Player::OnUpdate()
 {
+	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
+
 	UpdateJobs();
 
 	MoveKinematic();

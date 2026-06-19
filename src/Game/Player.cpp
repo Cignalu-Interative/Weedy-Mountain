@@ -9,8 +9,6 @@
 #include "FarmManager.h"   
 #include "GameData.h" 
 
-#include "StateMachine.h"
-
 #include "PlayerState.h"
 #include "PlayerConditions.h"
 
@@ -39,14 +37,36 @@ void Player::OnInitialize()
 	m_stateMachine.AddState(new PlayerWalkUpState);
 	m_stateMachine.AddState(new PlayerRightState);
 	m_stateMachine.AddState(new PlayerLeftState);
-	m_stateMachine.AddState(new PlayerLeftState);
+	m_stateMachine.AddState(new PlayerWateringState);
 	m_stateMachine.AddState(new PlayerDiggingState);
-	m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING)->AddCondition(new HasSpadeInHands);
+	m_stateMachine.AddState(new PlayerMiningState);
 
+	//TRANSITIONS 
+
+	//IDLE
+	{
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING)->AddCondition(new HasSpadeInHands);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING)->AddCondition(new HasPickaxeInHands);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING)->AddCondition(new HasWateringCanInHands);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKUP);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKLEFT);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKRIGHT);
+	}
+
+	
+
+	SetState(PlayerState::IDLE);
 }
 
 void Player::OnEvent()
 {
+	if (InputManager::Get()->IsKeyboardDown(K_n))
+		SetState(PlayerState::DIGGING);
+	if (InputManager::Get()->IsKeyboardDown(K_b))
+		SetState(PlayerState::MINING);
+	if (InputManager::Get()->IsKeyboardDown(K_i))
+		SetState(PlayerState::IDLE);
 
 
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
@@ -203,6 +223,7 @@ void Player::UpdateJobs()
 				UnlockRecipe(Recipes::EnergizingL2);
 				break;
 			}
+			break;
 
 		case JobType::Farmer:
 			switch (m_jobs[i]->m_lvl) {
@@ -211,14 +232,14 @@ void Player::UpdateJobs()
 				break;
 			case 3:
 				UnlockRecipe(Recipes::AutoWateringL1);
-				
+
 				break;
 			case 4:
 				GetStats().m_farmerSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::FertilizerL2);
-				
+
 				break;
 			case 6:
 				UnlockRecipe(Recipes::AutoWateringL2);
@@ -230,22 +251,22 @@ void Player::UpdateJobs()
 			switch (m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::StoneTools);
-				
+
 				break;
 			case 3:
 				UnlockRecipe(Recipes::IronTools);
-				
+
 				break;
 			case 4:
 				GetStats().m_miningSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::GoldTools);
-				
+
 				break;
 			case 6:
 				UnlockRecipe(Recipes::DiamondTools);
-				
+
 				break;
 			}
 			break;
@@ -300,7 +321,7 @@ void Player::UnlockRecipe(Recipes _toUnlock)
 		m_unlockedRecipes.push_back(_toUnlock);
 		std::cout << "item unlocked" << std::endl;
 	}
-		
+
 }
 
 bool Player::IsRecipeUnlocked(Recipes _toUnlock)
@@ -314,4 +335,9 @@ bool Player::IsRecipeUnlocked(Recipes _toUnlock)
 
 	}
 	return false;
+}
+
+void Player::SetState(PlayerState p_state)
+{
+	m_stateMachine.TryTransitionTo(this, (int)p_state);
 }

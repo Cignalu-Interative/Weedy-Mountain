@@ -5,7 +5,8 @@
 class PlayerIdleState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("Idle");
+		//p_player->SetAnimationByName("Idle");
+		std::cout << "Idle" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};
@@ -43,7 +44,8 @@ class PlayerIdleState : public StateBase<Player>
 class PlayerWalkUpState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("WalkUp");
+	//	p_player->SetAnimationByName("WalkUp");
+		std::cout << "walkup" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};
@@ -80,7 +82,8 @@ class PlayerWalkUpState : public StateBase<Player>
 class PlayerWalkDownState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("WalkDown");
+		//p_player->SetAnimationByName("WalkDown");
+		std::cout << "walkDown" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};
@@ -117,7 +120,8 @@ class PlayerWalkDownState : public StateBase<Player>
 class PlayerRightState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("WalkRight");
+		//p_player->SetAnimationByName("WalkRight");
+		std::cout << "walkright" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};
@@ -154,7 +158,8 @@ class PlayerRightState : public StateBase<Player>
 class PlayerLeftState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("WalkLeft");
+		//p_player->SetAnimationByName("WalkLeft");
+		std::cout << "walkleft" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};
@@ -192,7 +197,8 @@ class PlayerLeftState : public StateBase<Player>
 class PlayerWateringState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("WalkLeft");
+		//p_player->SetAnimationByName("WalkLeft");
+		std::cout << "watering" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};
@@ -227,7 +233,8 @@ class PlayerWateringState : public StateBase<Player>
 class PlayerDiggingState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("WalkLeft");
+		//p_player->SetAnimationByName("WalkLeft");
+		std::cout << "digging" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};
@@ -262,7 +269,8 @@ class PlayerDiggingState : public StateBase<Player>
 class PlayerMiningState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-		p_player->SetAnimationByName("WalkLeft");
+		//p_player->SetAnimationByName("WalkLeft");
+		std::cout << "mining" << std::endl;
 	};
 	
 	void Update(Player* p_player, float dt) {};

@@ -1,6 +1,7 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
 #include "CropDefinition.h"
+#include "StateMachine.h"
 
 
 enum class PlayerState
@@ -93,7 +94,7 @@ struct PlayerStats {
 	float m_drugSellEfficency = 1.f; 
 };
 
-class StateMachine;
+
 class Player : public Entity
 {
 private:
@@ -135,5 +136,7 @@ public:
 	bool IsRecipeUnlocked(Recipes _toUnlock);
 
 	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
+	void SetState(PlayerState p_state);
+
 };
 

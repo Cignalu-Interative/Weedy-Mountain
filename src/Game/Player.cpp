@@ -35,23 +35,69 @@ void Player::OnInitialize()
 	m_stateMachine.AddState(new PlayerIdleState);
 	m_stateMachine.AddState(new PlayerWalkDownState);
 	m_stateMachine.AddState(new PlayerWalkUpState);
-	m_stateMachine.AddState(new PlayerRightState);
-	m_stateMachine.AddState(new PlayerLeftState);
+	m_stateMachine.AddState(new PlayerWalkRightState);
+	m_stateMachine.AddState(new PlayerWalkLeftState);
 	m_stateMachine.AddState(new PlayerWateringState);
 	m_stateMachine.AddState(new PlayerDiggingState);
 	m_stateMachine.AddState(new PlayerMiningState);
 
 	//TRANSITIONS 
-
+	
 	//IDLE
 	{
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING)->AddCondition(new HasSpadeInHands);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING)->AddCondition(new HasPickaxeInHands);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WATERING)->AddCondition(new HasWateringCanInHands);
-		/*m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKUP);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKLEFT);
-		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKRIGHT);*/
+		auto transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING);
+		transition->AddCondition(new HasSpadeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING);
+		transition->AddCondition(new HasPickaxeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WATERING);
+		transition->AddCondition(new HasWateringCanInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKUP)->AddCondition(new IsPlayerGoingUp);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN)->AddCondition(new IsPlayerGoingDown);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKLEFT)->AddCondition(new IsPlayerGoingLeft);
+		m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKRIGHT)->AddCondition(new IsPlayerGoingRight);
+	}
+
+	//DIGGING
+	{
+		m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE)->AddCondition(new DontHaveSpadeInHands);
+	}
+
+	//WALK UP
+	{
+		m_stateMachine.AddTransition((int)PlayerState::WALKUP, (int)PlayerState::IDLE)->AddCondition(new IsPlayerStatic);
+		m_stateMachine.AddTransition((int)PlayerState::WALKUP, (int)PlayerState::WALKDOWN)->AddCondition(new IsPlayerGoingDown);
+	}
+
+	//WALK DOWN
+	{
+		m_stateMachine.AddTransition((int)PlayerState::WALKDOWN, (int)PlayerState::IDLE)->AddCondition(new IsPlayerStatic);
+		m_stateMachine.AddTransition((int)PlayerState::WALKDOWN, (int)PlayerState::WALKUP)->AddCondition(new IsPlayerGoingUp);
+
+
+	}
+
+	//WALK LEFT
+	{
+		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::IDLE)->AddCondition(new IsPlayerStatic);
+		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKUP)->AddCondition(new IsPlayerGoingUp);
+		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKDOWN)->AddCondition(new IsPlayerGoingDown);
+		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKRIGHT)->AddCondition(new IsPlayerGoingRight);
+
+	}
+
+	//WALK RIGHT
+	{
+		m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::IDLE)->AddCondition(new IsPlayerStatic);
+		m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKUP)->AddCondition(new IsPlayerGoingUp);
+		m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKDOWN)->AddCondition(new IsPlayerGoingDown);
+		m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKLEFT)->AddCondition(new IsPlayerGoingLeft);
+
 	}
 
 	SetState(PlayerState::IDLE);
@@ -59,13 +105,22 @@ void Player::OnInitialize()
 
 void Player::OnEvent()
 {
-	if (InputManager::Get()->IsKeyboardDown(K_n))
-		hasWateringCan = !hasWateringCan;
-	if (InputManager::Get()->IsKeyboardDown(K_b))
-		hasSpade = !hasSpade;
-	if (InputManager::Get()->IsKeyboardDown(K_i))
-		hasPickaxe = !hasPickaxe;
+	/*if (InputManager::Get()->IsKeyboardDown(K_n))
+		hasWateringCan = !hasWateringCan;*/
 
+	/*if (InputManager::Get()->IsKeyboardDown(K_i))
+		hasPickaxe = !hasPickaxe;*/
+
+	if (InputManager::Get()->IsKeyboardDown(K_b))
+	{
+		hasSpade = !hasSpade;
+		//std::cout << "hasspade : "<<std::to_string(hasSpade) << std::endl;
+	}
+	if (InputManager::Get()->IsKeyboardDown(K_u))
+	{
+		SetIsUsingToolInHand(!m_isUsingToolInHand);
+		//std::cout <<"is using : "<< std::to_string(m_isUsingToolInHand) << std::endl;
+	}
 
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
 		SetSpeed(m_stats.m_playerSpeed * 2);

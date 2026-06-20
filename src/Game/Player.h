@@ -111,6 +111,7 @@ private:
 	std::vector<Recipes> m_unlockedRecipes;
 
 	bool m_isInDialog = false;
+	bool m_isUsingToolInHand = false;
 
 protected:
 
@@ -133,11 +134,13 @@ public:
 
 	void UpdateJobs();
 	void UnlockRecipe(Recipes _toUnlock);
-	bool IsRecipeUnlocked(Recipes _toUnlock);
 
+	void SetIsUsingToolInHand(bool p_isUsing) { m_isUsingToolInHand = p_isUsing; }
 	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
 	void SetState(PlayerState p_state);
 
+	bool IsRecipeUnlocked(Recipes _toUnlock);
+	bool IsUsingToolInHand() { return m_isUsingToolInHand; }
 
 	bool hasSpade = false;
 	bool hasPickaxe = false;

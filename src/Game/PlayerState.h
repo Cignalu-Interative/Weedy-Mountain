@@ -117,7 +117,7 @@ class PlayerWalkDownState : public StateBase<Player>
 	};
 };
 
-class PlayerRightState : public StateBase<Player>
+class PlayerWalkRightState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
 		//p_player->SetAnimationByName("WalkRight");
@@ -155,7 +155,7 @@ class PlayerRightState : public StateBase<Player>
 	};
 };
 
-class PlayerLeftState : public StateBase<Player>
+class PlayerWalkLeftState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
 		//p_player->SetAnimationByName("WalkLeft");

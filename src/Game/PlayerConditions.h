@@ -7,9 +7,18 @@ class HasSpadeInHands : public Condition<Player>
 	bool TestBool(Player* p_player) override
 	{
 		// check if current item in hands is spade
-		std::cout << "trou" << std::endl;
 		
 		return p_player->hasSpade;
+	}
+};
+
+class DontHaveSpadeInHands : public Condition<Player>
+{
+	bool TestBool(Player* p_player) override
+	{
+		// check if current item in hands is not spade
+		
+		return p_player->hasSpade == false;
 	}
 };
 
@@ -18,7 +27,6 @@ class HasPickaxeInHands : public Condition<Player>
     bool TestBool(Player* p_player) override
     {
         // check if current item in hands is pickaxe
-        std::cout << "false" << std::endl;
         return p_player->hasPickaxe;
     }
 };
@@ -28,8 +36,62 @@ class HasWateringCanInHands : public Condition<Player>
 	bool TestBool(Player* p_player) override
 	{
 		// check if current item in hands is Watering Can
-		std::cout << "false" << std::endl;
 		return p_player->hasWateringCan;
 	}
 };
 
+class IsPlayerGoingDown : public Condition<Player>
+{
+	bool TestBool(Player* p_player) override
+	{
+		return p_player->GetDirection().GetY() < 0;
+	}
+};
+
+class IsPlayerGoingUp : public Condition<Player>
+{
+	bool TestBool(Player* p_player) override
+	{
+		return p_player->GetDirection().GetY() > 0;
+	}
+};
+
+class IsPlayerGoingLeft : public Condition<Player>
+{
+	bool TestBool(Player* p_player) override
+	{
+		return p_player->GetDirection().GetX() < 0;
+	}
+};
+
+class IsPlayerGoingRight : public Condition<Player>
+{
+	bool TestBool(Player* p_player) override
+	{
+		return p_player->GetDirection().GetX() > 0;
+	}
+};
+
+class IsPlayerStatic : public Condition<Player>
+{
+	bool TestBool(Player* p_player)
+	{
+		return p_player->GetDirection().GetX() == 0 && p_player->GetDirection().GetY() == 0;
+	}
+};
+
+class IsPlayerUsingToolInHand : public Condition<Player>
+{
+	bool TestBool(Player* p_player)
+	{
+		return p_player->IsUsingToolInHand();
+	}
+};
+
+class CanPlayerDig : public Condition<Player>
+{
+	bool TestBool(Player* p_player)
+	{
+		return p_player->IsUsingToolInHand() && p_player->hasSpade;
+	}
+};

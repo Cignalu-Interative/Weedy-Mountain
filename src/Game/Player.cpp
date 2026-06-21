@@ -13,9 +13,8 @@
 void Player::OnInitialize()
 {
 
-	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_inventory = GetScene()->CreateEntity<Inventory>({}, {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_inventory->SetVisible(false);
-	//TO DO suppress
 	m_inventory->AddItem("ITEM_WOOD", 10, false);
 	
 	PlayerJob* gatherer = new PlayerJob();

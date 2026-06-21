@@ -144,8 +144,8 @@ void UiShop::PlaceItemInInventoryToSlot()
 	{
 		if (slot->IsMouseIn() && slot->IsEmpty() == false)
 		{
-			//ItemStack item =  slot->GetStack();
-			//m_slot->SetStack(item);
+			ItemStack item =  slot->GetStack();
+			m_slot->SetStack(item);
 		}
 	}
 }

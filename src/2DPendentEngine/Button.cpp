@@ -46,6 +46,9 @@ bool Button::IsMouseIn()
 
 void Button::OnUpdate()
 {
+	//if(m_isVisible == false)
+	//	return;
+
 	InputManager* im = InputManager::Get();
 	bool mouseIn = IsMouseIn();
 

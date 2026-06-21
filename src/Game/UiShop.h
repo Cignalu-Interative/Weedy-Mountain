@@ -22,10 +22,6 @@ private :
 	Button* m_choosePlayerInventory = nullptr;
 	Button* m_chooseVendorInventory = nullptr;
 
-	//ne pas mettre en variable membre
-	std::string m_quantitesItem;
-	std::string m_totalPrice;
-
 	int m_amountOfItem = 0;
 	int m_totalPrices = 0;
 
@@ -33,7 +29,21 @@ public :
 
 	void OnInitialize() override;
 
-	// place playerInventory in the shop
+	void OnEvent() override;
+
+	// place Inventory in the shop
 	void PlaceInventory(Inventory* p_inventory);
+
+	// check if the inventory of the player has place and if the player can have enough money to buy the item
+	void Buy();
+
+	// check if the inventory of the player has the item
+	void Sell();
+
+	void ChoosePlayerInventoryButtonClicked();
+
+	void ChooseShopInventoryButtonClicked();
+
+	void PlaceItemInInventoryToSlot();
 };
 

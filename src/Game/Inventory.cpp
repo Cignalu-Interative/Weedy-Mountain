@@ -40,6 +40,7 @@ void Inventory::OnInitialize()
 		m_slots.push_back(slot);
 	}
 	GetCollider()->SetIsTrigger(true);
+	
 }
 
 bool Inventory::CanAdd(const std::string& ID, int amount)
@@ -250,4 +251,28 @@ void Inventory::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
 
 		m_slots[i]->SetPosition(pos);
 	}
+}
+
+bool Inventory::HasAmountOfItem(const std::string& p_ID, int p_amount)
+{
+	ItemData* data = ItemDataBase::Get()->GetItem(p_ID);
+
+	if (data == nullptr)
+		return false;
+
+	int amount = 0;
+
+	for (InventorySlot* slot : m_slots)
+	{
+		if (slot->IsEmpty())
+			continue;
+
+		ItemStack item = slot->GetStack();
+
+		if (item.GetID() == p_ID)
+			amount += item.GetAmount();
+	}
+
+	if (amount >= p_amount)
+		return true;
 }

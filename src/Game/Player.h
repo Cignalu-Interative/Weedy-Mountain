@@ -119,5 +119,8 @@ public:
 	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
 
 	Inventory* GetInventory() { return m_inventory; }
+
+	int GetMoney() { return m_money; }
+	void AddMoney(int p_amount) { m_money += p_amount; }
 };
 

@@ -34,4 +34,6 @@ public:
 	int GetSlotCount();
 
 	void SetPosition(const Vector2f& p_position, Vector2f p_anchor = { 0.5f, 0.5f });
+
+	bool HasAmountOfItem(const std::string & p_ID, int p_amount);
 };

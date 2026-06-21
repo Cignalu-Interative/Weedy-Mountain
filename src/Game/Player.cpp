@@ -13,8 +13,10 @@
 void Player::OnInitialize()
 {
 
-	m_inventory = GetScene()->CreateEntity<Inventory>({}, {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_inventory->SetVisible(false);
+	//TO DO suppress
+	m_inventory->AddItem("ITEM_WOOD", 10, false);
 	
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
@@ -157,14 +159,6 @@ void Player::HandleFarmAction()
 void Player::OnUpdate()
 {
 	UpdateJobs();
-
-	//std::vector<InventorySlot*> slots = m_inventory->GetSlots();
-	//for (InventorySlot* slot : slots)
-	//{
-	//	slot->GetCollider()->SetIsTrigger(true);
-	//	std::cout << slot->GetCollider()->GetPosition().GetX() << std::endl;
-	//}
-	//std::cout << m_inventory->GetDimension().GetX() << " " << m_inventory->GetDimension().GetY() << std::endl;
 
 	MoveKinematic();
 }

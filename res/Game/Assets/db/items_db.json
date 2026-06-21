@@ -3,7 +3,7 @@
         "buyPrice": 3,
         "description": "Simple piece of Wood",
         "id": 1,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Wood.png",
+        "imagePath": "E:\\GitHubRepos\\res\\Game\\Assets\\Textures\\Item_Wood.png",
         "maxStack": 64,
         "name": "Wood",
         "sellPrice": 2

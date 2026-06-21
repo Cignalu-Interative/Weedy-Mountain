@@ -32,4 +32,6 @@ public:
 	std::vector<InventorySlot*>& GetSlots();
 
 	int GetSlotCount();
+
+	void SetPosition(const Vector2f& p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 };

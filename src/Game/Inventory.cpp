@@ -42,8 +42,6 @@ void Inventory::OnInitialize()
 	GetCollider()->SetIsTrigger(true);
 }
 
-
-
 bool Inventory::CanAdd(const std::string& ID, int amount)
 {
 	ItemData* data = ItemDataBase::Get()->GetItem(ID);
@@ -149,8 +147,6 @@ int Inventory::AddItem(const std::string& ID, int amount, bool requireFull)
 	return amount - remaining;
 }
 
-
-
 int Inventory::RemoveItem(const std::string& ID, int amount, bool requireFull)
 {
 	/*
@@ -195,8 +191,6 @@ int Inventory::RemoveItem(const std::string& ID, int amount, bool requireFull)
 	return amount - remaining;
 }
 
-
-
 int Inventory::CountItem(const std::string& ID)
 {
 	int total = 0;
@@ -238,4 +232,22 @@ std::vector<InventorySlot*>& Inventory::GetSlots()
 int Inventory::GetSlotCount()
 {
 	return (int)m_slots.size();
+}
+
+void Inventory::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+	
+	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
+	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
+
+	for (int i = 0; i < m_slotCount; i++)
+	{
+		int row = i / columns;
+		int col = i % columns;
+
+		Vector2f pos = { startX + col * spacing, startY + row * spacing };
+
+		m_slots[i]->SetPosition(pos);
+	}
 }

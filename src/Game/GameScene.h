@@ -34,5 +34,7 @@ public:
 
 	GameScene() = default;
 	~GameScene() = default;
+
+	Player* GetPlayer() { return m_player; }
 };
 

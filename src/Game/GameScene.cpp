@@ -24,13 +24,13 @@
 #include "2DPendentLib/Debug.h" 
 
 #include "PNJ.h"
-
+#include "UiShop.h"
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
-	MapTiledManager* mm = MapTiledManager::Get();
-	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Farm");
+	//MapTiledManager* mm = MapTiledManager::Get();
+	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	//mm->SetCurrentMap("Farm");
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
@@ -53,38 +53,39 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
-	EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
-	tree->SetType(EnviroSpawnName::Tree);
-	tree->ShowCollider(true);
-	tree->SetRigidBody(true);
-	tree->SetTag(2);
-	tree->GetCollider()->Resize({ 16,16 });
-	tree->GetCollider()->SetOffset({ 0,28 });
-	tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
+	//EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
+	//tree->SetType(EnviroSpawnName::Tree);
+	//tree->ShowCollider(true);
+	//tree->SetRigidBody(true);
+	//tree->SetTag(2);
+	//tree->GetCollider()->Resize({ 16,16 });
+	//tree->GetCollider()->SetOffset({ 0,28 });
+	//tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 	
-	GetCamera()->SetZoom(5.f);
+	//GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
 	//Application::Get()->SetClampCameraToCurrentMap(true);
 
-	MapTiled* map = mm->GetCurrentMap();
+	//MapTiled* map = mm->GetCurrentMap();
 
-	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
-	int size = canGrowTiles.size();
-	Vector2i tileDim = map->GetTileDimension();
+	//std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
+	//int size = canGrowTiles.size();
+	//Vector2i tileDim = map->GetTileDimension();
 
-	for (const TileInfo& info : canGrowTiles)
-	{
-		Vector2f center = {
-			info.worldPos.GetX() + tileDim.GetX() / 2.f,
-			info.worldPos.GetY() + tileDim.GetY() / 2.f
-		};
-		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->GetCollider()->SetLayer(FARMTILE);
-		tile->GetCollider()->SetMask(NoNE);
-		//tile->ShowCollider(true);
-		FarmManager::Get()->RegisterTile(tile);
-	}
-
+	//for (const TileInfo& info : canGrowTiles)
+	//{
+	//	Vector2f center = {
+	//		info.worldPos.GetX() + tileDim.GetX() / 2.f,
+	//		info.worldPos.GetY() + tileDim.GetY() / 2.f
+	//	};
+	//	FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
+	//	tile->GetCollider()->SetLayer(FARMTILE);
+	//	tile->GetCollider()->SetMask(NoNE);
+	//	//tile->ShowCollider(true);
+	//	FarmManager::Get()->RegisterTile(tile);
+	//}
+	UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 900, 600 }, "Perceval", Shape::Rectangle, true);
+	a->ShowCollider(true);
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 }
 
@@ -97,20 +98,21 @@ void GameScene::OnEvent()
 		spawn->InitEnviroSpawn();
 		spawn->SpawnEnviroProps();
 	}
-	//370 252
-	if (im->IsKeyboardDown(K_r))
-	{
-		std::cout << im->GetMouseX() << " " << im->GetMouseY() << std::endl;
-	}
+
+	if (im->IsKeyboardDown(K_a))
+		GetCamera()->SetZoom(5);
+
+	if (im->IsKeyboardDown(K_e))
+		GetCamera()->SetZoom(1);
 }
 
 void GameScene::OnUpdate()
 {
-	GetCamera()->Follow(m_player);
-	FarmManager::Get()->Update();
+	//GetCamera()->Follow(m_player);
+	/*FarmManager::Get()->Update();
 	GameData& gm = GameData::Get();
-	gm.Update();
-	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
+	gm.Update();*/
+	//Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 

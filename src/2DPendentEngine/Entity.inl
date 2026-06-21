@@ -8,7 +8,8 @@
 template<typename T>
 T* Entity::GetScene() const
 {
-	T* scene = dynamic_cast<T*>(GetScene());
+	T* scene = dynamic_cast<T*>(m_scene);
+
 
 	_ASSERT(scene != nullptr);
 

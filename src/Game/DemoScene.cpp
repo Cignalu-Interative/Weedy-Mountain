@@ -16,6 +16,7 @@
 #include "ItemDataBase.h"
 #include "PlayerInventory.h"
 
+#include "UiShop.h"
 #include <iostream>
 
 inline Debug& debug = *Debug::Get();
@@ -35,7 +36,7 @@ void DemoScene::OnInitialize()
 	FontManager::Get()->AddFontByRepertory("../../res/2DPendentEngine/Assets/Fonts/Fonts_Repertory.json");
 
 
-	m_inv = CreateEntity<Inventory>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	//m_inv = CreateEntity<Inventory>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 
 	//m_hotbar = CreateEntity<Hotbar>({ GetWindowWidth() / 2.0f, (GetWindowHeight() - (32.0f * 3.0f)) / 2.0f }, { 636, 92 }, "Hotbar", Shape::Rectangle, true);
 
@@ -43,6 +44,8 @@ void DemoScene::OnInitialize()
 
 	//m_playerInventory->Close();
 
+	/*UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 900, 600 }, "Perceval", Shape::Rectangle, true);
+	a->ShowCollider(true);*/
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 }
 

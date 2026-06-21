@@ -13,7 +13,7 @@
 void Player::OnInitialize()
 {
 
-	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_inventory = GetScene()->CreateEntity<Inventory>({}, {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_inventory->SetVisible(false);
 	
 	PlayerJob* gatherer = new PlayerJob();

@@ -8,7 +8,6 @@ uniform mat4 u_ModelMatrix;
 uniform mat4 u_ViewMatrix;
 uniform mat4 u_Projection;
 
-
 out vec4 vertexColor;
 out vec2 vertexTextCoord;
 

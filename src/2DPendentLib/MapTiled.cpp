@@ -297,6 +297,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
             countTexture++;
         }
     }
+    
     if (countTexture == 0)
     {
         //std::cerr << "Pas de texture pour draw" << std::endl;

@@ -46,8 +46,8 @@ bool Button::IsMouseIn()
 
 void Button::OnUpdate()
 {
-	//if(m_isVisible == false)
-	//	return;
+	if(m_isVisible == false)
+		return;
 
 	InputManager* im = InputManager::Get();
 	bool mouseIn = IsMouseIn();
@@ -104,4 +104,11 @@ void Button::OnUpdate()
 	}
 
 	m_mouseWasIn = mouseIn;
+}
+
+void Button::SetVisible(bool p_isVisible)
+{
+	SetIsVisible(p_isVisible);
+
+	GetScene()->GetGeometry<Text>(m_textID)->SetIsVisible(p_isVisible);
 }

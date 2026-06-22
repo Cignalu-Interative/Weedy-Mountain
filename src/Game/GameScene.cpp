@@ -85,9 +85,14 @@ void GameScene::OnInitialize()
 	//	FarmManager::Get()->RegisterTile(tile);
 	//}
 	
+	m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
+	m_player2->GetInventory()->AddItem("ITEM_WOOD", 30, false);
+	m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
+
 	UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 900, 600 }, "Perceval", Shape::Rectangle, true);
 	a->ShowCollider(true);
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
+
 }
 
 
@@ -113,6 +118,7 @@ void GameScene::OnUpdate()
 	//FarmManager::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
+	CreateText("money", { 500, 10 }, std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
 	//Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }

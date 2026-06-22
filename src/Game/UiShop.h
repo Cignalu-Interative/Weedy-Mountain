@@ -23,7 +23,7 @@ private :
 	Button* m_chooseVendorInventory = nullptr;
 
 	int m_amountOfItem = 0;
-	int m_totalPrices = 0;
+	int m_totalPrices = 10;
 
 public : 
 
@@ -31,6 +31,7 @@ public :
 
 	void OnEvent() override;
 
+	void OnUpdate() override;
 	// place Inventory in the shop
 	void PlaceInventory(Inventory* p_inventory);
 

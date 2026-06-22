@@ -90,7 +90,7 @@ private:
 
 	bool m_isInDialog = false;
 
-	int m_money = 0;
+	int m_money = 200;
 
 protected:
 
@@ -122,5 +122,6 @@ public:
 
 	int GetMoney() { return m_money; }
 	void AddMoney(int p_amount) { m_money += p_amount; }
+	void DecreaseMoney(int p_amount) { m_money -= p_amount; }
 };
 

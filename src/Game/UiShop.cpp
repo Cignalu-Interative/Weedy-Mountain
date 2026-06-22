@@ -4,6 +4,8 @@
 #include "Player.h"
 #include "GameScene.h"
 #include "2DPendentLib/InputManager.h"
+#include "ItemDataBase.h"
+#include "SpriteContainer.h"
 
 void UiShop::OnInitialize()
 {
@@ -11,6 +13,7 @@ void UiShop::OnInitialize()
 	Scene* scene = GetScene();
 
 	m_playerInventory = gameScene->GetPlayer()->GetInventory();
+	m_shopInventory = gameScene->GetPlayer2()->GetInventory();
 
 	Vector2f topRightPos = GetPosition({1,0});
 	Vector2i dimension = GetDimension();
@@ -21,6 +24,8 @@ void UiShop::OnInitialize()
 	m_slot = scene->CreateEntity<InventorySlot>(offset, {200,150}, "Oak_Tree", Shape::Rectangle);
 	m_slot->ShowCollider(true);
 	m_slot->GetCollider()->SetIsTrigger(true);
+	m_slot->AddSprite("item_texture", "", m_slot->GetDimension(),1);
+	m_slot->InitText("slot", "");
 
 	float offsetButtonX = GetPosition({ 1,1 }).GetX() - 175.f;
 	float offsetButtonY = GetPosition({ 1,1 }).GetY() - 100.f;
@@ -29,14 +34,14 @@ void UiShop::OnInitialize()
 	m_sellButton->SetOnLeftClick([this] { Sell(); });
 	//m_sellButton->ShowCollider(true);
 	m_sellButton->GetCollider()->SetIsTrigger(true);
-	m_sellButton->SetIsVisible(false);
+	m_sellButton->SetVisible(false);
 
 	
 	m_buyButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "Oak_Tree", "buyButton", "BUY", true);
 	m_buyButton->SetOnLeftClick([this] {Buy(); });
 	m_buyButton->ShowCollider(true);
 	m_buyButton->GetCollider()->SetIsTrigger(true);
-	m_buyButton->SetIsVisible(false);
+	m_buyButton->SetVisible(false);
 
 	Vector2f topLeftPos = GetPosition({ 0,0 });
 	float BoffsetX = dimension.GetX() / 6.f;
@@ -59,9 +64,6 @@ void UiShop::OnInitialize()
 	float offsetPriceX = GetPosition().GetX();
 	float offsetPriceY = halfRightPos.GetY() + 100;
 
-	//Vector2f posItemAmountText = m_inventory->GetPosition() - Vector2f{ 0, m_inventory->GetDimension().GetY() / 2 - 300 };
-	//float amountOfItem = m_inventory->GetSlots();
-
 	scene->CreateText("itemAmount", { offset.GetX(),halfRightPos.GetY() }, "Item : " + std::to_string(m_amountOfItem), ColorsNamed::White);
 	scene->CreateText("totalPrice", { offset.GetX(),offsetPriceY }, "Price : " + std::to_string(m_totalPrices), ColorsNamed::White);
 
@@ -72,6 +74,26 @@ void UiShop::OnEvent()
 {
 	if(InputManager::Get()->IsMouseDown(BUTTON_LEFT))
 		PlaceItemInInventoryToSlot();
+
+	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_slot->IsMouseIn())
+		m_slot->Clear();
+}
+
+void UiShop::OnUpdate()
+{
+	int price = 0;
+	m_amountOfItem = m_slot->GetStack().GetAmount();
+	
+	if (m_sellButton->GetIsVisible() && m_slot->IsEmpty() == false)
+		price = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetSellPrice();
+
+	if (m_buyButton->GetIsVisible() && m_slot->IsEmpty() == false)
+		price = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetBuyPrice();
+
+	m_totalPrices = m_slot->GetStack().GetAmount() * price;
+
+	GetScene()->GetGeometry<Text>("itemAmount")->SetText("Item : " + std::to_string(m_amountOfItem));
+	GetScene()->GetGeometry<Text>("totalPrice")->SetText("Price : " + std::to_string(m_totalPrices));
 }
 
 void UiShop::PlaceInventory(Inventory* p_inventory)
@@ -83,6 +105,7 @@ void UiShop::PlaceInventory(Inventory* p_inventory)
 
 	float offsetY = pos.GetY() + 150;
 	p_inventory->SetPosition({ pos.GetX(),offsetY }, { 0,1 });
+	p_inventory->SetVisible(true);
 }
 
 void UiShop::Buy()
@@ -96,8 +119,12 @@ void UiShop::Buy()
 		return;
 	}
 
-	if (m_playerInventory->CanAdd(id, amount))
+	if (m_playerInventory->CanAdd(id, amount) && GetScene<GameScene>()->GetPlayer()->GetMoney() >= m_totalPrices)
+	{
 		m_playerInventory->AddItem(id, amount, false);
+		GetScene<GameScene>()->GetPlayer()->DecreaseMoney(m_totalPrices);
+		m_slot->Clear();
+	}
 	else
 		std::cout << "Not enough space in inventory" << std::endl;
 
@@ -115,6 +142,8 @@ void UiShop::Sell()
 			return;
 		scene->GetPlayer()->AddMoney(m_totalPrices);
 		m_playerInventory->RemoveItem(id, amount, false);
+		m_slot->Clear();
+
 	}
 	else
 		std::cout << "Not enough item in inventory" << std::endl;
@@ -124,27 +153,37 @@ void UiShop::Sell()
 void UiShop::ChoosePlayerInventoryButtonClicked()
 {
 	PlaceInventory(m_playerInventory); 
-	m_sellButton->SetIsVisible(true); 
-	m_buyButton->SetIsVisible(false);
+	m_sellButton->SetVisible(true); 
+	m_buyButton->SetVisible(false);
+	m_slot->Clear();
 }
 
 void UiShop::ChooseShopInventoryButtonClicked()
 {
 	PlaceInventory(m_shopInventory);
-	m_buyButton->SetIsVisible(true); 
-	m_sellButton->SetIsVisible(false);
+	m_buyButton->SetVisible(true); 
+	m_sellButton->SetVisible(false);
+	m_playerInventory->SetPosition({ -500,0 });
+	m_slot->Clear();
 }
 
 void UiShop::PlaceItemInInventoryToSlot()
 {
+	Inventory* inventory = nullptr;
+
+	if (m_sellButton->GetIsVisible())
+		inventory = m_playerInventory;
+	else
+		inventory = m_shopInventory;
 	//Get item of slot in the inventory and place it in the slot
-	std::vector<InventorySlot*> slots = m_playerInventory->GetSlots();
+	std::vector<InventorySlot*> slots = inventory->GetSlots();
 
 	for (InventorySlot* slot : slots)
 	{
 		if (slot->IsMouseIn() && slot->IsEmpty() == false)
 		{
-			ItemStack item =  slot->GetStack();
+			ItemStack item = slot->GetStack();
+			m_slot->SetText(std::to_string(item.GetAmount()));
 			m_slot->SetStack(item);
 		}
 	}

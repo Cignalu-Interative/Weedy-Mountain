@@ -45,5 +45,7 @@ public:
 
 	void OnUpdate() override;
 	std::string GetTextID() { return m_textID; }
+
+	void SetVisible(bool p_isVisible);
 };
 

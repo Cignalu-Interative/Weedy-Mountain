@@ -88,6 +88,14 @@ class IsPlayerUsingToolInHand : public Condition<Player>
 	}
 };
 
+class IsPlayerNotUsingToolInHand : public Condition<Player>
+{
+	bool TestBool(Player* p_player)
+	{
+		return p_player->IsUsingToolInHand() == false;
+	}
+};
+
 class CanPlayerDig : public Condition<Player>
 {
 	bool TestBool(Player* p_player)

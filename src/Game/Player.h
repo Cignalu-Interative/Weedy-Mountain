@@ -134,6 +134,7 @@ public:
 
 	void UpdateJobs();
 	void UnlockRecipe(Recipes _toUnlock);
+	void SetupStateMachine();
 
 	void SetIsUsingToolInHand(bool p_isUsing) { m_isUsingToolInHand = p_isUsing; }
 	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }

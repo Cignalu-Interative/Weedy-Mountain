@@ -34,5 +34,7 @@ public:
     // Trouve la FarmTile en collision avec un collider donné
     FarmTile* GetTileInActionBox(Collider* p_actionBox) const;
 
+    std::vector<FarmTile*> GetAllFarmTiles() { return m_farmTiles; }
+
     void Clear();
 };

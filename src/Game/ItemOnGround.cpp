@@ -21,6 +21,7 @@ void ItemOnGround::OnEvent()
 
 void ItemOnGround::OnUpdate()
 {
+	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 	MoveKinematic();
 }
 

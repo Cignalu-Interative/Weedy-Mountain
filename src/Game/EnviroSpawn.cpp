@@ -4,6 +4,7 @@
 #include "SpriteContainer.h"
 #include "GameScene.h"
 #include "GameData.h"
+#include "FarmManager.h"
 
 EnviroSpawn* EnviroSpawn::Get() {
 	static EnviroSpawn instance;
@@ -80,7 +81,8 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 {
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
-	Props = gs->CreateEntity<EnviroProps>({ Aleatory::GetFloat(0.f, 200.f), Aleatory::GetFloat(0.f, 200.f) }, { 128,128 }, "", Shape::Rectangle);
+	int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size());
+	Props = gs->CreateEntity<EnviroProps>( FarmManager::Get()->GetAllFarmTiles()[tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);

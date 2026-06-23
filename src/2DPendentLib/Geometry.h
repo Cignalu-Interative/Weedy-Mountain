@@ -1,7 +1,6 @@
 #pragma once
 #include <SDL3/SDL_main.h>
 #include <SDL3/SDL.h>
-#include <SDL2_gfxPrimitives.h>
 #include <string>
 #include "Vector2.h"
 #include "Color.h"

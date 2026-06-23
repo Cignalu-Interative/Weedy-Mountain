@@ -27,7 +27,7 @@ void Text::CreateTexture()
 		SDL_Log("Lib/Debug.cpp/CreateTexture/SDL_CreateTexture/SDL_CreateTexture non reussie : %s", SDL_GetError());
 		return;
 	}
-	if (SDL_SetTextureBlendMode(m_textTexture, SDL_BLENDMODE_BLEND) < 0)
+	if (SDL_SetTextureBlendMode(m_textTexture, SDL_BLENDMODE_BLEND) == false)
 	{
 		SDL_Log("Lib/Debug.cpp/CreateTexture/SDL_SetTextureBlendMode/SDL_SetTextureBlendMode non reussie : %s", SDL_GetError());
 		return;
@@ -150,24 +150,24 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		return;
 	}
 	Uint8 r, g, b, a;
-	if (SDL_GetTextureColorMod(m_textTexture, &r, &g, &b) < 0)
+	if (SDL_GetTextureColorMod(m_textTexture, &r, &g, &b) == false)
 	{
 		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureColorMod/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
-	if (SDL_GetTextureAlphaMod(m_textTexture, &a) < 0)
+	if (SDL_GetTextureAlphaMod(m_textTexture, &a) == false)
 	{
 		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureAlphaMod/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 	if (r != m_color.r || g != m_color.g || b != m_color.b || a != m_color.a)
 	{
-		if (SDL_SetTextureColorMod(m_textTexture, m_color.r, m_color.g, m_color.b) < 0)
+		if (SDL_SetTextureColorMod(m_textTexture, m_color.r, m_color.g, m_color.b) == false)
 		{
 			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureColorMod/cela na pas fonctionné : %s", SDL_GetError());
 			return;
 		}
-		if (SDL_SetTextureAlphaMod(m_textTexture, m_color.a) < 0)
+		if (SDL_SetTextureAlphaMod(m_textTexture, m_color.a) == false)
 		{
 			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureAlphaMod/cela na pas fonctionné : %s", SDL_GetError());
 			return;
@@ -216,7 +216,7 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		&m_textRect,          // Position/taille à l'écran
 		GetAngle(),        // Angle Transformable (degrés)
 		&rotationCenter,   // Centre rotation pré-calculé
-		flip) == -1)       //  miroir (optionnel)
+		flip) == false)       //  miroir (optionnel)
 	{
 		SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionné : %s", SDL_GetError());
 		return;
@@ -263,19 +263,19 @@ void Text::UpdateTexture()
 
 	Uint32 format;
 	int access, width, height;
-	if (SDL_QueryTexture(m_textTexture, &format, &access, &width, &height) < 0)
+	if (SDL_QueryTexture(m_textTexture, &format, &access, &width, &height) == false)
 	{
 		SDL_Log("Lib/Debug.cpp/Update/SDL_QueryTexture/SDL_QueryTexture non reussie : %s", SDL_GetError());
 		return;
 	}
 	std::vector<Uint32> pixels(width * height, 0);
-	if (SDL_UpdateTexture(m_textTexture, NULL, pixels.data(), width * sizeof(Uint32)) < 0)
+	if (SDL_UpdateTexture(m_textTexture, NULL, pixels.data(), width * sizeof(Uint32)) == false)
 	{
 		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 
-	if (SDL_UpdateTexture(m_textTexture, NULL, textSurface->pixels, textSurface->pitch) < 0)
+	if (SDL_UpdateTexture(m_textTexture, NULL, textSurface->pixels, textSurface->pitch) == false)
 	{
 		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionné : %s", SDL_GetError());
 		return;
@@ -283,7 +283,7 @@ void Text::UpdateTexture()
 	SDL_FreeSurface(textSurface);
 
 	int textWidth, textHeight;
-	if (SDL_QueryTexture(m_textTexture, NULL, NULL, &textWidth, &textHeight) < 0)
+	if (SDL_QueryTexture(m_textTexture, NULL, NULL, &textWidth, &textHeight) == false)
 	{
 		SDL_Log("Lib/Debug.cpp/Update/SDL_QueryTexture/SDL_QueryTexture non reussie : %s", SDL_GetError());
 		return;

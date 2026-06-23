@@ -25,12 +25,12 @@ bool Render::CreateRenderer(Window& f_window)
 
 void Render::ClearRenderer()
 {
-	if (SDL_SetRenderDrawColor(m_renderer, m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a) < 0)
+	if (SDL_SetRenderDrawColor(m_renderer, m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a) == false)
 	{
 		SDL_Log("Lib/Render.cpp/ClearRenderer/SDL_SetRenderDrawColor/SDL_SetRenderDrawColor non reussie : %s", SDL_GetError());
 		return;
 	}
-	if (SDL_RenderClear(m_renderer) < 0)
+	if (SDL_RenderClear(m_renderer) == false)
 	{
 		SDL_Log("Lib/Render.cpp/ClearRenderer/SDL_RenderClear/SDL_RenderClear non reussie : %s", SDL_GetError());
 		return;

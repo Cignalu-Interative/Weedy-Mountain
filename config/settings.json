@@ -2,19 +2,15 @@
     "projects": {
         "0D617CBC-7869-5998-6516-726D44260631": {
             "config-debug": {
-                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib", "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
-                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include",
-                                                    "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
-                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64",
-                                                   "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
+                "additionalDependencies": [ "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
                 "preprocessorDefinitions": []
             },
             "config-release": {
-                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib", "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
-                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include",
-                                                    "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
-                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64",
-                                                   "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
+                "additionalDependencies": [ "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
                 "preprocessorDefinitions": []
             },
             "dependencies": [
@@ -29,19 +25,15 @@
         },
         "0E5C1DA7-759E-1F63-0384-0F836C5015B9": {
             "config-debug": {
-                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib", "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
-                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include",
-                                                    "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
-                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64",
-                                                   "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
+                "additionalDependencies": [ "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
                 "preprocessorDefinitions": []
             },
             "config-release": {
-                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib", "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
-                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include",
-                                                    "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
-                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64",
-                                                   "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
+                "additionalDependencies": [ "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
                 "preprocessorDefinitions": []
             },
             "dependencies": [],
@@ -54,19 +46,15 @@
         },
         "384C6ABD-387E-77EC-77C2-55501F1F6D3C": {
             "config-debug": {
-                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib", "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
-                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include",
-                                                    "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
-                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64",
-                                                   "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
+                "additionalDependencies": [ "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
                 "preprocessorDefinitions": []
             },
             "config-release": {
-                "additionalDependencies": [ "SDL2.lib", "SDL2main.lib", "SDL2_image.lib", "SDL2_mixer.lib", "SDL2_ttf.lib", "SDL2_gfx.lib", "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
-                "additionalIncludeDirectories": [ "../../lib/SDL2/include", "../../lib/SDL2_image/include", "../../lib/SDL2_mixer/include", "../../lib/SDL2_ttf/include", "../../lib/SDL2_gfx/include",
-                                                    "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
-                "additionalLibraryDirectories": [ "../../lib/SDL2/lib/x64", "../../lib/SDL2_image/lib/x64", "../../lib/SDL2_mixer/lib/x64", "../../lib/SDL2_ttf/lib/x64", "../../lib/SDL2_gfx/lib/x64",
-                                                   "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
+                "additionalDependencies": [ "SDL3.lib", "SDL3_image.lib", "SDL3_mixer.lib", "SDL3_ttf.lib" ],
+                "additionalIncludeDirectories": [ "../../lib/SDL3/include", "../../lib/SDL3_image/include", "../../lib/SDL3_mixer/include", "../../lib/SDL3_ttf/include" ],
+                "additionalLibraryDirectories": [ "../../lib/SDL3/lib/x64", "../../lib/SDL3_image/lib/x64", "../../lib/SDL3_mixer/lib/x64", "../../lib/SDL3_ttf/lib/x64" ],
                 "preprocessorDefinitions": [ "NDEBUG" ],
                 "subsystem": "windows"
             },

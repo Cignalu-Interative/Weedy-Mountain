@@ -1,8 +1,8 @@
 #include "pch.h"
 #include "Window.h"
-#include <SDL_image.h>
-#include <SDL_mixer.h>
-#include <SDL_ttf.h>
+#include <SDL3_image/SDL_image.h>
+#include <SDL3_mixer/SDL_mixer.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include "Utils.h"
 
 Window::~Window()
@@ -12,11 +12,11 @@ Window::~Window()
 		SDL_DestroyWindow(m_window);
 		m_window = nullptr;
 	}
-	if (m_glContext)
+	/*if (m_glContext)
 	{
 		SDL_GL_DeleteContext(m_glContext);
 		m_glContext = nullptr;
-	}
+	}*/
 	Mix_CloseAudio();
 	TTF_Quit();
 	IMG_Quit();
@@ -25,7 +25,7 @@ Window::~Window()
 
 bool Window::CreateWindow()
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) < 0)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) == false)
 	{
 		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_Init/SDL_Init non reussie : %s", SDL_GetError());
 		return false;
@@ -281,7 +281,7 @@ bool Window::CreateWindow()
 
 int Window::V_Sync()
 {
-	if (SDL_GetCurrentDisplayMode(0, &m_displayMode) < 0)
+	if (SDL_GetCurrentDisplayMode(0, &m_displayMode) == false)
 	{
 		SDL_Log("Lib/Window.cpp/V_Sync/SDL_GetCurrentDisplayMode/SDL_GetCurrentDisplayMode non reussie : %s", SDL_GetError());
 	}
@@ -293,7 +293,7 @@ void Window::BoolFullScreen()
 	Uint32 flags = SDL_GetWindowFlags(m_window);
 	if (m_isFullScreen == true)
 	{
-		if (SDL_SetWindowFullscreen(m_window, 0) < 0)
+		if (SDL_SetWindowFullscreen(m_window, 0) == false)
 		{
 			SDL_Log("Lib/Window.cpp/BoolFullScreen/SDL_SetWindowFullscreen/SDL_SetWindowFullscreen 1 non reussie : %s", SDL_GetError());
 			return;
@@ -302,7 +302,7 @@ void Window::BoolFullScreen()
 	}
 	else
 	{
-		if (SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP) < 0)
+		if (SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP) == false)
 		{
 			SDL_Log("Lib/Window.cpp/BoolFullScreen/SDL_SetWindowFullscreen/SDL_SetWindowFullscreen 2 non reussie : %s", SDL_GetError());
 			return;

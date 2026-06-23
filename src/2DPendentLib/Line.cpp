@@ -59,12 +59,12 @@ void Line::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		return;
 	}
 
-	if (SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a) < 0)
+	if (SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a) == false)
 	{
 		SDL_Log("Lib/Line.cpp/Draw/SDL_SetRenderDrawColor/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
-	if (SDL_RenderDrawLineF(renderer, startScreenPos.GetX(), startScreenPos.GetY(), endScreenPos.GetX(), endScreenPos.GetY()) == -1)
+	if (SDL_RenderDrawLineF(renderer, startScreenPos.GetX(), startScreenPos.GetY(), endScreenPos.GetX(), endScreenPos.GetY()) == false)
 	{
 		SDL_Log("Lib/Line.cpp/Draw/SDL_RenderDrawLineF/cela na pas fonctionné : %s", SDL_GetError());
 		return;

@@ -1,6 +1,7 @@
 #pragma once
-#include <SDL.h>
-#include <SDL_mixer.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3/SDL.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include <map>
 #include "Vector2.h"
 #include "AudioFormat.h"

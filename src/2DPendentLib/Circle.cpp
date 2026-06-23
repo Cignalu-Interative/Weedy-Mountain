@@ -91,7 +91,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     SDL_Renderer* renderer = f_render->m_renderer;
 
-    if (SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a) < 0)
+    if (SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a) == false)
     {
         SDL_Log("Lib/Circle.cpp/Draw/SDL_SetRenderDrawColor/cela na pas fonctionné : %s", SDL_GetError());
         return;
@@ -141,7 +141,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         if (SDL_RenderGeometry(renderer,
             nullptr,
             vertices.data(), (int)vertices.size(),
-            indices.data(), (int)indices.size()) < 0)
+            indices.data(), (int)indices.size()) == false)
         {
             SDL_Log("Lib/Circle.cpp/Draw/SDL_RenderGeometry : %s", SDL_GetError());
             return;
@@ -158,7 +158,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         const float localY = ry * Utils::Sin(angle);
         const int   px2 = (int)(cx + localX * cosR - localY * sinR);
         const int   py2 = (int)(cy + localX * sinR + localY * cosR);
-        if (SDL_RenderDrawLine(renderer, px1, py1, px2, py2) < 0)
+        if (SDL_RenderDrawLine(renderer, px1, py1, px2, py2) == false)
         {
             SDL_Log("Lib/Circle.cpp/Draw/SDL_RenderDrawLine/cela na pas fonctionné : %s", SDL_GetError());
             return;

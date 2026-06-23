@@ -252,7 +252,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         &dstRect,          // Position/taille à l'écran
         GetAngle(),        // Angle Transformable (degrés)
         &rotationCenter,   // Centre rotation pré-calculé
-        flip) == -1)       //  miroir (optionnel)
+        flip) == false)       //  miroir (optionnel)
     {
         SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionné : %s", SDL_GetError());
         return;

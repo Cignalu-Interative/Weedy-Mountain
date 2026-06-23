@@ -410,7 +410,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
                     &srcRect,
                     &dstRect
-                ) < 0)
+                ) == false)
                 {
                     SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderCopy/cela na pas fonctionné : %s", SDL_GetError());
                     return;

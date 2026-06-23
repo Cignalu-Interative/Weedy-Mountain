@@ -1,5 +1,6 @@
 #pragma once
-#include <SDL.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3/SDL.h>
 //Version 1.0.1
 
 // Touche Virtuel

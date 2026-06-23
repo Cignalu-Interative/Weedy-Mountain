@@ -493,7 +493,7 @@ InputManager::~InputManager()
 
 void InputManager::OpenGameController()
 {
-    if (SDL_NumJoysticks() > 0) {
+    if (SDL_NumJoysticks() == false) {
         for (int i = 0; i < SDL_NumJoysticks(); ++i) {
             if (SDL_IsGameController(i)) {
                 m_gameController = SDL_GameControllerOpen(i);

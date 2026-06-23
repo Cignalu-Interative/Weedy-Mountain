@@ -1,6 +1,7 @@
 #pragma once
 //#include "glad/glad.h"
-#include <SDL.h>
+#include <SDL3/SDL_main.h>
+#include <SDL3/SDL.h>
 #include "Vector2.h"
 //Version 4.3.0
 

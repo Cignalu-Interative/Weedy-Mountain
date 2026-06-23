@@ -17,35 +17,31 @@ Window::~Window()
 		SDL_GL_DeleteContext(m_glContext);
 		m_glContext = nullptr;
 	}*/
-	Mix_CloseAudio();
+	MIX_Quit();
 	TTF_Quit();
-	IMG_Quit();
 	SDL_Quit();
 }
 
 bool Window::CreateWindow()
 {
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO | SDL_INIT_TIMER | SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER) == false)
+	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_AUDIO | SDL_INIT_GAMEPAD | SDL_INIT_HAPTIC) == false)
 	{
 		SDL_Log("Lib/Window.cpp/CreateWindow/SDL_Init/SDL_Init non reussie : %s", SDL_GetError());
 		return false;
 	}
-	if (IMG_Init(IMG_INIT_PNG) == 0)
-	{
-		SDL_Log("Lib/Window.cpp/CreateWindow/IMG_Init/IMG_Init non reussie : %s", IMG_GetError());
-		return false;
-	}
 	if (TTF_Init() == -1)
 	{
-		SDL_Log("Lib/Window.cpp/CreateWindow/TTF_Init/TTF_Init non reussie : %s", TTF_GetError());
+		SDL_Log("Lib/Window.cpp/CreateWindow/TTF_Init/TTF_Init non reussie : %s", SDL_GetError());
 		return false;
 	}
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) == -1)
+
+
+	if (MIX_Init() == false)
 	{
-		SDL_Log("Lib/Window.cpp/CreateWindow/Mix_OpenAudio/Mix_OpenAudio non reussie : %s", Mix_GetError());
+		SDL_Log("Lib/Window.cpp/CreateWindow/Mix_OpenAudio/Mix_OpenAudio non reussie : %s", SDL_GetError());
 		return false;
 	}
-	Mix_AllocateChannels(24);
+	//Mix_AllocateChannels(24);
 
 	V_Sync();
 
@@ -222,12 +218,20 @@ bool Window::CreateWindow()
 //		return false;
 //	}
 
-	m_window = SDL_CreateWindow("Cignalu Engine",
-		SDL_WINDOWPOS_CENTERED,
-		SDL_WINDOWPOS_CENTERED,
+//SDL_WINDOW_HIGH_PIXEL_DENSITY prend plus de perf mais meille la qualité de l'image sur les écrans haute résolution (comme les écrans Retina d'Apple).
+//SDL_WINDOW_MOUSE_GRABBED permet de capturer la souris dans la fenêtre, ce qui est utile pour les jeux en plein écran ou les applications immersives.
+// SDL_WINDOW_BORDERLESS permet de créer une fenêtre sans bordure, ce qui peut être utile pour les jeux ou les applications qui nécessitent un affichage plein écran sans distractions.
+// SDL_WINDOW_FULLSCREEN permet de créer une fenêtre en plein écran, ce qui est utile pour les jeux ou les applications immersives.
+// SDL_WINDOW_FULLSCREEN_DESKTOP permet de créer une fenêtre en plein écran qui s'adapte à la résolution de l'écran, ce qui est utile pour les jeux ou les applications immersives.
+// SDL_WINDOW_HIDDEN permet de créer une fenêtre qui est initialement masquée, ce qui peut être utile pour les applications qui nécessitent un affichage en arrière-plan.
+	m_window = SDL_CreateWindow("Weddy Mountain",
 		m_windowDimension.GetX(),
 		m_windowDimension.GetY(),
-		SDL_WINDOW_RESIZABLE /*| SDL_WINDOW_OPENGL*/);
+		SDL_WINDOWPOS_CENTERED |
+		SDL_WINDOW_RESIZABLE |
+		SDL_WINDOW_HIGH_PIXEL_DENSITY |
+		SDL_WINDOW_BORDERLESS
+	);
 
 	if (m_window == NULL)
 	{
@@ -270,10 +274,10 @@ bool Window::CreateWindow()
 
 	if (icon != nullptr) {
 		SDL_SetWindowIcon(m_window, icon);
-		SDL_FreeSurface(icon);
+		SDL_DestroySurface(icon);
 	}
 	else {
-		SDL_Log("Lib/Window.cpp/CreateWindow/IMG_Load/IMG_Load non reussie : %s", IMG_GetError());
+		SDL_Log("Lib/Window.cpp/CreateWindow/IMG_Load/IMG_Load non reussie : %s", SDL_GetError());
 		return false;
 	}
 	return true;
@@ -281,10 +285,17 @@ bool Window::CreateWindow()
 
 int Window::V_Sync()
 {
-	if (SDL_GetCurrentDisplayMode(0, &m_displayMode) == false)
+	SDL_DisplayID displayID = SDL_GetPrimaryDisplay();
+
+	const SDL_DisplayMode* mode = SDL_GetCurrentDisplayMode(displayID);
+
+	if (mode == nullptr)
 	{
 		SDL_Log("Lib/Window.cpp/V_Sync/SDL_GetCurrentDisplayMode/SDL_GetCurrentDisplayMode non reussie : %s", SDL_GetError());
 	}
+
+	m_displayMode = *mode;
+
 	return m_displayMode.refresh_rate;
 }
 
@@ -293,7 +304,7 @@ void Window::BoolFullScreen()
 	Uint32 flags = SDL_GetWindowFlags(m_window);
 	if (m_isFullScreen == true)
 	{
-		if (SDL_SetWindowFullscreen(m_window, 0) == false)
+		if (SDL_SetWindowFullscreen(m_window, false) == false)
 		{
 			SDL_Log("Lib/Window.cpp/BoolFullScreen/SDL_SetWindowFullscreen/SDL_SetWindowFullscreen 1 non reussie : %s", SDL_GetError());
 			return;
@@ -302,7 +313,7 @@ void Window::BoolFullScreen()
 	}
 	else
 	{
-		if (SDL_SetWindowFullscreen(m_window, SDL_WINDOW_FULLSCREEN_DESKTOP) == false)
+		if (SDL_SetWindowFullscreen(m_window, true) == false)
 		{
 			SDL_Log("Lib/Window.cpp/BoolFullScreen/SDL_SetWindowFullscreen/SDL_SetWindowFullscreen 2 non reussie : %s", SDL_GetError());
 			return;

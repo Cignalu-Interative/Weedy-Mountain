@@ -20,7 +20,7 @@ void Sound::Initialize(const std::string& p_path, Vector2f p_position)
 		m_WAV = Mix_LoadWAV(p_path.c_str());
 		if (!m_WAV)
 		{
-			SDL_Log("Lib/Sound.cpp/Initialize/Mix_LoadWAV/ SFX not found : (%s): %s", p_path.c_str(), Mix_GetError());
+			SDL_Log("Lib/Sound.cpp/Initialize/Mix_LoadWAV/ SFX not found : (%s): %s", p_path.c_str(), SDL_GetError());
 		}
 		SetPosition(p_position);
 	}
@@ -28,7 +28,7 @@ void Sound::Initialize(const std::string& p_path, Vector2f p_position)
 		m_MUSIC = Mix_LoadMUS(p_path.c_str());
 		if (!m_MUSIC)
 		{
-			SDL_Log("Lib/Sound.cpp/Initialize/Mix_LoadMUS/ MUSIC not found : (%s): %s", p_path.c_str(), Mix_GetError());
+			SDL_Log("Lib/Sound.cpp/Initialize/Mix_LoadMUS/ MUSIC not found : (%s): %s", p_path.c_str(), SDL_GetError());
 		}
 		SetPosition(p_position);
 	}
@@ -56,7 +56,7 @@ void Sound::Play(int p_loops, Sint16 p_angle, Uint8 p_distance)
 	{
 		if ((m_lastChannel = Mix_PlayChannel(-1, m_WAV, p_loops)) == -1)
 		{
-			std::cerr << "Lib/Sound.cpp/Play/Mix_PlayChannel/Failed to play sound: " << Mix_GetError() << std::endl;
+			std::cerr << "Lib/Sound.cpp/Play/Mix_PlayChannel/Failed to play sound: " << SDL_GetError() << std::endl;
 		}
 		if (m_lastChannel != -1)
 		{
@@ -67,7 +67,7 @@ void Sound::Play(int p_loops, Sint16 p_angle, Uint8 p_distance)
 	{
 		if(Mix_PlayMusic(m_MUSIC, p_loops) == -1)
 		{
-			std::cerr << "Lib/Sound.cpp/Play/Mix_PlayMusic/Failed to play music: " << Mix_GetError() << std::endl;
+			std::cerr << "Lib/Sound.cpp/Play/Mix_PlayMusic/Failed to play music: " << SDL_GetError() << std::endl;
 		}
 	}
 }

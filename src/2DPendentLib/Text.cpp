@@ -12,7 +12,7 @@ void Text::CreateTexture()
 	int textSizeW, textSizeH;
 	if (TTF_SizeText(m_font, m_text.c_str(), &textSizeW, &textSizeH) == -1)
 	{
-		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_SizeText/cela na pas fonctionné : %s", TTF_GetError());
+		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_SizeText/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 
@@ -41,7 +41,7 @@ Text::Text(const std::string& p_idFont, int p_sizeFont)
 	m_fontSize = p_sizeFont;
 	if (m_font == NULL)
 	{
-		SDL_Log("Lib/Text.cpp/Text/TTF_OpenFont/La font n'a pas pu etre ouverte : %s", TTF_GetError());
+		SDL_Log("Lib/Text.cpp/Text/TTF_OpenFont/La font n'a pas pu etre ouverte : %s", SDL_GetError());
 		return;
 	}
 }
@@ -76,7 +76,7 @@ void Text::SetFont(const std::string& p_idFont, int p_sizeFont)
 	TTF_Font* newFont = TTF_OpenFont(FontManager::Get()->GetFont(p_idFont).c_str(), p_sizeFont);
 	if (newFont == NULL)
 	{
-		SDL_Log("Lib/Text.cpp/SetFont/TTF_OpenFont/La font n'a pas pu etre ouverte : %s", TTF_GetError());
+		SDL_Log("Lib/Text.cpp/SetFont/TTF_OpenFont/La font n'a pas pu etre ouverte : %s", SDL_GetError());
 		return;
 	}
 	m_font = newFont;
@@ -129,7 +129,7 @@ void Text::SetFontSize(int p_size)
 	m_font = TTF_OpenFont(m_fontPath.c_str(), m_fontSize);
 	if (m_font == nullptr)
 	{
-		SDL_Log("Text::SetSize/TTF_OpenFont failed : %s", TTF_GetError());
+		SDL_Log("Text::SetSize/TTF_OpenFont failed : %s", SDL_GetError());
 		return;
 	}
 
@@ -240,7 +240,7 @@ void Text::UpdateTexture()
 	int textSizeW, textSizeH;
 	if (TTF_SizeText(m_font, m_text.c_str(), &textSizeW, &textSizeH) == -1)
 	{
-		SDL_Log("Lib/Text.cpp/Update/TTF_SizeText/cela na pas fonctionné : %s", TTF_GetError());
+		SDL_Log("Lib/Text.cpp/Update/TTF_SizeText/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 	int sizetetureX = GetDimension().GetX();
@@ -257,7 +257,7 @@ void Text::UpdateTexture()
 	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, m_text.c_str(), { 255, 255, 255, 255 });
 	if (textSurface == NULL)
 	{
-		SDL_Log("Lib/Debug.cpp/Update/TTF_RenderText_Blended/TTF_RenderText_Blended non reussie : %s", TTF_GetError());
+		SDL_Log("Lib/Debug.cpp/Update/TTF_RenderText_Blended/TTF_RenderText_Blended non reussie : %s", SDL_GetError());
 		return;
 	}
 

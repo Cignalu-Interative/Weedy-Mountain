@@ -16,17 +16,17 @@
 #include "2DPendentLib/AssetManager.h"
 
 
-#include "2DPendentLib/glad/glad.h"
-#include "2DPendentLib/glm/glm.hpp"
-#include "2DPendentLib/glm/gtc/type_ptr.hpp"
-#include "2DPendentLib/Triangle.h"
-#include "2DPendentLib/Shader.h"
-#include "2DPendentLib/Mesh.h"
-#include "2DPendentLib/Texture2D.h"
-#include "2DPendentLib/SpriteOpenGL.h"
-
-#include "2DPendentLib/TVVertex.h"
-#include "2DPendentLib/CameraOpenGL.h"
+//#include "2DPendentLib/glad/glad.h"
+//#include "2DPendentLib/glm/glm.hpp"
+//#include "2DPendentLib/glm/gtc/type_ptr.hpp"
+//#include "2DPendentLib/Triangle.h"
+//#include "2DPendentLib/Shader.h"
+//#include "2DPendentLib/Mesh.h"
+//#include "2DPendentLib/Texture2D.h"
+//#include "2DPendentLib/SpriteOpenGL.h"
+//
+//#include "2DPendentLib/TVVertex.h"
+//#include "2DPendentLib/CameraOpenGL.h"
 
 //Version 3.4.0
 
@@ -104,12 +104,12 @@ private:
 	//	{ 1, 3 },  // location 1 → couleur (vec3)
 	//};
 
-	std::vector<TVVertex> m_tvVertexVector;
+	/*std::vector<TVVertex> m_tvVertexVector;
 
 	TVVertex m_testTVVertex;
 	TVVertex m_TVVertex2;
 
-	Timer m_timeOpenGL;
+	Timer m_timeOpenGL;*/
 
 public:
 

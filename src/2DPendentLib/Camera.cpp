@@ -55,6 +55,6 @@ void Camera::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     {
         Vector2f a = p_camera->WorldToScreen(corners[i]);
         Vector2f b = p_camera->WorldToScreen(corners[(i + 1) % 4]);
-        SDL_RenderDrawLineF(f_render->m_renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY());
+        SDL_RenderLine(f_render->m_renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY());
     }
 }

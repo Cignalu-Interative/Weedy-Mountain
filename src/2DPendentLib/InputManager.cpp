@@ -82,47 +82,47 @@ void InputManager::Update()
 	{
 		switch (m_event.type)
 		{
-		case SDL_QUIT:
+		case SDL_EVENT_QUIT:
 			if (m_quitCallback)
 			{
 				m_quitCallback();
 			}
 			break;
 
-		case SDL_KEYDOWN:
+		case SDL_EVENT_KEY_DOWN:
 			if (m_event.key.repeat)
 			{
 				break;
 			}
-			m_keyboardStates[m_event.key.keysym.scancode].s_isDown = true;
+			m_keyboardStates[m_event.key.scancode].s_isDown = true;
 			break;
 
-		case SDL_KEYUP:
+		case SDL_EVENT_KEY_UP:
 			if (m_event.key.repeat)
 			{
 				break;
 			}
-			m_keyboardStates[m_event.key.keysym.scancode].s_isUp = true;
+			m_keyboardStates[m_event.key.scancode].s_isUp = true;
 			break;
 
-		case SDL_MOUSEBUTTONDOWN:
+		case SDL_EVENT_MOUSE_BUTTON_DOWN:
 			/*int x, y;
 			SDL_GetMouseState(&x, &y);*/
 			m_mouseStates[m_event.button.button].s_isDown = true;
 			break;
 
-		case SDL_MOUSEBUTTONUP:
+		case SDL_EVENT_MOUSE_BUTTON_UP:
 			m_mouseStates[m_event.button.button].s_isUp = true;
 			break;
 
-		case SDL_MOUSEMOTION:
+		case SDL_EVENT_MOUSE_MOTION:
 			m_ABSMousePosition.SetX(m_event.motion.x);   // Position X absolue dans la fenêtre
 			m_ABSMousePosition.SetY(m_event.motion.y);   // Position Y absolue dans la fenêtre
 			m_RELMousePosition.SetX(m_event.motion.xrel); // Déplacement relatif sur l'axe X
 			m_RELMousePosition.SetY(m_event.motion.yrel); // Déplacement relatif sur l'axe Y
 			break;
 
-		case SDL_MOUSEWHEEL:
+		case SDL_EVENT_MOUSE_WHEEL:
 			if (m_event.wheel.x > 0)
 			{
 				m_mouseScrollStates[SCROLL_RIGHT].s_isDown = true;
@@ -142,29 +142,29 @@ void InputManager::Update()
 			}
 			break;
 
-		case SDL_CONTROLLERDEVICEADDED:
+		case SDL_EVENT_GAMEPAD_ADDED:
 			OpenGameController();
 			break;
 
-		case SDL_CONTROLLERDEVICEREMOVED:
-			if (m_gameController && SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(m_gameController)) == m_event.cdevice.which) {
-				SDL_GameControllerClose(m_gameController);
+		case SDL_EVENT_GAMEPAD_REMOVED:
+			if (m_gameController && SDL_GetGamepadID(m_gameController) == m_event.gdevice.which) {
+				SDL_CloseGamepad(m_gameController);
 				m_gameController = nullptr;
-				std::cerr << "Manette deconnectee\\n";
+				std::cerr << "Manette deconnectee\n";
 			}
 			break;
 
-		case SDL_CONTROLLERBUTTONDOWN:
-			m_gameControllerButtonStates[m_event.cbutton.button].s_isDown = true;
+		case SDL_EVENT_GAMEPAD_BUTTON_DOWN:
+			m_gameControllerButtonStates[m_event.gbutton.button].s_isDown = true;
 			break;
 
-		case SDL_CONTROLLERBUTTONUP:
-			m_gameControllerButtonStates[m_event.cbutton.button].s_isUp = true;
+		case SDL_EVENT_GAMEPAD_BUTTON_UP:
+			m_gameControllerButtonStates[m_event.gbutton.button].s_isUp = true;
 			break;
 
-		case SDL_CONTROLLERAXISMOTION:
-			int axis = m_event.caxis.axis;
-			float rawValue = static_cast<float>(m_event.caxis.value) / 32767.0f;
+		case SDL_EVENT_GAMEPAD_AXIS_MOTION:
+			int axis = m_event.gaxis.axis;
+			float rawValue = static_cast<float>(m_event.gaxis.value) / 32767.0f;
 			float absValue = fabsf(rawValue);
 			if (absValue > AXIS_DEAD_ZONE)
 			{
@@ -183,17 +183,17 @@ void InputManager::Update()
 
 bool InputManager::IsKeyboardDown(KeyboardKeycodeKeys p_key) const
 {
-	KeyboardScancodeKeys scancode = static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey(p_key));
+	KeyboardScancodeKeys scancode = static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey(p_key, nullptr));
 	return m_keyboardStates[scancode].s_isDown;
 }
 bool InputManager::IsKeyboardHeld(KeyboardKeycodeKeys p_key) const
 {
-	KeyboardScancodeKeys scancode = static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey(p_key));
+	KeyboardScancodeKeys scancode = static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey(p_key, nullptr));
 	return m_keyboardStates[scancode].s_isHeld;
 }
 bool InputManager::IsKeyboardUP(KeyboardKeycodeKeys p_key) const
 {
-	KeyboardScancodeKeys scancode = static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey(p_key));
+	KeyboardScancodeKeys scancode = static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey(p_key, nullptr));
 	return m_keyboardStates[scancode].s_isUp;
 }
 
@@ -297,23 +297,22 @@ bool InputManager::IsJoyStickUp(JoyStick p_joystick) const
 
 float InputManager::GetMouseX()
 {
-	
-	int x, y;
+	float x, y;
 	SDL_GetMouseState(&x, &y);
-	return (float)x;
+	return x;
 }
 float InputManager::GetMouseY()
 {
-	int x, y;
+	float x, y;
 	SDL_GetMouseState(&x, &y);
-	return (float)y;
+	return y;
 }
 
 Vector2f InputManager::GetMousePosition()
 {
-	int x, y;
+	float x, y;
 	SDL_GetMouseState(&x, &y);
-	return Vector2f((float)x, (float)y);
+	return Vector2f(x, y);
 }
 
 Vector2i InputManager::GetABSMousePosition()
@@ -377,18 +376,18 @@ void InputManager::SetCursor(const std::string& path, Vector2f p_position)
 	SDL_Surface* surf = IMG_Load(m_cursorPath.c_str());
 	if (surf == nullptr)
 	{
-		SDL_Log("Lib/InputManager.cpp/SetCursor/IMG_Load/IMG_Load non reussie : %s", IMG_GetError());
+		SDL_Log("Lib/InputManager.cpp/SetCursor/IMG_Load/IMG_Load non reussie : %s", SDL_GetError());
 		return;
 	}
 
 	if (m_cursor != nullptr)
 	{
-		SDL_FreeCursor(m_cursor);
+		SDL_DestroyCursor(m_cursor);
 		m_cursor = nullptr;
 	}
 
 	m_cursor = SDL_CreateColorCursor(surf, p_position.GetX(), p_position.GetY());
-	SDL_FreeSurface(surf);
+	SDL_DestroySurface(surf);
 
 	if (m_cursor == nullptr)
 	{
@@ -410,7 +409,7 @@ void InputManager::DebugKeys()
 			{
 			default:
 				SDL_Scancode scancode = static_cast<SDL_Scancode>(i);
-				SDL_Keycode kc = SDL_GetKeyFromScancode(scancode);
+				SDL_Keycode kc = SDL_GetKeyFromScancode(scancode, SDL_KMOD_NONE, true);
 				const char* keyName = SDL_GetKeyName(kc);
 				std::cerr << "Scancode: " << i
 					<< " | Keycode Name:"
@@ -459,7 +458,7 @@ void InputManager::SetSDLWarpMouseInWindow(Vector2f p_position)
 }
 void InputManager::SetRelativeMouseMode(bool p_bool)
 {
-	SDL_SetRelativeMouseMode(p_bool ? SDL_TRUE : SDL_FALSE);
+	SDL_SetWindowRelativeMouseMode(m_window->GetWindow(), p_bool);
 }
 
 void InputManager::ClearMouseRelative()
@@ -486,34 +485,30 @@ InputManager::InputManager()
 InputManager::~InputManager()
 {
 	if (m_cursor) {
-		SDL_FreeCursor(m_cursor);
+		SDL_DestroyCursor(m_cursor);
 		m_cursor = nullptr;
 	}
 }
 
 void InputManager::OpenGameController()
 {
-    if (SDL_NumJoysticks() == false) {
-        for (int i = 0; i < SDL_NumJoysticks(); ++i) {
-            if (SDL_IsGameController(i)) {
-                m_gameController = SDL_GameControllerOpen(i);
+	int count = 0;
+	SDL_JoystickID* gamepads = SDL_GetGamepads(&count);
+
+	if (count > 0 && gamepads != nullptr)
+	{
+
+		m_gameController = SDL_OpenGamepad(gamepads[0]);
 #ifdef _DEBUG
-                if (m_gameController) {
-                    std::cerr << "Manette detectee : " << SDL_GameControllerName(m_gameController) << "\n";
-                }
+		if (m_gameController) {
+			std::cerr << "Manette detectee : " << SDL_GetGamepadName(m_gameController) << "\n";
+		}
 #endif
-                break;
-            }
-        }
+		SDL_free(gamepads);
+	}
 #ifdef _DEBUG
-        if (!m_gameController) {
-            std::cerr << "Aucune manette compatible trouvee\n";
-        }
-#endif
-    }
-#ifdef _DEBUG
-    else {
-        std::cerr << "Aucune manette branchee (SDL_NumJoysticks() == 0)\n";
-    }
+	else {
+		std::cerr << "Aucune manette branchee ou compatible\n";
+	}
 #endif
 }

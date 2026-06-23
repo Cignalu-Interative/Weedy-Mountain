@@ -16,6 +16,18 @@ struct Color
 	Uint8 a;
 };
 
+//struct Color
+//{
+//	//Rouge
+//	float r;
+//	//Vert
+//	float g;
+//	//Bleu
+//	float b;
+//	//Alpha (transparence)
+//	float a;
+//};
+
 //Couleurs nommées
 struct ColorsNamed
 {

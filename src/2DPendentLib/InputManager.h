@@ -158,7 +158,7 @@ private:
 	Sint32 m_mouseWheelY = 0; // Stocker la valeur du scroll vertical de la souris
 
 	//Pointeur pour stocker la manette de jeu
-	SDL_GameController* m_gameController = nullptr;
+	SDL_Gamepad* m_gameController = nullptr;
 
 	SDL_Cursor* m_cursor = nullptr; //Pointeur pour stocker le curseur de la souris
 

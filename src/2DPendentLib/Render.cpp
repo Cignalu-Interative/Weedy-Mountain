@@ -14,7 +14,7 @@ Render::~Render()
 
 bool Render::CreateRenderer(Window& f_window)
 {
-	m_renderer = SDL_CreateRenderer(f_window.m_window, NULL, SDL_RENDERER_ACCELERATED);
+	m_renderer = SDL_CreateRenderer(f_window.m_window, NULL);
 	if (m_renderer == NULL)
 	{
 		SDL_Log("Lib/Render.cpp/CreateRenderer/SDL_CreateRenderer/SDL_CreateRenderer non reussie : %s", SDL_GetError());

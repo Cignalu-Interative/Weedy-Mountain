@@ -388,7 +388,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     tv = (localID / tempTileset->m_TilesetColumns) * m_TileDimension.GetY();
                 }
 
-                SDL_Rect srcRect = {
+                SDL_FRect srcRect = {
                     tu,                        // left
                     tv,                        // top
                     m_TileDimension.GetX(),    // width
@@ -398,14 +398,14 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                 // Position de la tile sur la fenêtre
 
                 Vector2i postile = p_camera->WorldToScreen<int>({ x * m_TileDimension.GetX(), y * m_TileDimension.GetY() });
-                SDL_Rect dstRect = {
+                SDL_FRect dstRect = {
                     postile.GetX(),    // pos X à l'écran
                     postile.GetY(),    // pos Y à l'écran
                     m_TileDimension.GetX() * p_camera->GetZoom(),        // width
                     m_TileDimension.GetY() * p_camera->GetZoom()         // height
                 };
                 // Dessiner la tile
-                if (SDL_RenderCopy(
+                if (SDL_RenderTexture(
                     f_render->m_renderer,
                     AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
                     &srcRect,

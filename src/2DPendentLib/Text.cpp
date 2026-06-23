@@ -10,9 +10,9 @@
 void Text::CreateTexture()
 {
 	int textSizeW, textSizeH;
-	if (TTF_SizeText(m_font, m_text.c_str(), &textSizeW, &textSizeH) == -1)
+	if (TTF_GetStringSize(m_font, m_text.c_str(), 0, &textSizeW, &textSizeH) == -1)
 	{
-		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_SizeText/cela na pas fonctionné : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_GetStringSize/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 
@@ -209,9 +209,9 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		height * rotPoint.GetY()                       // 0..height
 	};
 
-	SDL_RendererFlip flip = SDL_FLIP_NONE;
+	SDL_FlipMode flip = SDL_FLIP_NONE;
 
-	if (SDL_RenderCopyExF(renderer, m_textTexture,
+	if (SDL_RenderTextureRotated(renderer, m_textTexture,
 		NULL,           // Frame du sprite sheet (ou NULL)
 		&m_textRect,          // Position/taille à l'écran
 		GetAngle(),        // Angle Transformable (degrés)
@@ -238,9 +238,9 @@ void Text::UpdateTexture()
 	}
 
 	int textSizeW, textSizeH;
-	if (TTF_SizeText(m_font, m_text.c_str(), &textSizeW, &textSizeH) == -1)
+	if (TTF_GetStringSize(m_font, m_text.c_str(), 0, &textSizeW, &textSizeH) == -1)
 	{
-		SDL_Log("Lib/Text.cpp/Update/TTF_SizeText/cela na pas fonctionné : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Update/TTF_GetStringSize/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 	int sizetetureX = GetDimension().GetX();
@@ -254,20 +254,20 @@ void Text::UpdateTexture()
 		}
 	}
 
-	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, m_text.c_str(), { 255, 255, 255, 255 });
+	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, m_text.c_str(), 0, { 255, 255, 255, 255 });
 	if (textSurface == NULL)
 	{
 		SDL_Log("Lib/Debug.cpp/Update/TTF_RenderText_Blended/TTF_RenderText_Blended non reussie : %s", SDL_GetError());
 		return;
 	}
 
-	Uint32 format;
-	int access, width, height;
-	if (SDL_QueryTexture(m_textTexture, &format, &access, &width, &height) == false)
-	{
-		SDL_Log("Lib/Debug.cpp/Update/SDL_QueryTexture/SDL_QueryTexture non reussie : %s", SDL_GetError());
-		return;
-	}
+	SDL_PropertiesID props = SDL_GetTextureProperties(m_textTexture);
+
+	int format = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_FORMAT_NUMBER, 0);
+	int access = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_ACCESS_NUMBER, 0);
+	int width = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0);
+	int height = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0);
+
 	std::vector<Uint32> pixels(width * height, 0);
 	if (SDL_UpdateTexture(m_textTexture, NULL, pixels.data(), width * sizeof(Uint32)) == false)
 	{
@@ -280,15 +280,15 @@ void Text::UpdateTexture()
 		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
-	SDL_FreeSurface(textSurface);
+	SDL_DestroySurface(textSurface);
 
-	int textWidth, textHeight;
-	if (SDL_QueryTexture(m_textTexture, NULL, NULL, &textWidth, &textHeight) == false)
+	float textWidth, textHeight;
+	if (SDL_GetTextureSize(m_textTexture, &textWidth, &textHeight) == false)
 	{
 		SDL_Log("Lib/Debug.cpp/Update/SDL_QueryTexture/SDL_QueryTexture non reussie : %s", SDL_GetError());
 		return;
 	}
-	SetDimension({ textWidth, textHeight });
+	SetDimension({ (int)textWidth, (int)textHeight });
 	//std::cerr << "Taille texture pour le text : " << textSizeW << " " << textSizeH << std::endl;
 }
 

@@ -19,9 +19,9 @@ void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p
 {
     m_texture = AssetManager::Get()->GetTexture(p_id);
 
-    int textureWidth, textureHeight;
-    SDL_QueryTexture(m_texture, NULL, NULL, &textureWidth, &textureHeight);
-    Vector2i spriteDimention = { textureWidth, textureHeight };
+    float textureWidth, textureHeight;
+    SDL_GetTextureSize(m_texture, &textureWidth, &textureHeight);
+    Vector2i spriteDimention = { static_cast<int>(textureWidth), static_cast<int>(textureHeight) };
     SetDimension(spriteDimention);
     //AutoDetectFrameSize(spriteDimention);
 
@@ -179,14 +179,14 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     }
 
     // 1. SOURCE : Le morceau à découper dans la texture (ou NULL pour tout afficher)
-    SDL_Rect* srcRect = nullptr;
+    SDL_FRect* srcRect = nullptr;
     //if (m_totalFrames > 1)  // Sprite sheet ?
     //{
-    //    srcRect = new SDL_Rect{
-    //        static_cast<int>(m_currentFrame.GetX() * m_frameSize.GetX()),  // X dans sheet
-    //        static_cast<int>(m_currentFrame.GetY() * m_frameSize.GetY()),  // Y dans sheet
-    //        m_frameSize.GetX(),                                            // Largeur frame
-    //        m_frameSize.GetY()                                             // Hauteur frame
+    //    srcRect = new SDL_FRect{
+    //        static_cast<float>(m_currentFrame.GetX() * m_frameSize.GetX()),  // X dans sheet
+    //        static_cast<float>(m_currentFrame.GetY() * m_frameSize.GetY()),  // Y dans sheet
+    //        static_cast<float>(m_frameSize.GetX()),                                            // Largeur frame
+    //        static_cast<float>(m_frameSize.GetY())                                             // Hauteur frame
     //    };
     //}
 
@@ -232,7 +232,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         height * rotPoint.GetY()                       // 0..height
     };
 
-    SDL_RendererFlip flip = SDL_FLIP_NONE;
+    SDL_FlipMode flip = SDL_FLIP_NONE;
     //if (HasVelocity())
     //{
     //    float velX = GetVelocityX();
@@ -247,7 +247,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     SDL_SetTextureAlphaMod(m_texture, m_oppacity);
 
     // 3. Rendu avec ROTATION complète
-    if (SDL_RenderCopyExF(renderer, m_texture,
+    if (SDL_RenderTextureRotated(renderer, m_texture,
         srcRect,           // Frame du sprite sheet (ou NULL)
         &dstRect,          // Position/taille à l'écran
         GetAngle(),        // Angle Transformable (degrés)

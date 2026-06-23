@@ -40,7 +40,7 @@ void Point::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		SDL_Log("Lib/Point.cpp/Draw/SDL_SetRenderDrawColor/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
-	if (SDL_RenderDrawPointF(renderer, screenPos.GetX(), screenPos.GetY()) == false)
+	if (SDL_RenderPoint(renderer, screenPos.GetX(), screenPos.GetY()) == false)
 	{
 		SDL_Log("Lib/Point.cpp/Draw/SDL_RenderDrawPointF/cela na pas fonctionné : %s", SDL_GetError());
 		return;

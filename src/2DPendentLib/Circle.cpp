@@ -100,7 +100,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     if (m_isFilled == true)
     {
         const int segments = m_precision;
-        const float step = (2.0f * M_PI) / segments;
+        const float step = (2.0f * Utils::PI) / segments;
 
         std::vector<SDL_Vertex> vertices;
         std::vector<int> indices;
@@ -109,7 +109,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
         SDL_Vertex center;
         center.position = { cx, cy };
-        center.color = {m_color.r, m_color.g, m_color.b, m_color.a};
+        center.color = {(float)m_color.r, (float)m_color.g, (float)m_color.b, (float)m_color.a};
         center.tex_coord = { 0.0f, 0.0f };
         vertices.push_back(center);
 
@@ -125,7 +125,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
             SDL_Vertex v;
             v.position = { screenX, screenY };
-            v.color = { m_color.r, m_color.g, m_color.b, m_color.a };
+            v.color = { (float)m_color.r, (float)m_color.g, (float)m_color.b, (float)m_color.a };
             v.tex_coord = { 0.0f, 0.0f };
             vertices.push_back(v);
         }
@@ -148,7 +148,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         }
     }
 
-    const float step = (2.0f * M_PI) / m_precision;
+    const float step = (2.0f * Utils::PI) / m_precision;
     int px1 = (int)(cx + rx * cosR);
     int py1 = (int)(cy + rx * sinR);
     for (int i = 0; i <= m_precision; i++)
@@ -158,7 +158,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         const float localY = ry * Utils::Sin(angle);
         const int   px2 = (int)(cx + localX * cosR - localY * sinR);
         const int   py2 = (int)(cy + localX * sinR + localY * cosR);
-        if (SDL_RenderDrawLine(renderer, px1, py1, px2, py2) == false)
+        if (SDL_RenderLine(renderer, px1, py1, px2, py2) == false)
         {
             SDL_Log("Lib/Circle.cpp/Draw/SDL_RenderDrawLine/cela na pas fonctionné : %s", SDL_GetError());
             return;

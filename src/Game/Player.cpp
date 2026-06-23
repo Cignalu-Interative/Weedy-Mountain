@@ -324,108 +324,115 @@ void Player::SetupStateMachine()
 	//TRANSITIONS 
 
 	//IDLE
-	{
-		// to digging
-		auto transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING);
-		transition->AddCondition(new HasSpadeInHands);
-		transition->AddCondition(new IsPlayerUsingToolInHand);
 
-		// to mining
-		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING);
-		transition->AddCondition(new HasPickaxeInHands);
-		transition->AddCondition(new IsPlayerUsingToolInHand);
+	// to digging
+	auto transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING);
+	transition->AddCondition(new HasSpadeInHands);
+	transition->AddCondition(new IsPlayerUsingToolInHand);
 
-		// to watering
-		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WATERING);
-		transition->AddCondition(new HasWateringCanInHands);
-		transition->AddCondition(new IsPlayerUsingToolInHand);
+	// to mining
+	transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING);
+	transition->AddCondition(new HasPickaxeInHands);
+	transition->AddCondition(new IsPlayerUsingToolInHand);
 
-		// to walk states
-		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKUP);
-		transition->AddCondition(new IsPlayerGoingUp);
+	// to watering
+	transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WATERING);
+	transition->AddCondition(new HasWateringCanInHands);
+	transition->AddCondition(new IsPlayerUsingToolInHand);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN);
-		transition->AddCondition(new IsPlayerGoingDown);
+	// to walk states
+	transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKUP);
+	transition->AddCondition(new IsPlayerGoingUp);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKLEFT);
-		transition->AddCondition(new IsPlayerGoingLeft);
+	transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKDOWN);
+	transition->AddCondition(new IsPlayerGoingDown);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKRIGHT);
-		transition->AddCondition(new IsPlayerGoingRight);
-	}
+	transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKLEFT);
+	transition->AddCondition(new IsPlayerGoingLeft);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKRIGHT);
+	transition->AddCondition(new IsPlayerGoingRight);
+
 
 	//DIGGING
-	{
-		auto transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE);
-		transition->AddCondition(new DontHaveSpadeInHands);
-		transition->AddCondition(new IsPlayerNotUsingToolInHand);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::MINING);
-		transition->AddCondition(new IsPlayerNotUsingToolInHand);
-		transition->AddCondition(new HasPickaxeInHands);
+	transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE);
+	transition->AddCondition(new DontHaveSpadeInHands);
+	transition->AddCondition(new IsPlayerNotUsingToolInHand);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WATERING);
-		transition->AddCondition(new IsPlayerNotUsingToolInHand);
-		transition->AddCondition(new HasWateringCanInHands);
+	transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::MINING);
+	transition->AddCondition(new IsPlayerNotUsingToolInHand);
+	transition->AddCondition(new HasPickaxeInHands);
 
-
-		// to walk states
-		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKDOWN);
-		transition->AddCondition(new IsPlayerGoingDown);
-
-		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKUP);
-		transition->AddCondition(new IsPlayerGoingUp);
-
-		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKLEFT);
-		transition->AddCondition(new IsPlayerGoingLeft);
-
-		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKRIGHT);
-		transition->AddCondition(new IsPlayerGoingRight);
+	transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WATERING);
+	transition->AddCondition(new IsPlayerNotUsingToolInHand);
+	transition->AddCondition(new HasWateringCanInHands);
 
 
-	}
+	// to walk states
+	transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKDOWN);
+	transition->AddCondition(new IsPlayerGoingDown);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKUP);
+	transition->AddCondition(new IsPlayerGoingUp);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKLEFT);
+	transition->AddCondition(new IsPlayerGoingLeft);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKRIGHT);
+	transition->AddCondition(new IsPlayerGoingRight);
 
 	//WALK UP
-	{
-		auto transition = m_stateMachine.AddTransition((int)PlayerState::WALKUP, (int)PlayerState::IDLE);
-		transition->AddCondition(new IsPlayerStatic);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::WALKUP, (int)PlayerState::WALKDOWN);
-		transition->AddCondition(new IsPlayerGoingDown);
-	}
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKUP, (int)PlayerState::IDLE);
+	transition->AddCondition(new IsPlayerStatic);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKUP, (int)PlayerState::WALKDOWN);
+	transition->AddCondition(new IsPlayerGoingDown);
+
 
 	//WALK DOWN
-	{
-		m_stateMachine.AddTransition((int)PlayerState::WALKDOWN, (int)PlayerState::IDLE)->AddCondition(new IsPlayerStatic);
-		m_stateMachine.AddTransition((int)PlayerState::WALKDOWN, (int)PlayerState::WALKUP)->AddCondition(new IsPlayerGoingUp);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKDOWN, (int)PlayerState::IDLE);
+	transition->AddCondition(new IsPlayerStatic);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKDOWN, (int)PlayerState::WALKUP);
+	transition->AddCondition(new IsPlayerGoingUp);
 
 
-	}
+
 
 	//WALK LEFT
-	{
-		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::IDLE)->AddCondition(new IsPlayerStatic);
-		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKUP)->AddCondition(new IsPlayerGoingUp);
-		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKDOWN)->AddCondition(new IsPlayerGoingDown);
-		m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKRIGHT)->AddCondition(new IsPlayerGoingRight);
 
-	}
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::IDLE);
+	transition->AddCondition(new IsPlayerStatic);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKUP);
+	transition->AddCondition(new IsPlayerGoingUp);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKDOWN);
+	transition->AddCondition(new IsPlayerGoingDown);
+
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKLEFT, (int)PlayerState::WALKRIGHT);
+	transition->AddCondition(new IsPlayerGoingRight);
+
+
 
 	//WALK RIGHT
-	{
-		auto transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKUP);
-		transition->AddCondition(new IsPlayerGoingUp);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKDOWN);
-		transition->AddCondition(new IsPlayerGoingDown);
+	auto transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKUP);
+	transition->AddCondition(new IsPlayerGoingUp);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKLEFT);
-		transition->AddCondition(new IsPlayerGoingLeft);
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKDOWN);
+	transition->AddCondition(new IsPlayerGoingDown);
 
-		transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::IDLE);
-		transition->AddCondition(new IsPlayerStatic);
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::WALKLEFT);
+	transition->AddCondition(new IsPlayerGoingLeft);
 
-	}
+	transition = m_stateMachine.AddTransition((int)PlayerState::WALKRIGHT, (int)PlayerState::IDLE);
+	transition->AddCondition(new IsPlayerStatic);
+
+
 
 	SetState(PlayerState::IDLE);
 }

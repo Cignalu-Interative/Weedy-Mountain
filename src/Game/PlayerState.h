@@ -8,17 +8,17 @@ class PlayerIdleState : public StateBase<Player>
 		//p_player->SetAnimationByName("Idle");
 		std::cout << "Idle" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
 	void End(Player* p_player) {};
-	bool CanTransitionFrom(Player* p_player, int currentState) 
+	bool CanTransitionFrom(Player* p_player, int currentState)
 	{
 		switch (currentState)
 		{
-		case (int)PlayerState::WALKUP : 
+		case (int)PlayerState::WALKUP:
 			return true;
 			break;
-		case (int)PlayerState::WALKDOWN : 
+		case (int)PlayerState::WALKDOWN:
 			return true;
 			break;
 		case (int)PlayerState::WALKRIGHT:
@@ -36,7 +36,7 @@ class PlayerIdleState : public StateBase<Player>
 		case (int)PlayerState::WATERING:
 			return true;
 			break;
-		
+
 		}
 	};
 };
@@ -44,12 +44,12 @@ class PlayerIdleState : public StateBase<Player>
 class PlayerWalkUpState : public StateBase<Player>
 {
 	void Start(Player* p_player) {
-	//	p_player->SetAnimationByName("WalkUp");
+		//	p_player->SetAnimationByName("WalkUp");
 		std::cout << "walkup" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) { };
+	void End(Player* p_player) {};
 	bool CanTransitionFrom(Player* p_player, int currentState)
 	{
 		switch (currentState)
@@ -85,7 +85,7 @@ class PlayerWalkDownState : public StateBase<Player>
 		//p_player->SetAnimationByName("WalkDown");
 		std::cout << "walkDown" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
 	void End(Player* p_player) {};
 	bool CanTransitionFrom(Player* p_player, int currentState)
@@ -104,7 +104,7 @@ class PlayerWalkDownState : public StateBase<Player>
 		case (int)PlayerState::WALKLEFT:
 			return true;
 			break;
-			case (int)PlayerState::MINING:
+		case (int)PlayerState::MINING:
 			return false;
 			break;
 		case (int)PlayerState::DIGGING:
@@ -123,7 +123,7 @@ class PlayerWalkRightState : public StateBase<Player>
 		//p_player->SetAnimationByName("WalkRight");
 		std::cout << "walkright" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
 	void End(Player* p_player) {};
 	bool CanTransitionFrom(Player* p_player, int currentState)
@@ -161,7 +161,7 @@ class PlayerWalkLeftState : public StateBase<Player>
 		//p_player->SetAnimationByName("WalkLeft");
 		std::cout << "walkleft" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
 	void End(Player* p_player) {};
 
@@ -200,7 +200,7 @@ class PlayerWateringState : public StateBase<Player>
 		//p_player->SetAnimationByName("WalkLeft");
 		std::cout << "watering" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
 	void End(Player* p_player) {};
 
@@ -223,7 +223,7 @@ class PlayerWateringState : public StateBase<Player>
 		case (int)PlayerState::MINING:
 			return false;
 			break;
-		case (int)PlayerState::DIGGING : 
+		case (int)PlayerState::DIGGING:
 			return false;
 			break;
 		}
@@ -236,7 +236,7 @@ class PlayerDiggingState : public StateBase<Player>
 		//p_player->SetAnimationByName("WalkLeft");
 		std::cout << "digging" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
 	void End(Player* p_player) {};
 
@@ -272,7 +272,7 @@ class PlayerMiningState : public StateBase<Player>
 		//p_player->SetAnimationByName("WalkLeft");
 		std::cout << "mining" << std::endl;
 	};
-	
+
 	void Update(Player* p_player, float dt) {};
 	void End(Player* p_player) {};
 

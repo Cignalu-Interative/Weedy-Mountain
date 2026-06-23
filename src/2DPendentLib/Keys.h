@@ -1,5 +1,4 @@
 #pragma once
-#include <SDL3/SDL_main.h>
 #include <SDL3/SDL.h>
 #include <cstdint>
 //Version 1.0.1
@@ -290,7 +289,6 @@ enum class KeyboardKeymodKeys : Uint16
     K_ALT = K_LALT | K_RALT,     // N’importe quel Alt
     K_GUI = K_LGUI | K_RGUI      // N’importe quelle touche Windows / Cmd
 };
-
 
 // Touche Physique
 enum KeyboardScancodeKeys

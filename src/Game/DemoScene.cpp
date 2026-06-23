@@ -98,7 +98,9 @@ void DemoScene::OnInitialize()
 	Vector2f listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
 	Vector2f soundPos = listenerPos + Vector2f(0.0f, -distance);
 	sound.GetSound("Monsieur")->SetPosition(soundPos);
-	//SoundManager::Get()->Play("music1", -1);
+	sound.GetSound("music1")->SetLoopCount(-1);
+	sound.GetSound("music1")->SetAbsoluteVolume(20);
+	sound.GetSound("music1")->Play();
 
 	/*int a = 0;
 	int b = 1;
@@ -164,387 +166,387 @@ void DemoScene::OnEvent()
 		ChangeisRunning(false);
 	}
 
-//	if (input.IsKeyboardDown(K_a))
-//	{
-//		int entier = Aleatory::GetInt(1, 100);
-//		std::cerr << "int " << entier << std::endl;
-//		float flottant = Aleatory::GetFloat(1.0f, 100.0f);
-//		std::cerr << "float " << flottant << std::endl;
-//		char maj = Aleatory::GetCapitalChar();
-//		std::cerr << "Majuscule char " << maj << std::endl;
-//		char min = Aleatory::GetTinyChar();
-//		std::cerr << "Minuscule char " << min << std::endl;
-//	}
-//
-//	if (input.IsJoyStickHeld(JOYSTICK_LEFT))
-//	{
-//		Vector2f dir = input.GetJoyStickOrientation(JOYSTICK_LEFT);
-//		std::cerr << "Left Joystick Direction: (" << dir.GetX() << ", " << dir.GetY() << ")" << std::endl;
-//	}
-//	if (input.IsJoyStickHeld(JOYSTICK_RIGHT))
-//	{
-//		Vector2f dir = input.GetJoyStickOrientation(JOYSTICK_RIGHT);
-//		std::cerr << "Right Joystick Direction: (" << dir.GetX() << ", " << dir.GetY() << ")" << std::endl;
-//	}
-//
-//	if (input.IsMouseDown(BUTTON_LEFT))
-//	{
-//		int mouseX = input.GetMouseX();
-//		int mouseY = input.GetMouseY();
-//		std::cerr << "Mouse Clicked Left at: (" << mouseX << ", " << mouseY << ")" << std::endl;
-//		/*if (entitySelected != nullptr)
-//			entitySelected->Move({ 100,0 });*/
-//	}
-//	if (input.IsMouseDown(BUTTON_RIGHT))
-//	{
-//		//int mouseX = input.GetMouseX();
-//		//int mouseY = input.GetMouseY();
-//		//std::cerr << "Mouse Clicked Right at: (" << mouseX << ", " << mouseY << ")" << std::endl;
-//		SelectEntity(GetCamera()->ScreenToWorld(Vector2f{ input.GetMouseX(), input.GetMouseY() }));
-//		//SelectEntity({ input.GetMouseX(), input.GetMouseY() });
-//	}
-//
-//	if (input.IsKeyboardDown(K_f))
-//	{
-//		if(GetAutoFPS() == false)
-//		{
-//			ChangeAutoFPS();
-//		}
-//		else
-//		{
-//			ChangeAutoFPS();
-//		}
-//	}
-//	if (input.IsKeyboardDown(K_v))
-//	{
-//		if (GetAutoFPS() == false)
-//		{
-//			int newFPS;
-//			std::cin >> newFPS;
-//			SetFPS(newFPS);
-//		}
-//	}
-//
-//	if (input.IsMouseDown(BUTTON_MIDDLE))
-//	{
-//		Vector2f mousePosition = GetCamera()->ScreenToWorld(input.GetMousePosition());
-//		RectangleCollider* collider = new RectangleCollider();
-//		collider->Initialize(mousePosition, { 10, 10 });
-//		bool collisionDetected = false;
-//		for (Player* player : m_players)
-//		{
-//			if (Collision::IsColliding(*collider, *player->GetCollider()))
-//			{
-//				std::cerr << "Collision detected with player at position: (" << player->GetPosition().GetX() << ", " << player->GetPosition().GetY() << ")" << std::endl;
-//				player->Destroy();
-//				collisionDetected = true;
-//				return;
-//			}
-//		}
-//		if (collisionDetected == false)
-//		{
-//			Player* player = CreateEntity<Player>(mousePosition, { 100, 100 }, "Perceval", Shape::Rectangle);
-//			m_players.push_back(player);
-//		}
-//	}
-//
-//	if (input.IsKeyboardDown(K_p))
-//	{
-//		std::cerr << "Playing sound 'Monsieur' " << std::endl;
-//		sound.Play("Monsieur");
-//	}
-//
-//	if (input.IsKeyboardDown(K_KP_DIVIDE))
-//	{
-//		sound.SetVolume(0, AudioFormat::MP3);
-//	}
-//	if (input.IsKeyboardDown(K_KP_MULTIPLY))
-//	{
-//		sound.SetVolume(128, AudioFormat::MP3);
-//	}
-//	if (input.IsKeyboardDown(K_KP_PLUS))
-//	{
-//		sound.IncreaseVolume(15, AudioFormat::MP3);
-//	}
-//	if (input.IsKeyboardDown(K_KP_MINUS))
-//	{
-//		sound.DecreaseVolume(15, AudioFormat::MP3);
-//	}
-//
-//	float distance = 100.0f;
-//	Vector2f listenerPos;
-//	Vector2f soundPos;
-//	if (sound.GetListener() == nullptr)
-//	{
-//		listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
-//	}
-//	else
-//	{
-//		listenerPos = sound.GetListener()->GetPosition({ 0.5f, 0.5f });
-//	}
-//	if (input.IsKeyboardDown(K_KP_8))
-//	{
-//		soundPos = listenerPos + Vector2f(0.0f, -distance);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_2))
-//	{
-//		soundPos = listenerPos + Vector2f(0.0f, distance);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_4))
-//	{
-//		soundPos = listenerPos + Vector2f(-distance, 0.0f);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_6))
-//	{
-//		soundPos = listenerPos + Vector2f(distance, 0.0f);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_5))
-//	{
-//		soundPos = listenerPos + Vector2f(0.0f, 0.0f);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_7))
-//	{
-//		soundPos = listenerPos + Vector2f(-distance, -distance);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_9))
-//	{
-//		soundPos = listenerPos + Vector2f(distance, -distance);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_3))
-//	{
-//		soundPos = listenerPos + Vector2f(distance, distance);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//	if (input.IsKeyboardDown(K_KP_1))
-//	{
-//		soundPos = listenerPos + Vector2f(-distance, distance);
-//		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
-//	}
-//
-//	if (input.IsKeyboardDown(K_EXCLAIM))
-//	{
-//		sound.SetPause_Resume_Sound("music1");
-//	}
-//	if (input.IsKeyboardDown(K_s))
-//	{
-//		sound.Stop("music1");
-//	}
-//	if (input.IsKeyboardDown(K_w))
-//	{
-//		sound.Play("music1", -1);
-//	}
-//
-//#ifdef _DEBUG
-//	if (input.IsKeyboardDown(K_KP_ENTER))
-//	{
-//		sound.DebugVolume();
-//	}
-//	if (input.IsKeyboardDown(K_l))
-//	{
-//		sound.DebugListenerPosition();
-//	}
-//
-//	input.DebugKeys();
-//	input.DebugControllerButtons();
-//	input.DebugControllerAxis();
-//#endif
-//
-//	if (entitySelected != nullptr)
-//	{
-//		if (input.IsKeyboardHeld(K_UP))
-//		{
-//			std::cerr << "Jump" << std::endl;
-//			if (entitySelected->GetPhysicsBody())
-//			{
-//				std::cerr << "has physics body" << std::endl;
-//				if (entitySelected->GetIsGrounded())
-//				{
-//					std::cerr << "is grounded" << std::endl;
-//					entitySelected->GetPhysicsBody()->SetLinearVelocity({ entitySelected->GetPhysicsBody()->GetLinearVelocity().GetX(), 0.0f });
-//					entitySelected->GetPhysicsBody()->ApplyImpulse({ 0.0f, -1000 }, {});
-//					entitySelected->SetIsGrounded(false);
-//				}
-//			}
-//			else
-//			{
-//				entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), -1.0f });
-//			}
-//		}
-//		if (input.IsKeyboardHeld(K_DOWN))
-//		{
-//			entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), 1.0f });
-//		}
-//		if (input.IsKeyboardHeld(K_LEFT))
-//		{
-//			entitySelected->SetDirection({ -1.0f, entitySelected->GetDirection().GetY() });
-//		}
-//		if (input.IsKeyboardHeld(K_RIGHT))
-//		{
-//			entitySelected->SetDirection({ 1.0f, entitySelected->GetDirection().GetY() });
-//		}
-//	}
-//	else
-//	{
-//		Camera* camera = GetCamera();
-//		if (input.IsKeyboardHeld(K_UP))
-//		{
-//			camera->Move({ 0.0f, -10.0f });
-//		}
-//		if (input.IsKeyboardHeld(K_DOWN))
-//		{
-//			camera->Move({ 0.0f, 10.0f });
-//		}
-//		if (input.IsKeyboardHeld(K_LEFT))
-//		{
-//			camera->Move({ -10.0f, 0.0f });
-//		}
-//		if (input.IsKeyboardHeld(K_RIGHT))
-//		{
-//			camera->Move({ 10.0f, 0.0f });
-//		}
-//	}
-//
-//	if (input.IsKeyboardHeld(K_KP_MINUS))
-//	{
-//		GetGeometry<Text>("HW")->SetColor({ 255, 255, 255, 255 });
-//		GetGeometry<Text>("HW")->SetText("CACA");
-//	}
-//	if (input.IsKeyboardHeld(K_KP_PLUS))
-//	{
-//		GetGeometry<Text>("HW")->SetColor({ 255, 0, 0, 255 });
-//		GetGeometry<Text>("HW")->SetText("GROS CACA");
-//	}
-//	if (input.IsKeyboardHeld(K_KP_MULTIPLY))
-//	{
-//		GetGeometry<Text>("HW")->SetColor({ 0, 255, 0, 255 });
-//		GetGeometry<Text>("HW")->SetText("ENORME GROS CACA");
-//	}
-//
-//	if (input.IsKeyboardDown(K_F1))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest1");
-//	}
-//	if (input.IsKeyboardDown(K_F2))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest2");
-//	}
-//	if (input.IsKeyboardDown(K_F3))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest3");
-//	}
-//	if (input.IsKeyboardDown(K_F4))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest4");
-//	}
-//	if (input.IsKeyboardDown(K_F5))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest5");
-//	}
-//	if (input.IsKeyboardDown(K_F6))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest6");
-//	}
-//	if (input.IsKeyboardDown(K_F7))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest7");
-//	}
-//	if (input.IsKeyboardDown(K_F8))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest8");
-//	}
-//	if (input.IsKeyboardDown(K_F9))
-//	{
-//		MapTiledManager::Get()->SetCurrentMap("MapTest9");
-//	}
-//
-//	if (input.IsKeyboardDown(K_1))
-//	{
-//		GetCamera()->SetZoom(0.2f);
-//	}
-//	if (input.IsKeyboardDown(K_2))
-//	{
-//		GetCamera()->SetZoom(0.4f);
-//	}
-//	if (input.IsKeyboardDown(K_3))
-//	{
-//		GetCamera()->SetZoom(0.8f);
-//	}
-//	if (input.IsKeyboardDown(K_4))
-//	{
-//		GetCamera()->SetZoom(1.0f);
-//	}
-//	if (input.IsKeyboardDown(K_5))
-//	{
-//		GetCamera()->SetZoom(1.5f);
-//	}
-//	if (input.IsKeyboardDown(K_6))
-//	{
-//		GetCamera()->SetZoom(2.0f);
-//	}
-//	if (input.IsKeyboardDown(K_7))
-//	{
-//		GetCamera()->SetZoom(3.0f);
-//	}
-//	if (input.IsKeyboardDown(K_8))
-//	{
-//		GetCamera()->SetZoom(4.0f);
-//	}
-//	if (input.IsKeyboardDown(K_9))
-//	{
-//		GetCamera()->SetZoom(5.0f);
-//	}
-//	if (input.IsMouseHeld(BUTTON_X1))
-//	{
-//		std::cerr << "Mouse X1 Button Held" << std::endl;
-//	}
-//	if (input.IsMouseHeld(BUTTON_X2))
-//	{
-//		std::cerr << "Mouse X2 Button Held" << std::endl;
-//	}
-//	if (input.IsMouseScrollDown(SCROLL_UP))
-//	{
-//		Vector2f mouseScreen = input.GetMousePosition();
-//		Vector2f before = GetCamera()->ScreenToWorld(mouseScreen);
-//
-//		GetCamera()->ZoomIn(0.1f);
-//
-//		Vector2f after = GetCamera()->ScreenToWorld(mouseScreen);
-//		Vector2f delta = before - after;
-//
-//		GetCamera()->SetPosition(GetCamera()->GetPosition() + delta);
-//		std::cerr << "Mouse Scrolled Up" << std::endl;
-//	}
-//
-//	if (input.IsMouseScrollDown(SCROLL_DOWN))
-//	{
-//		Vector2f mouseScreen = input.GetMousePosition();
-//		Vector2f before = GetCamera()->ScreenToWorld(mouseScreen);
-//
-//		GetCamera()->ZoomOut(0.1f);
-//
-//		Vector2f after = GetCamera()->ScreenToWorld(mouseScreen);
-//		Vector2f delta = before - after;
-//
-//		GetCamera()->SetPosition(GetCamera()->GetPosition() + delta);
-//		std::cerr << "Mouse Scrolled Down" << std::endl;
-//	}
-//	if (input.IsKeyboardDown(K_ESCAPE))
-//	{
-//		entitySelected = nullptr;
-//	}
-//
-//	if (input.IsKeyboardDown(K_TAB))
-//	{
-//		//SceneManager::Get()->ClearScenesInStack();
-//		SceneManager::Get()->PushScene("test");
-//	}
+	if (input.IsKeyboardDown(K_A))
+	{
+		int entier = Aleatory::GetInt(1, 100);
+		std::cerr << "int " << entier << std::endl;
+		float flottant = Aleatory::GetFloat(1.0f, 100.0f);
+		std::cerr << "float " << flottant << std::endl;
+		char maj = Aleatory::GetCapitalChar();
+		std::cerr << "Majuscule char " << maj << std::endl;
+		char min = Aleatory::GetTinyChar();
+		std::cerr << "Minuscule char " << min << std::endl;
+	}
+
+	if (input.IsJoyStickHeld(JOYSTICK_LEFT))
+	{
+		Vector2f dir = input.GetJoyStickOrientation(JOYSTICK_LEFT);
+		std::cerr << "Left Joystick Direction: (" << dir.GetX() << ", " << dir.GetY() << ")" << std::endl;
+	}
+	if (input.IsJoyStickHeld(JOYSTICK_RIGHT))
+	{
+		Vector2f dir = input.GetJoyStickOrientation(JOYSTICK_RIGHT);
+		std::cerr << "Right Joystick Direction: (" << dir.GetX() << ", " << dir.GetY() << ")" << std::endl;
+	}
+
+	if (input.IsMouseDown(BUTTON_LEFT))
+	{
+		int mouseX = input.GetMouseX();
+		int mouseY = input.GetMouseY();
+		std::cerr << "Mouse Clicked Left at: (" << mouseX << ", " << mouseY << ")" << std::endl;
+		/*if (entitySelected != nullptr)
+			entitySelected->Move({ 100,0 });*/
+	}
+	if (input.IsMouseDown(BUTTON_RIGHT))
+	{
+		//int mouseX = input.GetMouseX();
+		//int mouseY = input.GetMouseY();
+		//std::cerr << "Mouse Clicked Right at: (" << mouseX << ", " << mouseY << ")" << std::endl;
+		SelectEntity(GetCamera()->ScreenToWorld(Vector2f{ input.GetMouseX(), input.GetMouseY() }));
+		//SelectEntity({ input.GetMouseX(), input.GetMouseY() });
+	}
+
+	if (input.IsKeyboardDown(K_F))
+	{
+		if(GetAutoFPS() == false)
+		{
+			ChangeAutoFPS();
+		}
+		else
+		{
+			ChangeAutoFPS();
+		}
+	}
+	if (input.IsKeyboardDown(K_V))
+	{
+		if (GetAutoFPS() == false)
+		{
+			int newFPS;
+			std::cin >> newFPS;
+			SetFPS(newFPS);
+		}
+	}
+
+	if (input.IsMouseDown(BUTTON_MIDDLE))
+	{
+		Vector2f mousePosition = GetCamera()->ScreenToWorld(input.GetMousePosition());
+		RectangleCollider* collider = new RectangleCollider();
+		collider->Initialize(mousePosition, { 10, 10 });
+		bool collisionDetected = false;
+		for (Player* player : m_players)
+		{
+			if (Collision::IsColliding(*collider, *player->GetCollider()))
+			{
+				std::cerr << "Collision detected with player at position: (" << player->GetPosition().GetX() << ", " << player->GetPosition().GetY() << ")" << std::endl;
+				player->Destroy();
+				collisionDetected = true;
+				return;
+			}
+		}
+		if (collisionDetected == false)
+		{
+			Player* player = CreateEntity<Player>(mousePosition, { 100, 100 }, "Perceval", Shape::Rectangle);
+			m_players.push_back(player);
+		}
+	}
+
+	if (input.IsKeyboardDown(K_P))
+	{
+		std::cerr << "Playing sound 'Monsieur' " << std::endl;
+		sound.Play("Monsieur");
+	}
+
+	if (input.IsKeyboardDown(K_KP_DIVIDE))
+	{
+		sound.SetMusicVolume(0);
+	}
+	if (input.IsKeyboardDown(K_KP_MULTIPLY))
+	{
+		sound.SetMusicVolume(100);
+	}
+	if (input.IsKeyboardDown(K_KP_PLUS))
+	{
+		sound.IncreaseMusicVolume(10);
+	}
+	if (input.IsKeyboardDown(K_KP_MINUS))
+	{
+		sound.DecreaseMusicVolume(10);
+	}
+
+	float distance = 100.0f;
+	Vector2f listenerPos;
+	Vector2f soundPos;
+	if (sound.GetListener() == nullptr)
+	{
+		listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
+	}
+	else
+	{
+		listenerPos = sound.GetListener()->GetPosition({ 0.5f, 0.5f });
+	}
+	if (input.IsKeyboardDown(K_KP_8))
+	{
+		soundPos = listenerPos + Vector2f(0.0f, -distance);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_2))
+	{
+		soundPos = listenerPos + Vector2f(0.0f, distance);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_4))
+	{
+		soundPos = listenerPos + Vector2f(-distance, 0.0f);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_6))
+	{
+		soundPos = listenerPos + Vector2f(distance, 0.0f);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_5))
+	{
+		soundPos = listenerPos + Vector2f(0.0f, 0.0f);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_7))
+	{
+		soundPos = listenerPos + Vector2f(-distance, -distance);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_9))
+	{
+		soundPos = listenerPos + Vector2f(distance, -distance);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_3))
+	{
+		soundPos = listenerPos + Vector2f(distance, distance);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+	if (input.IsKeyboardDown(K_KP_1))
+	{
+		soundPos = listenerPos + Vector2f(-distance, distance);
+		sound.SetSoundPosition("Monsieur", { soundPos.GetX(), soundPos.GetY() });
+	}
+
+	if (input.IsKeyboardDown(K_EXCLAIM))
+	{
+		sound.SetPause_Resume_Sound("music1");
+	}
+	if (input.IsKeyboardDown(K_S))
+	{
+		sound.Stop("music1");
+	}
+	if (input.IsKeyboardDown(K_W))
+	{
+		sound.Play("music1");
+	}
+
+#ifdef _DEBUG
+	if (input.IsKeyboardDown(K_KP_ENTER))
+	{
+		sound.DebugVolume();
+	}
+	if (input.IsKeyboardDown(K_L))
+	{
+		sound.DebugListenerPosition();
+	}
+
+	input.DebugKeys();
+	input.DebugControllerButtons();
+	input.DebugControllerAxis();
+#endif
+
+	if (entitySelected != nullptr)
+	{
+		if (input.IsKeyboardHeld(K_UP))
+		{
+			std::cerr << "Jump" << std::endl;
+			if (entitySelected->GetPhysicsBody())
+			{
+				std::cerr << "has physics body" << std::endl;
+				if (entitySelected->GetIsGrounded())
+				{
+					std::cerr << "is grounded" << std::endl;
+					entitySelected->GetPhysicsBody()->SetLinearVelocity({ entitySelected->GetPhysicsBody()->GetLinearVelocity().GetX(), 0.0f });
+					entitySelected->GetPhysicsBody()->ApplyImpulse({ 0.0f, -1000 }, {});
+					entitySelected->SetIsGrounded(false);
+				}
+			}
+			else
+			{
+				entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), -1.0f });
+			}
+		}
+		if (input.IsKeyboardHeld(K_DOWN))
+		{
+			entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), 1.0f });
+		}
+		if (input.IsKeyboardHeld(K_LEFT))
+		{
+			entitySelected->SetDirection({ -1.0f, entitySelected->GetDirection().GetY() });
+		}
+		if (input.IsKeyboardHeld(K_RIGHT))
+		{
+			entitySelected->SetDirection({ 1.0f, entitySelected->GetDirection().GetY() });
+		}
+	}
+	else
+	{
+		Camera* camera = GetCamera();
+		if (input.IsKeyboardHeld(K_UP))
+		{
+			camera->Move({ 0.0f, -10.0f });
+		}
+		if (input.IsKeyboardHeld(K_DOWN))
+		{
+			camera->Move({ 0.0f, 10.0f });
+		}
+		if (input.IsKeyboardHeld(K_LEFT))
+		{
+			camera->Move({ -10.0f, 0.0f });
+		}
+		if (input.IsKeyboardHeld(K_RIGHT))
+		{
+			camera->Move({ 10.0f, 0.0f });
+		}
+	}
+
+	if (input.IsKeyboardHeld(K_KP_MINUS))
+	{
+		GetGeometry<Text>("HW")->SetColor({ 255, 255, 255, 255 });
+		GetGeometry<Text>("HW")->SetText("CACA");
+	}
+	if (input.IsKeyboardHeld(K_KP_PLUS))
+	{
+		GetGeometry<Text>("HW")->SetColor({ 255, 0, 0, 255 });
+		GetGeometry<Text>("HW")->SetText("GROS CACA");
+	}
+	if (input.IsKeyboardHeld(K_KP_MULTIPLY))
+	{
+		GetGeometry<Text>("HW")->SetColor({ 0, 255, 0, 255 });
+		GetGeometry<Text>("HW")->SetText("ENORME GROS CACA");
+	}
+
+	if (input.IsKeyboardDown(K_F1))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest1");
+	}
+	if (input.IsKeyboardDown(K_F2))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest2");
+	}
+	if (input.IsKeyboardDown(K_F3))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest3");
+	}
+	if (input.IsKeyboardDown(K_F4))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest4");
+	}
+	if (input.IsKeyboardDown(K_F5))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest5");
+	}
+	if (input.IsKeyboardDown(K_F6))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest6");
+	}
+	if (input.IsKeyboardDown(K_F7))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest7");
+	}
+	if (input.IsKeyboardDown(K_F8))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest8");
+	}
+	if (input.IsKeyboardDown(K_F9))
+	{
+		MapTiledManager::Get()->SetCurrentMap("MapTest9");
+	}
+
+	if (input.IsKeyboardDown(K_1))
+	{
+		GetCamera()->SetZoom(0.2f);
+	}
+	if (input.IsKeyboardDown(K_2))
+	{
+		GetCamera()->SetZoom(0.4f);
+	}
+	if (input.IsKeyboardDown(K_3))
+	{
+		GetCamera()->SetZoom(0.8f);
+	}
+	if (input.IsKeyboardDown(K_4))
+	{
+		GetCamera()->SetZoom(1.0f);
+	}
+	if (input.IsKeyboardDown(K_5))
+	{
+		GetCamera()->SetZoom(1.5f);
+	}
+	if (input.IsKeyboardDown(K_6))
+	{
+		GetCamera()->SetZoom(2.0f);
+	}
+	if (input.IsKeyboardDown(K_7))
+	{
+		GetCamera()->SetZoom(3.0f);
+	}
+	if (input.IsKeyboardDown(K_8))
+	{
+		GetCamera()->SetZoom(4.0f);
+	}
+	if (input.IsKeyboardDown(K_9))
+	{
+		GetCamera()->SetZoom(5.0f);
+	}
+	if (input.IsMouseHeld(BUTTON_X1))
+	{
+		std::cerr << "Mouse X1 Button Held" << std::endl;
+	}
+	if (input.IsMouseHeld(BUTTON_X2))
+	{
+		std::cerr << "Mouse X2 Button Held" << std::endl;
+	}
+	if (input.IsMouseScrollDown(SCROLL_UP))
+	{
+		Vector2f mouseScreen = input.GetMousePosition();
+		Vector2f before = GetCamera()->ScreenToWorld(mouseScreen);
+
+		GetCamera()->ZoomIn(0.1f);
+
+		Vector2f after = GetCamera()->ScreenToWorld(mouseScreen);
+		Vector2f delta = before - after;
+
+		GetCamera()->SetPosition(GetCamera()->GetPosition() + delta);
+		std::cerr << "Mouse Scrolled Up" << std::endl;
+	}
+
+	if (input.IsMouseScrollDown(SCROLL_DOWN))
+	{
+		Vector2f mouseScreen = input.GetMousePosition();
+		Vector2f before = GetCamera()->ScreenToWorld(mouseScreen);
+
+		GetCamera()->ZoomOut(0.1f);
+
+		Vector2f after = GetCamera()->ScreenToWorld(mouseScreen);
+		Vector2f delta = before - after;
+
+		GetCamera()->SetPosition(GetCamera()->GetPosition() + delta);
+		std::cerr << "Mouse Scrolled Down" << std::endl;
+	}
+	if (input.IsKeyboardDown(K_ESCAPE))
+	{
+		entitySelected = nullptr;
+	}
+
+	if (input.IsKeyboardDown(K_TAB))
+	{
+		//SceneManager::Get()->ClearScenesInStack();
+		SceneManager::Get()->PushScene("test");
+	}
 }
 
 void DemoScene::OnUpdate()

@@ -53,6 +53,7 @@ void Application::Init()
 	InputManager::Get()->SetCursor("../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_c.png", { 0.0f, 0.0f });
 	InputManager::Get()->SetWindow(&m_window);
 	FontManager::Get()->AddFontByPath("../../res/2DPendentEngine/Assets/Fonts/DefaultPolice.ttf");
+	SoundManager::Get()->SetMixer(m_window.GetMixer());
 	Vector2i sizeWindow = m_window.GetWindowSize();
 	m_camera = new Camera(sizeWindow);
 	AssetManager::Get()->SetRenderer(m_render.GetRenderer());

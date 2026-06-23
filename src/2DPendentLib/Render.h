@@ -1,6 +1,5 @@
 #pragma once
 //#include "2DPendentLib/glm/glm.hpp"
-#include <SDL3/SDL_main.h>
 #include <SDL3/SDL.h>
 #include "Color.h"
 //Version 2.2.0

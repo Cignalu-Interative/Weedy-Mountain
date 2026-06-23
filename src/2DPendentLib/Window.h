@@ -1,7 +1,7 @@
 #pragma once
 //#include "glad/glad.h"
-#include <SDL3/SDL_main.h>
 #include <SDL3/SDL.h>
+#include <SDL3_mixer/SDL_mixer.h>
 #include "Vector2.h"
 //Version 4.3.0
 
@@ -11,7 +11,7 @@ private:
 
 	SDL_Window* m_window = nullptr; //Pointeur qui stock la window
 
-	SDL_GLContext m_glContext = nullptr; //Pointeur qui stock le contexte OpenGL
+	MIX_Mixer* m_mixer = nullptr; //Pointeur qui stock le mixer
 
 	SDL_DisplayMode m_displayMode; //Struct qui stock différente informations de l'écran
 
@@ -54,4 +54,6 @@ public:
 	SDL_Window* GetWindow() const { return m_window; }
 	//Obtention du DisplayMode
 	SDL_DisplayMode GetDisplayMode() const { return m_displayMode; }
+	//Obtention du mixer
+	MIX_Mixer* GetMixer() const { return m_mixer; }
 };

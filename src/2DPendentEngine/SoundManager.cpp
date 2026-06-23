@@ -6,22 +6,6 @@
 
 SoundManager::SoundManager()
 {
-	//SDL_AUDIO_S16LE son classique
-	//SDL_AUDIO_F32LE son haut de gamme
-	// 44100 Hz est la fréquence d'échantillonnage standard pour l'audio, utilisée dans les CD audio et de nombreux formats audio numériques.
-	// 48000 Hz est une fréquence d'échantillonnage couramment utilisée dans la production audio professionnelle, notamment pour les films, la télévision et les jeux vidéo.
-	SDL_AudioSpec desiredSpec;
-	desiredSpec.format = SDL_AUDIO_F32LE;
-	desiredSpec.channels = 6; // 6 pour 5.1 surround sound, 2 pour stereo, 1 pour mono
-	desiredSpec.freq = 48000;
-
-	m_mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &desiredSpec);
-
-	if (m_mixer == nullptr)
-	{
-		SDL_Log("Engine/SoundManager.cpp/SoundManager/MIX_CreateMixerDevice failed: %s", SDL_GetError());
-	}
-
 	m_sounds.reserve(64); // Réserver de la mémoire pour 64 sons afin d'éviter les reallocations fréquentes lors de l'ajout de sons
 	m_soundsVector.reserve(64); // Réserver de la mémoire pour 64 sons afin d'éviter les reallocations fréquentes lors de l'ajout de sons
 }

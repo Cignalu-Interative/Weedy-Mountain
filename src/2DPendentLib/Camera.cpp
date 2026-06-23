@@ -3,7 +3,6 @@
 #include "2DPendentLib/Utils.h"
 #include "Render.h"
 #include "Window.h"
-#include <SDL3/SDL_main.h>
 #include <SDL3/SDL.h>
 
 //Camera::Camera(Vector2f p_position, Vector2i p_dimension)

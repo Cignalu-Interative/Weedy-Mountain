@@ -1,7 +1,6 @@
 #pragma once
 //#include "glad/glad.h"
 //#include "glm/glm.hpp"
-#include <SDL3/SDL_main.h>
 #include <SDL3/SDL.h>
 #include <cmath>
 #include <numbers>

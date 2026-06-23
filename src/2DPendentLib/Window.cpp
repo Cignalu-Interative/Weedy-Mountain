@@ -35,13 +35,28 @@ bool Window::CreateWindow()
 		return false;
 	}
 
-
 	if (MIX_Init() == false)
 	{
 		SDL_Log("Lib/Window.cpp/CreateWindow/Mix_OpenAudio/Mix_OpenAudio non reussie : %s", SDL_GetError());
 		return false;
 	}
-	//Mix_AllocateChannels(24);
+
+	//SDL_AUDIO_S16LE son classique
+	//SDL_AUDIO_F32LE son haut de gamme
+	// 44100 Hz est la fréquence d'échantillonnage standard pour l'audio, utilisée dans les CD audio et de nombreux formats audio numériques.
+	// 48000 Hz est une fréquence d'échantillonnage couramment utilisée dans la production audio professionnelle, notamment pour les films, la télévision et les jeux vidéo.
+
+	SDL_AudioSpec desiredSpec;
+	desiredSpec.format = SDL_AUDIO_F32LE;
+	desiredSpec.channels = 6; // 6 pour 5.1 surround sound, 2 pour stereo, 1 pour mono
+	desiredSpec.freq = 48000;
+
+	m_mixer = MIX_CreateMixerDevice(SDL_AUDIO_DEVICE_DEFAULT_PLAYBACK, &desiredSpec);
+	if (m_mixer == nullptr)
+	{
+		SDL_Log("Engine/Window.cpp/Window/CreateWindow/MIX_CreateMixerDevice failed: %s", SDL_GetError());
+		return false;
+	}
 
 	V_Sync();
 
@@ -227,10 +242,8 @@ bool Window::CreateWindow()
 	m_window = SDL_CreateWindow("Weddy Mountain",
 		m_windowDimension.GetX(),
 		m_windowDimension.GetY(),
-		SDL_WINDOWPOS_CENTERED |
 		SDL_WINDOW_RESIZABLE |
-		SDL_WINDOW_HIGH_PIXEL_DENSITY |
-		SDL_WINDOW_BORDERLESS
+		SDL_WINDOW_HIGH_PIXEL_DENSITY
 	);
 
 	if (m_window == NULL)

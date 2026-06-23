@@ -47,6 +47,8 @@ public:
 	//Singleton pour accéder à SoundManager
 	static SoundManager* Get();
 
+	void SetMixer(MIX_Mixer* p_mixer) { m_mixer = p_mixer; }
+
 	void Update();
 
 	void AddSound(const std::string& p_path);

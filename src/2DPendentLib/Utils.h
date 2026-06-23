@@ -1,6 +1,6 @@
 #pragma once
-#include "glad/glad.h"
-#include "glm/glm.hpp"
+//#include "glad/glad.h"
+//#include "glm/glm.hpp"
 #include <SDL.h>
 #include <cmath>
 #include <numbers>
@@ -552,62 +552,62 @@ namespace Utils
 		p_mat[15] = 1.0f;
 	}
 
-	static void CheckGLError(const char* p_location)
-	{
-		GLenum err;
-		while ((err = glGetError()) != GL_NO_ERROR)
-		{
-			const char* msg = "INCONNU";
-			switch (err)
-			{
-			case GL_INVALID_ENUM:      msg = "INVALID_ENUM";      break;
-			case GL_INVALID_VALUE:     msg = "INVALID_VALUE";     break;
-			case GL_INVALID_OPERATION: msg = "INVALID_OPERATION"; break;
-			case GL_OUT_OF_MEMORY:     msg = "OUT_OF_MEMORY";     break;
-			}
-			SDL_Log("[GL] Erreur %s à %s", msg, p_location);
-		}
-	}
+	//static void CheckGLError(const char* p_location)
+	//{
+	//	GLenum err;
+	//	while ((err = glGetError()) != GL_NO_ERROR)
+	//	{
+	//		const char* msg = "INCONNU";
+	//		switch (err)
+	//		{
+	//		case GL_INVALID_ENUM:      msg = "INVALID_ENUM";      break;
+	//		case GL_INVALID_VALUE:     msg = "INVALID_VALUE";     break;
+	//		case GL_INVALID_OPERATION: msg = "INVALID_OPERATION"; break;
+	//		case GL_OUT_OF_MEMORY:     msg = "OUT_OF_MEMORY";     break;
+	//		}
+	//		SDL_Log("[GL] Erreur %s à %s", msg, p_location);
+	//	}
+	//}
 
-	static void APIENTRY GLDebugCallback(GLenum source, GLenum type, GLuint id,
-		GLenum severity, GLsizei length,
-		const GLchar* message, const void* userParam)
-	{
-		// Ignorer les infos non critiques
-		if (severity == GL_DEBUG_SEVERITY_NOTIFICATION) return;
+	//static void APIENTRY GLDebugCallback(GLenum source, GLenum type, GLuint id,
+	//	GLenum severity, GLsizei length,
+	//	const GLchar* message, const void* userParam)
+	//{
+	//	// Ignorer les infos non critiques
+	//	if (severity == GL_DEBUG_SEVERITY_NOTIFICATION) return;
 
-		const char* srcStr = "?";
-		const char* typeStr = "?";
-		const char* sevStr = "?";
+	//	const char* srcStr = "?";
+	//	const char* typeStr = "?";
+	//	const char* sevStr = "?";
 
-		switch (source) {
-		case GL_DEBUG_SOURCE_API:             srcStr = "API";        break;
-		case GL_DEBUG_SOURCE_SHADER_COMPILER: srcStr = "SHADER";     break;
-		case GL_DEBUG_SOURCE_APPLICATION:     srcStr = "APP";        break;
-		}
-		switch (type) {
-		case GL_DEBUG_TYPE_ERROR:             typeStr = "ERREUR";    break;
-		case GL_DEBUG_TYPE_PERFORMANCE:       typeStr = "PERF";      break;
-		case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: typeStr = "DEPRECATED"; break;
-		}
-		switch (severity) {
-		case GL_DEBUG_SEVERITY_HIGH:   sevStr = "HAUTE";   break;
-		case GL_DEBUG_SEVERITY_MEDIUM: sevStr = "MOYENNE"; break;
-		case GL_DEBUG_SEVERITY_LOW:    sevStr = "FAIBLE";  break;
-		}
+	//	switch (source) {
+	//	case GL_DEBUG_SOURCE_API:             srcStr = "API";        break;
+	//	case GL_DEBUG_SOURCE_SHADER_COMPILER: srcStr = "SHADER";     break;
+	//	case GL_DEBUG_SOURCE_APPLICATION:     srcStr = "APP";        break;
+	//	}
+	//	switch (type) {
+	//	case GL_DEBUG_TYPE_ERROR:             typeStr = "ERREUR";    break;
+	//	case GL_DEBUG_TYPE_PERFORMANCE:       typeStr = "PERF";      break;
+	//	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: typeStr = "DEPRECATED"; break;
+	//	}
+	//	switch (severity) {
+	//	case GL_DEBUG_SEVERITY_HIGH:   sevStr = "HAUTE";   break;
+	//	case GL_DEBUG_SEVERITY_MEDIUM: sevStr = "MOYENNE"; break;
+	//	case GL_DEBUG_SEVERITY_LOW:    sevStr = "FAIBLE";  break;
+	//	}
 
-		SDL_Log("[GL DEBUG] [%s][%s][%s] ID=%u : %s", srcStr, typeStr, sevStr, id, message);
-	}
+	//	SDL_Log("[GL DEBUG] [%s][%s][%s] ID=%u : %s", srcStr, typeStr, sevStr, id, message);
+	//}
 
 
-	static void EnableGLDebug()
-	{
-		glEnable(GL_DEBUG_OUTPUT);
-		glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); // erreurs synchrones (plus facile à debugger)
-		glDebugMessageCallback(GLDebugCallback, nullptr);
-		glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION,
-			0, nullptr, GL_FALSE); // silence les notifications
-	}
+	//static void EnableGLDebug()
+	//{
+	//	glEnable(GL_DEBUG_OUTPUT);
+	//	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); // erreurs synchrones (plus facile à debugger)
+	//	glDebugMessageCallback(GLDebugCallback, nullptr);
+	//	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION,
+	//		0, nullptr, GL_FALSE); // silence les notifications
+	//}
 
 };
 

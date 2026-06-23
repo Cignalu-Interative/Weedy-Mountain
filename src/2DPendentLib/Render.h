@@ -1,5 +1,5 @@
 #pragma once
-#include "2DPendentLib/glm/glm.hpp"
+//#include "2DPendentLib/glm/glm.hpp"
 #include <SDL.h>
 #include "Color.h"
 //Version 2.2.0
@@ -13,7 +13,7 @@ private:
 
 	Color m_backgroundColor;
 
-	glm::vec4 m_OpenGLColor;
+	//glm::vec4 m_OpenGLColor;
 
 public:
 
@@ -32,9 +32,9 @@ public:
 
 	//Clear le render en cours pour les éléments OpenGL,
 	//cela permet d'éviter les problèmes de rendu lors du dessin d'éléments OpenGL et d'éléments SDL dans la même scène
-	void ClearOpenGL();
+	/*void ClearOpenGL();
 
-	void RenderOpenGL(Window* f_window);
+	void RenderOpenGL(Window* f_window);*/
 
 	void SetBackgroundColor(Color p_color);
 

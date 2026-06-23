@@ -21,8 +21,8 @@ bool Texture2D::LoadFromFile(const std::string& p_path)
     }
 
     // Convertir en RGBA32 pour simplifier (OpenGL aime ce format)
-    SDL_Surface* converted = SDL_ConvertSurfaceFormat(surface, SDL_PIXELFORMAT_RGBA32, 0);
-    SDL_FreeSurface(surface);
+    SDL_Surface* converted = SDL_ConvertSurface(surface, SDL_PIXELFORMAT_RGBA32, 0);
+    SDL_DestroySurface(surface);
     if (!converted) return false;
 
     m_width = converted->w;
@@ -47,7 +47,7 @@ bool Texture2D::LoadFromFile(const std::string& p_path)
     glGenerateMipmap(GL_TEXTURE_2D);  // optionnel pour le pixel art
 
     glBindTexture(GL_TEXTURE_2D, 0);
-    SDL_FreeSurface(converted);
+    SDL_DestroySurface(converted);
 
     SDL_Log("[Texture2D] Chargée : %s (%dx%d)", p_path.c_str(), m_width, m_height);
     return true;

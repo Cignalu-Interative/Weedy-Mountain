@@ -1,7 +1,7 @@
 ﻿//#pragma once
 //
 //#include "glad/glad.h"
-//#include <SDL.h>
+//#include <SDL3/SDL.h>
 //#include "2DPendentLib/glm/glm.hpp"
 //#include "2DPendentLib/glm/gtc/type_ptr.hpp"
 //

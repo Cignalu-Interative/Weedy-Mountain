@@ -113,7 +113,6 @@ public:
 	// plutôt qu'une position absolue.
 	void SetRelativeMouseMode(bool p_bool);
 
-	
 	void ClearMouseRelative();
 
 	Window* GetWindow() { return m_window; }

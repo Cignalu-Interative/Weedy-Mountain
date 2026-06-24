@@ -12,6 +12,7 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
+#include "InventoryInteractionManager.h"
 
 #include "ItemDataBase.h"
 #include "PlayerInventory.h"
@@ -46,6 +47,9 @@ void DemoScene::OnInitialize()
 	m_playerInventory->Close();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+
+	m_i.AddInventory(m_inv->GetSlots(), InventoryInterractionBit::MergeStack + InventoryInterractionBit::SplitStack + InventoryInterractionBit::PickItem + InventoryInterractionBit::PlaceItem);
+	m_i.AddInventory(m_hotbar->GetSlots(), 255);
 }
 
 void DemoScene::OnEvent()

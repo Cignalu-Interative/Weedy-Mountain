@@ -12,7 +12,7 @@ Button::~Button()
 void Button::InitText(const std::string& p_textID, const std::string& p_text)
 {
 	m_textID = p_textID;
-	GetScene()->CreateText(p_textID, GetPosition(), p_text, {255, 255, 255, 255}, GetIsGUI());
+	GetScene()->CreateText(p_textID, GetPosition(), p_text, { 255, 255, 255, 255 }, GetIsGUI());
 }
 
 void Button::SetText(const std::string& p_text)
@@ -29,7 +29,7 @@ bool Button::IsMouseIn()
 {
 	InputManager* im = InputManager::Get();
 	Vector2f mousePos = im->GetMousePosition();
-	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetCollider()->GetPosition({0.f, 0.f}));
+	Vector2f pos = Application::Get()->GetCamera()->WorldToScreen(GetCollider()->GetPosition({ 0.f, 0.f }));
 	//std::cout << pos.GetX() << " " << pos.GetY() << std::endl;
 	//std::cout << mousePos.GetX() << " " << mousePos.GetY() << std::endl;
 	int w = GetCollider()->GetDimension().GetX();
@@ -65,21 +65,55 @@ void Button::OnUpdate()
 			m_onHoverExit();
 	}
 
+	auto now = std::chrono::steady_clock::now();
+
 	// LEFT CLICK
 	if (mouseIn && im->IsMouseUp(BUTTON_LEFT))
 	{
 		if (m_onReleaseLeftClick)
 			m_onReleaseLeftClick();
-	}
-	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
-	{
-		if (m_onLeftClick)
-			m_onLeftClick();
+
+		/*float elapsed = std::chrono::duration<float>(now - m_lastLeftClick).count();
+
+		if (elapsed <= m_doubleClickDelay)
+		{
+			if (m_onDoubleLeftClick)
+				m_onDoubleLeftClick();
+		}
+
+		m_lastLeftClick = now;*/
+
+
+		// Si tu veux que quand ya un double click, le click simple ne se fasse pas, tu peux faire ca :
+
+		
+
+		float elapsed = std::chrono::duration<float>(now - m_lastLeftClick).count();
+
+		if (elapsed <= m_doubleClickDelay)
+		{
+			if (m_onDoubleLeftClick)
+				m_onDoubleLeftClick();
+		}
+		else
+		{
+			if (m_onReleaseLeftClick)
+				m_onReleaseLeftClick();
+		}
+
+		m_lastLeftClick = now;
+
+		
 	}
 	else if (mouseIn && im->IsMouseHeld(BUTTON_LEFT))
 	{
 		if (m_onHeldLeftClick)
 			m_onHeldLeftClick();
+	}
+	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
+	{
+		if (m_onLeftClick)
+			m_onLeftClick();
 	}
 
 	// RIGHT CLICK
@@ -87,6 +121,16 @@ void Button::OnUpdate()
 	{
 		if (m_onReleaseRightClick)
 			m_onReleaseRightClick();
+
+		float elapsed = std::chrono::duration<float>(now - m_lastRightClick).count();
+
+		if (elapsed <= m_doubleClickDelay)
+		{
+			if (m_onDoubleRightClick)
+				m_onDoubleRightClick();
+		}
+
+		m_lastRightClick = now;
 	}
 	else if (mouseIn && im->IsMouseDown(BUTTON_RIGHT))
 	{

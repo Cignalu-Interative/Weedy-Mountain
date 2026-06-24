@@ -121,7 +121,7 @@ void GameScene::OnUpdate()
 	//FarmManager::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
-	CreateText("money", { 500, 10 }, std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
+	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
 	//Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }

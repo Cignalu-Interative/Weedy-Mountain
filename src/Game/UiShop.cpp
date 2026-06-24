@@ -27,15 +27,15 @@ void UiShop::OnInitialize()
 	m_slot->AddSprite("item_texture", "", m_slot->GetDimension(),1);
 	m_slot->InitText("slot", "");
 
-	float offsetButtonX = GetPosition({ 1,1 }).GetX() - 175.f;
-	float offsetButtonY = GetPosition({ 1,1 }).GetY() - 100.f;
+
+	float offsetButtonX = GetPosition({ 1,1 }).GetX() - offsetX;
+	float offsetButtonY = GetPosition({ 1,1 }).GetY() - offsetY*0.75f;
 
 	m_sellButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, {150,50}, "Oak_Tree", "sellButton", "SELL", true);
 	m_sellButton->SetOnLeftClick([this] { Sell(); });
 	m_sellButton->ShowCollider(true);
 	m_sellButton->GetCollider()->SetIsTrigger(true);
 	m_sellButton->SetVisible(false);
-
 	
 	m_buyButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "Oak_Tree", "buyButton", "BUY", true);
 	m_buyButton->SetOnLeftClick([this] {Buy(); });
@@ -45,7 +45,7 @@ void UiShop::OnInitialize()
 
 	Vector2f topLeftPos = GetPosition({ 0,0 });
 	float BoffsetX = dimension.GetX() / 6.f;
-	float BoffsetY = dimension.GetY() / 6.f ;
+	float BoffsetY = dimension.GetY() / 3.f ;
 	float BSoffestX = dimension.GetX() / 2.9f;
 	Vector2f offsetPlayerInventory = topLeftPos + Vector2f{ BoffsetX, BoffsetY };
 	Vector2f offsetShopInventory = topLeftPos + Vector2f{ BSoffestX, BoffsetY };
@@ -62,17 +62,20 @@ void UiShop::OnInitialize()
 
 	Vector2f halfRightPos = GetPosition({ 1,0.5f });
 	float offsetPriceX = GetPosition().GetX();
-	float offsetPriceY = halfRightPos.GetY() + 100;
+	float offsetPriceY = halfRightPos.GetY() *1.275f;
 
 	scene->CreateText("itemAmount", { offset.GetX(),halfRightPos.GetY() }, "Item : " + std::to_string(m_amountOfItem), ColorsNamed::White);
 	scene->CreateText("totalPrice", { offset.GetX(),offsetPriceY }, "Price : " + std::to_string(m_totalPrices), ColorsNamed::White);
 
-	m_plusButton = scene->CreateButton(GetPosition({1,0.5f}), { 50,50 }, "", "plusButton","+");
+	Vector2f plusButtonOffset = { GetPosition({ 1,0.5f }).GetX() - GetDimension().GetX() / 7.5f, GetPosition({ 1,0.5f }).GetY() };
+	Vector2f minusButtonOffset = { GetPosition({ 1,0.5f }).GetX() - GetDimension().GetX() / 3.75f, GetPosition({ 1,0.5f }).GetY() };
+
+	m_plusButton = scene->CreateButton(plusButtonOffset, { 50,50 }, "", "plusButton","+");
 	m_plusButton->SetOnLeftClick([this] {PlusButton(); });
 	m_plusButton->ShowCollider(true);
 	m_plusButton->GetCollider()->SetIsTrigger(true);
 
-	m_minusButton = scene->CreateButton({ GetPosition({ 1,0.5f }) - Vector2f{250,0} }, { 50,50 }, "", "minusButton", "-");
+	m_minusButton = scene->CreateButton(minusButtonOffset, { 50,50 }, "", "minusButton", "-");
 	m_minusButton->SetOnLeftClick([this] {MinusButton(); });
 	m_minusButton->ShowCollider(true);
 	m_minusButton->GetCollider()->SetIsTrigger(true);
@@ -114,7 +117,7 @@ void UiShop::PlaceInventory(Inventory* p_inventory)
 	Vector2f pos = GetPosition({0,0.5f});
 
 	float offsetY = pos.GetY() + 150;
-	p_inventory->SetPosition({ pos.GetX(),offsetY }, { 0,1 });
+	p_inventory->SetPosition({ pos.GetX()*1.25f,offsetY }, { 0,1 });
 	p_inventory->SetVisible(true);
 }
 
@@ -202,6 +205,8 @@ void UiShop::PlaceItemInInventoryToSlot()
 
 void UiShop::PlusButton()
 {
+	if (m_slot->IsEmpty())
+		return;
 
 	if (m_amountOfItem == m_playerInventory->GetSlot(m_slotIndex)->GetStack().GetAmount())
 		return;
@@ -213,11 +218,16 @@ void UiShop::PlusButton()
 
 void UiShop::MinusButton()
 {
-	if (m_slot->GetStack().GetAmount() == 0)
+	if (m_slot->IsEmpty())
 		return;
 
 	int amount = m_slot->GetStack().GetAmount();
-	m_slot->GetStack().SetAmount(amount - 1);
+	int result = amount - 1;
+	if (result <= 0)
+	{
+		result = 1;
+	}
+	m_slot->GetStack().SetAmount(result);
 	m_slot->SetText(std::to_string(m_slot->GetStack().GetAmount()));
 }
 

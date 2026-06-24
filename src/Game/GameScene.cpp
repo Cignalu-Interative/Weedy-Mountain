@@ -25,6 +25,8 @@
 
 #include "PNJ.h"
 #include "UiShop.h"
+#include "SpriteContainer.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -89,7 +91,7 @@ void GameScene::OnInitialize()
 	m_player2->GetInventory()->AddItem("ITEM_WOOD", 30, false);
 	m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
 
-	UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 900, 600 }, "Perceval", Shape::Rectangle, true);
+	UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "", Shape::Rectangle, true);
 	a->ShowCollider(true);
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 

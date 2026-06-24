@@ -32,6 +32,7 @@ public :
 	void OnEvent() override;
 
 	void OnUpdate() override;
+
 	// place Inventory in the shop
 	void PlaceInventory(Inventory* p_inventory);
 
@@ -46,5 +47,11 @@ public :
 	void ChooseShopInventoryButtonClicked();
 
 	void PlaceItemInInventoryToSlot();
+
+	void PlusButton();
+
+	void MinusButton();
+
+	void SetShopInventory(Inventory* p_shopInventory) { m_shopInventory = p_shopInventory; }
 };
 

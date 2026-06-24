@@ -32,7 +32,7 @@ void UiShop::OnInitialize()
 
 	m_sellButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, {150,50}, "Oak_Tree", "sellButton", "SELL", true);
 	m_sellButton->SetOnLeftClick([this] { Sell(); });
-	//m_sellButton->ShowCollider(true);
+	m_sellButton->ShowCollider(true);
 	m_sellButton->GetCollider()->SetIsTrigger(true);
 	m_sellButton->SetVisible(false);
 
@@ -66,6 +66,16 @@ void UiShop::OnInitialize()
 
 	scene->CreateText("itemAmount", { offset.GetX(),halfRightPos.GetY() }, "Item : " + std::to_string(m_amountOfItem), ColorsNamed::White);
 	scene->CreateText("totalPrice", { offset.GetX(),offsetPriceY }, "Price : " + std::to_string(m_totalPrices), ColorsNamed::White);
+
+	m_plusButton = scene->CreateButton(GetPosition({1,0.5f}), { 50,50 }, "", "plusButton","+");
+	m_plusButton->SetOnLeftClick([this] {PlusButton(); });
+	m_plusButton->ShowCollider(true);
+	m_plusButton->GetCollider()->SetIsTrigger(true);
+
+	m_minusButton = scene->CreateButton({ GetPosition({ 1,0.5f }) - Vector2f{250,0} }, { 50,50 }, "", "minusButton", "-");
+	m_minusButton->SetOnLeftClick([this] {MinusButton(); });
+	m_minusButton->ShowCollider(true);
+	m_minusButton->GetCollider()->SetIsTrigger(true);
 
 	GetCollider()->SetIsTrigger(true);
 }
@@ -187,5 +197,25 @@ void UiShop::PlaceItemInInventoryToSlot()
 			m_slot->SetStack(item);
 		}
 	}
+}
+
+void UiShop::PlusButton()
+{
+	if (m_slot->GetStack().GetAmount() == 0)
+		return;
+
+	int amount = m_slot->GetStack().GetAmount();
+	m_slot->GetStack().SetAmount(amount + 1);
+	GetScene()->GetGeometry<Text>(m_slot->GetTextID())->SetText(std::to_string(m_slot->GetStack().GetAmount()));
+}
+
+void UiShop::MinusButton()
+{
+	if (m_slot->GetStack().GetAmount() == 0)
+		return;
+
+	int amount = m_slot->GetStack().GetAmount();
+	m_slot->GetStack().SetAmount(amount - 1);
+	GetScene()->GetGeometry<Text>(m_slot->GetTextID())->SetText(std::to_string(m_slot->GetStack().GetAmount()));
 }
 

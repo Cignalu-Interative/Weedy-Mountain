@@ -86,7 +86,8 @@ void GameScene::OnInitialize()
 	//	//tile->ShowCollider(true);
 	//	FarmManager::Get()->RegisterTile(tile);
 	//}
-	
+
+
 	m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	m_player2->GetInventory()->AddItem("ITEM_WOOD", 30, false);
 	m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);

@@ -188,25 +188,27 @@ void UiShop::PlaceItemInInventoryToSlot()
 	//Get item of slot in the inventory and place it in the slot
 	std::vector<InventorySlot*> slots = inventory->GetSlots();
 
-	for (InventorySlot* slot : slots)
+	for (int i =0;i < slots.size(); i++)
 	{
-		if (slot->IsMouseIn() && slot->IsEmpty() == false)
+		if (slots[i]->IsMouseIn() && slots[i]->IsEmpty() == false)
 		{
-			ItemStack item = slot->GetStack();
+			ItemStack item = slots[i]->GetStack();
 			m_slot->SetText(std::to_string(item.GetAmount()));
 			m_slot->SetStack(item);
+			m_slotIndex = i;
 		}
 	}
 }
 
 void UiShop::PlusButton()
 {
-	if (m_slot->GetStack().GetAmount() == 0)
+
+	if (m_amountOfItem == m_playerInventory->GetSlot(m_slotIndex)->GetStack().GetAmount())
 		return;
 
 	int amount = m_slot->GetStack().GetAmount();
 	m_slot->GetStack().SetAmount(amount + 1);
-	GetScene()->GetGeometry<Text>(m_slot->GetTextID())->SetText(std::to_string(m_slot->GetStack().GetAmount()));
+	m_slot->SetText(std::to_string(m_slot->GetStack().GetAmount()));
 }
 
 void UiShop::MinusButton()
@@ -216,6 +218,6 @@ void UiShop::MinusButton()
 
 	int amount = m_slot->GetStack().GetAmount();
 	m_slot->GetStack().SetAmount(amount - 1);
-	GetScene()->GetGeometry<Text>(m_slot->GetTextID())->SetText(std::to_string(m_slot->GetStack().GetAmount()));
+	m_slot->SetText(std::to_string(m_slot->GetStack().GetAmount()));
 }
 

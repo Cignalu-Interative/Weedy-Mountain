@@ -22,6 +22,8 @@ private :
 	Button* m_choosePlayerInventory = nullptr;
 	Button* m_chooseVendorInventory = nullptr;
 
+	int m_slotIndex = 50;
+
 	int m_amountOfItem = 0;
 	int m_totalPrices = 10;
 

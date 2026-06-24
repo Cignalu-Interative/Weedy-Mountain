@@ -27,6 +27,15 @@ class InventoryManager
 {
 private:
 
+	enum class State
+	{
+		Idle,              
+		Holding,           
+		LeftPendingPlace,
+		RightPendingPlace,
+		LeftDragSplit,
+		RightDragSplit,
+	};
 	
 	struct InventoryWithFlag //Le nom est pas terrible à changer
 	{
@@ -40,57 +49,51 @@ private:
 
 	ItemStack m_cursorStack;
 
-	bool m_isDragging = false;
+	State m_state = State::Idle;
 
-	std::vector<InventorySlot*> m_alreadyDraggedSlots;
+	InventorySlot* m_pressedSlot = nullptr;
 
+	std::vector<InventorySlot*> m_dragSlots;
+	int m_dragTotalAtStart = 0; 
 
-
+	std::chrono::steady_clock::time_point m_lastPickupTime;
+	float m_doubleClickDelay = 0.25f;
+	InventorySlot* m_lastPickedSlot = nullptr;
 
 public:
 
 	void AddInventory(std::vector<InventorySlot*>& slots, uint8_t bit);
-
 	void ClearInventories();
 
 	ItemStack& GetCursorStack();
-
 	bool HasCursorItem();
 
-	void HandleLeftClick(InventorySlot* slot);
-
-	void HandleRightClick(InventorySlot* slot);
-
-	void HandleDoubleLeftClick(InventorySlot* slot);
-
 	void HandleDropOutside();
-
-	void HandleLeftHeld(InventorySlot* slot);
-
-	void HandleLeftRelease();
-
 
 private:
 
 	bool HasFlag(uint8_t flags, InventoryInterractionBit flag);
-
 	InventoryWithFlag* FindInventory(InventorySlot* slot);
+	bool CanInteract(InventorySlot* slot, InventoryInterractionBit flag);
+	int  GetMaxStack(const std::string& id);
+
+	void OnLeftDown(InventorySlot* slot);
+	void OnRightDown(InventorySlot* slot);
+	void OnLeftHeldEnter(InventorySlot* slot);
+	void OnRightHeldEnter(InventorySlot* slot);
+	void OnLeftRelease(InventorySlot* slot);
+	void OnRightRelease(InventorySlot* slot);
+	void OnDoubleLeftClick(InventorySlot* slot);
 
 	void PickupStack(InventorySlot* slot);
-
-	void PlaceStack(InventorySlot* slot);
-
+	void PlaceFullStack(InventorySlot* slot);
 	void SwapStacks(InventorySlot* slot);
-
 	void MergeStacks(InventorySlot* slot);
-
-	void SplitStack(InventorySlot* slot);
-
+	void SplitStackToCursor(InventorySlot* slot);   
 	void PlaceSingleItem(InventorySlot* slot);
 
-	void GatherAllStacks(InventorySlot* slot);
-
-	int GetMaxStack(const std::string& itemID);
-
-	bool CanInteract(InventorySlot* slot, InventoryInterractionBit flag);
+	void AddDragSlot(InventorySlot* slot);
+	void RedistributeDrag();                       
+	void CommitDrag();                              
+	void CancelDrag();                            
 };

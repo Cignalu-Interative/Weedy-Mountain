@@ -2,6 +2,7 @@
 #include "InventorySlot.h"
 #include "ItemData.h"
 #include "ItemDataBase.h"
+#include "2DPendentLib/InputManager.h"
 
 InventorySlot::InventorySlot()
 	: m_stack("ITEM_NOTHING", 0) {
@@ -60,4 +61,24 @@ void InventorySlot::RefreshVisual()
 void InventorySlot::OnUpdate()
 {
     Button::OnUpdate();
+
+    InputManager* im = InputManager::Get();
+    bool mouseIn = IsMouseIn();
+
+    if (mouseIn && !m_wasMouseIn)
+    {
+        if (im->IsMouseHeld(BUTTON_LEFT) && m_onLeftHeldEnter)
+            m_onLeftHeldEnter();
+
+        if (im->IsMouseHeld(BUTTON_RIGHT) && m_onRightHeldEnter)
+            m_onRightHeldEnter();
+    }
+
+    if (im->IsMouseUp(BUTTON_LEFT) && m_onLeftRelease)
+        m_onLeftRelease();
+
+    if (im->IsMouseUp(BUTTON_RIGHT) && m_onRightRelease)
+        m_onRightRelease();
+
+    m_wasMouseIn = mouseIn;
 }

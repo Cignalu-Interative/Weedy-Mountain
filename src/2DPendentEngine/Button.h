@@ -30,6 +30,8 @@ private:
 
 	float m_doubleClickDelay = 0.25f;
 
+	bool m_leftWasDown = false;
+
 public:
 	Button() = default;
 	~Button();
@@ -55,5 +57,5 @@ public:
 
 	bool IsMouseIn();
 
-	void OnUpdate() override;
+	virtual void OnUpdate() override;
 };

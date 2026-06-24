@@ -73,21 +73,18 @@ void Button::OnUpdate()
 		if (m_onReleaseLeftClick)
 			m_onReleaseLeftClick();
 
-		/*float elapsed = std::chrono::duration<float>(now - m_lastLeftClick).count();
-
-		if (elapsed <= m_doubleClickDelay)
+		m_leftWasDown = false;
+	}
+	else if (mouseIn && im->IsMouseHeld(BUTTON_LEFT))
+	{
+		if (m_leftWasDown) 
 		{
-			if (m_onDoubleLeftClick)
-				m_onDoubleLeftClick();
+			if (m_onHeldLeftClick)
+				m_onHeldLeftClick();
 		}
-
-		m_lastLeftClick = now;*/
-
-
-		// Si tu veux que quand ya un double click, le click simple ne se fasse pas, tu peux faire ca :
-
-		
-
+	}
+	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
+	{
 		float elapsed = std::chrono::duration<float>(now - m_lastLeftClick).count();
 
 		if (elapsed <= m_doubleClickDelay)
@@ -97,23 +94,12 @@ void Button::OnUpdate()
 		}
 		else
 		{
-			if (m_onReleaseLeftClick)
-				m_onReleaseLeftClick();
+			if (m_onLeftClick)
+				m_onLeftClick();
 		}
 
 		m_lastLeftClick = now;
-
-		
-	}
-	else if (mouseIn && im->IsMouseHeld(BUTTON_LEFT))
-	{
-		if (m_onHeldLeftClick)
-			m_onHeldLeftClick();
-	}
-	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
-	{
-		if (m_onLeftClick)
-			m_onLeftClick();
+		m_leftWasDown = true;
 	}
 
 	// RIGHT CLICK
@@ -121,7 +107,14 @@ void Button::OnUpdate()
 	{
 		if (m_onReleaseRightClick)
 			m_onReleaseRightClick();
-
+	}
+	else if (mouseIn && im->IsMouseHeld(BUTTON_RIGHT))
+	{
+		if (m_onHeldRightClick)
+			m_onHeldRightClick();
+	}
+	else if (mouseIn && im->IsMouseDown(BUTTON_RIGHT))
+	{
 		float elapsed = std::chrono::duration<float>(now - m_lastRightClick).count();
 
 		if (elapsed <= m_doubleClickDelay)
@@ -129,18 +122,13 @@ void Button::OnUpdate()
 			if (m_onDoubleRightClick)
 				m_onDoubleRightClick();
 		}
+		else
+		{
+			if (m_onRightClick)
+				m_onRightClick();
+		}
 
 		m_lastRightClick = now;
-	}
-	else if (mouseIn && im->IsMouseDown(BUTTON_RIGHT))
-	{
-		if (m_onRightClick)
-			m_onRightClick();
-	}
-	else if (mouseIn && im->IsMouseHeld(BUTTON_RIGHT))
-	{
-		if (m_onHeldRightClick)
-			m_onHeldRightClick();
 	}
 
 	m_mouseWasIn = mouseIn;

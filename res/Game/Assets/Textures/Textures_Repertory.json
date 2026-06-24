@@ -733,6 +733,15 @@
       "path": "../../res/Game/Assets/Textures/SunFlower.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/button.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/button2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/buttonHover.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/carrot_01.png"
     },
     {
@@ -749,12 +758,6 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/player.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/sell.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/sellHover.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/slot.png"

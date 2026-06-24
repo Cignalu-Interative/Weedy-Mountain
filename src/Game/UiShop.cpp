@@ -36,17 +36,19 @@ void UiShop::OnInitialize()
 	float offsetButtonX = GetPosition({ 1,1 }).GetX() - offsetX;
 	float offsetButtonY = GetPosition({ 1,1 }).GetY() - offsetY * 0.75f;
 
-	m_sellButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "sell", "sellButton", "SELL", true);
+	m_sellButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "button", "sellButton", "SELL", true);
 	m_sellButton->SetOnLeftClick([this] { Sell(); });
-	m_sellButton->SetOnHoverStay([this] { m_sellButton->SetSprite("sellHover"); });
-	m_sellButton->SetOnHoverExit([this] { m_sellButton->SetSprite("sell"); });
+	m_sellButton->SetOnHoverStay([this] { m_sellButton->SetSprite("buttonHover"); });
+	m_sellButton->SetOnHoverExit([this] { m_sellButton->SetSprite("button"); });
 	//m_sellButton->ShowCollider(true);
 	m_sellButton->GetCollider()->SetIsTrigger(true);
 	m_sellButton->SetVisible(false);
 	
 
-	m_buyButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "", "buyButton", "BUY", true);
+	m_buyButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "button", "buyButton", "BUY", true);
 	m_buyButton->SetOnLeftClick([this] {Buy(); });
+	m_buyButton->SetOnHoverStay([this] { m_buyButton->SetSprite("buttonHover"); });
+	m_buyButton->SetOnHoverExit([this] { m_buyButton->SetSprite("button"); });
 	//m_buyButton->ShowCollider(true);
 	m_buyButton->GetCollider()->SetIsTrigger(true);
 	m_buyButton->SetVisible(false);

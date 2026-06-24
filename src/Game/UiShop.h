@@ -20,9 +20,9 @@ private :
 	Button* m_minusButton = nullptr;
 
 	Button* m_choosePlayerInventory = nullptr;
-	Button* m_chooseVendorInventory = nullptr;
+	Button* m_chooseShopInventory = nullptr;
 
-	int m_slotIndex = 50;
+	int m_slotIndex = 0;
 
 	int m_amountOfItem = 0;
 	int m_totalPrices = 10;
@@ -55,5 +55,7 @@ public :
 	void MinusButton();
 
 	void SetShopInventory(Inventory* p_shopInventory) { m_shopInventory = p_shopInventory; }
+
+	void SetVisible(bool p_isVisible);
 };
 

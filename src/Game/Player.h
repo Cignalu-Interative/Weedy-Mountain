@@ -90,7 +90,7 @@ private:
 
 	bool m_isInDialog = false;
 
-	int m_money = 200;
+	int m_money = 2000000;
 
 protected:
 

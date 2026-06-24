@@ -54,6 +54,8 @@ void SoundManager::AddSound(const std::string& p_path)
 	nlohmann::ordered_json sounds_json;
 	file >> sounds_json;
 
+	Vector2i wSize = Application::Get()->GetWindow()->GetWindowSize();
+
 	for (auto& [categorie, sounds] : sounds_json.items())
 	{
 		for (auto& sound : sounds)
@@ -66,7 +68,7 @@ void SoundManager::AddSound(const std::string& p_path)
 				//SDL_Log("Lib/AssetManager.cpp/AddTexture/GetNameFromPath/Sound already loaded with ID : %s", autoId.c_str());
 				continue;
 			}
-			Sound* sound = new Sound(m_mixer);
+			Sound* sound = new Sound(m_mixer, wSize);
 			sound->Initialize(path, Vector2f(0, 0));
 			sound->SetName(autoId);
 			m_sounds[autoId] = m_soundsVector.size();
@@ -79,7 +81,9 @@ void SoundManager::AddSound(const std::string& p_path, Vector2f p_position)
 	std::string autoId = Utils::GetNameFromPath(p_path);
 	if (m_sounds.find(autoId) == m_sounds.end())
 	{
-		Sound* sound = new Sound(m_mixer);
+		Vector2i wSize = Application::Get()->GetWindow()->GetWindowSize();
+
+		Sound* sound = new Sound(m_mixer, wSize);
 		sound->Initialize(p_path, p_position);
 		sound->SetName(autoId);
 		m_sounds[autoId] = m_soundsVector.size();
@@ -362,29 +366,7 @@ void SoundManager::ApplySpatialization(Sound* p_sound)
 			? (Vector2f)Application::Get()->GetWindow()->GetWindowSize() / 2.0f
 			: m_listener->GetPosition();
 
-		Vector2f soundPos = p_sound->GetPosition();
-
-		// 1. Calcul du décalage direct (en pixels)
-		float dx = soundPos.GetX() - listenerPos.GetX();
-		float dy = soundPos.GetY() - listenerPos.GetY();
-		float distance = sqrtf(dx * dx + dy * dy);
-
-		// Marge de sécurité pour les sons très proches
-		if (distance < 5.0f) {
-			dx = 0.0f;
-			dy = 0.0f;
-			distance = 0.0f;
-		}
-
-		// 2. On contraint la distance par rapport à ta distance d'écoute max
-		if (distance > m_maxAudibleDistance) {
-			// Le son est trop loin, on peut le couper ou le mettre au max de distance
-			distance = m_maxAudibleDistance;
-		}
-
-		// 3. On envoie DIRECTEMENT les coordonnées relatives au son
-		// On passe directement dx et dy (tu peux les stocker dans ton objet Sound)
-		p_sound->SetRelativePosition({ dx, dy });
+		p_sound->ApplySpatialization(listenerPos);
 	}
 }
 

@@ -109,7 +109,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
         SDL_Vertex center;
         center.position = { cx, cy };
-        center.color = {(float)m_color.r, (float)m_color.g, (float)m_color.b, (float)m_color.a};
+        center.color = {(float)m_color.r / 255.f, (float)m_color.g / 255.f, (float)m_color.b /255.f, (float)m_color.a / 255.f };
         center.tex_coord = { 0.0f, 0.0f };
         vertices.push_back(center);
 
@@ -125,7 +125,7 @@ void Circle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
             SDL_Vertex v;
             v.position = { screenX, screenY };
-            v.color = { (float)m_color.r, (float)m_color.g, (float)m_color.b, (float)m_color.a };
+            v.color = { (float)m_color.r / 255.f, (float)m_color.g / 255.f, (float)m_color.b / 255.f, (float)m_color.a / 255.f };
             v.tex_coord = { 0.0f, 0.0f };
             vertices.push_back(v);
         }

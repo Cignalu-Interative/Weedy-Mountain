@@ -37,12 +37,12 @@ private:
 	Sint64 m_LoopStartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
 	int m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son dépasse cette durée, il sera arrêté automatiquement
 	int m_fadeInMs = 0; // Durée du fondu d'entrée en millisecondes, utilisée pour le fondu d'entrée du son
-	float m_gainVolumeFadeIn = 0; // Volume initial pour le fondu d'entrée, utilisé pour le fondu d'entrée du son
+	float m_gainVolumeFadeIn = 1.0f; // Volume initial pour le fondu d'entrée, utilisé pour le fondu d'entrée du son
 	int m_fadeOutMs = 0; // Durée du fondu de sortie en millisecondes, utilisée pour le fondu de sortie du son
 	float m_soundReverberation = 0.0f; // Facteur de réverbération du son, compris entre 0.0f (pas de réverbération) et 1.0f (réverbération maximale)
 	float m_maxReverberation = 2000.0f;
 
-	Vector2f m_relativePosition; //Position relative du son par rapport au listener, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
+	Vector2f m_relativePosition = Vector2f(0.0f, 0.0f); //Position relative du son par rapport au listener, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
 
 	// Volume "artistique" propre au fichier (0.0f à 1.0f). 
 	// Fixé une fois au chargement pour équilibrer les sons entre eux (ex: baisser un bruit de pas trop fort).
@@ -54,11 +54,15 @@ private:
 
 	float m_lastGlobalVolume = 1.0f;
 
+	float m_minDistanceToListen = 0.0f; // Distance minimale à laquelle le son peut être entendu, en pixels
+	float m_maxDistanceToListen = 0.0f; // Distance maximale à laquelle le son peut être entendu, en pixels
+	float m_rolloffDistanceToVolume = 1000.0f; // Facteur de rolloff pour l'atténuation du volume en fonction de la distance
+
 
 public:
 
 	//Constructeur par défaut de Sound
-	Sound(MIX_Mixer* p_mixer);
+	Sound(MIX_Mixer* p_mixer, Vector2i p_wSize);
 	//Destructeur de Sound
 	~Sound();
 	//Initialiser le son en fonction du chemin du fichier audio et de sa position dans le monde
@@ -122,7 +126,12 @@ public:
 	void SetAbsoluteVolume(int p_volume);
 	void UpdateRelativeVolume(float p_globalVolume);
 
+	// La fonction SetLimitDistanceToListen définit les distances minimale et maximale à laquell
+	// le son peut être entendu, ainsi que le facteur de rolloff pour l'atténuation du volume en fonction de la distance.
+	// Exemple d'utilisation : SetLimitDistanceToListen(100.0f, 1000.0f, 1.0f);
+	void SetLimitDistanceToListen(float p_min, float p_max, float p_rolloff);
 
+	void ApplySpatialization(const Vector2f& p_listenerPosition);
 
 
 };

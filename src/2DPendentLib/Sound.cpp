@@ -2,22 +2,41 @@
 #include "Sound.h"
 #include "Utils.h"
 
-Sound::Sound(MIX_Mixer* p_mixer)
+Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 {
 	m_mixer = p_mixer;
 	m_propertiesID = SDL_CreateProperties();
+	float distanceDiagonale = std::hypot(p_wSize.GetX(), p_wSize.GetY());
+	SetLimitDistanceToListen(0.0f, distanceDiagonale / 2, 100);
+
 }
 
 Sound::~Sound() {
-	MIX_DestroyTrack(m_pisteMusique);
-	for (auto& track : m_pistesSFX) {
-		MIX_DestroyTrack(track);
+	if (m_pisteMusique)
+	{
+		MIX_DestroyTrack(m_pisteMusique);
+		m_pisteMusique = nullptr;
 	}
-	MIX_DestroyAudio(m_audio);
-	m_audio = nullptr;
+
+	for (auto& track : m_pistesSFX)
+	{
+		if (track)
+		{
+			MIX_DestroyTrack(track);
+		}
+	}
 	m_pistesSFX.clear();
-	m_pisteMusique = nullptr;
-	SDL_DestroyProperties(m_propertiesID);
+
+	if (m_audio)
+	{
+		MIX_DestroyAudio(m_audio);
+		m_audio = nullptr;
+	}
+
+	if (m_propertiesID)
+	{
+		SDL_DestroyProperties(m_propertiesID);
+	}
 }
 
 void Sound::Initialize(const std::string& p_path, Vector2f p_position)
@@ -26,22 +45,25 @@ void Sound::Initialize(const std::string& p_path, Vector2f p_position)
 
 	//MIX_CreateTrack()
 
-	if (m_audioFormat == AudioFormat::WAV) {
+	if (m_audioFormat == AudioFormat::WAV)
+	{
 		m_audio = MIX_LoadAudio(m_mixer,p_path.c_str(), true);
 		if (!m_audio)
 		{
 			SDL_Log("Lib/Sound.cpp/Initialize/Mix_LoadWAV/ SFX not found : (%s): %s", p_path.c_str(), SDL_GetError());
+			return;
 		}
-		SetPosition(p_position);
 	}
-	else if (m_audioFormat == AudioFormat::MP3) {
+	else if (m_audioFormat == AudioFormat::MP3)
+	{
 		m_audio = MIX_LoadAudio(m_mixer, p_path.c_str(), false);
 		if (!m_audio)
 		{
 			SDL_Log("Lib/Sound.cpp/Initialize/Mix_LoadMUS/ MUSIC not found : (%s): %s", p_path.c_str(), SDL_GetError());
+			return;
 		}
-		SetPosition(p_position);
 	}
+	SetPosition(p_position);
 }
 
 void Sound::RemoveOldTrack()
@@ -87,21 +109,27 @@ void Sound::Play()
 	if(m_audioFormat == AudioFormat::WAV)
 	{
 		MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
+		if (newTrack == nullptr)
+		{
+			SDL_Log("Lib/Sound.cpp/Play: MIX_CreateTrack failed: %s", SDL_GetError());
+			return;
+		}
+
 		MIX_SetTrackAudio(newTrack, m_audio);
 
 		MIX_SetTrackGain(newTrack, m_relativeVolume);
 
 		MIX_Point3D position;
 		// Axe X (Gauche/Droite) = dx de l'écran
-		position.x = m_relativePosition.GetX();
+		position.x = m_relativePosition.GetX() / m_rolloffDistanceToVolume;
 
 		// Vu que je peux pas encore tester si il fonctionne le code si bug de spacialisation inverser le GetY et le 0.0f de .z
 
 		// Axe Y (Haut/Bas dans l'espace)
-		position.y = m_relativePosition.GetY();
+		position.z = m_relativePosition.GetY() / m_rolloffDistanceToVolume;
 
 		// Axe Z (Profondeur Devant/Derrière)
-		position.z = 0.0f;
+		position.y = 0.0f;
 		MIX_SetTrack3DPosition(newTrack, &position);
 
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOPS_NUMBER, m_loopCount);
@@ -270,7 +298,7 @@ void Sound::SetAbsoluteVolume(int p_volume)
 
 void Sound::UpdateRelativeVolume(float p_globalVolume)
 {
-	m_lastGlobalVolume = p_globalVolume;
+	m_lastGlobalVolume = Utils::Clamp(p_globalVolume, 0.0f, 1.0f);
 
 	m_relativeVolume = m_absoluteVolume * m_lastGlobalVolume;
 
@@ -284,5 +312,38 @@ void Sound::UpdateRelativeVolume(float p_globalVolume)
 		{
 			MIX_SetTrackGain(piste, m_relativeVolume);
 		}
+	}
+}
+
+void Sound::SetLimitDistanceToListen(float p_min, float p_max, float p_rolloff)
+{
+	m_minDistanceToListen = Utils::LimitMin(p_min, 0.0f);
+	m_maxDistanceToListen = Utils::LimitMin(p_max, 0.0f);
+	m_rolloffDistanceToVolume = Utils::LimitMin(p_rolloff, 1.f);
+}
+
+void Sound::ApplySpatialization(const Vector2f& p_listenerPosition)
+{
+	float dx = m_position.GetX() - p_listenerPosition.GetX();
+	float dy = m_position.GetY() - p_listenerPosition.GetY();
+
+	m_relativePosition.SetX(dx);
+	m_relativePosition.SetY(dy);
+
+	MIX_Point3D position;
+	position.x = dx / m_rolloffDistanceToVolume;
+	position.z = dy / m_rolloffDistanceToVolume;
+	position.y = 0.0f;
+
+	if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	{
+		for (MIX_Track* piste : m_pistesSFX)
+		{
+			MIX_SetTrack3DPosition(piste, &position);
+		}
+	}
+	else if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique != nullptr)
+	{
+		MIX_SetTrack3DPosition(m_pisteMusique, &position);
 	}
 }

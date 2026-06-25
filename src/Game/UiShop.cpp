@@ -22,7 +22,7 @@ void UiShop::OnInitialize()
 	Vector2f offset = topRightPos + Vector2f{ -offsetX, offsetY };
 
 	m_slot = scene->CreateEntity<InventorySlot>(offset, { 200,150 }, "", Shape::Rectangle, true);
-	//m_slot->ShowCollider(true);
+	m_slot->ShowCollider(true);
 	m_slot->GetCollider()->SetIsTrigger(true);
 
 	m_slot->AddSprite("item_texture", "", m_slot->GetDimension(), 1, { 0.0f, 0.0f }, true);
@@ -230,7 +230,7 @@ void UiShop::PlusButton()
 	if (m_slot->IsEmpty())
 		return;
 
-	if (m_amountOfItem == m_playerInventory->GetSlot(m_slotIndex)->GetStack().GetAmount())
+	if (m_amountOfItem == m_playerInventory->GetSlot(m_slotIndex)->GetStack().GetAmount() && m_sellButton->GetIsVisible())
 		return;
 
 	int amount = m_slot->GetStack().GetAmount();

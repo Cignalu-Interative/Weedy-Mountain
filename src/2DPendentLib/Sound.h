@@ -53,6 +53,11 @@ private:
 	float m_minDistanceToListen = 0.0f; // Distance minimale à laquelle le son peut être entendu, en pixels
 	float m_maxDistanceToListen = 0.0f; // Distance maximale à laquelle le son peut être entendu, en pixels
 
+	// Dans Sound.h
+	float m_currentSmoothedGain = 0.0f;
+	float m_currentSmoothedPanX = 0.0f;
+	float m_currentSmoothedPanZ = 0.0f;
+
 public:
 
 	//Constructeur par défaut de Sound
@@ -112,7 +117,7 @@ public:
 	// Exemple d'utilisation : SetLimitDistanceToListen(100.0f, 1000.0f);
 	void SetLimitDistanceToListen(float p_min, float p_max);
 
-	void ApplySpatialization(const Vector2f& p_listenerPosition);
+	void ApplySpatialization(const Vector2f& p_listenerPosition, float p_deltaTime);
 
 	float ComputeDistanceGain(float p_distance) const;
 

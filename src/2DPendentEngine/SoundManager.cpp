@@ -26,7 +26,7 @@ SoundManager* SoundManager::Get()
 	return &instance;
 }
 
-void SoundManager::Update()
+void SoundManager::Update(float p_deltatime)
 {
 	for (Sound* sound : m_soundsVector)
 	{
@@ -37,7 +37,7 @@ void SoundManager::Update()
 
 		if (m_isSpatializationEnabled)
 		{
-			ApplySpatialization(sound);
+			ApplySpatialization(sound, p_deltatime);
 		}
 	}
 }
@@ -362,7 +362,7 @@ void SoundManager::SetSpatializationEnabled_Disable()
 	}
 }
 
-void SoundManager::ApplySpatialization(Sound* p_sound)
+void SoundManager::ApplySpatialization(Sound* p_sound, float p_deltaTime)
 {
 	if (m_isSpatializationEnabled && p_sound != nullptr && p_sound->GetAudioFormat() == AudioFormat::WAV)
 	{
@@ -370,6 +370,6 @@ void SoundManager::ApplySpatialization(Sound* p_sound)
 			? (Vector2f)Application::Get()->GetWindow()->GetWindowSize() / 2.0f
 			: m_listener->GetPosition();
 
-		p_sound->ApplySpatialization(listenerPos);
+		p_sound->ApplySpatialization(listenerPos, p_deltaTime);
 	}
 }

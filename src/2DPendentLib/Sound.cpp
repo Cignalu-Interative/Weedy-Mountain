@@ -7,7 +7,7 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 	m_mixer = p_mixer;
 	m_propertiesID = SDL_CreateProperties();
 	float distanceDiagonale = std::hypot(p_wSize.GetX(), p_wSize.GetY());
-	SetLimitDistanceToListen(50.0f, distanceDiagonale * 2);
+	SetLimitDistanceToListen(100.0f, distanceDiagonale);
 
 }
 
@@ -122,6 +122,10 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 		MIX_Point3D position;
 		float gain;
 		ComputeSpatialization(position, gain);
+
+		m_currentSmoothedGain = gain;
+		m_currentSmoothedPanX = position.x;
+		m_currentSmoothedPanZ = position.z;
 
 		MIX_SetTrack3DPosition(newTrack, &position);
 		MIX_SetTrackGain(newTrack, gain);
@@ -315,20 +319,37 @@ void Sound::SetLimitDistanceToListen(float p_min, float p_max)
 	m_maxDistanceToListen = Utils::LimitMin(p_max, 0.0f);
 }
 
-void Sound::ApplySpatialization(const Vector2f& p_listenerPosition)
+void Sound::ApplySpatialization(const Vector2f& p_listenerPosition, float p_deltaTime)
 {
 	UpdateRelativePosition(p_listenerPosition);
 
 	if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
 	{
-		MIX_Point3D position;
-		float gain;
-		ComputeSpatialization(position, gain);
+		MIX_Point3D targetPosition;
+		float targetGain;
 
+		// 1. On récupère les valeurs CIBLES (mathématiquement parfaites)
+		ComputeSpatialization(targetPosition, targetGain);
+
+		// 2. Calcul de la vitesse d'interpolation (Slew Rate)
+		// 15.0f est une bonne valeur de base : assez rapide pour suivre l'action, 
+		// mais assez doux pour éviter les "clics" audio.
+		float interpSpeed = 15.0f * p_deltaTime;
+		Utils::Clamp(interpSpeed, 0.0f, 1.0f); // Sécurité anti-lag
+
+		// 3. Interpolation Linéaire (Lerp) depuis la valeur actuelle vers la cible
+		m_currentSmoothedGain = std::lerp(m_currentSmoothedGain, targetGain, interpSpeed);
+		m_currentSmoothedPanX = std::lerp(m_currentSmoothedPanX, targetPosition.x, interpSpeed);
+		m_currentSmoothedPanZ = std::lerp(m_currentSmoothedPanZ, targetPosition.z, interpSpeed);
+
+		// Création du vecteur de position lissé
+		MIX_Point3D finalPosition = { m_currentSmoothedPanX, 0.0f, m_currentSmoothedPanZ };
+
+		// 4. On applique les valeurs LISSÉES aux pistes
 		for (MIX_Track* piste : m_pistesSFX)
 		{
-			MIX_SetTrack3DPosition(piste, &position);
-			MIX_SetTrackGain(piste, gain);
+			MIX_SetTrack3DPosition(piste, &finalPosition);
+			MIX_SetTrackGain(piste, m_currentSmoothedGain);
 		}
 	}
 }
@@ -380,10 +401,10 @@ void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) 
 		if (distance < m_minDistanceToListen)
 		{
 			// Crée un ratio de 0.0 (au centre exact) à 1.0 (sur la bordure de la distance min)
-			float centerBlend = distance / m_minDistanceToListen;
+			float x = distance / m_minDistanceToListen;
 
 			// Optionnel : Mettre au carré pour rendre la transition vers le centre encore plus douce
-			centerBlend *= centerBlend;
+			float centerBlend = (x * x) * (3.0f - 2.0f * x);
 
 			// Applique le ratio : plus on est proche, plus le son est forcé au centre (0.0)
 			panX *= centerBlend;

@@ -43,7 +43,7 @@ public:
 
 	void SetMixer(MIX_Mixer* p_mixer) { m_mixer = p_mixer; }
 
-	void Update();
+	void Update(float p_deltatime);
 
 	void AddSound(const std::string& p_path);
 
@@ -133,7 +133,7 @@ public:
 	bool IsSpatializationEnabled() const { return m_isSpatializationEnabled; }
 
 	//Fonction pour appliquer la spatialisation à un son spécifique en utilisant la position du son et du listener pour calculer l'angle et la distance,
-	void ApplySpatialization(Sound* p_sound);
+	void ApplySpatialization(Sound* p_sound, float p_deltaTime);
 };
 
 #include "SoundManager.inl"

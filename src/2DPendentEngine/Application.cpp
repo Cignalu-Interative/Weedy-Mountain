@@ -299,7 +299,7 @@ void Application::Update()
 
 	IsEneableToUpdate();
 
-	SoundManager::Get()->Update();
+	SoundManager::Get()->Update(m_deltaTime);
 
 	Vector2i sizeWindow = m_window.GetWindowSize();
 	if (m_camera->GetDimension().GetX() != sizeWindow.GetX() || m_camera->GetDimension().GetY() != sizeWindow.GetY())

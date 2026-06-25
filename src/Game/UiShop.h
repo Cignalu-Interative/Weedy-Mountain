@@ -14,6 +14,7 @@ private :
 	Inventory* m_playerInventory = nullptr;
 
 	Button* m_sellButton = nullptr;
+	Button* m_sellAllButton = nullptr;
 	Button* m_buyButton = nullptr;
 
 	Button* m_plusButton = nullptr;
@@ -43,6 +44,8 @@ public :
 
 	// check if the inventory of the player has the item
 	void Sell();
+
+	void SellAll();
 
 	void ChoosePlayerInventoryButtonClicked();
 

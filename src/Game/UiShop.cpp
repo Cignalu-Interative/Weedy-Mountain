@@ -34,7 +34,7 @@ void UiShop::OnInitialize()
 
 
 	float offsetButtonX = GetPosition({ 1,1 }).GetX() - offsetX;
-	float offsetButtonY = GetPosition({ 1,1 }).GetY() - offsetY * 0.75f;
+	float offsetButtonY = GetPosition({ 1,1 }).GetY() - offsetY * 0.85f;
 
 	m_sellButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "button", "sellButton", "SELL", true);
 	m_sellButton->SetOnLeftClick([this] { Sell(); });
@@ -44,6 +44,13 @@ void UiShop::OnInitialize()
 	m_sellButton->GetCollider()->SetIsTrigger(true);
 	m_sellButton->SetVisible(false);
 	
+	m_sellAllButton = scene->CreateButton({ offsetButtonX, offsetButtonY + 55}, { 150,50 }, "button", "sellAllButton", "SELL ALL", true);
+	m_sellAllButton->SetOnHoverStay([this] { m_sellAllButton->SetSprite("buttonHover"); });
+	m_sellAllButton->SetOnHoverExit([this] { m_sellAllButton->SetSprite("button"); });
+	m_sellAllButton->SetOnLeftClick([this] { SellAll(); });
+	m_sellAllButton->SetVisible(false);
+
+
 
 	m_buyButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "button", "buyButton", "BUY", true);
 	m_buyButton->SetOnLeftClick([this] {Buy(); });
@@ -145,14 +152,11 @@ void UiShop::PlaceInventory(Inventory* p_inventory)
 
 void UiShop::Buy()
 {
+	if (m_slot->IsEmpty())
+		return;
+
 	std::string id = m_slot->GetStack().GetID();
 	int amount = m_slot->GetStack().GetAmount();
-
-	if (id == "ITEM_NOTHING")
-	{
-		std::cout << "No item selected" << std::endl;
-		return;
-	}
 
 	if (m_playerInventory->CanAdd(id, amount) && GetScene<GameScene>()->GetPlayer()->GetMoney() >= m_totalPrices)
 	{
@@ -167,6 +171,9 @@ void UiShop::Buy()
 
 void UiShop::Sell()
 {
+	if (m_slot->IsEmpty())
+		return;
+
 	std::string id = m_slot->GetStack().GetID();
 	int amount = m_slot->GetStack().GetAmount();
 
@@ -185,10 +192,24 @@ void UiShop::Sell()
 
 }
 
+void UiShop::SellAll()
+{
+	if (m_slot->IsEmpty())
+		return;
+
+	std::string id = m_slot->GetStack().GetID();
+	int amount = m_playerInventory->CountItem(id);
+	m_playerInventory->RemoveItem(id, amount, false);
+	int price = amount * ItemDataBase::Get()->GetItem(id)->GetSellPrice();
+	GetScene<GameScene>()->GetPlayer()->AddMoney(price);
+	m_slot->Clear();
+}
+
 void UiShop::ChoosePlayerInventoryButtonClicked()
 {
 	PlaceInventory(m_playerInventory);
 	m_sellButton->SetVisible(true);
+	m_sellAllButton->SetVisible(true);
 	m_buyButton->SetVisible(false);
 	m_slot->Clear();
 }
@@ -198,6 +219,7 @@ void UiShop::ChooseShopInventoryButtonClicked()
 	PlaceInventory(m_shopInventory);
 	m_buyButton->SetVisible(true);
 	m_sellButton->SetVisible(false);
+	m_sellAllButton->SetVisible(false);
 	m_playerInventory->SetPosition({ -500,0 });//TO do setPos du player
 	m_slot->Clear();
 }
@@ -262,6 +284,7 @@ void UiShop::SetVisible(bool p_isVisible)
 	m_plusButton->SetVisible(p_isVisible);
 	m_minusButton->SetVisible(p_isVisible);
 	m_sellButton->SetVisible(false);
+	m_sellAllButton->SetVisible(false);
 	m_buyButton->SetVisible(false);
 	m_slot->SetVisible(p_isVisible);
 

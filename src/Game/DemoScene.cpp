@@ -48,7 +48,7 @@ void DemoScene::OnInitialize()
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 
-	m_i.AddInventory(m_inv->GetSlots(), InventoryInterractionBit::MergeStack + InventoryInterractionBit::SplitStack + InventoryInterractionBit::PickItem + InventoryInterractionBit::PlaceItem);
+	m_i.AddInventory(m_inv->GetSlots(), 255);
 	m_i.AddInventory(m_hotbar->GetSlots(), 255);
 }
 

@@ -54,6 +54,8 @@ private:
 	InventorySlot* m_pressedSlot = nullptr;
 
 	std::vector<InventorySlot*> m_dragSlots;
+	std::vector<int> m_dragOriginalAmount;
+	std::string m_dragItemID;
 	int m_dragTotalAtStart = 0; 
 
 	std::chrono::steady_clock::time_point m_lastPickupTime;
@@ -92,7 +94,6 @@ private:
 	void SplitStackToCursor(InventorySlot* slot);   
 	void PlaceSingleItem(InventorySlot* slot);
 
-	void AddDragSlot(InventorySlot* slot);
 	void RedistributeDrag();                       
 	void CommitDrag();                              
 	void CancelDrag();                            

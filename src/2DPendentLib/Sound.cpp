@@ -342,8 +342,8 @@ void Sound::ApplySpatialization(const Vector2f& p_listenerPosition)
 			MIX_SetTrack3DPosition(piste, &position);
 		}
 	}
-	else if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique != nullptr)
+	/*else if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique != nullptr)
 	{
 		MIX_SetTrack3DPosition(m_pisteMusique, &position);
-	}
+	}*/
 }

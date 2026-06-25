@@ -190,6 +190,24 @@ void UiShop::Sell()
 	else
 		std::cout << "Not enough item in inventory" << std::endl;
 
+	std::vector<InventorySlot*> slots = m_playerInventory->GetSlots();
+
+	for (int i = 0; i < slots.size(); i++)
+	{
+		if (i == m_slotIndex)
+			continue;
+
+		if (slots[i]->GetStack().GetID() == id)
+		{
+			ItemStack item = slots[i]->GetStack();
+			m_slot->SetText(std::to_string(item.GetAmount()));
+			m_slot->SetStack(item);
+			m_slotIndex = i;
+			return;
+		}
+
+	}
+
 }
 
 void UiShop::SellAll()

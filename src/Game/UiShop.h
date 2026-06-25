@@ -28,8 +28,6 @@ private :
 	int m_amountOfItem = 0;
 	int m_totalPrices = 10;
 
-public : 
-
 	void OnInitialize() override;
 
 	void OnEvent() override;
@@ -56,6 +54,8 @@ public :
 	void PlusButton();
 
 	void MinusButton();
+
+public : 
 
 	void SetShopInventory(Inventory* p_shopInventory) { m_shopInventory = p_shopInventory; }
 

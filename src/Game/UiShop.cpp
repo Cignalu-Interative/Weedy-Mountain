@@ -313,4 +313,3 @@ void UiShop::SetVisible(bool p_isVisible)
 	GetScene()->GetGeometry<Text>("totalPrice")->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("itemName")->SetIsVisible(p_isVisible);
 }
-

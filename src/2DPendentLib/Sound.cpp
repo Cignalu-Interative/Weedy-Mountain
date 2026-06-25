@@ -7,7 +7,7 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 	m_mixer = p_mixer;
 	m_propertiesID = SDL_CreateProperties();
 	float distanceDiagonale = std::hypot(p_wSize.GetX(), p_wSize.GetY());
-	SetLimitDistanceToListen(0.0f, distanceDiagonale / 2, 100);
+	SetLimitDistanceToListen(50.0f, distanceDiagonale * 2);
 
 }
 
@@ -98,7 +98,7 @@ AudioFormat Sound::DetectAudioFormat(const std::string& p_path)
 	return AudioFormat::NONE;
 }
 
-void Sound::Play()
+void Sound::Play(const Vector2f& p_listenerPosition)
 {
 	if (m_audio == nullptr)
 	{
@@ -117,20 +117,14 @@ void Sound::Play()
 
 		MIX_SetTrackAudio(newTrack, m_audio);
 
-		MIX_SetTrackGain(newTrack, m_relativeVolume);
+		UpdateRelativePosition(p_listenerPosition);
 
 		MIX_Point3D position;
-		// Axe X (Gauche/Droite) = dx de l'écran
-		position.x = m_relativePosition.GetX() / m_rolloffDistanceToVolume;
+		float gain;
+		ComputeSpatialization(position, gain);
 
-		// Vu que je peux pas encore tester si il fonctionne le code si bug de spacialisation inverser le GetY et le 0.0f de .z
-
-		// Axe Y (Haut/Bas dans l'espace)
-		position.z = m_relativePosition.GetY() / m_rolloffDistanceToVolume;
-
-		// Axe Z (Profondeur Devant/Derrière)
-		position.y = 0.0f;
 		MIX_SetTrack3DPosition(newTrack, &position);
+		MIX_SetTrackGain(newTrack, gain);
 
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOPS_NUMBER, m_loopCount);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_START_MILLISECOND_NUMBER, m_StartTimeMs);
@@ -315,35 +309,113 @@ void Sound::UpdateRelativeVolume(float p_globalVolume)
 	}
 }
 
-void Sound::SetLimitDistanceToListen(float p_min, float p_max, float p_rolloff)
+void Sound::SetLimitDistanceToListen(float p_min, float p_max)
 {
 	m_minDistanceToListen = Utils::LimitMin(p_min, 0.0f);
 	m_maxDistanceToListen = Utils::LimitMin(p_max, 0.0f);
-	m_rolloffDistanceToVolume = Utils::LimitMin(p_rolloff, 1.f);
 }
 
 void Sound::ApplySpatialization(const Vector2f& p_listenerPosition)
+{
+	UpdateRelativePosition(p_listenerPosition);
+
+	if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	{
+		MIX_Point3D position;
+		float gain;
+		ComputeSpatialization(position, gain);
+
+		for (MIX_Track* piste : m_pistesSFX)
+		{
+			MIX_SetTrack3DPosition(piste, &position);
+			MIX_SetTrackGain(piste, gain);
+		}
+	}
+}
+
+float Sound::ComputeDistanceGain(float p_distance) const
+{
+	if (p_distance <= m_minDistanceToListen) return 1.0f;
+	if (p_distance >= m_maxDistanceToListen) return 0.0f; // vrai silence garanti
+
+	float t = (p_distance - m_minDistanceToListen) / (m_maxDistanceToListen - m_minDistanceToListen);
+	return 1.0f - t; // linéaire ; remplace par (1.0f - t) * (1.0f - t) pour une chute plus douce au début
+}
+
+void Sound::UpdateRelativePosition(const Vector2f& p_listenerPosition)
 {
 	float dx = m_position.GetX() - p_listenerPosition.GetX();
 	float dy = m_position.GetY() - p_listenerPosition.GetY();
 
 	m_relativePosition.SetX(dx);
 	m_relativePosition.SetY(dy);
+}
 
-	MIX_Point3D position;
-	position.x = dx / m_rolloffDistanceToVolume;
-	position.z = dy / m_rolloffDistanceToVolume;
-	position.y = 0.0f;
+void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) const
+{
+	float dx = m_relativePosition.GetX();
+	float dy = m_relativePosition.GetY();
+	float distanceSquared = dx * dx + dy * dy;
+	float maxSq = m_maxDistanceToListen * m_maxDistanceToListen;
 
-	if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	if (distanceSquared >= maxSq)
 	{
-		for (MIX_Track* piste : m_pistesSFX)
-		{
-			MIX_SetTrack3DPosition(piste, &position);
-		}
+		p_outPosition.x = 0.0f;
+		p_outPosition.y = 0.0f;
+		p_outPosition.z = 0.0f;
+		p_outGain = 0.0f;
+		return;
 	}
-	/*else if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique != nullptr)
+
+	float distance = std::sqrtf(distanceSquared);
+
+	// Calcul de la position 3D pour le panoramique
+	if (distance > 0.0001f)
 	{
-		MIX_SetTrack3DPosition(m_pisteMusique, &position);
-	}*/
+		// 1. Calcul du panoramique pur (direction)
+		float panX = dx / distance;
+		float panZ = dy / distance;
+
+		// 2. Lissage si on est très proche de la source
+		if (distance < m_minDistanceToListen)
+		{
+			// Crée un ratio de 0.0 (au centre exact) à 1.0 (sur la bordure de la distance min)
+			float centerBlend = distance / m_minDistanceToListen;
+
+			// Optionnel : Mettre au carré pour rendre la transition vers le centre encore plus douce
+			centerBlend *= centerBlend;
+
+			// Applique le ratio : plus on est proche, plus le son est forcé au centre (0.0)
+			panX *= centerBlend;
+			panZ *= centerBlend;
+		}
+
+		p_outPosition.x = panX;
+		p_outPosition.z = panZ;
+	}
+	else
+	{
+		// Exactement sur la source = son parfaitement centré (omnidirectionnel)
+		p_outPosition.x = 0.0f;
+		p_outPosition.z = 0.0f;
+	}
+	p_outPosition.y = 0.0f;
+
+	float t = 0.0f;
+
+	if (distance > m_minDistanceToListen)
+	{
+		// Ratio de 0.0 (à la distance min) jusqu'à 1.0 (à la distance max)
+		t = (distance - m_minDistanceToListen) / (m_maxDistanceToListen - m_minDistanceToListen);
+	}
+
+	Utils::Clamp(t, 0.0f, 1.0f);
+
+	// Inverse le ratio (1 = proche, 0 = loin)
+	float invertedRatio = 1.0f - t;
+
+	// On met au carré pour créer une courbe qui s'estompe doucement à la fin
+	float naturalAttenuation = invertedRatio * invertedRatio;
+
+	p_outGain = m_relativeVolume * naturalAttenuation;
 }

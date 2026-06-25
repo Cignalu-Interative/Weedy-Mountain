@@ -24,12 +24,8 @@ private:
 
 	SDL_PropertiesID m_propertiesID = 0; //Identifiant des propriétés du son, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
 
-	int m_lastChannel = -1; //Pour stocker le dernier canal utilisé pour jouer un son, utile pour la spatialisation
-
 	//Format de l'audio par default à NONE, il sera défini lors de l'initialisation en fonction du format du fichier audio
 	AudioFormat m_audioFormat = AudioFormat::NONE;
-	
-	float m_distanceSquared = 0.0f; //Distance au carré entre le son et le listener, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
 
 	// Paramètres du son
 	int m_loopCount = 0; // Nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
@@ -56,8 +52,6 @@ private:
 
 	float m_minDistanceToListen = 0.0f; // Distance minimale à laquelle le son peut être entendu, en pixels
 	float m_maxDistanceToListen = 0.0f; // Distance maximale à laquelle le son peut être entendu, en pixels
-	float m_rolloffDistanceToVolume = 1000.0f; // Facteur de rolloff pour l'atténuation du volume en fonction de la distance
-
 
 public:
 
@@ -72,15 +66,7 @@ public:
 	//Fonction statique pour détecter le format de l'audio en fonction de son extension de fichier
 	AudioFormat DetectAudioFormat(const std::string& p_path);
 
-	//Jouer le son, avec une option pour le faire en boucle (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
-	// /////////////////// La spatialisation est appliquée uniquement aux SFX (WAV) et non aux MUSIC (MP3) \\\\\\\\\\\\\\\\\\
-	// et des paramètres pour la spatialisation (angle et distance)
-	//Pour les angles les principale directions sont définies comme suit :
-	//NORTH est définie à 0 degrés, NORTHEAST est définie à 45 degrés, EAST est définie à 90 degrés,
-	//SOUTHEAST est définie à 135 degrés, SOUTH est définie à 180 degrés, SOUTHWEST est définie à 225 degrés,
-	//WEST est définie à 270 degrés, NORTHWEST est définie à 315 degrés
-	//distance est la distance entre le son et le joueur, en pourcentage (0 = proche, 255 = loin)
-	void Play();
+	void Play(const Vector2f& p_listenerPosition = Vector2f(0.0f, 0.0f));
 	//Arrêter le son
 	void Stop();
 	//Mettre en pause le son
@@ -93,11 +79,6 @@ public:
 
 	void SetName(const std::string& p_name) { m_name = p_name; }
 	std::string GetName() const { return m_name; }
-
-	void SetDistanceSquared(float p_distanceSquared) { m_distanceSquared = p_distanceSquared; }
-	float GetDistanceSquared() const { return m_distanceSquared; }
-
-	int GetChannel() const { return m_lastChannel; }
 
 	//SET les properties
 
@@ -126,14 +107,17 @@ public:
 	void SetAbsoluteVolume(int p_volume);
 	void UpdateRelativeVolume(float p_globalVolume);
 
-	// La fonction SetLimitDistanceToListen définit les distances minimale et maximale à laquell
-	// le son peut être entendu, ainsi que le facteur de rolloff pour l'atténuation du volume en fonction de la distance.
-	// Exemple d'utilisation : SetLimitDistanceToListen(100.0f, 1000.0f, 1.0f);
-	void SetLimitDistanceToListen(float p_min, float p_max, float p_rolloff);
+	// La fonction SetLimitDistanceToListen définit les distances minimale et maximale à laquelle
+	// le son peut être entendu
+	// Exemple d'utilisation : SetLimitDistanceToListen(100.0f, 1000.0f);
+	void SetLimitDistanceToListen(float p_min, float p_max);
 
 	void ApplySpatialization(const Vector2f& p_listenerPosition);
 
+	float ComputeDistanceGain(float p_distance) const;
 
+	void UpdateRelativePosition(const Vector2f& p_listenerPosition);
+	void ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) const;
 };
 
 #include "Sound.inl"

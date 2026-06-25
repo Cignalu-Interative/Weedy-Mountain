@@ -28,12 +28,6 @@ private:
 	//Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
 	bool m_isSpatializationEnabled = true;
 
-	float m_maxAudibleDistance; // Distance maximale à laquelle un son peut être entendu en pixels
-	float m_ratioDistanceToVolume = 255.0f / m_maxAudibleDistance; // Ratio pour convertir la distance en distance pour le volume/pixels (0 = proche, 255 = loin) par défault
-
-	//Bool pour savoir si la distance maximale audible doit être calculée automatiquement en fonction de la taille de la fenêtre, ou définie manuellement
-	bool m_autoMaxDistance = true;
-
 	float m_MusiqueVolume = 1.0f; //Volume global pour les MUSIC, compris entre 0.0f (silencieux) et 1.0f (volume maximum)
 	float m_SFXVolume = 1.0f; //Volume global pour les SFX, compris entre 0.0f (silencieux) et 1.0f (volume maximum)
 
@@ -140,15 +134,6 @@ public:
 
 	//Fonction pour appliquer la spatialisation à un son spécifique en utilisant la position du son et du listener pour calculer l'angle et la distance,
 	void ApplySpatialization(Sound* p_sound);
-
-	void SetMaxAudibleDistance(float p_distance);
-	float GetMaxAudibleDistance() const { return m_maxAudibleDistance; }
-
-	void SetRatioDistanceToVolume(float p_ratio);
-	float GetRatioDistanceToVolume() const { return m_ratioDistanceToVolume; }
-
-	void SetAutoMaxDistance(bool p_auto) { m_autoMaxDistance = p_auto; }
-	bool GetAutoMaxDistance() const { return m_autoMaxDistance; }
 };
 
 #include "SoundManager.inl"

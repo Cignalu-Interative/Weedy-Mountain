@@ -146,7 +146,11 @@ void SoundManager::Play(const std::string& p_id)
 	Sound* sound = GetSound(p_id);
 	if (sound)
 	{
-		sound->Play();
+		Vector2f listenerPos = (m_listener == nullptr)
+		? (Vector2f)Application::Get()->GetWindow()->GetWindowSize() / 2.0f
+		: m_listener->GetPosition();
+
+		sound->Play(listenerPos);
 	}
 }
 
@@ -368,24 +372,4 @@ void SoundManager::ApplySpatialization(Sound* p_sound)
 
 		p_sound->ApplySpatialization(listenerPos);
 	}
-}
-
-void SoundManager::SetMaxAudibleDistance(float p_distance)
-{
-	m_maxAudibleDistance = p_distance;
-	if (m_maxAudibleDistance <= 0)
-	{
-		m_maxAudibleDistance = 1.0f;
-	}
-	m_ratioDistanceToVolume = 128.0f / m_maxAudibleDistance;
-}
-
-void SoundManager::SetRatioDistanceToVolume(float p_ratio)
-{
-	m_ratioDistanceToVolume = p_ratio;
-	if (m_ratioDistanceToVolume <= 0)
-	{
-		m_ratioDistanceToVolume = 1.0f;
-	}
-	m_maxAudibleDistance = 128.0f / m_ratioDistanceToVolume;
 }

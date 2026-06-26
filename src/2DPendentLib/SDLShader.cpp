@@ -2,7 +2,7 @@
 #include "SDLShader.h"
 #include "Window.h"
 
-static SDLShader* Get()
+SDLShader* SDLShader::Get()
 {
 	static SDLShader instance;
 	return &instance;

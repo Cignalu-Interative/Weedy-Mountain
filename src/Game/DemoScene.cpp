@@ -362,7 +362,7 @@ void DemoScene::OnEvent()
 
 	if (entitySelected != nullptr)
 	{
-		if (input.IsKeyboardHeld(K_UP))
+		/*if (input.IsKeyboardHeld(K_UP))
 		{
 			std::cerr << "Jump" << std::endl;
 			if (entitySelected->GetPhysicsBody())
@@ -392,6 +392,12 @@ void DemoScene::OnEvent()
 		if (input.IsKeyboardHeld(K_RIGHT))
 		{
 			entitySelected->SetDirection({ 1.0f, entitySelected->GetDirection().GetY() });
+		}*/
+
+		if (input.IsJoyStickHeld(JOYSTICK_LEFT))
+		{
+			Vector2f dir = input.GetJoyStickOrientation(JOYSTICK_LEFT);
+			entitySelected->SetDirection({ dir.GetX(), dir.GetY() });
 		}
 	}
 	else

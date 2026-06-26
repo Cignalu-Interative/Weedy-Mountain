@@ -165,8 +165,17 @@ void Entity::UpdateMovement_Velocity(float p_deltaTime)
 	{
 		if (m_speed == 0.0f || m_direction == Vector2<float>{ 0.f, 0.f })
 			return;
+
+		float lengthSquared = m_direction.GetX() * m_direction.GetX() + m_direction.GetY() * m_direction.GetY();
+		Vector2f dirNorm = m_direction;
+
+		if (lengthSquared > 1.0f)
+		{
+			float length = std::sqrtf(lengthSquared);
+			dirNorm = { m_direction.GetX() / length, m_direction.GetY() / length };
+		}
+
 		float distance = p_deltaTime * m_speed * m_PIXELS_PER_METER;
-		Vector2f dirNorm = Utils::NormalizeVector(m_direction);
 		Vector2f translation = dirNorm * distance;
 		Move(translation);
 	}

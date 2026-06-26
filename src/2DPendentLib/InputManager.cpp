@@ -3,6 +3,7 @@
 #include "Debug.h"
 #include "AssetManager.h"
 #include "Window.h"
+#include "Utils.h"
 
 InputManager* InputManager::Get()
 {
@@ -180,16 +181,20 @@ void InputManager::Update()
 
 			int axis = m_event.gaxis.axis;
 			Sint16 rawValue = m_event.gaxis.value;
-			float normalized = (rawValue < 0) ? (rawValue / -32768.0f) : (rawValue / 32767.0f);
+			float normalized = (rawValue < 0) ? (rawValue / 32768.0f) : (rawValue / 32767.0f);
 
 			if (std::fabs(normalized) < AXIS_DEAD_ZONE)
 			{
-				m_gameControllerAxisStatesFloat[axis] = 0.0f;
+    			m_gameControllerAxisStatesFloat[axis] = 0.0f;
+				m_gameControllerAxisStates[axis].s_isUp = true;
 			}
 			else
 			{
-				m_gameControllerAxisStatesFloat[axis] = (normalized > 0) ? (normalized - AXIS_DEAD_ZONE) / (1.0f - AXIS_DEAD_ZONE) : (normalized + AXIS_DEAD_ZONE) / (1.0f - AXIS_DEAD_ZONE);
+				float value = (normalized > 0) ? (normalized - AXIS_DEAD_ZONE) / (1.0f - AXIS_DEAD_ZONE) : (normalized + AXIS_DEAD_ZONE) / (1.0f - AXIS_DEAD_ZONE);
+				m_gameControllerAxisStatesFloat[axis] = value;
+				m_gameControllerAxisStates[axis].s_isDown = true;
 			}
+			break;
 		}
 	}
 }
@@ -353,24 +358,60 @@ Vector2i InputManager::GetMouseWheel()
 
 Vector2f InputManager::GetJoyStickOrientation(JoyStick p_joystick)
 {
+	//Vector2f dir{ 0.0f, 0.0f };
+
+	//switch (p_joystick) {
+	//case JOYSTICK_LEFT:
+	//	dir.SetX(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTX]);
+	//	dir.SetY(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTY]);
+	//	break;
+	//case JOYSTICK_RIGHT:
+	//	dir.SetX(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTX]);
+	//	dir.SetY(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTY]);
+	//	break;
+	//}
+
+	//// Deadzone + normalisation
+	//float len = sqrtf(dir.GetX() * dir.GetX() + dir.GetY() * dir.GetY());
+
+	//if (len > AXIS_DEAD_ZONE) {
+	//	dir.SetX(dir.GetX() / len);
+	//	dir.SetY(dir.GetY() / len);
+	//}
+	//else {
+	//	dir.SetX(0.0f);
+	//	dir.SetY(0.0f);
+	//}
+	//return dir;
+
 	Vector2f dir{ 0.0f, 0.0f };
+
+	float x, y;
 
 	switch (p_joystick) {
 	case JOYSTICK_LEFT:
-		dir.SetX(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTX]);
-		dir.SetY(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTY]);
+		x = m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTX];
+		y = m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTY];
 		break;
 	case JOYSTICK_RIGHT:
-		dir.SetX(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTX]);
-		dir.SetY(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTY]);
+		x = m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTX];
+		y = m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTY];
 		break;
 	}
 
 	// Deadzone + normalisation
-	float len = sqrtf(dir.GetX() * dir.GetX() + dir.GetY() * dir.GetY());
-	if (len > AXIS_DEAD_ZONE) {
-		dir.SetX(dir.GetX() / len);
-		dir.SetY(dir.GetY() / len);
+	float len = sqrtf(x * x + y * y);
+
+	if (len > AXIS_DEAD_ZONE)
+	{
+		float normalizedLen = (len - AXIS_DEAD_ZONE) / (1.0f - AXIS_DEAD_ZONE);
+
+		float limitedLen = Utils::LimitMax(normalizedLen, 1.0f);
+
+		float xFinal = (x / len) * limitedLen;
+		float yFinal = (y / len) * limitedLen;
+		dir.SetX(xFinal);
+		dir.SetY(yFinal);
 	}
 	else {
 		dir.SetX(0.0f);

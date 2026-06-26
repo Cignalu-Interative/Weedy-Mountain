@@ -16,7 +16,10 @@
 
 void Player::OnInitialize()
 {
-	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 1000,600 }, "", Shape::Rectangle);
+	m_inventory = GetScene()->CreateEntity<Inventory>({}, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_inventory->SetVisible(false);
+	m_inventory->AddItem("ITEM_WOOD", 10, false);
+	
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
 	m_jobs.push_back(gatherer);
@@ -26,12 +29,12 @@ void Player::OnInitialize()
 	PlayerJob* miner = new PlayerJob();
 	miner->m_name = JobType::Miner;
 	m_jobs.push_back(miner);
-	/*PlayerJob* killer = new PlayerJob();
+	PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
-	m_Jobs.push_back(killer);
+	m_jobs.push_back(killer);
 	PlayerJob* dealer = new PlayerJob();
 	dealer->m_name = JobType::Dealer;
-	m_Jobs.push_back(dealer);*/
+	m_jobs.push_back(dealer);
 
 
 	SetupStateMachine();

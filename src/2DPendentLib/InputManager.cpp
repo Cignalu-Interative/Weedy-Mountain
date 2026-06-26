@@ -163,7 +163,7 @@ void InputManager::Update()
 			break;
 
 		case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-			int axis = m_event.gaxis.axis;
+			/*int axis = m_event.gaxis.axis;
 			float rawValue = static_cast<float>(m_event.gaxis.value) / 32767.0f;
 			float absValue = fabsf(rawValue);
 			if (absValue > AXIS_DEAD_ZONE)
@@ -176,7 +176,20 @@ void InputManager::Update()
 				m_gameControllerAxisStates[axis].s_isUp = true;
 				m_gameControllerAxisStatesFloat[axis] = 0.0f;
 			}
-			break;
+			break;*/
+
+			int axis = m_event.gaxis.axis;
+			Sint16 rawValue = m_event.gaxis.value;
+			float normalized = (rawValue < 0) ? (rawValue / 32768.0f) : (rawValue / 32767.0f);
+
+			if (std::fabs(normalized) < AXIS_DEAD_ZONE)
+			{
+				m_gameControllerAxisStatesFloat[axis] = 0.0f;
+			}
+			else
+			{
+				m_gameControllerAxisStatesFloat[axis] = (normalized > 0) ? (normalized - AXIS_DEAD_ZONE) / (1.0f - AXIS_DEAD_ZONE) : (normalized + AXIS_DEAD_ZONE) / (1.0f - AXIS_DEAD_ZONE);
+			}
 		}
 	}
 }

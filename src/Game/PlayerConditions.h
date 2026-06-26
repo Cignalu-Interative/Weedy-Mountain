@@ -12,16 +12,6 @@ class HasSpadeInHands : public Condition<Player>
 	}
 };
 
-class DontHaveSpadeInHands : public Condition<Player>
-{
-	bool TestBool(Player* p_player) override
-	{
-		// check if current item in hands is not spade
-		
-		return p_player->hasSpade == false;
-	}
-};
-
 class HasPickaxeInHands : public Condition<Player>
 {
     bool TestBool(Player* p_player) override
@@ -85,14 +75,6 @@ class IsPlayerUsingToolInHand : public Condition<Player>
 	bool TestBool(Player* p_player)
 	{
 		return p_player->IsUsingToolInHand();
-	}
-};
-
-class IsPlayerNotUsingToolInHand : public Condition<Player>
-{
-	bool TestBool(Player* p_player)
-	{
-		return p_player->IsUsingToolInHand() == false;
 	}
 };
 

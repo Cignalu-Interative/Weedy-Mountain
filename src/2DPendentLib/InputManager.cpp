@@ -180,7 +180,7 @@ void InputManager::Update()
 
 			int axis = m_event.gaxis.axis;
 			Sint16 rawValue = m_event.gaxis.value;
-			float normalized = (rawValue < 0) ? (rawValue / 32768.0f) : (rawValue / 32767.0f);
+			float normalized = (rawValue < 0) ? (rawValue / -32768.0f) : (rawValue / 32767.0f);
 
 			if (std::fabs(normalized) < AXIS_DEAD_ZONE)
 			{

@@ -57,6 +57,8 @@ private:
 	float m_currentSmoothedPanX = 0.0f;
 	float m_currentSmoothedPanZ = 0.0f;
 
+	bool m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+
 public:
 
 	//Constructeur par défaut de Sound
@@ -120,6 +122,9 @@ public:
 
 	void UpdateRelativePosition(const Vector2f& p_listenerPosition);
 	void ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) const;
+
+	void SetSpacializationEnabled(bool p_enabled) { m_isSpacializationEnabled = p_enabled; }
+	bool IsSpacializationEnabled() const { return m_isSpacializationEnabled; }
 };
 
 #include "Sound.inl"

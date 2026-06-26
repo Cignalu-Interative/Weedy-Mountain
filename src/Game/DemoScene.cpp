@@ -100,6 +100,7 @@ void DemoScene::OnInitialize()
 	sound.GetSound("Monsieur")->SetPosition(soundPos);
 	//sound.GetSound("music1")->SetLoopCount(-1);
 	sound.GetSound("music1")->SetAbsoluteVolume(15);
+	sound.GetSound("music1")->SetPosition(listenerPos);
 	//sound.GetSound("music1")->Play();
 
 	/*int a = 0;

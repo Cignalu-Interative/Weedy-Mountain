@@ -19,6 +19,8 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 	m_fadeOutMs = 0; // Durée du fondu de sortie en millisecondes, utilisée pour le fondu de sortie du son
 	m_soundReverberation = 0; //Durée de la réverbération du son en millisecondes, utilisée pour la réverbération du son
 
+	m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+
 }
 
 Sound::~Sound() {
@@ -127,19 +129,23 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 
 		MIX_SetTrackAudio(newTrack, m_audio);
 
-		UpdateRelativePosition(p_listenerPosition);
 		UpdateRelativeVolume(m_lastGlobalVolume);
 
-		MIX_Point3D position;
-		float gain;
-		ComputeSpatialization(position, gain);
+		if (m_isSpacializationEnabled)
+		{
+			UpdateRelativePosition(p_listenerPosition);
 
-		m_currentSmoothedGain = gain;
-		m_currentSmoothedPanX = position.x;
-		m_currentSmoothedPanZ = position.z;
+			MIX_Point3D position;
+			float gain;
+			ComputeSpatialization(position, gain);
 
-		MIX_SetTrack3DPosition(newTrack, &position);
-		MIX_SetTrackGain(newTrack, gain);
+			m_currentSmoothedGain = gain;
+			m_currentSmoothedPanX = position.x;
+			m_currentSmoothedPanZ = position.z;
+
+			MIX_SetTrack3DPosition(newTrack, &position);
+			MIX_SetTrackGain(newTrack, gain);
+		}
 
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOPS_NUMBER, m_loopCount);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_START_MILLISECOND_NUMBER, m_StartTimeMs);
@@ -149,7 +155,6 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 		SDL_SetFloatProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT, m_gainVolumeFadeIn);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER, m_soundReverberation);
 		
-
 		MIX_PlayTrack(newTrack, m_propertiesID);
 
 		m_pistesSFX.push_back(newTrack);
@@ -165,6 +170,22 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 
 		UpdateRelativeVolume(m_lastGlobalVolume);
 
+		if (m_isSpacializationEnabled)
+		{
+			UpdateRelativePosition(p_listenerPosition);
+
+			MIX_Point3D position;
+			float gain;
+			ComputeSpatialization(position, gain);
+
+			m_currentSmoothedGain = gain;
+			m_currentSmoothedPanX = position.x;
+			m_currentSmoothedPanZ = position.z;
+
+			MIX_SetTrack3DPosition(m_pisteMusique, &position);
+			MIX_SetTrackGain(m_pisteMusique, gain);
+		}
+
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOPS_NUMBER, m_loopCount);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_START_MILLISECOND_NUMBER, m_StartTimeMs);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER, m_LoopStartTimeMs);
@@ -173,7 +194,6 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 		SDL_SetFloatProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT, m_gainVolumeFadeIn);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER, m_soundReverberation);
 
-		MIX_SetTrack3DPosition(m_pisteMusique, nullptr);
 		MIX_PlayTrack(m_pisteMusique, m_propertiesID);
 	}
 }
@@ -188,9 +208,11 @@ void Sound::Stop()
 	}
 	else if (m_audioFormat == AudioFormat::WAV)
 	{
+		Sint64 MsInFrame;
 		for (MIX_Track* piste : m_pistesSFX)
 		{
-			MIX_StopTrack(piste, m_fadeOutMs);
+			MsInFrame = MIX_TrackMSToFrames(piste, m_fadeOutMs);
+			MIX_StopTrack(piste, MsInFrame);
 		}
 	}
 }
@@ -336,9 +358,14 @@ void Sound::SetLimitDistanceToListen(float p_min, float p_max)
 
 void Sound::ApplySpatialization(const Vector2f& p_listenerPosition, float p_deltaTime)
 {
+	if (m_isSpacializationEnabled == false)
+	{
+		return;
+	}
+
 	UpdateRelativePosition(p_listenerPosition);
 
-	if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	if (!m_pistesSFX.empty() || m_pisteMusique != nullptr)
 	{
 		MIX_Point3D targetPosition;
 		float targetGain;
@@ -360,11 +387,19 @@ void Sound::ApplySpatialization(const Vector2f& p_listenerPosition, float p_delt
 		// Création du vecteur de position lissé
 		MIX_Point3D finalPosition = { m_currentSmoothedPanX, 0.0f, m_currentSmoothedPanZ };
 
-		// 4. On applique les valeurs LISSÉES aux pistes
-		for (MIX_Track* piste : m_pistesSFX)
+		if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 		{
-			MIX_SetTrack3DPosition(piste, &finalPosition);
-			MIX_SetTrackGain(piste, m_currentSmoothedGain);
+			MIX_SetTrack3DPosition(m_pisteMusique, &finalPosition);
+			MIX_SetTrackGain(m_pisteMusique, m_currentSmoothedGain);
+		}
+		else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+		{
+			// 4. On applique les valeurs LISSÉES aux pistes
+			for (MIX_Track* piste : m_pistesSFX)
+			{
+				MIX_SetTrack3DPosition(piste, &finalPosition);
+				MIX_SetTrackGain(piste, m_currentSmoothedGain);
+			}
 		}
 	}
 }

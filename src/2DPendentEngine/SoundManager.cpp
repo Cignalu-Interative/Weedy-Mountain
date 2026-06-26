@@ -364,7 +364,7 @@ void SoundManager::SetSpatializationEnabled_Disable()
 
 void SoundManager::ApplySpatialization(Sound* p_sound, float p_deltaTime)
 {
-	if (m_isSpatializationEnabled && p_sound != nullptr && p_sound->GetAudioFormat() == AudioFormat::WAV)
+	if (m_isSpatializationEnabled && p_sound != nullptr)
 	{
 		Vector2f listenerPos = (m_listener == nullptr)
 			? (Vector2f)Application::Get()->GetWindow()->GetWindowSize() / 2.0f

@@ -98,9 +98,9 @@ void DemoScene::OnInitialize()
 	Vector2f listenerPos = (Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize();
 	Vector2f soundPos = listenerPos + Vector2f(0.0f, -distance);
 	sound.GetSound("Monsieur")->SetPosition(soundPos);
-	sound.GetSound("music1")->SetLoopCount(-1);
-	sound.GetSound("music1")->SetAbsoluteVolume(20);
-	sound.GetSound("music1")->Play();
+	//sound.GetSound("music1")->SetLoopCount(-1);
+	sound.GetSound("music1")->SetAbsoluteVolume(15);
+	//sound.GetSound("music1")->Play();
 
 	/*int a = 0;
 	int b = 1;
@@ -254,6 +254,7 @@ void DemoScene::OnEvent()
 	{
 		std::cerr << "Playing sound 'Monsieur' " << std::endl;
 		sound.Play("Monsieur");
+		//sound.Play("music1");
 	}
 
 	if (input.IsKeyboardDown(K_KP_DIVIDE))

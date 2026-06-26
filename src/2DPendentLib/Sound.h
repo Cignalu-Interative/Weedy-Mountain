@@ -31,12 +31,11 @@ private:
 	int m_loopCount = 0; // Nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
 	Sint64 m_StartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
 	Sint64 m_LoopStartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
-	int m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son dépasse cette durée, il sera arrêté automatiquement
-	int m_fadeInMs = 0; // Durée du fondu d'entrée en millisecondes, utilisée pour le fondu d'entrée du son
+	Sint64 m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son dépasse cette durée, il sera arrêté automatiquement
+	Sint64 m_fadeInMs = 0; // Durée du fondu d'entrée en millisecondes, utilisée pour le fondu d'entrée du son
 	float m_gainVolumeFadeIn = 1.0f; // Volume initial pour le fondu d'entrée, utilisé pour le fondu d'entrée du son
-	int m_fadeOutMs = 0; // Durée du fondu de sortie en millisecondes, utilisée pour le fondu de sortie du son
-	float m_soundReverberation = 0.0f; // Facteur de réverbération du son, compris entre 0.0f (pas de réverbération) et 1.0f (réverbération maximale)
-	float m_maxReverberation = 2000.0f;
+	Sint64 m_fadeOutMs = 0; // Durée du fondu de sortie en millisecondes, utilisée pour le fondu de sortie du son
+	Sint64 m_soundReverberation = 0; //Durée de la réverbération du son en millisecondes, utilisée pour la réverbération du son
 
 	Vector2f m_relativePosition = Vector2f(0.0f, 0.0f); //Position relative du son par rapport au listener, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
 
@@ -95,14 +94,12 @@ public:
 	void SetLoopStartAtTime(int p_startTime = 0);
 	// Définit le temps maximum de lecture du son en secondes. Si le son dépasse cette durée, il sera arrêté automatiquement.
 	void SetMaxTimeToPlay(int p_maxTime = -1);
-	// Définit le volume initial et la durée du fondu d'entrée en millisecondes le volume est un entier entre 0 et 100, où 0 est silencieux et 100 est le volume maximum
-	void SetVolumeFadeIn(int p_ms = 0, int p_volume = 0);
-	// Définit le volume initial et la durée du fondu de sortie en millisecondes le volume est un entier entre 0 et 100, où 0 est silencieux et 100 est le volume maximum
-	void SetVolumeFadeOut(int p_ms = 0);
-	// Définit la réverbération du son en fonction d'un facteur de réverbération (p_reverb) compris entre 0.0f (pas de réverbération) et 1.0f (réverbération maximale).
-	void SetSoundReverberation(float p_reverb);
-
-	void SetMaxReverberation(float p_maxReverberation) { m_maxReverberation = p_maxReverberation; }
+	// Définit le volume initial et la durée du fondu d'entrée en secondes le volume est un entier entre 0 et 100, où 0 est silencieux et 100 est le volume maximum
+	void SetVolumeFadeIn(int p_seconde = 0, int p_volume = 0);
+	// Définit le volume initial et la durée du fondu de sortie en secondes le volume est un entier entre 0 et 100, où 0 est silencieux et 100 est le volume maximum
+	void SetVolumeFadeOut(int p_seconde = 0);
+	//Durée de la réverbération du son en seconde, utilisée pour la réverbération du son
+	void SetSoundReverberation(int p_seconde);
 
 	void SetRelativePosition(const Vector2f& p_relativePosition) { m_relativePosition = p_relativePosition; }
 	Vector2f GetRelativePosition() const { return m_relativePosition; }

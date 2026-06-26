@@ -9,6 +9,16 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 	float distanceDiagonale = std::hypot(p_wSize.GetX(), p_wSize.GetY());
 	SetLimitDistanceToListen(100.0f, distanceDiagonale);
 
+	// Paramètres du son
+	m_loopCount = 0; // Nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
+	m_StartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
+	m_LoopStartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
+	m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son dépasse cette durée, il sera arrêté automatiquement
+	m_fadeInMs = 0; // Durée du fondu d'entrée en millisecondes, utilisée pour le fondu d'entrée du son
+	m_gainVolumeFadeIn = 1.0f; // Volume initial pour le fondu d'entrée, utilisé pour le fondu d'entrée du son
+	m_fadeOutMs = 0; // Durée du fondu de sortie en millisecondes, utilisée pour le fondu de sortie du son
+	m_soundReverberation = 0; //Durée de la réverbération du son en millisecondes, utilisée pour la réverbération du son
+
 }
 
 Sound::~Sound() {
@@ -118,6 +128,7 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 		MIX_SetTrackAudio(newTrack, m_audio);
 
 		UpdateRelativePosition(p_listenerPosition);
+		UpdateRelativeVolume(m_lastGlobalVolume);
 
 		MIX_Point3D position;
 		float gain;
@@ -137,6 +148,7 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, m_fadeInMs);
 		SDL_SetFloatProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT, m_gainVolumeFadeIn);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER, m_soundReverberation);
+		
 
 		MIX_PlayTrack(newTrack, m_propertiesID);
 
@@ -151,7 +163,7 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 			MIX_SetTrackAudio(m_pisteMusique, m_audio);
 		}
 
-		MIX_SetTrackGain(m_pisteMusique, m_relativeVolume);
+		UpdateRelativeVolume(m_lastGlobalVolume);
 
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOPS_NUMBER, m_loopCount);
 		SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_START_MILLISECOND_NUMBER, m_StartTimeMs);
@@ -171,7 +183,8 @@ void Sound::Stop()
 
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
-		MIX_StopTrack(m_pisteMusique, m_fadeOutMs);
+		Sint64 MsInFrame = MIX_TrackMSToFrames(m_pisteMusique, m_fadeOutMs);
+		MIX_StopTrack(m_pisteMusique, MsInFrame);
 	}
 	else if (m_audioFormat == AudioFormat::WAV)
 	{
@@ -253,37 +266,39 @@ void Sound::SetMaxTimeToPlay(int p_maxTime)
 }
 
 // Définit le volume initial et la durée du fondu d'entrée en millisecondes.
-void Sound::SetVolumeFadeIn(int p_ms, int p_volume)
+void Sound::SetVolumeFadeIn(int p_seconde, int p_volume)
 {
-	Utils::LimitMin(p_ms, 0);
-	if (p_ms == 0 && p_volume == 0)
+	Utils::LimitMin(p_seconde, 0);
+	if (p_seconde == 0 && p_volume == 0)
 	{
 		m_fadeInMs = 0;
 		m_gainVolumeFadeIn = 0;
 		return;
 	}
 
-	m_fadeInMs = p_ms;
-	
+	m_fadeInMs = static_cast<Sint64>(p_seconde * 1000);
+
 	float gain = static_cast<float>(p_volume) / 100.0f;
 	Utils::Clamp(gain, 0.0f, 1.0f);
 
 	m_gainVolumeFadeIn = gain;
 }
 
-// Définit le volume initial et la durée du fondu de sortie en millisecondes.
-void Sound::SetVolumeFadeOut(int p_ms)
+// Définit le volume initial et la durée du fondu de sortie en secondes.
+void Sound::SetVolumeFadeOut(int p_seconde)
 {
-	m_fadeOutMs = Utils::LimitMin(p_ms, 0);
+	int fadeout = Utils::LimitMin(p_seconde, 0);
+
+	m_fadeOutMs = static_cast<Sint64>(fadeout * 1000);
 }
 
-// Définit la réverbération du son en fonction d'un facteur de réverbération (p_reverb) compris entre 0.0f (pas de réverbération) et 1.0f (réverbération maximale).
-void Sound::SetSoundReverberation(float p_reverb)
+//Durée de la réverbération du son en seconde, utilisée pour la réverbération du son
+void Sound::SetSoundReverberation(int p_seconde)
 {
-	// Sécurité pour rester entre 0.0f et 1.0f
-	Utils::Clamp(p_reverb, 0.0f, 1.0f);
+	// Sécurité pour rester au dessus de 0
+	int reverb = Utils::LimitMin(p_seconde, 0);
 
-	m_soundReverberation = static_cast<Sint64>(p_reverb * m_maxReverberation);
+	m_soundReverberation = static_cast<Sint64>(reverb * 1000);
 }
 
 void Sound::SetAbsoluteVolume(int p_volume)

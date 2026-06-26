@@ -1,3 +1,2 @@
-tester toute les propriétés des sounds mettre la spacialisations sur les musiques
 puis shader
 et mettre les joystick en analogique a lieu de numerique

@@ -94,10 +94,11 @@ struct PlayerStats {
 	float m_drugSellEfficency = 1.f; 
 };
 
-
+class Inventory;
 class Player : public Entity
 {
 private:
+	Inventory* m_inventory = nullptr;
 	StateMachine<Player> m_stateMachine;
 
 	PlayerStats m_stats;

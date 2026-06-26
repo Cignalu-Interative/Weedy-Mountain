@@ -12,8 +12,11 @@
 #include "PlayerState.h"
 #include "PlayerConditions.h"
 
+#include "Inventory.h"
+
 void Player::OnInitialize()
 {
+	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), { 1000,600 }, "", Shape::Rectangle);
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
 	m_jobs.push_back(gatherer);
@@ -164,8 +167,8 @@ void Player::HandleFarmAction()
 
 void Player::OnUpdate()
 {
-	UpdateJobs();
 	m_stateMachine.Update(this, GetDeltaTime());
+	UpdateJobs();
 	MoveKinematic();
 }
 
@@ -310,8 +313,7 @@ void Player::UnlockRecipe(Recipes _toUnlock)
 }
 
 void Player::SetupStateMachine()
-{
-
+{ 
 	m_stateMachine.AddState(new PlayerIdleState);//0
 	m_stateMachine.AddState(new PlayerWalkDownState);//1
 	m_stateMachine.AddState(new PlayerWalkUpState);//2

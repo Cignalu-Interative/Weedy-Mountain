@@ -1,2 +1,3 @@
 puis shader
 et mettre les joystick en analogique a lieu de numerique
+mettre toute verif de sdl en debug uniquement

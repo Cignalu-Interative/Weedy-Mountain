@@ -8,7 +8,7 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
-
+#include "2DPendentLib/SDLShader.h"
 
 
 Application::Application()
@@ -44,6 +44,7 @@ void Application::Init()
 	{
 		m_isRunning = true;
 	}
+	SDLShader::Get()->InitializeGPUDevice(&m_window);
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;

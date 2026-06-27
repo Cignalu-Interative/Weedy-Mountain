@@ -17,6 +17,11 @@ Window::~Window()
 		SDL_GL_DeleteContext(m_glContext);
 		m_glContext = nullptr;
 	}*/
+	if (m_mixer)
+	{
+		MIX_DestroyMixer(m_mixer);
+		m_mixer = nullptr;
+	}
 	MIX_Quit();
 	TTF_Quit();
 	SDL_Quit();

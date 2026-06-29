@@ -104,8 +104,8 @@ void PhysicsManager::Repulse(Entity* p_entityA, Entity* p_entityB, const Collisi
 	PhysicsBody* bodyA = p_entityA->GetPhysicsBody();
 	PhysicsBody* bodyB = p_entityB->GetPhysicsBody();
 
-	float invMassA = (bodyA != nullptr) ? bodyA->m_invMass : 0.f;
-	float invMassB = (bodyB != nullptr) ? bodyB->m_invMass : 0.f;
+	float invMassA = (bodyA != nullptr) ? bodyA->m_invMass : 1.f;
+	float invMassB = (bodyB != nullptr) ? bodyB->m_invMass : 1.f;
 
 	float totalInvMass = invMassA + invMassB;
 

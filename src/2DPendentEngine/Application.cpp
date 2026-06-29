@@ -130,17 +130,11 @@ void Application::FPSDeltaTime()
 	{
 		Debug::Get()->destroyText("AUTO_FPS");
 	}
-
 	if (m_autoFPS)
 	{
 		SetFPS(m_window.V_Sync());
 		//SetFPS(240);
 	}
-	else if (m_FPSUserWant != m_targetFPS)
-	{
-		SetFPS(m_FPSUserWant);
-	}
-
 }
 
 void Application::HandleInput()
@@ -324,11 +318,6 @@ void Application::FixedUpdate()
 
 	// 4. Appliquer les vélocités corrigées -> déplacer les entités
 	PhysicsManager::Get()->IntegrateVelocities(m_FIX_UPDATE);
-}
-
-void Application::SetIsAutoFPS(bool p_value)
-{
-	m_autoFPS = p_value;
 }
 
 void Application::ClampCameraToCurrentMap()

@@ -40,22 +40,22 @@ void Player::OnEvent()
 	if (m_isInDialog == false)
 	{
 		//Input Clavier
-		if (InputManager::Get()->IsKeyboardHeld(K_Z))
+		if (InputManager::Get()->IsKeyboardHeld(K_z))
 		{
 			dir.SetY(dir.GetY() - 1.f);
 			GetCollider("actionBox")->SetOffset({ 0, -8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_S)) 
+		if (InputManager::Get()->IsKeyboardHeld(K_s)) 
 		{
 			dir.SetY(dir.GetY() + 1.f);
 			GetCollider("actionBox")->SetOffset({ 0, 24 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_Q)) 
+		if (InputManager::Get()->IsKeyboardHeld(K_q)) 
 		{
 			dir.SetX(dir.GetX() - 1.f);
 			GetCollider("actionBox")->SetOffset({ -16, 8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_D))
+		if (InputManager::Get()->IsKeyboardHeld(K_d))
 		{
 			dir.SetX(dir.GetX() + 1.f);
 			GetCollider("actionBox")->SetOffset({ 16, 8 });
@@ -114,9 +114,9 @@ void Player::HandleFarmAction()
 
 	case FarmTileState::TILLED:
 		// T maintenu = arroser, Y maintenu = planter, sinon = d�-b�cher
-		if (InputManager::Get()->IsKeyboardHeld(K_T))
+		if (InputManager::Get()->IsKeyboardHeld(K_t))
 			target->Water(currentDay);
-		else if (InputManager::Get()->IsKeyboardHeld(K_Y))
+		else if (InputManager::Get()->IsKeyboardHeld(K_y))
 			target->Plant(m_selectedCrop, currentDay);
 		else
 			target->Till(currentDay);
@@ -124,7 +124,7 @@ void Player::HandleFarmAction()
 
 	case FarmTileState::WATERED:
 		// Y maintenu = planter
-		if (InputManager::Get()->IsKeyboardHeld(K_Y))
+		if (InputManager::Get()->IsKeyboardHeld(K_y))
 			target->Plant(m_selectedCrop, currentDay);
 		break;
 

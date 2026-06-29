@@ -34,7 +34,8 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	Application::Get()->SetFPSUserWanted(10000);
+	Application::Get()->SetFPSUserWanted(100000);
+	Application::Get()->SetIsAutoFPS(false);
 
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });

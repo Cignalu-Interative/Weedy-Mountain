@@ -59,6 +59,7 @@ void AssetManager::AddTextureByRepertory(const std::string& p_path)
 				//SDL_Log("Lib/AssetManager.cpp/AddTexture/IMG_LoadTexture/failed to load texture: %s", SDL_GetError());
 				continue;
 			}
+			SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_PIXELART);
 			m_texturesMap[autoId] = m_texturesVector.size();
 			m_texturesVector.push_back(texture);
 			m_textureIdsVector.push_back(autoId);

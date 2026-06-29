@@ -405,6 +405,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     m_TileDimension.GetX() * p_camera->GetZoom(),        // width
                     m_TileDimension.GetY() * p_camera->GetZoom()         // height
                 };
+
                 // Dessiner la tile
                 if (SDL_RenderTexture(
                     f_render->m_renderer,

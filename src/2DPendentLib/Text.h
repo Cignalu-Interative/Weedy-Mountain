@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL.h>
-#include <SDL_ttf.h>
+#include <SDL3/SDL.h>
+#include <SDL3_ttf/SDL_ttf.h>
 #include <string>
 #include "Vector2.h"
 #include "Geometry.h"

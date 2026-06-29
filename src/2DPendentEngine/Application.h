@@ -14,6 +14,20 @@
 #include "SoundManager.h"
 #include "Aleatory.h"
 #include "2DPendentLib/AssetManager.h"
+
+
+//#include "2DPendentLib/glad/glad.h"
+//#include "2DPendentLib/glm/glm.hpp"
+//#include "2DPendentLib/glm/gtc/type_ptr.hpp"
+//#include "2DPendentLib/Triangle.h"
+//#include "2DPendentLib/Shader.h"
+//#include "2DPendentLib/Mesh.h"
+//#include "2DPendentLib/Texture2D.h"
+//#include "2DPendentLib/SpriteOpenGL.h"
+//
+//#include "2DPendentLib/TVVertex.h"
+//#include "2DPendentLib/CameraOpenGL.h"
+
 //Version 3.4.0
 
 class Entity;

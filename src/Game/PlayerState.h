@@ -41,157 +41,25 @@ class PlayerIdleState : public StateBase<Player>
 	};
 };
 
-class PlayerWalkUpState : public StateBase<Player>
+class PlayerWalkingState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
-		//	p_player->SetAnimationByName("WalkUp");
-		std::cout << "walkup" << std::endl;
-	};
+	void Start(Player* p_player);
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	void Update(Player* p_player, float dt) 
 	{
-		switch (currentState)
-		{
-		case (int)PlayerState::IDLE:
-			return true;
-			break;
-		case (int)PlayerState::WALKDOWN:
-			return true;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return true;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return true;
-			break;
-		case (int)PlayerState::MINING:
-			return false;
-			break;
-		case (int)PlayerState::DIGGING:
-			return false;
-			break;
-		case (int)PlayerState::WATERING:
-			return false;
-			break;
-		}
-	};
-};
+		Vector2f playerDir = p_player->GetDirection();
+		if (playerDir.GetX() > 0)
+			p_player->SetAnimationByName("WalkRight");
+		else if (playerDir.GetX() < 0)
+			p_player->SetAnimationByName("WalkLeft");
 
-class PlayerWalkDownState : public StateBase<Player>
-{
-	void Start(Player* p_player) {
-		//p_player->SetAnimationByName("WalkDown");
-		std::cout << "walkDown" << std::endl;
-	};
+		if (playerDir.GetY() > 0)
+			p_player->SetAnimationByName("WalkDown");
+		else if (playerDir.GetY() < 0)
+			p_player->SetAnimationByName("WalkUp");
 
-	void Update(Player* p_player, float dt) {};
+	};
 	void End(Player* p_player) {};
-	bool CanTransitionFrom(Player* p_player, int currentState)
-	{
-		switch (currentState)
-		{
-		case (int)PlayerState::IDLE:
-			return true;
-			break;
-		case (int)PlayerState::WALKUP:
-			return true;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return true;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return true;
-			break;
-		case (int)PlayerState::MINING:
-			return false;
-			break;
-		case (int)PlayerState::DIGGING:
-			return false;
-			break;
-		case (int)PlayerState::WATERING:
-			return false;
-			break;
-		}
-	};
-};
-
-class PlayerWalkRightState : public StateBase<Player>
-{
-	void Start(Player* p_player) {
-		//p_player->SetAnimationByName("WalkRight");
-		std::cout << "walkright" << std::endl;
-	};
-
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
-	bool CanTransitionFrom(Player* p_player, int currentState)
-	{
-		switch (currentState)
-		{
-		case (int)PlayerState::IDLE:
-			return true;
-			break;
-		case (int)PlayerState::WALKUP:
-			return true;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return true;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return true;
-			break;
-		case (int)PlayerState::MINING:
-			return false;
-			break;
-		case (int)PlayerState::DIGGING:
-			return false;
-			break;
-		case (int)PlayerState::WATERING:
-			return false;
-			break;
-		}
-	};
-};
-
-class PlayerWalkLeftState : public StateBase<Player>
-{
-	void Start(Player* p_player) {
-		//p_player->SetAnimationByName("WalkLeft");
-		std::cout << "walkleft" << std::endl;
-	};
-
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
-
-	bool CanTransitionFrom(Player* p_player, int currentState)
-	{
-		switch (currentState)
-		{
-		case (int)PlayerState::IDLE:
-			return true;
-			break;
-		case (int)PlayerState::WALKUP:
-			return true;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return true;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return true;
-			break;
-		case (int)PlayerState::MINING:
-			return false;
-			break;
-		case (int)PlayerState::DIGGING:
-			return false;
-			break;
-		case (int)PlayerState::WATERING:
-			return false;
-			break;
-		}
-	};
 };
 
 class PlayerWateringState : public StateBase<Player>

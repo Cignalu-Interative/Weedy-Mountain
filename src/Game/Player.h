@@ -7,16 +7,11 @@
 enum class PlayerState
 {
 	IDLE,
-	WALKUP,
-	WALKDOWN,
-	WALKRIGHT,
-	WALKLEFT,
+	WALKING,
 
 	WATERING,
 	DIGGING,
 	MINING,
-
-
 
 	COUNT
 };

@@ -12,7 +12,7 @@ void Text::CreateTexture()
 	int textSizeW, textSizeH;
 	if (TTF_SizeText(m_font, m_text.c_str(), &textSizeW, &textSizeH) == -1)
 	{
-		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_GetStringSize/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_SizeText/cela na pas fonctionné : %s", TTF_GetError());
 		return;
 	}
 
@@ -92,12 +92,12 @@ void Text::SetText(const std::string& p_text)
 	m_timeToUpdate -= Debug::Get()->GetDeltaTime();
 	if (m_timeToUpdate > m_updateInterval)
 	{
-		return; // Pas encore le moment de mettre ï¿½ jour la texture
+		return; // Pas encore le moment de mettre à jour la texture
 	}
 	m_timeToUpdate = m_updateInterval;
 	if (p_text == m_text)
 	{
-		return; // Le texte n'a pas changï¿½, pas besoin de recrï¿½er la texture
+		return; // Le texte n'a pas changé, pas besoin de recréer la texture
 	}
 	if (m_textTexture == nullptr)
 	{
@@ -117,7 +117,7 @@ void Text::SetFontSize(int p_size)
 {
 	if (p_size == m_fontSize)
 	{
-		return; // La taille n'a pas changï¿½, pas besoin de recrï¿½er la texture
+		return; // La taille n'a pas changé, pas besoin de recréer la texture
 	}
 
 	m_fontSize = p_size;
@@ -155,12 +155,13 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 	Uint8 r, g, b, a;
 	if (SDL_GetTextureColorMod(m_textTexture, &r, &g, &b) < 0)
 	{
-		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureColorMod/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureColorMod/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
-	if (SDL_GetTextureAlphaMod(m_textTexture, &a) == false)
+
+	if (SDL_GetTextureAlphaMod(m_textTexture, &a) < 0)
 	{
-		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureAlphaMod/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureAlphaMod/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 
@@ -168,12 +169,12 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 	{
 		if (SDL_SetTextureColorMod(m_textTexture, m_color.r, m_color.g, m_color.b) < 0)
 		{
-			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureColorMod/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureColorMod/cela na pas fonctionné : %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetTextureAlphaMod(m_textTexture, m_color.a) < 0)
 		{
-			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureAlphaMod/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureAlphaMod/cela na pas fonctionné : %s", SDL_GetError());
 			return;
 		}
 	}
@@ -217,18 +218,18 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
 	if (SDL_RenderCopyExF(renderer, m_textTexture,
 		NULL,           // Frame du sprite sheet (ou NULL)
-		&m_textRect,          // Position/taille ï¿½ l'ï¿½cran
-		GetAngle(),        // Angle Transformable (degrï¿½s)
-		&rotationCenter,   // Centre rotation prï¿½-calculï¿½
-		flip) == false)       //  miroir (optionnel)
+		&m_textRect,          // Position/taille à l'écran
+		GetAngle(),        // Angle Transformable (degrés)
+		&rotationCenter,   // Centre rotation pré-calculé
+		flip) == -1)       //  miroir (optionnel)
 	{
-		SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 
 	/*if (SDL_RenderCopyF(renderer, m_textTexture, NULL, &m_textRect) < 0)
 	{
-		SDL_Log("Lib/Text.cpp/Draw/SDL_RenderCopyF/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Draw/SDL_RenderCopyF/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}*/
 
@@ -244,7 +245,7 @@ void Text::UpdateTexture()
 	int textSizeW, textSizeH;
 	if (TTF_SizeText(m_font, m_text.c_str(), &textSizeW, &textSizeH) == -1)
 	{
-		SDL_Log("Lib/Text.cpp/Update/TTF_GetStringSize/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Update/TTF_SizeText/cela na pas fonctionné : %s", TTF_GetError());
 		return;
 	}
 	int sizetetureX = GetDimension().GetX();
@@ -265,29 +266,9 @@ void Text::UpdateTexture()
 		return;
 	}
 
-	SDL_PropertiesID props = SDL_GetTextureProperties(m_textTexture);
-
-	int format = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_FORMAT_NUMBER, 0);
-	int access = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_ACCESS_NUMBER, 0);
-	int width = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0);
-	int height = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0);
-
-	std::vector<Uint32> pixels(width * height, 0);
-	if (SDL_UpdateTexture(m_textTexture, NULL, pixels.data(), width * sizeof(Uint32)) == false)
-	{
-		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionnï¿½ : %s", SDL_GetError());
-		return;
-	}
-
-	if (SDL_UpdateTexture(m_textTexture, NULL, textSurface->pixels, textSurface->pitch) == false)
-	{
-		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionnï¿½ : %s", SDL_GetError());
-		return;
-	}
-	SDL_DestroySurface(textSurface);
-
-	float textWidth, textHeight;
-	if (SDL_GetTextureSize(m_textTexture, &textWidth, &textHeight) == false)
+	Uint32 format;
+	int access, width, height;
+	if (SDL_QueryTexture(m_textTexture, &format, &access, &width, &height) < 0)
 	{
 		SDL_Log("Lib/Debug.cpp/Update/SDL_QueryTexture/SDL_QueryTexture non reussie : %s", SDL_GetError());
 		return;
@@ -295,13 +276,13 @@ void Text::UpdateTexture()
 	std::vector<Uint32> pixels(width * height, 0);
 	if (SDL_UpdateTexture(m_textTexture, NULL, pixels.data(), width * sizeof(Uint32)) < 0)
 	{
-		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 
 	if (SDL_UpdateTexture(m_textTexture, NULL, textSurface->pixels, textSurface->pitch) < 0)
 	{
-		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionnï¿½ : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
 	SDL_FreeSurface(textSurface);

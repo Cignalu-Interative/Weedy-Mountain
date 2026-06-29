@@ -21,7 +21,7 @@
 #include "FarmTile.h"
 #include "FarmManager.h"
 #include "GameData.h"
-#include "2DPendentLib/Debug.h" 
+#include "2DPendentLib/Debug.h"
 
 void GameScene::OnInitialize()
 {
@@ -34,22 +34,17 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	Application::Get()->SetFPSUserWanted(10000);
-
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });
 	m_player->GetCollider()->SetOffset({ 0,8 });
 	m_player->SetRigidBody(true);
 	m_player->SetTag(1);
 	m_player->SetDrawLayer(2);
-	m_player->GetCollider()->SetLayer(PLAYER);
+	m_player->GetCollider()->SetLayer(1);
 	m_player->AddCollider("actionBox", { 16,16 }, Shape::Rectangle, { 0,0 }, true);
 	m_player->AddCollider("interact", { 80,80 }, Shape::Circle, { 0,0 }, true);
 	m_player->ShowCollider(true);
-	m_player->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
-	m_player->GetPhysicsBody()->SetGravityEnabled(false);
-	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
-	m_player->GetPhysicsBody()->SetRestitution(0.f);
+	m_player->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
 
 	EnviroProps* tree = CreateEntity<EnviroProps>({200,200},{128,128}, "Oak_Tree", Shape::Rectangle);
 	tree->SetType(EnviroSpawnName::Tree);
@@ -59,10 +54,9 @@ void GameScene::OnInitialize()
 	tree->SetTag(2);
 	tree->GetCollider()->Resize({ 16,16 });
 	tree->GetCollider()->SetOffset({ 0,28 });
-	tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 	
 	GetCamera()->SetZoom(5.f);
-	//GetCamera()->Follow(m_player);
+	GetCamera()->Follow(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
@@ -78,8 +72,8 @@ void GameScene::OnInitialize()
 			info.worldPos.GetY() + tileDim.GetY() / 2.f
 		};
 		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->GetCollider()->SetLayer(FARMTILE);
-		tile->GetCollider()->SetMask(NoNE);
+		tile->GetCollider()->SetLayer(30);
+		tile->GetCollider()->SetMask(1);
 		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}
@@ -93,15 +87,6 @@ void GameScene::OnEvent()
 		EnviroSpawn* spawn = new EnviroSpawn();
 		spawn->InitEnviroSpawn();
 		spawn->SpawnEnviroProps();
-	}
-
-	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
-	{
-		Application::Get()->SetIsAutoFPS(false);
-	}
-	if (InputManager::Get()->IsKeyboardDown(K_KP_2))
-	{
-		Application::Get()->SetIsAutoFPS(true);
 	}
 }
 

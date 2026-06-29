@@ -18,7 +18,7 @@ inline SoundManager& sound = *SoundManager::Get();
 
 DemoScene::DemoScene()
 {
-	m_players.reserve(64); // Rï¿½server de la mï¿½moire pour 64 entites afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de joueurs
+	m_players.reserve(64); // Réserver de la mémoire pour 64 entites afin d'éviter les reallocations fréquentes lors de l'ajout de joueurs
 }
 
 void DemoScene::OnInitialize()
@@ -30,42 +30,48 @@ void DemoScene::OnInitialize()
 
 
 	Player* player1 = CreateEntity<Player>({ 200, 0 }, { 200, 200 }, "Perceval", Shape::Rectangle);
-	player1->GetSprite()->SetOpacity(128);
-	player1->SetAngle(85.0f);
+	//player1->GetSprite()->SetOpacity(128);
+	player1->SetAngle(0.0f);
+	player1->InitialisePhysicsBody(ShapeBodyPhysics::Dynamic);
+	player1->GetPhysicsBody()->SetMass(20.f);
 	player1->SetRigidBody(true);
 	player1->ShowCollider(true);
+	m_player1 = player1;
 	m_players.push_back(player1);
 
 	Player* player2 = new Player();
-	player2 = CreateEntity<Player>({ 800, 250 }, { 50, 50 }, "Perceval", Shape::Circle);
-	player2->GetSprite()->SetOpacity(45);
+	player2 = CreateEntity<Player>({ 200, 400 }, { 500, 100 }, "Perceval", Shape::Rectangle);
+	//player2->GetSprite()->SetOpacity(45);
 	player2->SetAngle(0.0f);
+	player2->InitialisePhysicsBody(ShapeBodyPhysics::Static);
+	//player2->GetPhysicsBody()->SetMass(20.f);
 	player2->SetRigidBody(true);
 	player2->ShowCollider(true);
+	m_player2 = player2;
 	m_players.push_back(player2);
 
-	Player* player3 = new Player();
-	player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
-	player3->GetSprite()->SetOpacity(67);
-	player3->SetAngle(8.0f);
-	player3->SetRigidBody(true);
-	player3->ShowCollider(true);
-	m_players.push_back(player3);
+	//Player* player3 = new Player();
+	//player3 = CreateEntity<Player>({ 250, 550 }, { 150, 150 }, "Perceval", Shape::Rectangle);
+	//player3->GetSprite()->SetOpacity(67);
+	//player3->SetAngle(8.0f);
+	//player3->SetRigidBody(true);
+	//player3->ShowCollider(true);
+	//m_players.push_back(player3);
 
-	Player* player4 = new Player();
-	player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
-	player4->GetSprite()->SetOpacity(200);
-	player4->SetAngle(0.0f);
-	player4->SetRigidBody(true);
-	player4->ShowCollider(true);
-	m_players.push_back(player4);
+	//Player* player4 = new Player();
+	//player4 = CreateEntity<Player>({ 400, 100 }, { 100, 100 }, "Perceval", Shape::Circle);
+	//player4->GetSprite()->SetOpacity(200);
+	//player4->SetAngle(0.0f);
+	//player4->SetRigidBody(true);
+	//player4->ShowCollider(true);
+	//m_players.push_back(player4);
 
-	Player* player5 = new Player();
-	player5 = CreateEntity<Player>({ 1000, 350 }, { 125, 125 }, "Perceval", Shape::Rectangle);
-	player5->SetAngle(0.0f);
-	player5->SetRigidBody(true);
-	player5->ShowCollider(true);
-	m_players.push_back(player5);
+	//Player* player5 = new Player();
+	//player5 = CreateEntity<Player>({ 1000, 350 }, { 125, 125 }, "Perceval", Shape::Rectangle);
+	//player5->SetAngle(0.0f);
+	//player5->SetRigidBody(true);
+	//player5->ShowCollider(true);
+	//m_players.push_back(player5);
 
 	/*for (int i = 0; i < 80; i++)
 	{
@@ -359,7 +365,7 @@ void DemoScene::OnEvent()
 
 	if (entitySelected != nullptr)
 	{
-		/*if (input.IsKeyboardHeld(K_UP))
+		if (input.IsKeyboardHeld(K_z))
 		{
 			std::cerr << "Jump" << std::endl;
 			if (entitySelected->GetPhysicsBody())
@@ -378,15 +384,15 @@ void DemoScene::OnEvent()
 				entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), -1.0f });
 			}
 		}
-		if (input.IsKeyboardHeld(K_DOWN))
+		if (input.IsKeyboardHeld(K_s))
 		{
 			entitySelected->SetDirection({ entitySelected->GetDirection().GetX(), 1.0f });
 		}
-		if (input.IsKeyboardHeld(K_LEFT))
+		if (input.IsKeyboardHeld(K_q))
 		{
 			entitySelected->SetDirection({ -1.0f, entitySelected->GetDirection().GetY() });
 		}
-		if (input.IsKeyboardHeld(K_RIGHT))
+		if (input.IsKeyboardHeld(K_d))
 		{
 			entitySelected->SetDirection({ 1.0f, entitySelected->GetDirection().GetY() });
 		}
@@ -550,8 +556,9 @@ void DemoScene::OnEvent()
 
 void DemoScene::OnUpdate()
 {
-	//TestVï¿½locitï¿½();
-
+	//TestVélocité();
+	std::cout << "Player1 = " <<m_player1->GetIsGrounded() << std::endl;
+	std::cout << "Player2 = " <<m_player2->GetIsGrounded() << std::endl;
 	Vector2f positionSound = sound.GetSoundPosition("Monsieur");
 
 	GetGeometry<Circle>("88")->SetPosition(positionSound);
@@ -618,7 +625,7 @@ void DemoScene::OnDestroy()
 	GetEntities().clear();
 }
 
-void DemoScene::TestVï¿½locitï¿½()
+void DemoScene::TestVélocité()
 {
 	for (Player* player : m_players)
 	{

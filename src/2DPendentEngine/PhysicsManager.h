@@ -36,6 +36,4 @@ public:
 	void ResolveCollision(Entity* p_entityA, Entity* p_entityB, const CollisionManifold& p_manifold);
 
 	float GetPixelsPerMeter() const { return m_PIXELS_PER_METER; }
-
-	void Reset() { m_bodies.clear(); }
 };

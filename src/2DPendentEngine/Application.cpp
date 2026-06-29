@@ -9,8 +9,6 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
-#include "2DPendentLib/SDLShader.h"
-
 #include "DialogueManager.h"
 #include "PhysicsManager.h"
 
@@ -123,17 +121,11 @@ void Application::FPSDeltaTime()
 	{
 		Debug::Get()->destroyText("AUTO_FPS");
 	}
-
 	if (m_autoFPS)
 	{
 		SetFPS(m_window.V_Sync());
 		//SetFPS(240);
 	}
-	else if (m_FPSUserWant != m_targetFPS)
-	{
-		SetFPS(m_FPSUserWant);
-	}
-
 }
 
 void Application::HandleInput()
@@ -240,18 +232,10 @@ void Application::FixedUpdate()
 
 	// 3. Détecter les collisions, résoudre (répulsion + impulsions), fire les callbacks
 	//    CollisionManager appelle PhysicsManager::Repulse et ResolveCollision en interne
-	Timer time;
-	time.SetCurrentTime();
 	CollisionManager::Get()->Update();
-	//std::cout << "Collision time: " << time.GetElapsed() << " s" << std::endl;
 
 	// 4. Appliquer les vélocités corrigées -> déplacer les entités
 	PhysicsManager::Get()->IntegrateVelocities(m_FIX_UPDATE);
-}
-
-void Application::SetIsAutoFPS(bool p_value)
-{
-	m_autoFPS = p_value;
 }
 
 void Application::ClampCameraToCurrentMap()

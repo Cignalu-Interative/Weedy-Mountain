@@ -4,6 +4,7 @@
 #include "Render.h"
 #include "Window.h"
 #include <SDL3/SDL.h>
+#include "2DPendentEngine/Entity.h"
 
 //Camera::Camera(Vector2f p_position, Vector2i p_dimension)
 //{
@@ -35,11 +36,22 @@ void Camera::ZoomOut(float p_amount)
 	SetZoom(zoom);
 }
 
+void Camera::Follow(Entity* p_entity)
+{
+    float dt = p_entity->GetDeltaTime();
+    float factor = 1 - exp(-m_smoothSpeed * dt);
+
+    float lerpX = std::lerp(GetPosition().GetX(), p_entity->GetPosition().GetX(), factor);
+    float lerpY = std::lerp(GetPosition().GetY(), p_entity->GetPosition().GetY(), factor);
+
+    SetPosition({ lerpX,lerpY });
+}
+
 void Camera::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
     Vector2i margin = { 2, 2 };
 
-    // Dimension du frustum en monde = dimension écran / zoom
+    // Dimension du frustum en monde = dimension ï¿½cran / zoom
     Vector2i worldDimension(
         Vector2f(
             (GetDimension().GetX() - margin.GetX()) / m_zoomFactor,

@@ -77,40 +77,9 @@ private:
 	bool m_autoFPS = true; // Si true, le jeu ajustera automatiquement le nombre de frames par seconde par rapport au fps trouvé grace à la fonction V_Sync
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
 
+	bool m_cameraIsClamp = false;
 
-	//Triangle triangle;
-	//Shader shader;
-	//Mesh quadMesh;
-	//Texture2D texture;
-	//SpriteOpenGL spriteOpenGL;
-
-	//// Position (x,y,z) + Couleur (r,g,b)
-	//std::vector<float> quadVerts = {
-	//	// pos              couleur
-	//	0.0f, -0.75f, 0.0f,   1.0f, 0.0f, 0.0f,  // rouge en bas a gauche
-	//	 0.98f, -0.75f, 0.0f,   0.0f, 1.0f, 0.0f,  // verten bas a droite
-	//	 0.98f,  0.75f, 0.0f,   0.0f, 0.0f, 1.0f,  // bleu en haut a droite
-	//	0.0f,  0.75f, 0.0f,   1.0f, 1.0f, 0.0f   // jaune en haut a gauche
-	//};
-
-	//std::vector<unsigned int> quadIndices = {
-	//	0, 1, 2,
-	//	2, 3, 0
-	//};
-
-	//// Attributs : position (loc 0) + couleur (loc 1)
-	//std::vector<VertexAttrib> attribs = {
-	//	{ 0, 3 },  // location 0 → position (vec3)
-	//	{ 1, 3 },  // location 1 → couleur (vec3)
-	//};
-
-	/*std::vector<TVVertex> m_tvVertexVector;
-
-	TVVertex m_testTVVertex;
-	TVVertex m_TVVertex2;
-
-	Timer m_timeOpenGL;*/
-
+	void ClampCameraToCurrentMap();
 public:
 
 	//Constructeur de l'Application
@@ -149,7 +118,7 @@ public:
 
 	void IsEneableToUpdate();
 
-	void UpdatePhysics_Collisions();
+	void FixedUpdate();
 
 	//Obtention du render
 	Render* GetRender() { return &m_render; }
@@ -164,8 +133,7 @@ public:
 	void SetDrawFPS(bool p_drawFPS) { m_drawFPS = p_drawFPS; }
 	bool GetDrawFPS() const { return m_drawFPS; }
 
-
-public:
+	void SetClampCameraToCurrentMap(bool p_isClamp) { m_cameraIsClamp = p_isClamp; }
 
 	//Liste des classes amies avec la classe Application, ces classes peuvent accéder aux membres privés de l'Application
 	friend class Entity;

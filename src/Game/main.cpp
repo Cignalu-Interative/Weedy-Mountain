@@ -12,6 +12,7 @@ int main(int argc, char* argv[])
 	Aleatory::Initialize();
 	Application* application = Application::Get();
 	application->Init();
+	//application->GetWindow()->SetWindowSize({ 1920, 1080 });
 
 	Launcher::Launch();
 

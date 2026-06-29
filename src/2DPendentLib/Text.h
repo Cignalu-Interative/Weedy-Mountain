@@ -37,7 +37,7 @@ public:
 	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 28);
 	~Text();
 
-	void Initialize(Vector2f p_position, const std::string p_text, Color p_color);
+	void Initialize(Vector2f p_position, const std::string p_text, Color p_color = ColorsNamed::White);
 
 	void SetFont(const std::string& p_idFont, int p_sizeFont);
 	TTF_Font* GetFont() const { return m_font; }

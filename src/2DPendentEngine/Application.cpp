@@ -4,12 +4,15 @@
 #include "Entity.h"
 #include "Timer.h"
 #include "Scene.h"
+#include "2DPendentLib/Utils.h"
 #include "MapTiledManager.h"
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
 #include "2DPendentLib/SDLShader.h"
 
+#include "DialogueManager.h"
+#include "PhysicsManager.h"
 
 Application::Application()
 {
@@ -63,37 +66,6 @@ void Application::Init()
 	//SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
 	m_timerFPS.SetCurrentTime();
-
-
-	/*triangle.Init();
-	shader.LoadFromFiles("../../src/2DPendentLib/Shaders/TestShader.vert", "../../src/2DPendentLib/Shaders/TestShader.frag");
-	quadMesh.Upload(quadVerts, attribs, quadIndices);
-	texture.LoadFromFile("../../res/2DPendentEngine/Assets/Textures/Other/Perceval.png");
-	spriteOpenGL.Init(sizeWindow.GetX(), sizeWindow.GetY());*/
-
-	/*for (int i = 0; i < 0; ++i)
-	{
-		TVVertex tvvertex;
-		tvvertex.VertexSpecification();
-		tvvertex.CreateGraphicsPipeline();
-		m_tvVertexVector.push_back(tvvertex);
-	}
-
-	m_testTVVertex.VertexSpecification();
-	m_testTVVertex.CreateGraphicsPipeline();
-	m_testTVVertex.GetCameraOpenGL()->SetProjectionMatrix(glm::radians(45.0f), (float)sizeWindow.GetX() / (float)sizeWindow.GetY(), 0.1f, 10.0f);
-
-	m_TVVertex2.VertexSpecification();
-	m_TVVertex2.CreateGraphicsPipeline();
-	m_TVVertex2.GetCameraOpenGL()->SetProjectionMatrix(glm::radians(45.0f), (float)sizeWindow.GetX() / (float)sizeWindow.GetY(), 0.1f, 10.0f);
-	m_TVVertex2.SetTranslation(glm::vec3{ 0.0f,0.0f,-4.0f });
-
-	std::cerr << "Count geometry for OpenGL: " << m_tvVertexVector.size() << std::endl;
-
-	m_timeOpenGL.SetCurrentTime();
-	
-	InputManager::Get()->SetSDLWarpMouseInWindow(Vector2f(sizeWindow.GetX() / 2.0f, sizeWindow.GetY() / 2.0f));
-	InputManager::Get()->SetRelativeMouseMode(true);*/
 
 	std::cerr << "Application initialized successfully." << std::endl;
 }
@@ -272,16 +244,14 @@ void Application::Update()
 		return;
 	}*/
 
+
 	if (SceneManager::Get()->IsSceneInStack() == false)
 	{
 		return;
 	}
 
-	CollisionManager::Get()->SyncAll();
-	CollisionManager::Get()->Update();
-
-	//SceneManager::Get()->UpdateCurrentScene();
 	SceneManager::Get()->UpdateScenesInStack();
+
 	for (auto it = m_entities.begin(); it != m_entities.end(); )
 	{
 		Entity* entity = *it;
@@ -326,92 +296,53 @@ void Application::Update()
 	}
 	m_entityToAdd.clear();
 
-
-	/*triangle.modelMatrix = glm::mat4(1.0f);
-
-	triangle.modelMatrix = glm::translate(triangle.modelMatrix, glm::vec3(0.5f, 0.2f, 0.0f));*/
+	if (m_cameraIsClamp)
+		ClampCameraToCurrentMap();
 }
 
-void Application::UpdatePhysics_Collisions()
+void Application::FixedUpdate()
 {
-	for (Entity* entity : m_entities)
-	{
-		//entity->UpdateMovement_Forces(m_FIX_UPDATE);
-	}
+	// Ordre impératif de la fixed-loop physique :
+	// 1. Intégrer les forces (gravité, damping) -> met à jour les vélocités
+	PhysicsManager::Get()->IntegrateForces(m_FIX_UPDATE);
 
-	std::set<std::pair<Entity*, Entity*>> resolvedPairs;
+	// 2. Synchroniser les colliders sur les positions actuelles des entités
+	CollisionManager::Get()->SyncAll();
 
-	for (Entity* entity : m_entities)
-	{
-		entity->UpdateMovement_Velocity(m_FIX_UPDATE);
-	}
+	// 3. Détecter les collisions, résoudre (répulsion + impulsions), fire les callbacks
+	//    CollisionManager appelle PhysicsManager::Repulse et ResolveCollision en interne
+	Timer time;
+	time.SetCurrentTime();
+	CollisionManager::Get()->Update();
+	//std::cout << "Collision time: " << time.GetElapsed() << " s" << std::endl;
 
-	return;
-	
-	for (auto it1 = m_entities.begin(); it1 != m_entities.end(); ++it1)
-	{
-		auto it2 = it1;
-		++it2;
-		for (; it2 != m_entities.end(); ++it2)
-		{
-			Entity* entity = *it1;
-			Entity* otherEntity = *it2;
+	// 4. Appliquer les vélocités corrigées -> déplacer les entités
+	PhysicsManager::Get()->IntegrateVelocities(m_FIX_UPDATE);
+}
 
-			for (Collider* colliderA : entity->GetColliders())
-			{
-				for (Collider* colliderB : otherEntity->GetColliders())
-				{
-					if (!colliderA || !colliderB)
-						continue;
+void Application::ClampCameraToCurrentMap()
+{
+	MapTiledManager* map = MapTiledManager::Get();
 
-					if (colliderA->IsTrigger() || colliderB->IsTrigger())
-						continue;
+	if (map->GetCurrentMap() == nullptr)
+		std::cerr << "CurrentMap is nullptr" << std::endl;
 
-					if (colliderA->CanCollideWith(colliderB) == false)  
-						continue;
+	Vector2f mapDimensions = (Vector2f)map->GetCurrentMap()->GetDimension();
+	Vector2f cameraDimensions = (Vector2f)m_camera->GetDimension();
 
-					if (Collision::IsColliding(*colliderA, *colliderB) == false)
-						continue;
+	Vector2f cameraPos = m_camera->GetPosition();
 
-					if (entity->IsRigidBody() && otherEntity->IsRigidBody())
-					{
-						float dx = colliderB->GetPosition().GetX() - colliderA->GetPosition().GetX();
-						float dy = colliderB->GetPosition().GetY() - colliderA->GetPosition().GetY();
+	Vector2f realCamDim = cameraDimensions / m_camera->GetZoom();
 
-						float overlapX = (colliderA->GetDimension().GetX() * 0.5f + colliderB->GetDimension().GetX() * 0.5f) - Utils::AbsValue(dx);
-						float overlapY = (colliderA->GetDimension().GetY() * 0.5f + colliderB->GetDimension().GetY() * 0.5f) - Utils::AbsValue(dy);
+	Vector2f min = realCamDim / 2.f;
+	Vector2f max = mapDimensions - min;
 
-						Vector2f normal;
-						if (overlapX < overlapY)
-							normal = { dx < 0 ? -1.0f : 1.0f, 0.0f };
-						else
-							normal = { 0.0f, dy < 0 ? -1.0f : 1.0f };
+	Vector2f clampPosition = {}; // Utils::Clamp(cameraPos, Vector2f{}, max);
 
-						if (normal.GetY() > 0.5f) entity->SetIsGrounded(true);
-						if (normal.GetY() < -0.5f) otherEntity->SetIsGrounded(true);
+	clampPosition.SetX(std::clamp(cameraPos.GetX(), min.GetX(), max.GetX()));
+	clampPosition.SetY(std::clamp(cameraPos.GetY(), min.GetY(), max.GetY()));
 
-						auto entityPair = std::make_pair(std::min(entity, otherEntity), std::max(entity, otherEntity));
-
-						if (resolvedPairs.count(entityPair) == 0)
-						{
-							Collision::Repulse(entity, otherEntity);
-
-							PhysicsBody* physicsBodyA = entity->m_physicsBody;
-							PhysicsBody* physicsBodyB = otherEntity->m_physicsBody;
-
-							if (physicsBodyA && physicsBodyB)
-								PhysicsBody::ResolveCollisionPhysics(physicsBodyA, physicsBodyB, entity->GetPosition(), normal);
-
-							resolvedPairs.insert(entityPair);
-						}
-					}
-				}
-			}
-		}
-	}
-
-	for (Entity* entity : m_entities)
-		entity->UpdateMovement_Velocity(m_deltaTime);
+	m_camera->SetPosition(clampPosition);
 }
 
 void Application::Draw()
@@ -719,7 +650,14 @@ void Application::Draw()
 
 	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
-	for (Entity* entity : m_entities)
+	std::vector<Entity*> entToDraw = m_entities;
+
+	std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
+		{
+			return a->GetDrawLayer() < b->GetDrawLayer();
+		});
+
+	for (Entity* entity : entToDraw)
 	{
 		entity->Draw(&m_render, &m_window);
 	}
@@ -785,14 +723,12 @@ void Application::UpdateFPSCounter()
 
 void Application::IsEneableToUpdate()
 {
-	//0.05 secondes correspond à 20 FPS, cela permet d'éviter les problèmes de physique et de logique du jeu qui peuvent survenir
-	// lorsque le temps entre deux frames est trop long (par exemple, lorsque le jeu est mis en pause ou lorsqu'il y a un ralentissement temporaire)
-	// Vaut mieux un temps de mise à jour plus long que de sauter des mises à jour et de causer des problèmes de logique du jeu
-	//double frametime = Utils::LimitMax((double)m_deltaTime, 0.05);
-	m_accumulator += m_deltaTime;
+	m_accumulator += Utils::LimitMax(m_deltaTime, 0.05f);
+
 	while (m_accumulator >= m_FIX_UPDATE)
 	{
-		UpdatePhysics_Collisions();
+		FixedUpdate();
 		m_accumulator -= m_FIX_UPDATE;
 	}
+
 }

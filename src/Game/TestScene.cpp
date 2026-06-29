@@ -26,10 +26,10 @@ void TestScene::OnInitialize()
 
 	Button* b = CreateButton({ w/2.f, h/2.f}, {300, 100}, "Oak_Tree", "TEST", "START");
 	b->ShowCollider(true);
-	b->SetOnClick([] {
+	b->SetOnLeftClick([] {
 		std::cout << "click" << std::endl;
 		});
-	b->SetOnReleaseClick([] {
+	b->SetOnReleaseLeftClick([] {
 		std::cout << "release click" << std::endl;
 		});
 
@@ -47,7 +47,7 @@ void TestScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_TAB))
 	{
 		//SceneManager::Get()->ClearScenesInStack();
-		SceneManager::Get()->PushScene("demo");
+		SceneManager::Get()->PushScene("Game");
 	}
 }
 

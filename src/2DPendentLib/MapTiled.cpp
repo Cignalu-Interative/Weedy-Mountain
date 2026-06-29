@@ -1,4 +1,4 @@
-#include "pch.h"
+Ôªø#include "pch.h"
 #include "MapTiled.h"
 #include "GroupTiled.h"
 #include "LayerTiled.h"
@@ -80,7 +80,7 @@ void MapTiled::ReadMap(tinyxml2::XMLElement* p_map)
     m_MapInfinite = XMLSafe::GetBool(p_map, "infinite", false);
 
     std::string valueStr = XMLSafe::GetString(p_map, "backgroundcolor");
-    std::string colorStr = valueStr.substr(1);  // EnlËve #
+    std::string colorStr = valueStr.substr(1);  // Enl√®ve #
 
     if (colorStr.size() == 8)
     {  // #AARRGGBB
@@ -125,6 +125,7 @@ void MapTiled::ReadMap(tinyxml2::XMLElement* p_map)
 
     m_MapDimension = { XMLSafe::GetInt(p_map, "width"), XMLSafe::GetInt(p_map, "height") };
     m_TileDimension = { XMLSafe::GetInt(p_map, "tilewidth"), XMLSafe::GetInt(p_map, "tileheight") };
+    SetDimension({ m_MapDimension * m_TileDimension });
 }
 void MapTiled::ReadMapProperties(tinyxml2::XMLElement* p_mapElement)
 {
@@ -235,7 +236,7 @@ MapTiled::MapTiled(const std::string& p_path, Render* p_render)
     m_groups.reserve(8);        // groupes au niveau racine de la map
     m_layers.reserve(12);        // layers de tuiles principaux
     m_tilesets.reserve(6);      // rarement plus de 6 tilesets par map
-    m_properties.reserve(8);    // propriÈtÈs custom de la map
+    m_properties.reserve(8);    // propri√©t√©s custom de la map
     m_objectGroups.reserve(8);  // groupes d'objets
     m_imageLayers.reserve(4);   // image layers
 
@@ -336,12 +337,12 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     continue;
                 }
 
-                 // Calcul de l'index dans le vector 1D ‡ partir de coordonnÈes 2D (x,y)
+                 // Calcul de l'index dans le vector 1D √† partir de coordonn√©es 2D (x,y)
                  // Ex: x=2, y=3, largeur de la layer = 10 => index = 3*10 + 2 = 32
-                 // Cela permet de convertir les coordonnÈes 2D (x,y) en un index pour accÈder au vector 1D s_LayerTiles
+                 // Cela permet de convertir les coordonn√©es 2D (x,y) en un index pour acc√©der au vector 1D s_LayerTiles
                 int index = y * layerTiled->m_LayerDimension.GetX() + x;
 
-                // RÈcupÈration du tileID dans le vector s_LayerTiles
+                // R√©cup√©ration du tileID dans le vector s_LayerTiles
                 // Ex: index = 32 => tileNumber = s_LayerTiles[32] = 6
                 // tileNumber correspond au GID de la tile dans le tileset
                 int tile_gid = layerTiled->m_LayerTiles[index];
@@ -371,13 +372,13 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                 }
 
                 // Calcul de la position de la tile dans le tileset
-                int localID = tile_gid - tempTileset->m_baliseTileset.s_TilesetFirstgid; // GID local (commence ‡ 0)
+                int localID = tile_gid - tempTileset->m_baliseTileset.s_TilesetFirstgid; // GID local (commence √† 0)
 
-                // CORRIG… : Calcul des coordonnÈes UV dans le tileset
+                // CORRIG√â : Calcul des coordonn√©es UV dans le tileset
                 // Ex: localID = 6, tilesPerRow = 4
                 // tu = 6 % 4 = 2 (colonne dans le tileset)
                 // tv = 6 / 4 = 1 (ligne dans le tileset)
-                // tu et tv sont les coordonnÈes de la tile dans le tileset, exprimÈes en pixels
+                // tu et tv sont les coordonn√©es de la tile dans le tileset, exprim√©es en pixels
                 int tu, tv;
                 if (tempTileset->m_TilesetColumns == 0) {
                     // Tile invalide : skip ou tuile vide
@@ -395,12 +396,12 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     m_TileDimension.GetY()     // height
                 };
 
-                // Position de la tile sur la fenÍtre
+                // Position de la tile sur la fen√™tre
 
                 Vector2i postile = p_camera->WorldToScreen<int>({ x * m_TileDimension.GetX(), y * m_TileDimension.GetY() });
                 SDL_FRect dstRect = {
-                    postile.GetX(),    // pos X ‡ l'Ècran
-                    postile.GetY(),    // pos Y ‡ l'Ècran
+                    postile.GetX(),    // pos X ÔøΩ l'ÔøΩcran
+                    postile.GetY(),    // pos Y ÔøΩ l'ÔøΩcran
                     m_TileDimension.GetX() * p_camera->GetZoom(),        // width
                     m_TileDimension.GetY() * p_camera->GetZoom()         // height
                 };
@@ -412,7 +413,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     &dstRect
                 ) == false)
                 {
-                    SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderCopy/cela na pas fonctionnÈ : %s", SDL_GetError());
+                    SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderCopy/cela na pas fonctionn√© : %s", SDL_GetError());
                     return;
                 }
             }
@@ -484,4 +485,218 @@ ImageLayerTiled* MapTiled::GetImageLayerByName(const std::string& p_name)
             return imageLayer;
         }
     }
+}
+
+// Conversions
+Vector2i MapTiled::WorldToGrid(Vector2f p_worldPos) const
+{
+    return {
+        static_cast<int>(p_worldPos.GetX() / m_TileDimension.GetX()),
+        static_cast<int>(p_worldPos.GetY() / m_TileDimension.GetY())
+    };
+}
+
+Vector2f MapTiled::GridToWorld(Vector2i p_gridPos) const
+{
+    return {
+        static_cast<float>(p_gridPos.GetX() * m_TileDimension.GetX()),
+        static_cast<float>(p_gridPos.GetY() * m_TileDimension.GetY())
+    };
+}
+
+// Helpers internes
+TilesetTiled* MapTiled::GetTilesetForGID(int p_gid) const
+{
+    if (p_gid == 0) 
+        return nullptr;
+
+    TilesetTiled* result = nullptr;
+    for (TilesetTiled* ts : m_tilesets)
+    {
+        if (p_gid >= ts->GetTilesetFirstgid())
+            result = ts;
+    }
+    return result;
+}
+
+TileTiled* MapTiled::GetTileTiledForGID(int p_gid) const
+{
+    TilesetTiled* ts = GetTilesetForGID(p_gid);
+    if (ts == nullptr) 
+        return nullptr;
+
+    int localID = p_gid - ts->GetTilesetFirstgid();
+    for (TileTiled* tile : ts->GetAllPropertiesTiles())
+        if (tile->m_TileId == localID)
+            return tile;
+
+    return nullptr;
+}
+
+// Acc√®s √† une tile
+TileInfo MapTiled::GetTileAtGrid(Vector2i p_gridPos, const std::string& p_layerName) const
+{
+    // V√©rification bornes
+    if (p_gridPos.GetX() < 0 || p_gridPos.GetY() < 0)
+        return {};
+
+    auto queryLayer = [&](LayerTiled* layer) -> TileInfo
+        {
+            if (layer == nullptr) 
+                return {};
+
+            int w = layer->GetLayerDimension().GetX();
+            int h = layer->GetLayerDimension().GetY();
+
+            if (p_gridPos.GetX() >= w || p_gridPos.GetY() >= h)
+                return {};
+
+            int index = p_gridPos.GetY() * w + p_gridPos.GetX();
+            auto tiles = layer->GetLayerTiles();
+
+            if (index < 0 || index >= static_cast<int>(tiles.size()))
+                return {};
+
+            int gid = tiles[index];
+
+            if (gid == 0) 
+                return {};
+
+            TileInfo info;
+            info.gid = gid;
+            info.gridPos = p_gridPos;
+            info.worldPos = GridToWorld(p_gridPos);
+            info.layer = layer;
+            info.tileset = GetTilesetForGID(gid);
+            info.tileTiled = GetTileTiledForGID(gid);
+            return info;
+        };
+
+    if (p_layerName.empty() == false)
+    {
+        for (LayerTiled* layer : m_layers)
+        {
+            if (layer->GetLayerName() == p_layerName)
+                return queryLayer(layer);
+        }
+        return {};
+    }
+
+    for (LayerTiled* layer : m_layers)
+    {
+        TileInfo info = queryLayer(layer);
+
+        if (info.IsValid())
+            return info;
+    }
+    return {};
+}
+
+TileInfo MapTiled::GetTileAtWorld(Vector2f p_worldPos, const std::string& p_layerName) const
+{
+    return GetTileAtGrid(WorldToGrid(p_worldPos), p_layerName);
+}
+
+// Propri√©t√©s d'une tile
+PropertyTiled* MapTiled::GetTilePropertyAtGrid(Vector2i p_gridPos, const std::string& p_propertyName, const std::string& p_layerName) const
+{
+    TileInfo info = GetTileAtGrid(p_gridPos, p_layerName);
+
+    if (info.tileTiled == nullptr) 
+        return nullptr;
+
+    return info.tileTiled->GetTileProperty(p_propertyName);
+}
+
+PropertyTiled* MapTiled::GetTilePropertyAtWorld(Vector2f p_worldPos, const std::string& p_propertyName, const std::string& p_layerName) const
+{
+    return GetTilePropertyAtGrid(WorldToGrid(p_worldPos), p_propertyName, p_layerName);
+}
+
+bool MapTiled::TileHasPropertyAtGrid(Vector2i p_gridPos, const std::string& p_propertyName, const std::string& p_layerName) const
+{
+    return GetTilePropertyAtGrid(p_gridPos, p_propertyName, p_layerName) != nullptr;
+}
+
+bool MapTiled::TileHasPropertyAtWorld(Vector2f p_worldPos, const std::string& p_propertyName, const std::string& p_layerName) const
+{
+    return TileHasPropertyAtGrid(WorldToGrid(p_worldPos), p_propertyName, p_layerName);
+}
+
+// Recherche par propri√©t√©
+std::vector<TileInfo> MapTiled::GetAllTilesWithProperty(const std::string& p_propertyName, const std::string& p_layerName) const
+{
+    std::vector<TileInfo> result;
+
+    auto scanLayer = [&](LayerTiled* layer)
+        {
+            int w = layer->GetLayerDimension().GetX();
+            int h = layer->GetLayerDimension().GetY();
+            auto tiles = layer->GetLayerTiles();
+
+            for (int y = 0; y < h; ++y)
+            {
+                for (int x = 0; x < w; ++x)
+                {
+                    int index = y * w + x;
+
+                    if (index >= static_cast<int>(tiles.size()))
+                        continue;
+
+                    int gid = tiles[index];
+
+                    if (gid == 0) 
+                        continue;
+
+                    TileTiled* tileTiled = GetTileTiledForGID(gid);
+
+                    if (tileTiled == nullptr) 
+                        continue;
+
+                    if (tileTiled->GetTileProperty(p_propertyName) != nullptr)
+                    {
+                        TileInfo info;
+                        info.gid = gid;
+                        info.gridPos = { x, y };
+                        info.worldPos = GridToWorld({ x, y });
+                        info.layer = layer;
+                        info.tileset = GetTilesetForGID(gid);
+                        info.tileTiled = tileTiled;
+                        result.push_back(info);
+                    }
+                }
+            }
+        };
+
+    if (!p_layerName.empty())
+    {
+        for (LayerTiled* layer : m_layers)
+        {
+            if (layer->GetLayerName() == p_layerName)
+            {
+                scanLayer(layer);
+                break;
+            }
+        }
+    }
+    else
+    {
+        for (LayerTiled* layer : m_layers)
+            scanLayer(layer);
+    }
+
+    return result;
+}
+
+std::vector<Vector2f> MapTiled::GetWorldPositionsWithProperty(const std::string& p_propertyName, const std::string& p_layerName) const
+{
+    std::vector<TileInfo> tiles = GetAllTilesWithProperty(p_propertyName, p_layerName);
+    std::vector<Vector2f> positions;
+
+    positions.reserve(tiles.size());
+
+    for (const TileInfo& t : tiles)
+        positions.push_back(t.worldPos);
+
+    return positions;
 }

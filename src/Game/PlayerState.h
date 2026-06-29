@@ -4,29 +4,17 @@
 
 class PlayerIdleState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
+	void Start(Player* p_player) override{
 		//p_player->SetAnimationByName("Idle");
 		std::cout << "Idle" << std::endl;
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	void Update(Player* p_player, float dt) override {};
+	void End(Player* p_player) override {};
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
 		switch (currentState)
 		{
-		case (int)PlayerState::WALKUP:
-			return true;
-			break;
-		case (int)PlayerState::WALKDOWN:
-			return true;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return true;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return true;
-			break;
 		case (int)PlayerState::MINING:
 			return true;
 			break;
@@ -43,9 +31,9 @@ class PlayerIdleState : public StateBase<Player>
 
 class PlayerWalkingState : public StateBase<Player>
 {
-	void Start(Player* p_player);
+	void Start(Player* p_player) override {};
 
-	void Update(Player* p_player, float dt) 
+	void Update(Player* p_player, float dt) override
 	{
 		Vector2f playerDir = p_player->GetDirection();
 		if (playerDir.GetX() > 0)
@@ -59,34 +47,29 @@ class PlayerWalkingState : public StateBase<Player>
 			p_player->SetAnimationByName("WalkUp");
 
 	};
-	void End(Player* p_player) {};
+	void End(Player* p_player)override {};
+	bool CanTransitionFrom(Player* p_player, int currentState)override
+	{
+		return true;
+	}
 };
 
 class PlayerWateringState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
+	void Start(Player* p_player) override {
 		//p_player->SetAnimationByName("WalkLeft");
 		std::cout << "watering" << std::endl;
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
+	void Update(Player* p_player, float dt)override {};
+	void End(Player* p_player)override {};
 
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
 		switch (currentState)
 		{
 		case (int)PlayerState::IDLE:
 			return true;
-			break;
-		case (int)PlayerState::WALKUP:
-			return false;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return false;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return false;
 			break;
 		case (int)PlayerState::MINING:
 			return false;
@@ -100,29 +83,20 @@ class PlayerWateringState : public StateBase<Player>
 
 class PlayerDiggingState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
+	void Start(Player* p_player) override {
 		//p_player->SetAnimationByName("WalkLeft");
 		std::cout << "digging" << std::endl;
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
+	void Update(Player* p_player, float dt)override {};
+	void End(Player* p_player) override {};
 
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
 		switch (currentState)
 		{
 		case (int)PlayerState::IDLE:
 			return true;
-			break;
-		case (int)PlayerState::WALKUP:
-			return false;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return false;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return false;
 			break;
 		case (int)PlayerState::MINING:
 			return false;
@@ -136,29 +110,20 @@ class PlayerDiggingState : public StateBase<Player>
 
 class PlayerMiningState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
+	void Start(Player* p_player)override {
 		//p_player->SetAnimationByName("WalkLeft");
 		std::cout << "mining" << std::endl;
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
+	void Update(Player* p_player, float dt)override {};
+	void End(Player* p_player)override {};
 
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
 		switch (currentState)
 		{
 		case (int)PlayerState::IDLE:
 			return true;
-			break;
-		case (int)PlayerState::WALKUP:
-			return false;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return false;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return false;
 			break;
 		case (int)PlayerState::WATERING:
 			return false;

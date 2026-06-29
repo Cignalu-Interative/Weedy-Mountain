@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "main.h"
-#include <SDL3/SDL_main.h>
-#include <SDL3/SDL.h>
+#include <SDL.h>
 #include "2DPendentEngine/Application.h"
 #include "2DPendentEngine/Aleatory.h"
 #include "Launcher.h"

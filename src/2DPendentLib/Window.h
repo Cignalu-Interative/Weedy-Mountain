@@ -1,7 +1,5 @@
 #pragma once
-//#include "glad/glad.h"
-#include <SDL3/SDL.h>
-#include <SDL3_mixer/SDL_mixer.h>
+#include <SDL.h>
 #include "Vector2.h"
 //Version 4.3.0
 
@@ -10,12 +8,9 @@ class Window
 private:
 
 	SDL_Window* m_window = nullptr; //Pointeur qui stock la window
-
-	MIX_Mixer* m_mixer = nullptr; //Pointeur qui stock le mixer
-
 	SDL_DisplayMode m_displayMode; //Struct qui stock différente informations de l'écran
 
-	Vector2i m_windowDimension; //Dimention de la window
+	Vector2i m_windowDimention; //Dimention de la window
 
 	bool m_isFullScreen; //Boll pour savoir si la window est en plein écran
 
@@ -54,6 +49,4 @@ public:
 	SDL_Window* GetWindow() const { return m_window; }
 	//Obtention du DisplayMode
 	SDL_DisplayMode GetDisplayMode() const { return m_displayMode; }
-	//Obtention du mixer
-	MIX_Mixer* GetMixer() const { return m_mixer; }
 };

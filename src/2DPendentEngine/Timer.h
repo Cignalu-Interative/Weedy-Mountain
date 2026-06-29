@@ -32,4 +32,6 @@ public:
 
 	//Dormir pendant un certain nombre de nanosecondes (utilisé pour limiter le nombre de frame par seconde)
 	void Sleep(float p_SecForSleep);
+
+	std::chrono::steady_clock::time_point GetLastTime();
 };

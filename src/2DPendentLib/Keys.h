@@ -1,529 +1,293 @@
 #pragma once
-#include <SDL.h>
+#include <SDL3/SDL.h>
+#include <cstdint>
 //Version 1.0.1
 
 // Touche Virtuel
-enum KeyboardKeycodeKeys
+enum KeyboardKeycodeKeys : Uint32
 {
-    // Touche inconnue
-    K_UNKNOWN = 0,
+    K_UNKNOWN = 0x00000000u, // Aucune touche / inconnue
+    K_RETURN = 0x0000000du, // Entrée / Return
+    K_ESCAPE = 0x0000001bu, // Échap
+    K_BACKSPACE = 0x00000008u, // Retour arrière
+    K_TAB = 0x00000009u, // Tabulation
+    K_SPACE = 0x00000020u, // Espace
+    K_EXCLAIM = 0x00000021u, // !
+    K_DBLAPOSTROPHE = 0x00000022u, // "
+    K_HASH = 0x00000023u, // #
+    K_DOLLAR = 0x00000024u, // $
+    K_PERCENT = 0x00000025u, // %
+    K_AMPERSAND = 0x00000026u, // &
+    K_APOSTROPHE = 0x00000027u, // '
+    K_LEFTPAREN = 0x00000028u, // (
+    K_RIGHTPAREN = 0x00000029u, // )
+    K_ASTERISK = 0x0000002au, // *
+    K_PLUS = 0x0000002bu, // +
+    K_COMMA = 0x0000002cu, // ,
+    K_MINUS = 0x0000002du, // -
+    K_PERIOD = 0x0000002eu, // .
+    K_SLASH = 0x0000002fu, // /
+    K_0 = 0x00000030u, // 0
+    K_1 = 0x00000031u, // 1
+    K_2 = 0x00000032u, // 2
+    K_3 = 0x00000033u, // 3
+    K_4 = 0x00000034u, // 4
+    K_5 = 0x00000035u, // 5
+    K_6 = 0x00000036u, // 6
+    K_7 = 0x00000037u, // 7
+    K_8 = 0x00000038u, // 8
+    K_9 = 0x00000039u, // 9
+    K_COLON = 0x0000003au, // :
+    K_SEMICOLON = 0x0000003bu, // ;
+    K_LESS = 0x0000003cu, // <
+    K_EQUALS = 0x0000003du, // =
+    K_GREATER = 0x0000003eu, // >
+    K_QUESTION = 0x0000003fu, // ?
+    K_AT = 0x00000040u, // @
+    K_LEFTBRACKET = 0x0000005bu, // [
+    K_BACKSLASH = 0x0000005cu, // \
+        K_RIGHTBRACKET = 0x0000005du, // ]
+    K_CARET = 0x0000005eu, // ^
+    K_UNDERSCORE = 0x0000005fu, // _
+    K_GRAVE = 0x00000060u, // `
+    K_A = 0x00000061u, // a
+    K_B = 0x00000062u, // b
+    K_C = 0x00000063u, // c
+    K_D = 0x00000064u, // d
+    K_E = 0x00000065u, // e
+    K_F = 0x00000066u, // f
+    K_G = 0x00000067u, // g
+    K_H = 0x00000068u, // h
+    K_I = 0x00000069u, // i
+    K_J = 0x0000006au, // j
+    K_K = 0x0000006bu, // k
+    K_L = 0x0000006cu, // l
+    K_M = 0x0000006du, // m
+    K_N = 0x0000006eu, // n
+    K_O = 0x0000006fu, // o
+    K_P = 0x00000070u, // p
+    K_Q = 0x00000071u, // q
+    K_R = 0x00000072u, // r
+    K_S = 0x00000073u, // s
+    K_T = 0x00000074u, // t
+    K_U = 0x00000075u, // u
+    K_V = 0x00000076u, // v
+    K_W = 0x00000077u, // w
+    K_X = 0x00000078u, // x
+    K_Y = 0x00000079u, // y
+    K_Z = 0x0000007au, // z
+    K_LEFTBRACE = 0x0000007bu, // {
+    K_PIPE = 0x0000007cu, // |
+    K_RIGHTBRACE = 0x0000007du, // }
+    K_TILDE = 0x0000007eu, // ~
+    K_DELETE = 0x0000007fu, // Suppr / Delete
+    K_PLUSMINUS = 0x000000b1u, // ±
 
-	// Touche de retour
-    K_RETURN = '\r',
-    // Touche d'échappement
-    K_ESCAPE = '\x1B',
-    // Touche de suppression
-    K_BACKSPACE = '\b',
-    // Touche de tabulation
-    K_TAB = '\t',
-    // Touche d'espace
-    K_SPACE = ' ',
-    // Touche d'exclamation
-    K_EXCLAIM = '!',
-    // Touche de guillemet double
-    K_QUOTEDBL = '"',
-    // Touche dièse
-    K_HASH = '#',
-    // Touche de pourcentage
-    K_PERCENT = '%',
-    // Touche de dollar
-    K_DOLLAR = '$',
-    // Touche esperluette
-    K_AMPERSAND = '&',
-    // Touche de guillemet simple
-    K_QUOTE = '\'',
-    // Touche de parenthèse gauche
-    K_LEFTPAREN = '(',
-    // Touche de parenthèse droite
-    K_RIGHTPAREN = ')',
-    // Touche d'astérisque
-    K_ASTERISK = '*',
-    // Touche de plus
-    K_PLUS = '+',
-    // Touche de virgule
-    K_COMMA = ',',
-    // Touche de moins
-    K_MINUS = '-',
-    // Touche de point
-    K_PERIOD = '.',
-    // Touche de barre oblique
-    K_SLASH = '/',
-	// Touche du chiffre 0
-    K_0 = '0',
-	// Touche du chiffre 1
-    K_1 = '1',
-    // Touche du chiffre 2
-    K_2 = '2',
-    // Touche du chiffre 3
-    K_3 = '3',
-    // Touche du chiffre 4
-    K_4 = '4',
-    // Touche du chiffre 5
-    K_5 = '5',
-    // Touche du chiffre 6
-    K_6 = '6',
-    // Touche du chiffre 7
-    K_7 = '7',
-    // Touche du chiffre 8
-    K_8 = '8',
-    // Touche du chiffre 9
-    K_9 = '9',
-	// Touche de deux points
-    K_COLON = ':',
-	// Touche de point-virgule
-    K_SEMICOLON = ';',
-	// Touche de moins
-    K_LESS = '<',
-	// Touche de égal
-    K_EQUALS = '=',
-	// Touche de plus grand que
-    K_GREATER = '>',
-	// Touche de point d'interrogation
-    K_QUESTION = '?',
-	// Touche de arobase
-    K_AT = '@',
+    K_CAPSLOCK = 0x40000039u, // Verr Maj
+    K_F1 = 0x4000003au, // F1
+    K_F2 = 0x4000003bu, // F2
+    K_F3 = 0x4000003cu, // F3
+    K_F4 = 0x4000003du, // F4
+    K_F5 = 0x4000003eu, // F5
+    K_F6 = 0x4000003fu, // F6
+    K_F7 = 0x40000040u, // F7
+    K_F8 = 0x40000041u, // F8
+    K_F9 = 0x40000042u, // F9
+    K_F10 = 0x40000043u, // F10
+    K_F11 = 0x40000044u, // F11
+    K_F12 = 0x40000045u, // F12
+    K_PRINTSCREEN = 0x40000046u, // Impr écran
+    K_SCROLLLOCK = 0x40000047u, // Arrêt défil
+    K_PAUSE = 0x40000048u, // Pause
+    K_INSERT = 0x40000049u, // Insertion
+    K_HOME = 0x4000004au, // Début / Home
+    K_PAGEUP = 0x4000004bu, // Page précédente
+    K_END = 0x4000004du, // Fin
+    K_PAGEDOWN = 0x4000004eu, // Page suivante
+    K_RIGHT = 0x4000004fu, // Flèche droite
+    K_LEFT = 0x40000050u, // Flèche gauche
+    K_DOWN = 0x40000051u, // Flèche bas
+    K_UP = 0x40000052u, // Flèche haut
+    K_NUMLOCKCLEAR = 0x40000053u, // Verr Num
+    K_KP_DIVIDE = 0x40000054u, // Pavé numérique /
+    K_KP_MULTIPLY = 0x40000055u, // Pavé numérique *
+    K_KP_MINUS = 0x40000056u, // Pavé numérique -
+    K_KP_PLUS = 0x40000057u, // Pavé numérique +
+    K_KP_ENTER = 0x40000058u, // Entrée du pavé numérique
+    K_KP_1 = 0x40000059u, // Pavé numérique 1
+    K_KP_2 = 0x4000005au, // Pavé numérique 2
+    K_KP_3 = 0x4000005bu, // Pavé numérique 3
+    K_KP_4 = 0x4000005cu, // Pavé numérique 4
+    K_KP_5 = 0x4000005du, // Pavé numérique 5
+    K_KP_6 = 0x4000005eu, // Pavé numérique 6
+    K_KP_7 = 0x4000005fu, // Pavé numérique 7
+    K_KP_8 = 0x40000060u, // Pavé numérique 8
+    K_KP_9 = 0x40000061u, // Pavé numérique 9
+    K_KP_0 = 0x40000062u, // Pavé numérique 0
+    K_KP_PERIOD = 0x40000063u, // Pavé numérique .
+    K_APPLICATION = 0x40000065u, // Menu contextuel / Application
+    K_POWER = 0x40000066u, // Touche alimentation
+    K_KP_EQUALS = 0x40000067u, // Pavé numérique =
+    K_F13 = 0x40000068u, // F13
+    K_F14 = 0x40000069u, // F14
+    K_F15 = 0x4000006au, // F15
+    K_F16 = 0x4000006bu, // F16
+    K_F17 = 0x4000006cu, // F17
+    K_F18 = 0x4000006du, // F18
+    K_F19 = 0x4000006eu, // F19
+    K_F20 = 0x4000006fu, // F20
+    K_F21 = 0x40000070u, // F21
+    K_F22 = 0x40000071u, // F22
+    K_F23 = 0x40000072u, // F23
+    K_F24 = 0x40000073u, // F24
+    K_EXECUTE = 0x40000074u, // Exécuter
+    K_HELP = 0x40000075u, // Aide
+    K_MENU = 0x40000076u, // Menu
+    K_SELECT = 0x40000077u, // Sélectionner
+    K_STOP = 0x40000078u, // Stop
+    K_AGAIN = 0x40000079u, // Refaire
+    K_UNDO = 0x4000007au, // Annuler
+    K_CUT = 0x4000007bu, // Couper
+    K_COPY = 0x4000007cu, // Copier
+    K_PASTE = 0x4000007du, // Coller
+    K_FIND = 0x4000007eu, // Rechercher
+    K_MUTE = 0x4000007fu, // Muet
+    K_VOLUMEUP = 0x40000080u, // Volume +
+    K_VOLUMEDOWN = 0x40000081u, // Volume -
+    K_KP_COMMA = 0x40000085u, // Pavé numérique ,
+    K_KP_EQUALSAS400 = 0x40000086u, // Pavé numérique = (AS400)
+    K_ALTERASE = 0x40000099u, // Alt + Effacement
+    K_SYSREQ = 0x4000009au, // SysReq
+    K_CANCEL = 0x4000009bu, // Annuler
+    K_CLEAR = 0x4000009cu, // Effacer
+    K_PRIOR = 0x4000009du, // Page précédente
+    K_RETURN2 = 0x4000009eu, // Entrée 2
+    K_SEPARATOR = 0x4000009fu, // Séparateur
+    K_OUT = 0x400000a0u, // Sortie
+    K_OPER = 0x400000a1u, // Opérateur
+    K_CLEARAGAIN = 0x400000a2u, // Effacer encore
+    K_CRSEL = 0x400000a3u, // Select CR
+    K_EXSEL = 0x400000a4u, // Select EX
+    K_KP_00 = 0x400000b0u, // Pavé numérique 00
+    K_KP_000 = 0x400000b1u, // Pavé numérique 000
+    K_THOUSANDSSEPARATOR = 0x400000b2u, // Séparateur des milliers
+    K_DECIMALSEPARATOR = 0x400000b3u, // Séparateur décimal
+    K_CURRENCYUNIT = 0x400000b4u, // Unité monétaire
+    K_CURRENCYSUBUNIT = 0x400000b5u, // Sous-unité monétaire
+    K_KP_LEFTPAREN = 0x400000b6u, // Pavé numérique (
+    K_KP_RIGHTPAREN = 0x400000b7u, // Pavé numérique )
+    K_KP_LEFTBRACE = 0x400000b8u, // Pavé numérique {
+    K_KP_RIGHTBRACE = 0x400000b9u, // Pavé numérique }
+    K_KP_TAB = 0x400000bau, // Tab du pavé numérique
+    K_KP_BACKSPACE = 0x400000bbu, // Retour arrière du pavé numérique
+    K_KP_A = 0x400000bcu, // Pavé numérique A
+    K_KP_B = 0x400000bdu, // Pavé numérique B
+    K_KP_C = 0x400000beu, // Pavé numérique C
+    K_KP_D = 0x400000bfu, // Pavé numérique D
+    K_KP_E = 0x400000c0u, // Pavé numérique E
+    K_KP_F = 0x400000c1u, // Pavé numérique F
+    K_KP_XOR = 0x400000c2u, // Pavé numérique XOR
+    K_KP_POWER = 0x400000c3u, // Pavé numérique ^
+    K_KP_PERCENT = 0x400000c4u, // Pavé numérique %
+    K_KP_LESS = 0x400000c5u, // Pavé numérique <
+    K_KP_GREATER = 0x400000c6u, // Pavé numérique >
+    K_KP_AMPERSAND = 0x400000c7u, // Pavé numérique &
+    K_KP_DBLAMPERSAND = 0x400000c8u, // Pavé numérique &&
+    K_KP_VERTICALBAR = 0x400000c9u, // Pavé numérique |
+    K_KP_DBLVERTICALBAR = 0x400000cau, // Pavé numérique ||
+    K_KP_COLON = 0x400000cbu, // Pavé numérique :
+    K_KP_HASH = 0x400000ccu, // Pavé numérique #
+    K_KP_SPACE = 0x400000cdu, // Pavé numérique espace
+    K_KP_AT = 0x400000ceu, // Pavé numérique @
+    K_KP_EXCLAM = 0x400000cfu, // Pavé numérique !
+    K_KP_MEMSTORE = 0x400000d0u, // Pavé numérique stocker en mémoire
+    K_KP_MEMRECALL = 0x400000d1u, // Pavé numérique rappeler la mémoire
+    K_KP_MEMCLEAR = 0x400000d2u, // Pavé numérique effacer la mémoire
+    K_KP_MEMADD = 0x400000d3u, // Pavé numérique ajouter à la mémoire
+    K_KP_MEMSUBTRACT = 0x400000d4u, // Pavé numérique soustraire de la mémoire
+    K_KP_MEMMULTIPLY = 0x400000d5u, // Pavé numérique multiplier la mémoire
+    K_KP_MEMDIVIDE = 0x400000d6u, // Pavé numérique diviser la mémoire
+    K_KP_PLUSMINUS = 0x400000d7u, // Pavé numérique +/- 
+    K_KP_CLEAR = 0x400000d8u, // Pavé numérique effacer
+    K_KP_CLEARENTRY = 0x400000d9u, // Pavé numérique effacer l'entrée
+    K_KP_BINARY = 0x400000dau, // Pavé numérique binaire
+    K_KP_OCTAL = 0x400000dbu, // Pavé numérique octal
+    K_KP_DECIMAL = 0x400000dcu, // Pavé numérique décimal
+    K_KP_HEXADECIMAL = 0x400000ddu, // Pavé numérique hexadécimal
+    K_LCTRL = 0x400000e0u, // Ctrl gauche
+    K_LSHIFT = 0x400000e1u, // Shift gauche
+    K_LALT = 0x400000e2u, // Alt gauche
+    K_LGUI = 0x400000e3u, // Touche Windows / Cmd gauche
+    K_RCTRL = 0x400000e4u, // Ctrl droite
+    K_RSHIFT = 0x400000e5u, // Shift droite
+    K_RALT = 0x400000e6u, // Alt droite
+    K_RGUI = 0x400000e7u, // Touche Windows / Cmd droite
+    K_MODE = 0x40000101u, // Mode
+    K_SLEEP = 0x40000102u, // Veille
+    K_WAKE = 0x40000103u, // Réveil
+    K_CHANNEL_INCREMENT = 0x40000104u, // Canal suivant
+    K_CHANNEL_DECREMENT = 0x40000105u, // Canal précédent
+    K_MEDIA_PLAY = 0x40000106u, // Lecture média
+    K_MEDIA_PAUSE = 0x40000107u, // Pause média
+    K_MEDIA_RECORD = 0x40000108u, // Enregistrement média
+    K_MEDIA_FAST_FORWARD = 0x40000109u, // Avance rapide média
+    K_MEDIA_REWIND = 0x4000010au, // Retour rapide média
+    K_MEDIA_NEXT_TRACK = 0x4000010bu, // Piste suivante
+    K_MEDIA_PREVIOUS_TRACK = 0x4000010cu, // Piste précédente
+    K_MEDIA_STOP = 0x4000010du, // Stop média
+    K_MEDIA_EJECT = 0x4000010eu, // Éjecter
+    K_MEDIA_PLAY_PAUSE = 0x4000010fu, // Lecture / pause média
+    K_MEDIA_SELECT = 0x40000110u, // Sélection média
+    K_AC_NEW = 0x40000111u, // Nouveau
+    K_AC_OPEN = 0x40000112u, // Ouvrir
+    K_AC_CLOSE = 0x40000113u, // Fermer
+    K_AC_EXIT = 0x40000114u, // Quitter
+    K_AC_SAVE = 0x40000115u, // Sauvegarder
+    K_AC_PRINT = 0x40000116u, // Imprimer
+    K_AC_PROPERTIES = 0x40000117u, // Propriétés
+    K_AC_SEARCH = 0x40000118u, // Rechercher
+    K_AC_HOME = 0x40000119u, // Accueil
+    K_AC_BACK = 0x4000011au, // Retour
+    K_AC_FORWARD = 0x4000011bu, // Avancer
+    K_AC_STOP = 0x4000011cu, // Stop
+    K_AC_REFRESH = 0x4000011du, // Rafraîchir
+    K_AC_BOOKMARKS = 0x4000011eu, // Favoris
+    K_SOFTLEFT = 0x4000011fu, // Soft left
+    K_SOFTRIGHT = 0x40000120u, // Soft right
+    K_CALL = 0x40000121u, // Appel
+    K_ENDCALL = 0x40000122u, // Fin d'appel
 
-	// Touche de crochets gauche
-    K_LEFTBRACKET = '[',
-	// Touche de barre oblique inversée
-    K_BACKSLASH = '\\',
-	// Touche de crochets droite
-    K_RIGHTBRACKET = ']',
-	// Touche de chapeau
-    K_CARET = '^',
-	// Touche de soulignement
-    K_UNDERSCORE = '_',
-	// Touche de backquote
-    K_BACKQUOTE = '`',
-	// Touche de lettre a
-    K_a = 'a',
-	// Touche de lettre b
-    K_b = 'b',
-	// Touche de lettre c
-    K_c = 'c',
-	// Touche de lettre d
-    K_d = 'd',
-	// Touche de lettre e
-    K_e = 'e',
-	// Touche de lettre f
-    K_f = 'f',
-		// Touche de lettre g
-    K_g = 'g',
-	// Touche de lettre h
-    K_h = 'h',
-	// Touche de lettre i
-    K_i = 'i',
-	// Touche de lettre j
-    K_j = 'j',
-	// Touche de lettre k
-    K_k = 'k',
-	// Touche de lettre l
-    K_l = 'l',
-	// Touche de lettre m
-    K_m = 'm',
-	// Touche de lettre n
-    K_n = 'n',
-	// Touche de lettre o
-    K_o = 'o',
-	// Touche de lettre p
-    K_p = 'p',
-	// Touche de lettre q
-    K_q = 'q',
-	// Touche de lettre r
-    K_r = 'r',
-	// Touche de lettre s
-    K_s = 's',
-	// Touche de lettre t
-    K_t = 't',
-	// Touche de lettre u
-    K_u = 'u',
-	// Touche de lettre v
-    K_v = 'v',
-	// Touche de lettre w
-    K_w = 'w',
-	// Touche de lettre x
-    K_x = 'x',
-	// Touche de lettre y
-    K_y = 'y',
-	// Touche de lettre z
-    K_z = 'z',
+    K_LEFT_TAB = 0x20000001u, // Tabulation gauche
+    K_LEVEL5_SHIFT = 0x20000002u, // Shift niveau 5
+    K_MULTI_KEY_COMPOSE = 0x20000003u, // Compose multi-touche
+    K_LMETA = 0x20000004u, // Meta gauche
+    K_RMETA = 0x20000005u, // Meta droite
+    K_LHYPER = 0x20000006u, // Hyper gauche
+    K_RHYPER = 0x20000007u // Hyper droite
+};
 
+// Touche Modificateur
+enum class KeyboardKeymodKeys : Uint16
+{
+    K_NONE = 0x0000u, // Aucun modificateur
+    K_LSHIFT = 0x0001u, // Shift gauche
+    K_RSHIFT = 0x0002u, // Shift droit
+    K_LEVEL5 = 0x0004u, // Level 5 Shift
+    K_LCTRL = 0x0040u, // Ctrl gauche
+    K_RCTRL = 0x0080u, // Ctrl droit
+    K_LALT = 0x0100u, // Alt gauche
+    K_RALT = 0x0200u, // Alt droit
+    K_LGUI = 0x0400u, // Touche Windows / Cmd gauche
+    K_RGUI = 0x0800u, // Touche Windows / Cmd droite
+    K_NUM = 0x1000u, // Verr Num
+    K_CAPS = 0x2000u, // Verr Maj
+    K_MODE = 0x4000u, // AltGr / mode
+    K_SCROLL = 0x8000u, // Verr Défil
 
-	// Touche de verrouillage des majuscules
-    K_CAPSLOCK = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CAPSLOCK),
-
-	    // Touches de fonction F1
-    K_F1 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F1),
-		// Touches de fonction F2
-    K_F2 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F2),
-		// Touches de fonction F3
-    K_F3 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F3),
-		// Touches de fonction F4
-    K_F4 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F4),
-		// Touches de fonction F5
-    K_F5 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F5),
-		// Touches de fonction F6
-    K_F6 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F6),
-		// Touches de fonction F7
-    K_F7 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F7),
-		// Touches de fonction F8
-    K_F8 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F8),
-		// Touches de fonction F9
-    K_F9 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F9),
-		// Touches de fonction F10
-    K_F10 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F10),
-		// Touches de fonction F11
-    K_F11 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F11),
-		// Touches de fonction F12
-    K_F12 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F12),
-
-	// Touche d'impression écran
-    K_PRINTSCREEN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PRINTSCREEN),
-	// Touche de verrouillage du défilement
-    K_SCROLLLOCK = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SCROLLLOCK),
-	// Touche de pause
-    K_PAUSE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PAUSE),
-		// Touche d'insertion
-    K_INSERT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_INSERT),
-		// Touche de suppression
-    K_HOME = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_HOME),
-		// Touche de page précédente
-    K_PAGEUP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PAGEUP),
-		// Touche de suppression
-    K_DELETE = '\x7F',
-		// Touche de fin
-    K_END = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_END),
-		// Touche de page suivante
-    K_PAGEDOWN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PAGEDOWN),
-		// Touches de direction
-    K_RIGHT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RIGHT),
-		// Touches de direction
-    K_LEFT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LEFT),
-		// Touches de direction
-    K_DOWN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_DOWN),
-		// Touches de direction
-    K_UP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_UP),
-		// Touche de verrouillage numérique
-
-		// Touche de verrouillage numérique
-    K_NUMLOCKCLEAR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_NUMLOCKCLEAR),
-		// Touches du pavé numérique /
-    K_KP_DIVIDE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_DIVIDE),
-		// Touches du pavé numérique *
-    K_KP_MULTIPLY = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MULTIPLY),
-		// Touches du pavé numérique -
-    K_KP_MINUS = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MINUS),
-		// Touches du pavé numérique +
-    K_KP_PLUS = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_PLUS),
-		// Touches du pavé numérique Entrée
-    K_KP_ENTER = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_ENTER),
-
-	// Touches du pavé numérique 1
-    K_KP_1 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_1),
-	// Touches du pavé numérique 2
-    K_KP_2 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_2),
-	// Touches du pavé numérique 3
-    K_KP_3 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_3),
-	// Touches du pavé numérique 4
-    K_KP_4 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_4),
-	// Touches du pavé numérique 5
-    K_KP_5 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_5),
-	// Touches du pavé numérique 6
-    K_KP_6 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_6),
-	// Touches du pavé numérique 7
-    K_KP_7 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_7),
-	// Touches du pavé numérique 8
-    K_KP_8 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_8),
-	// Touches du pavé numérique 9
-    K_KP_9 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_9),
-	// Touches du pavé numérique 0
-    K_KP_0 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_0),
-
-		// Touches du pavé numérique .
-    K_KP_PERIOD = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_PERIOD),
-
-	// Touche d'application
-    K_APPLICATION = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_APPLICATION),
-	// Touche de puissance
-    K_POWER = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_POWER),
-	// Touches du pavé numérique =
-    K_KP_EQUALS = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_EQUALS),
-		// Touches de fonction F13
-    K_F13 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F13),
-	// Touches de fonction F14
-    K_F14 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F14),
-		// Touches de fonction F15
-    K_F15 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F15),
-		// Touches de fonction F16
-    K_F16 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F16),
-		// Touches de fonction F17
-    K_F17 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F17),
-		// Touches de fonction F18
-    K_F18 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F18),
-		// Touches de fonction F19
-    K_F19 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F19),
-		// Touches de fonction F20
-    K_F20 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F20),
-		// Touches de fonction F21
-    K_F21 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F21),
-		// Touches de fonction F22
-    K_F22 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F22),
-		// Touches de fonction F23
-    K_F23 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F23),
-		// Touches de fonction F24
-    K_F24 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_F24),
-		// Touche de exécution
-    K_EXECUTE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_EXECUTE),
-		// Touche de exécution
-    K_HELP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_HELP),
-		// Touche de menu
-    K_MENU = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MENU),
-	// Touche de sélection
-    K_SELECT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SELECT),
-	// Touche de arrêt
-    K_STOP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_STOP),
-	// Touche de redémarrage
-    K_AGAIN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AGAIN),
-	// Touche d'annulation
-    K_UNDO = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_UNDO),
-	// Touche de coupe
-    K_CUT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CUT),
-	// Touche de copie
-    K_COPY = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_COPY),
-	// Touche de coller
-    K_PASTE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PASTE),
-	// Touche de trouver
-    K_FIND = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_FIND),
-	// Touche de mute
-    K_MUTE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MUTE),
-	// Touches de volume
-    K_VOLUMEUP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_VOLUMEUP),
-	// Touches de volume
-    K_VOLUMEDOWN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_VOLUMEDOWN),
-	// Touches du pavé numérique ,
-    K_KP_COMMA = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_COMMA),
-	// Touches du pavé numérique =
-    K_KP_EQUALSAS400 =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_EQUALSAS400),
-
-		// Touche d'altération
-    K_ALTERASE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_ALTERASE),
-		// Touche de sysreq
-    K_SYSREQ = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SYSREQ),
-		// Touche de cancel
-    K_CANCEL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CANCEL),
-		// Touche de clear
-    K_CLEAR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CLEAR),
-		// Touche de prior
-    K_PRIOR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_PRIOR),
-		// Touche de retour
-    K_RETURN2 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RETURN2),
-		// Touche de séparation
-    K_SEPARATOR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SEPARATOR),
-		// Touche de sortie
-    K_OUT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_OUT),
-		// Touche de opérateur
-    K_OPER = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_OPER),
-		// Touche de Clear/Again
-    K_CLEARAGAIN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CLEARAGAIN),
-		// Touche de CrSel
-    K_CRSEL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CRSEL),
-		// Touche de ExSel
-    K_EXSEL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_EXSEL),
-        
-		// Touches du pavé numérique 00
-    K_KP_00 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_00),
-		// Touches du pavé numérique 000
-    K_KP_000 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_000),
-		// Touche de séparateur de milliers
-    K_THOUSANDSSEPARATOR =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_THOUSANDSSEPARATOR),
-		// Touche de séparateur décimal
-    K_DECIMALSEPARATOR =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_DECIMALSEPARATOR),
-		// Touche de séparateur de monétaire
-    K_CURRENCYUNIT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CURRENCYUNIT),
-		// Touche de séparateur de monétaire
-    K_CURRENCYSUBUNIT =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CURRENCYSUBUNIT),
-		// Touches du pavé numérique (
-    K_KP_LEFTPAREN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_LEFTPAREN),
-		// Touches du pavé numérique )
-    K_KP_RIGHTPAREN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_RIGHTPAREN),
-		// Touches du pavé numérique {
-    K_KP_LEFTBRACE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_LEFTBRACE),
-		// Touches du pavé numérique }
-    K_KP_RIGHTBRACE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_RIGHTBRACE),
-		// Touches du pavé numérique Tab
-    K_KP_TAB = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_TAB),
-		// Touches du pavé numérique Backspace
-    K_KP_BACKSPACE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_BACKSPACE),
-		// Touches du pavé numérique A
-    K_KP_A = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_A),
-		// Touches du pavé numérique B
-    K_KP_B = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_B),
-		// Touches du pavé numérique C
-    K_KP_C = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_C),
-		// Touches du pavé numérique D
-    K_KP_D = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_D),
-		// Touches du pavé numérique E
-    K_KP_E = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_E),
-		// Touches du pavé numérique F
-    K_KP_F = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_F),
-		// Touches du pavé numérique XOR
-    K_KP_XOR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_XOR),
-		// Touches du pavé numérique ^
-    K_KP_POWER = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_POWER),
-		// Touches du pavé numérique %
-    K_KP_PERCENT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_PERCENT),
-		// Touches du pavé numérique &
-    K_KP_LESS = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_LESS),
-		// Touches du pavé numérique >
-    K_KP_GREATER = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_GREATER),
-		// Touches du pavé numérique &
-    K_KP_AMPERSAND = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_AMPERSAND),
-		// Touche de double esperluette du pavé numérique
-    K_KP_DBLAMPERSAND =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_DBLAMPERSAND),
-		// Touche de barre verticale du pavé numérique
-    K_KP_VERTICALBAR =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_VERTICALBAR),
-		// Touche de double barre verticale du pavé numérique
-    K_KP_DBLVERTICALBAR =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_DBLVERTICALBAR),
-		// Touches du pavé numérique :
-    K_KP_COLON = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_COLON),
-		// Touches du pavé numérique #
-    K_KP_HASH = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_HASH),
-		// Touches du pavé numérique espace
-    K_KP_SPACE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_SPACE),
-		// Touches du pavé numérique @
-    K_KP_AT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_AT),
-		// Touches du pavé numérique !
-    K_KP_EXCLAM = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_EXCLAM),
-		// Touches du pavé numérique mémoire store
-    K_KP_MEMSTORE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMSTORE),
-		// Touches du pavé numérique mémoire recall
-    K_KP_MEMRECALL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMRECALL),
-		// Touches du pavé numérique mémoire clear
-    K_KP_MEMCLEAR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMCLEAR),
-		// Touches du pavé numérique mémoire addition
-    K_KP_MEMADD = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMADD),
-		// Touche de soustraction de mémoire du pavé numérique
-    K_KP_MEMSUBTRACT =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMSUBTRACT),
-		// Touche de multiplication de mémoire du pavé numérique
-    K_KP_MEMMULTIPLY =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMMULTIPLY),
-		// Touche de division de mémoire du pavé numérique
-    K_KP_MEMDIVIDE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_MEMDIVIDE),
-		// Touches du pavé numérique +/- du pavé numérique
-    K_KP_PLUSMINUS = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_PLUSMINUS),
-		// Touches du pavé numérique Clear du pavé numérique
-    K_KP_CLEAR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_CLEAR),
-		// Touches du pavé numérique Clear Entry du pavé numérique
-    K_KP_CLEARENTRY = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_CLEARENTRY),
-		// Touches du pavé numérique Binary du pavé numérique
-    K_KP_BINARY = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_BINARY),
-		// Touches du pavé numérique Octal du pavé numérique
-    K_KP_OCTAL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_OCTAL),
-		// Touches du pavé numérique Décimal du pavé numérique
-    K_KP_DECIMAL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_DECIMAL),
-		// Touches du pavé numérique Hexadecimal du pavé numérique
-    K_KP_HEXADECIMAL =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KP_HEXADECIMAL),
-
-		// Touche de contrôle gauche
-    K_LCTRL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LCTRL),
-		// Touche de majuscule gauche
-    K_LSHIFT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LSHIFT),
-		// Touche d'altération gauche
-    K_LALT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LALT),
-		// Touche de logo gauche
-    K_LGUI = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_LGUI),
-		// Touche de contrôle droite
-    K_RCTRL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RCTRL),
-		// Touche de majuscule droite
-    K_RSHIFT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RSHIFT),
-		// Touche d'altération droite
-    K_RALT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RALT),
-		// Touche de logo droite
-    K_RGUI = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_RGUI),
-
-		// Touche de mode
-    K_MODE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MODE),
-
-		// Touches de média
-    K_AUDIONEXT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AUDIONEXT),
-		// Touches de média
-    K_AUDIOPREV = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AUDIOPREV),
-		// Touches de média
-    K_AUDIOSTOP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AUDIOSTOP),
-		// Touches de média
-    K_AUDIOPLAY = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AUDIOPLAY),
-		// Touches de média
-    K_AUDIOMUTE = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AUDIOMUTE),
-		// Touches de média
-    K_MEDIASELECT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MEDIASELECT),
-		// Touches de média
-    K_WWW = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_WWW),
-		// Touches de média
-    K_MAIL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_MAIL),
-		// Touches de média
-    K_CALCULATOR = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CALCULATOR),
-		// Touches de média
-    K_COMPUTER = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_COMPUTER),
-		// Touches de média
-    K_AC_SEARCH = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_SEARCH),
-		// Touches de média
-    K_AC_HOME = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_HOME),
-		// Touches de média
-    K_AC_BACK = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_BACK),
-		// Touches de média
-    K_AC_FORWARD = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_FORWARD),
-		// Touches de média
-    K_AC_STOP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_STOP),
-		// Touches de média
-    K_AC_REFRESH = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_REFRESH),
-		// Touches de média
-    K_AC_BOOKMARKS = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AC_BOOKMARKS),
-
-		// Touches de luminosité
-    K_BRIGHTNESSDOWN =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_BRIGHTNESSDOWN),
-		// Touches de luminosité
-    K_BRIGHTNESSUP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_BRIGHTNESSUP),
-		// Touches de luminosité
-    K_DISPLAYSWITCH = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_DISPLAYSWITCH),
-		// Touches de luminosité
-    K_KBDILLUMTOGGLE =
-    SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KBDILLUMTOGGLE),
-		// Touches de luminosité
-    K_KBDILLUMDOWN = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KBDILLUMDOWN),
-		// Touches de luminosité
-    K_KBDILLUMUP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_KBDILLUMUP),
-		// Touches de luminosité
-    K_EJECT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_EJECT),
-		// Touches de luminosité
-    K_SLEEP = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SLEEP),
-		// Touches de média
-    K_APP1 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_APP1),
-		// Touches de média
-    K_APP2 = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_APP2),
-
-		// Touches de média
-    K_AUDIOREWIND = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AUDIOREWIND),
-		// Touches de média
-    K_AUDIOFASTFORWARD = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_AUDIOFASTFORWARD),
-
-		// Touches de média
-    K_SOFTLEFT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SOFTLEFT),
-		// Touches de média
-    K_SOFTRIGHT = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_SOFTRIGHT),
-		// Touches de média
-    K_CALL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_CALL),
-		// Touches de média
-    K_ENDCALL = SDL_SCANCODE_TO_KEYCODE(SDL_SCANCODE_ENDCALL)
+    K_CTRL = K_LCTRL | K_RCTRL,   // N’importe quel Ctrl
+    K_SHIFT = K_LSHIFT | K_RSHIFT, // N’importe quel Shift
+    K_ALT = K_LALT | K_RALT,     // N’importe quel Alt
+    K_GUI = K_LGUI | K_RGUI      // N’importe quelle touche Windows / Cmd
 };
 
 // Touche Physique

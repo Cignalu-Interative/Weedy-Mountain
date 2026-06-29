@@ -51,11 +51,11 @@ void Sprite::ChangeTexture(const std::string& p_texturePath)
 {
     m_texture = AssetManager::Get()->GetTexture(p_texturePath);
 }
-void Sprite::SetSourceRectSprite(SDL_Rect p_SDLrect)
+void Sprite::SetSourceRectSprite(SDL_FRect p_SDLrect)
 {
     if (m_srcRect == nullptr)
     {
-        m_srcRect = new SDL_Rect();
+        m_srcRect = new SDL_FRect();
     }
     *m_srcRect = p_SDLrect;
 }
@@ -63,11 +63,11 @@ void Sprite::SetSourceRectSprite(SDL_Rect p_SDLrect)
 void Sprite::Update(float p_deltaTimeMs)
 {
     m_animTimer -= std::chrono::duration<float>(p_deltaTimeMs).count();
-    m_speedAnimation = std::max(m_speedAnimation, 0.01f);  // Sécurité : pas de vitesse nulle ou négative
+    m_speedAnimation = std::max(m_speedAnimation, 0.01f);  // Sï¿½curitï¿½ : pas de vitesse nulle ou nï¿½gative
 
     if (m_animTimer <= m_speedAnimation)
     {
-        // 1. Y A-T-IL DE LA VÉLOCITÉ ?
+        // 1. Y A-T-IL DE LA Vï¿½LOCITï¿½ ?
         if (HasVelocity())
         {
             //  WALK selon direction
@@ -79,7 +79,7 @@ void Sprite::Update(float p_deltaTimeMs)
         }
         else
         {
-            //  IDLE (pas de vélocité)
+            //  IDLE (pas de vï¿½locitï¿½)
             NextFrame(m_idleStartFrame, m_idleEndFrame);
         }
         m_animTimer = m_speedAnimation;  // Reset timer
@@ -134,16 +134,16 @@ int Sprite::GetCurrentFrameIndex() const
 
 void Sprite::NextFrame(int p_startFrame, int p_endFrame)
 {
-    // Par défaut : boucle sur TOUTES les frames
+    // Par dï¿½faut : boucle sur TOUTES les frames
     if (p_endFrame == -1)
         p_endFrame = m_totalFrames - 1;
 
-    int currentIndex = GetCurrentFrameIndex();  // Numéro frame actuel (0-31)
+    int currentIndex = GetCurrentFrameIndex();  // Numï¿½ro frame actuel (0-31)
 
     // Frame suivante
     currentIndex++;
 
-    // Boucle dans l'intervalle donné
+    // Boucle dans l'intervalle donnï¿½
     if (currentIndex > p_endFrame)
         currentIndex = p_startFrame;
 
@@ -172,7 +172,7 @@ void Sprite::SetSpeedAnimation(float p_speed)
 {
     // p_speed = 0.1f = 10 FPS, 0.05f = 20 FPS, etc.
     // Inversement proportionnel : plus p_speed est petit, plus l'animation est rapide
-    m_speedAnimation = p_speed;  // Reset timer pour éviter des sauts d'animation
+    m_speedAnimation = p_speed;  // Reset timer pour ï¿½viter des sauts d'animation
     m_animTimer = m_speedAnimation;
 }
 */
@@ -185,14 +185,14 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     SDL_Renderer* renderer = f_render->m_renderer;
 
-    // Vérifications sécurité
+    // Vï¿½rifications sï¿½curitï¿½
     if (!m_texture || !renderer)
     {
         return;
     }
 
-    // 1. SOURCE : Le morceau à découper dans la texture (ou NULL pour tout afficher)
-    //SDL_Rect* srcRect = nullptr;
+    // 1. SOURCE : Le morceau ï¿½ dï¿½couper dans la texture (ou NULL pour tout afficher)
+    //SDL_FRect* srcRect = nullptr;
     //if (m_totalFrames > 1)  // Sprite sheet ?
     //{
     //    srcRect = new SDL_Rect{
@@ -203,7 +203,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     //    };
     //}
 
-    // 2. DESTINATION : Où et quelle taille à l'écran
+    // 2. DESTINATION : Oï¿½ et quelle taille ï¿½ l'ï¿½cran
 
     Vector2f dimension;
     Vector2f position = GetPosition({ 0, 0 });
@@ -249,9 +249,9 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     //if (HasVelocity())
     //{
     //    float velX = GetVelocityX();
-    //    if (velX < 0)  // Va à gauche
+    //    if (velX < 0)  // Va ï¿½ gauche
     //        flip = SDL_FLIP_HORIZONTAL;
-    //    else if (velX > 0)  // Va à droite
+    //    else if (velX > 0)  // Va ï¿½ droite
     //        flip = SDL_FLIP_NONE;
     //}
 
@@ -259,15 +259,15 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     SDL_SetTextureAlphaMod(m_texture, m_oppacity);
 
-    // 3. Rendu avec ROTATION complète
-    if (SDL_RenderCopyExF(renderer, m_texture,
+    // 3. Rendu avec ROTATION complï¿½te
+    if (SDL_RenderTextureRotated(renderer, m_texture,
         m_srcRect,           // Frame du sprite sheet (ou NULL)
-        &dstRect,          // Position/taille à l'écran
-        GetAngle(),        // Angle Transformable (degrés)
-        &rotationCenter,   // Centre rotation pré-calculé
-        flip) == -1)       //  miroir (optionnel)
+        &dstRect,          // Position/taille ï¿½ l'ï¿½cran
+        GetAngle(),        // Angle Transformable (degrï¿½s)
+        &rotationCenter,   // Centre rotation prï¿½-calculï¿½
+        flip) == false)       //  miroir (optionnel)
     {
-        SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionné : %s", SDL_GetError());
+        SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionnï¿½ : %s", SDL_GetError());
         return;
     }
 

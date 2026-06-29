@@ -16,8 +16,6 @@ class GameScene : public Scene
 private:
 	Player* m_player = nullptr;
 
-	Player* m_player2 = nullptr;
-
 protected:
 
 	void OnInitialize() override;
@@ -35,9 +33,5 @@ public:
 
 	GameScene() = default;
 	~GameScene() = default;
-
-	Player* GetPlayer() { return m_player; }
-
-	Player* GetPlayer2() { return m_player2; }
 };
 

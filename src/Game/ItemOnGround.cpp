@@ -2,8 +2,6 @@
 #include "ItemOnGround.h"
 #include "2DPendentLib/Debug.h"
 #include "2dPendentLib/Utils.h"
-#include "Player.h"
-#include "Inventory.h"
 
 static Uint32 m_id = 0;
 
@@ -19,7 +17,6 @@ void ItemOnGround::OnInitialize()
 
 void ItemOnGround::OnEvent()
 {
-
 }
 
 void ItemOnGround::OnUpdate()
@@ -69,19 +66,12 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 			text->SetPosition(this->GetPosition({1,1}));
 		}
 
-		SetResetDirection(false);
 		SetSpeed(15);
 	}
 	else SetSpeed(0);
 
-	if (_other->GetID() == "default" && ToDestroy() == false) {
+	if (_other->GetID() == "default") {
 		std::cout << "Item Collected" << std::endl;
-		static_cast<Player*>(GetScene()->GetEntityByTag(1))->GetInventory()->AddItem(m_ItemInfo.GetID(), m_ItemInfo.GetAmount(), false);
 		Destroy();
 	}
-}
-
-void ItemOnGround::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
-{
-	SetResetDirection(true);
 }

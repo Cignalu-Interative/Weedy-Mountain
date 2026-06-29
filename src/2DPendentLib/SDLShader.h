@@ -11,7 +11,6 @@ private:
 
 	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utilisé pour gérer les shaders et les textures
 
-
 public:
 
 	static SDLShader* Get();

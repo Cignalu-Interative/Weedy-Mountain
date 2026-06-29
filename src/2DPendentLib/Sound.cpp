@@ -6,6 +6,11 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 {
 	m_mixer = p_mixer;
 	m_propertiesID = SDL_CreateProperties();
+	if(m_propertiesID == 0)
+	{
+		SDL_Log("Lib/Sound.cpp/Sound/SDL_CreateProperties failed: %s", SDL_GetError());
+		return;
+	}
 	float distanceDiagonale = std::hypot(p_wSize.GetX(), p_wSize.GetY());
 	SetLimitDistanceToListen(100.0f, distanceDiagonale);
 

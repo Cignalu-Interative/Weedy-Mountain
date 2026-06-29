@@ -35,12 +35,12 @@ void Point::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		//std::cerr << "no draw" << std::endl;
 		return;
 	}
-	if (SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a) == false)
+	if (SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a) < 0)
 	{
 		SDL_Log("Lib/Point.cpp/Draw/SDL_SetRenderDrawColor/cela na pas fonctionné : %s", SDL_GetError());
 		return;
 	}
-	if (SDL_RenderPoint(renderer, screenPos.GetX(), screenPos.GetY()) == false)
+	if (SDL_RenderDrawPointF(renderer, screenPos.GetX(), screenPos.GetY()) == -1)
 	{
 		SDL_Log("Lib/Point.cpp/Draw/SDL_RenderDrawPointF/cela na pas fonctionné : %s", SDL_GetError());
 		return;

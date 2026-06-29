@@ -44,8 +44,3 @@ void Timer::Sleep(float p_SecForSleep)
         }
     }
 }
-
-std::chrono::steady_clock::time_point Timer::GetLastTime()
-{
-    return m_lastTime;
-}

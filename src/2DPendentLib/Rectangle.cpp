@@ -70,7 +70,7 @@ void Rectangle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         screenRect.x + screenRect.w < 0 || screenRect.y + screenRect.h < 0)
         return;
 
-    if (SDL_SetRenderDrawColor(renderer, (float)m_color.r, (float)m_color.g, (float)m_color.b, (float)m_color.a) == false)
+    if (SDL_SetRenderDrawColor(renderer, m_color.r, m_color.g, m_color.b, m_color.a) < 0)
     {
         SDL_Log("Lib/Rectangle.cpp/Draw/SDL_SetRenderDrawColor/cela na pas fonctionné : %s", SDL_GetError());
 		return;
@@ -88,11 +88,11 @@ void Rectangle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
             SDL_Vertex vertices[4];
             for (int i = 0; i < 4; i++) {
                 vertices[i].position = { corners[i].GetX(), corners[i].GetY() };
-                vertices[i].color = { (float)m_color.r, (float)m_color.g, (float)m_color.b, (float)m_color.a };
+                vertices[i].color = { m_color.r, m_color.g, m_color.b, m_color.a };
                 vertices[i].tex_coord = { 0, 0 };
             }
             int indices[] = { 0, 1, 2, 0, 2, 3 };
-            if (SDL_RenderGeometry(renderer, nullptr, vertices, 4, indices, 6) == false)
+            if (SDL_RenderGeometry(renderer, nullptr, vertices, 4, indices, 6) == -1)
             {
                 SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderGeometry/cela na pas fonctionné : %s", SDL_GetError());
                 return;
@@ -102,9 +102,9 @@ void Rectangle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
             for (int i = 0; i < 4; i++) {
                 Vector2f a = corners[i];
                 Vector2f b = corners[(i + 1) % 4];
-                if (SDL_RenderLine(renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY()) == false)
+                if (SDL_RenderDrawLineF(renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY()) == -1)
                 {
-                    SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderLine/cela na pas fonctionné : %s", SDL_GetError());
+                    SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderDrawLineF/cela na pas fonctionné : %s", SDL_GetError());
                     return;
                 }
             }
@@ -120,11 +120,11 @@ void Rectangle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
             for (int j = 0; j < 4; j++) {
                 Vector2f s = p_camera->WorldToScreen(corners[j]);
                 vertices[j].position = { s.GetX(), s.GetY() };
-                vertices[j].color = {(float)m_color.r, (float)m_color.g, (float)m_color.b, (float)m_color.a};
+                vertices[j].color = {m_color.r, m_color.g, m_color.b, m_color.a};
                 vertices[j].tex_coord = { 0, 0 };
             }
             int indices[] = { 0, 1, 2, 0, 2, 3 };
-            if (SDL_RenderGeometry(renderer, nullptr, vertices, 4, indices, 6) == false)
+            if (SDL_RenderGeometry(renderer, nullptr, vertices, 4, indices, 6) == -1)
             {
                 SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderGeometry/cela na pas fonctionné : %s", SDL_GetError());
                 return;
@@ -136,9 +136,9 @@ void Rectangle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         for (int i = 0; i < 4; i++) {
             Vector2f a = p_camera->WorldToScreen(corners[i]);
             Vector2f b = p_camera->WorldToScreen(corners[(i + 1) % 4]);
-            if (SDL_RenderLine(renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY()) == false)
+            if (SDL_RenderDrawLineF(renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY()) == -1)
             {
-                SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderLine/cela na pas fonctionné : %s", SDL_GetError());
+                SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderDrawLineF/cela na pas fonctionné : %s", SDL_GetError());
                 return;
             }
         }
@@ -146,18 +146,18 @@ void Rectangle::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     case 5: // GUI + NoRot + Fill
     case 4: // Monde + NoRot + Fill
-        if (SDL_RenderFillRect(renderer, &screenRect) == false)
+        if (SDL_RenderFillRectF(renderer, &screenRect) == -1)
         {
-            SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderFillRect/cela na pas fonctionné : %s", SDL_GetError());
+            SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderFillRectF/cela na pas fonctionné : %s", SDL_GetError());
             return;
         }
         break;
 
     case 1: // GUI + NoRot + NoFill
     default: // Monde + NoRot + NoFill
-        if (SDL_RenderRect(renderer, &screenRect) == false)
+        if (SDL_RenderDrawRectF(renderer, &screenRect) == -1)
         {
-            SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderDrawRect/cela na pas fonctionné : %s", SDL_GetError());
+            SDL_Log("Lib/Rectangle.cpp/Draw/SDL_RenderDrawRectF/cela na pas fonctionné : %s", SDL_GetError());
             return;
         }
         break;

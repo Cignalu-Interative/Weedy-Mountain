@@ -1,8 +1,7 @@
 #pragma once
-#include <SDL3/SDL.h>
-#include <SDL3_mixer/SDL_mixer.h>
+#include <SDL.h>
+#include <SDL_mixer.h>
 #include <map>
-#include <vector>
 #include "Vector2.h"
 #include "AudioFormat.h"
 #include "Transformable.h"
@@ -13,66 +12,36 @@ private:
 
 	std::string m_name; //Nom du son, extrait du nom du fichier audio, utilisé comme identifiant dans SoundManager
 
-	MIX_Mixer* m_mixer = nullptr; //Pointeur vers le mixer, utilisé pour gérer les sons et la musique
+	Mix_Chunk* m_WAV = nullptr; //Pointeur vers un chunk de son pour les fichiers WAV
+	Mix_Music* m_MUSIC = nullptr; //Pointeur vers un chunk de musique pour les fichiers musicaux MP3
 
-	MIX_Audio* m_audio = nullptr; //Pointeur vers l'audio, peut être un Mix_Chunk (pour les SFX) ou un Mix_Music (pour les MUSIC) en sdl2
-
-	MIX_Track* m_pisteMusique = nullptr; // Pointeur vers la piste audio, !! Seulement stocker les MP3 car Sinon écrase la lecture en cours si spam
-	std::vector<MIX_Track*> m_pistesSFX; // Pointeur vers la piste audio, !! Seulement stocker les SFX car Sinon écrase la lecture en cours si spam
-
-	MIX_Point3D m_position3D; //Position 3D du son, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
-
-	SDL_PropertiesID m_propertiesID = 0; //Identifiant des propriétés du son, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
+	int m_lastChannel = -1; //Pour stocker le dernier canal utilisé pour jouer un son, utile pour la spatialisation
 
 	//Format de l'audio par default à NONE, il sera défini lors de l'initialisation en fonction du format du fichier audio
 	AudioFormat m_audioFormat = AudioFormat::NONE;
-
-	// Paramètres du son
-	int m_loopCount = 0; // Nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
-	Sint64 m_StartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
-	Sint64 m_LoopStartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
-	Sint64 m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son dépasse cette durée, il sera arrêté automatiquement
-	Sint64 m_fadeInMs = 0; // Durée du fondu d'entrée en millisecondes, utilisée pour le fondu d'entrée du son
-	float m_gainVolumeFadeIn = 1.0f; // Volume initial pour le fondu d'entrée, utilisé pour le fondu d'entrée du son
-	Sint64 m_fadeOutMs = 0; // Durée du fondu de sortie en millisecondes, utilisée pour le fondu de sortie du son
-	Sint64 m_soundReverberation = 0; //Durée de la réverbération du son en millisecondes, utilisée pour la réverbération du son
-
-	Vector2f m_relativePosition = Vector2f(0.0f, 0.0f); //Position relative du son par rapport au listener, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
-
-	// Volume "artistique" propre au fichier (0.0f à 1.0f). 
-	// Fixé une fois au chargement pour équilibrer les sons entre eux (ex: baisser un bruit de pas trop fort).
-	float m_absoluteVolume = 1.0f;
-
-	// Volume final calculé (m_absoluteVolume * Volume Global du Manager).
-	// C'est ce gain brut qui est envoyé à MIX_SetTrackGain AVANT que la SDL3 n'applique son atténuation 3D.
-	float m_relativeVolume = 1.0f;
-
-	float m_lastGlobalVolume = 1.0f;
-
-	float m_minDistanceToListen = 0.0f; // Distance minimale à laquelle le son peut être entendu, en pixels
-	float m_maxDistanceToListen = 0.0f; // Distance maximale à laquelle le son peut être entendu, en pixels
-
-	// Dans Sound.h
-	float m_currentSmoothedGain = 0.0f;
-	float m_currentSmoothedPanX = 0.0f;
-	float m_currentSmoothedPanZ = 0.0f;
-
-	bool m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+	
+	float m_distanceSquared = 0.0f; //Distance au carré entre le son et le listener, utilisé pour la spatialisation (calculé à partir de la position du son et du listener)
 
 public:
 
 	//Constructeur par défaut de Sound
-	Sound(MIX_Mixer* p_mixer, Vector2i p_wSize);
+	Sound() = default;
 	//Destructeur de Sound
 	~Sound();
 	//Initialiser le son en fonction du chemin du fichier audio et de sa position dans le monde
 	void Initialize(const std::string& p_path, Vector2f p_position);
-
-	void RemoveOldTrack();
 	//Fonction statique pour détecter le format de l'audio en fonction de son extension de fichier
 	AudioFormat DetectAudioFormat(const std::string& p_path);
 
-	void Play(const Vector2f& p_listenerPosition = Vector2f(0.0f, 0.0f));
+	//Jouer le son, avec une option pour le faire en boucle (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
+	// /////////////////// La spatialisation est appliquée uniquement aux SFX (WAV) et non aux MUSIC (MP3) \\\\\\\\\\\\\\\\\\
+	// et des paramètres pour la spatialisation (angle et distance)
+	//Pour les angles les principale directions sont définies comme suit :
+	//NORTH est définie à 0 degrés, NORTHEAST est définie à 45 degrés, EAST est définie à 90 degrés,
+	//SOUTHEAST est définie à 135 degrés, SOUTH est définie à 180 degrés, SOUTHWEST est définie à 225 degrés,
+	//WEST est définie à 270 degrés, NORTHWEST est définie à 315 degrés
+	//distance est la distance entre le son et le joueur, en pourcentage (0 = proche, 255 = loin)
+	void Play(int p_loops = 0, Sint16 p_angle = 0, Uint8 p_distance = 0);
 	//Arrêter le son
 	void Stop();
 	//Mettre en pause le son
@@ -86,45 +55,10 @@ public:
 	void SetName(const std::string& p_name) { m_name = p_name; }
 	std::string GetName() const { return m_name; }
 
-	//SET les properties
+	void SetDistanceSquared(float p_distanceSquared) { m_distanceSquared = p_distanceSquared; }
+	float GetDistanceSquared() const { return m_distanceSquared; }
 
-	// Définit le nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles).
-	void SetLoopCount(int p_loopCount = 0);
-	// Définit le point de départ en secondes pour la lecture du son.
-	void SetStartAtTime(int p_startTime = 0);
-	// Définit le point de départ de la boucle en secondes pour la lecture du son.
-	void SetLoopStartAtTime(int p_startTime = 0);
-	// Définit le temps maximum de lecture du son en secondes. Si le son dépasse cette durée, il sera arrêté automatiquement.
-	void SetMaxTimeToPlay(int p_maxTime = -1);
-	// Définit le volume initial et la durée du fondu d'entrée en secondes le volume est un entier entre 0 et 100, où 0 est silencieux et 100 est le volume maximum
-	void SetVolumeFadeIn(int p_seconde = 0, int p_volume = 0);
-	// Définit le volume initial et la durée du fondu de sortie en secondes le volume est un entier entre 0 et 100, où 0 est silencieux et 100 est le volume maximum
-	void SetVolumeFadeOut(int p_seconde = 0);
-	//Durée de la réverbération du son en seconde, utilisée pour la réverbération du son
-	void SetSoundReverberation(int p_seconde);
-
-	void SetRelativePosition(const Vector2f& p_relativePosition) { m_relativePosition = p_relativePosition; }
-	Vector2f GetRelativePosition() const { return m_relativePosition; }
-
-	int GetVolume() const { return static_cast<int>(m_absoluteVolume * 100.0f); }
-	// Définit le volume du son en pourcentage (0 à 100). Le volume est converti en une valeur flottante entre 0.0f et 1.0f pour l'utilisation interne.
-	void SetAbsoluteVolume(int p_volume);
-	void UpdateRelativeVolume(float p_globalVolume);
-
-	// La fonction SetLimitDistanceToListen définit les distances minimale et maximale à laquelle
-	// le son peut être entendu
-	// Exemple d'utilisation : SetLimitDistanceToListen(100.0f, 1000.0f);
-	void SetLimitDistanceToListen(float p_min, float p_max);
-
-	void ApplySpatialization(const Vector2f& p_listenerPosition, float p_deltaTime);
-
-	float ComputeDistanceGain(float p_distance) const;
-
-	void UpdateRelativePosition(const Vector2f& p_listenerPosition);
-	void ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) const;
-
-	void SetSpacializationEnabled(bool p_enabled) { m_isSpacializationEnabled = p_enabled; }
-	bool IsSpacializationEnabled() const { return m_isSpacializationEnabled; }
+	int GetChannel() const { return m_lastChannel; }
 };
 
 #include "Sound.inl"

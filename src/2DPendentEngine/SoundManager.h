@@ -12,8 +12,6 @@ class SoundManager
 {
 private:
 
-	MIX_Mixer* m_mixer = nullptr; //Pointeur vers le mixer, utilisé pour gérer les sons et la musique
-
 	//Map pour stocker les sons, avec l'identifiant du son (extrait du nom du fichier) comme clé et un pointeur vers l'objet Sound comme valeur
 	std::unordered_map<std::string, size_t> m_sounds;
 
@@ -28,8 +26,11 @@ private:
 	//Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
 	bool m_isSpatializationEnabled = true;
 
-	float m_MusiqueVolume = 1.0f; //Volume global pour les MUSIC, compris entre 0.0f (silencieux) et 1.0f (volume maximum)
-	float m_SFXVolume = 1.0f; //Volume global pour les SFX, compris entre 0.0f (silencieux) et 1.0f (volume maximum)
+	float m_maxAudibleDistance; // Distance maximale à laquelle un son peut être entendu en pixels
+	float m_ratioDistanceToVolume = 255.0f / m_maxAudibleDistance; // Ratio pour convertir la distance en distance pour le volume/pixels (0 = proche, 255 = loin) par défault
+
+	//Bool pour savoir si la distance maximale audible doit être calculée automatiquement en fonction de la taille de la fenêtre, ou définie manuellement
+	bool m_autoMaxDistance = true;
 
 public:
 
@@ -41,9 +42,7 @@ public:
 	//Singleton pour accéder à SoundManager
 	static SoundManager* Get();
 
-	void SetMixer(MIX_Mixer* p_mixer) { m_mixer = p_mixer; }
-
-	void Update(float p_deltatime);
+	void Update();
 
 	void AddSound(const std::string& p_path);
 
@@ -65,7 +64,7 @@ public:
 	//SOUTHEAST est définie à 135 degrés, SOUTH est définie à 180 degrés, SOUTHWEST est définie à 225 degrés,
 	//WEST est définie à 270 degrés, NORTHWEST est définie à 315 degrés
 	//distance est la distance entre le son et le joueur, en pourcentage (0 = proche, 255 = loin)
-	void Play(const std::string& p_id);
+	void Play(const std::string& p_id, int p_loops = 0, SoundOrientation p_angle = SoundOrientation::NORTH, Uint8 p_distance = 0);
 	//Fonction pour appeler la fonction Stop() de Sound en utilisant l'identifiant du son
 	void Stop(const std::string& p_id);
 	//Fonction pour appeler la fonction Pause() de Sound en utilisant l'identifiant du son
@@ -80,25 +79,19 @@ public:
 	//Fonctions pour appeler les fonctions Stop() de tous les sons dans la map de SoundManager
 	void StopAll();
 
-	//Fonctions pour définir le volume global des MUSIC, compris entre 0 (silencieux) et 100 (volume maximum)
-	void SetMusicVolume(int p_volume);
-	//Fonctions pour définir le volume global des SFX, compris entre 0 (silencieux) et 100 (volume maximum)
-	void SetSFXVolume(int p_volume);
-
-	//Fonctions pour augmenter le volume global des MUSIC, compris entre 0 (silencieux) et 100 (volume maximum)
-	void IncreaseMusicVolume(int p_amount);
-	//Fonctions pour augmenter le volume global des SFX, compris entre 0 (silencieux) et 100 (volume maximum)
-	void IncreaseSFXVolume(int p_amount);
-
-	//Fonctions pour diminuer le volume global des MUSIC, compris entre 0 (silencieux) et 100 (volume maximum)
-	void DecreaseMusicVolume(int p_amount);
-	//Fonctions pour diminuer le volume global des SFX, compris entre 0 (silencieux) et 100 (volume maximum)
-	void DecreaseSFXVolume(int p_amount);
+	//Fonction pour changer le volume des SFX ou des MUSIC
+	//Le volume est un entier entre 0 et 128, où 0 est silencieux et 128 est le volume maximum
+	//AudioFormat est utilisé pour spécifier si le volume à changer est celui des SFX (WAV) ou des MUSIC (MP3)
+	void SetVolume(int p_volume, AudioFormat p_format);
+	//Fonction pour augmenter le volume des SFX ou des MUSIC d'une certaine quantité
+	void IncreaseVolume(int p_amount, AudioFormat p_format);
+	//Fonction pour diminuer le volume des SFX ou des MUSIC d'une certaine quantité
+	void DecreaseVolume(int p_amount, AudioFormat p_format);
 
 	//Fonction pour obtenir le volume actuel des SFX
-	int GetSFXVolume() const;
+	int GetSFXVolume() const { return Mix_Volume(-1, -1); }
 	//Fonction pour obtenir le volume actuel des MUSIC
-	int GetMusicVolume() const;
+	int GetMusicVolume() const { return Mix_VolumeMusic(-1); }
 
 #ifdef _DEBUG
 	//Fonction pour afficher les volumes actuels des SFX et des MUSIC dans la console pour le debug
@@ -133,7 +126,16 @@ public:
 	bool IsSpatializationEnabled() const { return m_isSpatializationEnabled; }
 
 	//Fonction pour appliquer la spatialisation à un son spécifique en utilisant la position du son et du listener pour calculer l'angle et la distance,
-	void ApplySpatialization(Sound* p_sound, float p_deltaTime);
+	void ApplySpatialization(Sound* p_sound);
+
+	void SetMaxAudibleDistance(float p_distance);
+	float GetMaxAudibleDistance() const { return m_maxAudibleDistance; }
+
+	void SetRatioDistanceToVolume(float p_ratio);
+	float GetRatioDistanceToVolume() const { return m_ratioDistanceToVolume; }
+
+	void SetAutoMaxDistance(bool p_auto) { m_autoMaxDistance = p_auto; }
+	bool GetAutoMaxDistance() const { return m_autoMaxDistance; }
 };
 
 #include "SoundManager.inl"

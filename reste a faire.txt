@@ -1,2 +1,0 @@
-puis shader
-mettre toute verif de sdl en debug uniquement

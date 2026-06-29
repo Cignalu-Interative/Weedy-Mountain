@@ -1,6 +1,7 @@
 #pragma once
-#include <SDL3/SDL.h>
-#include <SDL3_ttf/SDL_ttf.h>
+#include <SDL.h>
+#include <SDL2_gfxPrimitives.h>
+#include <SDL_ttf.h>
 #include <string>
 #include <functional>
 #include <unordered_map>

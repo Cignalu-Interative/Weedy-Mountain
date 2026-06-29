@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL3/SDL.h>
+#include <SDL.h>
 //Version 1.0.1
 
 //Composition de la couleur
@@ -14,18 +14,6 @@ struct Color
 	//Alpha (transparence)
 	Uint8 a;
 };
-
-//struct Color
-//{
-//	//Rouge
-//	float r;
-//	//Vert
-//	float g;
-//	//Bleu
-//	float b;
-//	//Alpha (transparence)
-//	float a;
-//};
 
 //Couleurs nommées
 struct ColorsNamed

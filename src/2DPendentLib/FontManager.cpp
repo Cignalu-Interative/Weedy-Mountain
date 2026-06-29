@@ -26,7 +26,7 @@ void FontManager::AddFontByRepertory(const std::string& p_path)
 	std::ifstream file(p_path);
 	if (!file.is_open())
 	{
-		//SDL_Log("Lib/FontManager.cpp/AddFontByRepertory/failed to open file: %s", p_path.c_str());
+		SDL_Log("Lib/FontManager.cpp/AddFontByRepertory/failed to open file: %s", p_path.c_str());
 		return;
 	}
 
@@ -42,7 +42,7 @@ void FontManager::AddFontByRepertory(const std::string& p_path)
 			auto it = m_fontsMap.find(autoId);
 			if (it != m_fontsMap.end())
 			{
-				//SDL_Log("Lib/FontManager.cpp/AddFont/GetNameFromPath/Font already loaded with ID : %s", autoId.c_str());
+				SDL_Log("Lib/FontManager.cpp/AddFont/GetNameFromPath/Font already loaded with ID : %s", autoId.c_str());
 				continue;
 			}
 			m_fontsMap[autoId] = m_fontsVector.size();
@@ -58,7 +58,7 @@ void FontManager::AddFontByPath(const std::string& p_path)
 	auto it = m_fontsMap.find(autoId);
 	if (it != m_fontsMap.end())
 	{
-		//SDL_Log("Lib/FontManager.cpp/AddFontByPath/GetNameFromPath/Font already loaded with ID : %s", autoId.c_str());
+		SDL_Log("Lib/FontManager.cpp/AddFontByPath/GetNameFromPath/Font already loaded with ID : %s", autoId.c_str());
 		return;
 	}
 	m_fontsMap[autoId] = m_fontsVector.size();
@@ -71,7 +71,7 @@ void FontManager::DestroyFont(const std::string& p_id)
 	auto it = m_fontsMap.find(p_id);
 	if (it == m_fontsMap.end())
 	{
-		//SDL_Log("Lib/FontManager.cpp/DestroyFont/find/Font with id '%s' not found", p_id.c_str());
+		SDL_Log("Lib/FontManager.cpp/DestroyFont/find/Font with id '%s' not found", p_id.c_str());
 		return;
 	}
 
@@ -102,7 +102,7 @@ const std::string& FontManager::GetFont(const std::string& p_id) const
 	auto it = m_fontsMap.find(p_id);
 	if (it == m_fontsMap.end())
 	{
-		//SDL_Log("Lib/FontManager.cpp/GetFont/find/Font with id '%s' not found", p_id.c_str());
+		SDL_Log("Lib/FontManager.cpp/GetFont/find/Font with id '%s' not found", p_id.c_str());
 		static std::string emptyString;
 		return emptyString;
 	}

@@ -230,6 +230,36 @@ void MapTiled::ReadImageLayer(tinyxml2::XMLElement* p_mapElement)
     m_imageLayers.push_back(tempImageLayerTiled);
 }
 
+void MapTiled::BuildGidLookupTable()
+{
+    if (m_tilesets.empty()) return;
+
+    int maxGid = 0;
+    for (auto& ts : m_tilesets)
+    {
+        int tilesetMaxGid = ts->m_baliseTileset.s_TilesetFirstgid + ts->m_TilesetTileCount;
+        maxGid = Utils::LimitMin(maxGid, tilesetMaxGid);
+    }
+
+	m_gidToTileset.assign(maxGid + 1, nullptr);
+
+    std::vector<TilesetTiled*> sorted = m_tilesets;
+    Utils::Sort(sorted.begin(), sorted.end(), [](TilesetTiled* a, TilesetTiled* b)
+        {
+            return a->m_baliseTileset.s_TilesetFirstgid < b->m_baliseTileset.s_TilesetFirstgid;
+        });
+
+    for (auto& ts : sorted)
+    {
+        int first = ts->m_baliseTileset.s_TilesetFirstgid;
+        int count = ts->m_TilesetTileCount;
+        for (int gid = first; gid < first + count; gid++)
+        {
+            m_gidToTileset[gid] = ts;
+        }
+    }
+}
+
 //Public
 MapTiled::MapTiled(const std::string& p_path, Render* p_render)
 {
@@ -242,6 +272,8 @@ MapTiled::MapTiled(const std::string& p_path, Render* p_render)
 
 	m_render = p_render;
     LoadXML(p_path, m_render);
+
+	BuildGidLookupTable();
 }
 
 MapTiled::~MapTiled()
@@ -305,6 +337,13 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         return;
     }
 
+    Vector2i dimensionWindow = f_window->GetWindowSize();
+
+    Vector2f worldTopLeft = p_camera->ScreenToWorld<float>({ 0.0f, 0.0f }); // en haut a gauche de l'écran
+    Vector2f worldBottomRight = p_camera->ScreenToWorld<float>({ (float)dimensionWindow.GetX(), (float)dimensionWindow.GetY() }); // en bas a droite de l'écran
+
+	int margin = 1; // marge pour dessiner les tiles autour de la caméra
+
     for (LayerTiled* layerTiled : m_layers)
     {
         if (layerTiled->m_LayerVisible == false)
@@ -312,30 +351,43 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
             continue;
         }
 
+        int xMin = static_cast<int>(std::floor(worldTopLeft.GetX() / m_TileDimension.GetX())) - margin;
+        int yMin = static_cast<int>(std::floor(worldTopLeft.GetY() / m_TileDimension.GetY())) - margin;
+
+        int xMax = static_cast<int>(std::ceil(worldBottomRight.GetX() / m_TileDimension.GetX())) + margin;
+        int yMax = static_cast<int>(std::ceil(worldBottomRight.GetY() / m_TileDimension.GetY())) + margin;
+
+		xMin = Utils::LimitMin(xMin, 0);   
+		yMin = Utils::LimitMin(yMin, 0);
+
+		xMax = Utils::LimitMax(xMax, layerTiled->m_LayerDimension.GetX());
+		yMax = Utils::LimitMax(yMax, layerTiled->m_LayerDimension.GetY());
+
+
         float posTileX;
         float posTileY;
 
-        Vector2i dimensionWindow = f_window->GetWindowSize();
+		float zoom = p_camera->GetZoom();
 
         // Parcours de chaque ligne de la layer
-        for (int y = 0; y < layerTiled->m_LayerDimension.GetY(); y++)
+        for (int y = yMin; y < yMax; y++)
         {
             posTileY = y * m_TileDimension.GetY();
 
             // Parcours de chaque colonne de la layer
-            for (int x = 0; x < layerTiled->m_LayerDimension.GetX(); x++)
+            for (int x = xMin; x < xMax; x++)
             {
                 posTileX = x * m_TileDimension.GetX();
 
-                Vector2f screenPosTopLeft = p_camera->WorldToScreen<float>({ posTileX, posTileY });
-                Vector2f screenPosBottomRight = p_camera->WorldToScreen<float>({ posTileX + m_TileDimension.GetX(), posTileY + m_TileDimension.GetY() });
+                //Vector2f screenPosTopLeft = p_camera->WorldToScreen<float>({ posTileX, posTileY });
+                //Vector2f screenPosBottomRight = p_camera->WorldToScreen<float>({ posTileX + m_TileDimension.GetX(), posTileY + m_TileDimension.GetY() });
 
-                if (screenPosBottomRight.GetX() < 0 || screenPosTopLeft.GetX() > dimensionWindow.GetX() ||
-                    screenPosBottomRight.GetY() < 0 || screenPosTopLeft.GetY() > dimensionWindow.GetY())
-                {
-                    //std::cerr << "no draw" << std::endl;
-                    continue;
-                }
+                //if (screenPosBottomRight.GetX() < 0 || screenPosTopLeft.GetX() > dimensionWindow.GetX() ||
+                //    screenPosBottomRight.GetY() < 0 || screenPosTopLeft.GetY() > dimensionWindow.GetY())
+                //{
+                //    //std::cerr << "no draw" << std::endl;
+                //    continue;
+                //}
 
                  // Calcul de l'index dans le vector 1D à partir de coordonnées 2D (x,y)
                  // Ex: x=2, y=3, largeur de la layer = 10 => index = 3*10 + 2 = 32
@@ -350,7 +402,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                 // Si tileNumber == 0, la case est vide => on ne dessine rien
                 if (tile_gid == 0) continue;
 
-                TilesetTiled* tempTileset = nullptr;
+                /*TilesetTiled* tempTileset = nullptr;
                 for (auto& ts : m_tilesets)
                 {
                     if (tile_gid < ts->m_baliseTileset.s_TilesetFirstgid)
@@ -361,7 +413,9 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     {
                         tempTileset = ts;
                     }
-                }
+                }*/
+
+                TilesetTiled* tempTileset = (tile_gid < (int)m_gidToTileset.size()) ? m_gidToTileset[tile_gid] : nullptr;
                 if (!tempTileset)
                 {
                     continue;
@@ -402,8 +456,8 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                 SDL_FRect dstRect = {
                     postile.GetX(),    // pos X � l'�cran
                     postile.GetY(),    // pos Y � l'�cran
-                    m_TileDimension.GetX() * p_camera->GetZoom(),        // width
-                    m_TileDimension.GetY() * p_camera->GetZoom()         // height
+                    m_TileDimension.GetX() * zoom,        // width
+                    m_TileDimension.GetY() * zoom         // height
                 };
 
                 // Dessiner la tile
@@ -701,3 +755,168 @@ std::vector<Vector2f> MapTiled::GetWorldPositionsWithProperty(const std::string&
 
     return positions;
 }
+
+
+//void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
+//{
+//
+//    if (m_tilesets.empty())
+//    {
+//        //std::cerr << "Pas de tileset pour draw" << std::endl;
+//        return;
+//    }
+//    int countTexture = 0;
+//    for (size_t i = 0; i < m_tilesets.size(); i++)
+//    {
+//        if (m_tilesets[i]->GetIdTilesetTexture() == "empty")
+//        {
+//            //std::cerr << "Pas de texture pour ce tileset :" << m_tilesets[i] << std::endl;
+//        }
+//        else
+//        {
+//            countTexture++;
+//        }
+//    }
+//
+//    if (countTexture == 0)
+//    {
+//        //std::cerr << "Pas de texture pour draw" << std::endl;
+//        return;
+//    }
+//
+//    for (LayerTiled* layerTiled : m_layers)
+//    {
+//        if (layerTiled->m_LayerVisible == false)
+//        {
+//            continue;
+//        }
+//
+//        float posTileX;
+//        float posTileY;
+//
+//        Vector2i dimensionWindow = f_window->GetWindowSize();
+//
+//        Vector2f cameraPosLeftUp = p_camera->GetPosition({ 0.0f, 0.0f });
+//        Vector2i cameraSize = p_camera->GetDimension();
+//
+//        float cameraZoom = p_camera->GetZoom();
+//        float camX = cameraPosLeftUp.GetX();
+//        float camW = cameraSize.GetX() / cameraZoom;
+//
+//        int tileW = m_TileDimension.GetX();
+//
+//        //ceil arondie au supérieur pour ne pas avoir de tile manquante à l'affichage
+//        //floor arrondie au inférieur pour ne pas avoir de tile manquante à l'affichage
+//        int xStart = Utils::LimitMin(static_cast<int>(std::floor(camX / tileW)), 0);
+//        int xEnd = Utils::LimitMax(static_cast<int>(std::ceil((camX + camW) / tileW)), layerTiled->m_LayerDimension.GetX());
+//
+//        // Parcours de chaque ligne de la layer
+//        for (int y = 0; y < layerTiled->m_LayerDimension.GetY(); y++)
+//        {
+//            posTileY = y * m_TileDimension.GetY();
+//
+//            // Parcours de chaque colonne de la layer
+//            for (int x = xStart; x < xEnd; x++)
+//            {
+//                posTileX = x * m_TileDimension.GetX();
+//
+//                Vector2f screenPosTopLeft = p_camera->WorldToScreen<float>({ posTileX, posTileY });
+//                Vector2f screenPosBottomRight = p_camera->WorldToScreen<float>({ posTileX + m_TileDimension.GetX(), posTileY + m_TileDimension.GetY() });
+//
+//                // LIGNES DE DEBUG À AJOUTER :
+//                std::cout << "--- DEBUG DRAW ---" << std::endl;
+//                std::cout << "CamX: " << camX << " | CamW: " << camW << std::endl;
+//                std::cout << "xStart: " << xStart << " | xEnd: " << xEnd << std::endl;
+//                std::cout << "Layer X Max: " << layerTiled->m_LayerDimension.GetX() << std::endl;
+//
+//                //if (screenPosBottomRight.GetX() < 0 || screenPosTopLeft.GetX() > dimensionWindow.GetX() ||
+//                //    screenPosBottomRight.GetY() < 0 || screenPosTopLeft.GetY() > dimensionWindow.GetY())
+//                //{
+//                //    //std::cerr << "no draw" << std::endl;
+//                //    continue;
+//                //}
+//
+//                 // Calcul de l'index dans le vector 1D à partir de coordonnées 2D (x,y)
+//                 // Ex: x=2, y=3, largeur de la layer = 10 => index = 3*10 + 2 = 32
+//                 // Cela permet de convertir les coordonnées 2D (x,y) en un index pour accéder au vector 1D s_LayerTiles
+//                int index = y * layerTiled->m_LayerDimension.GetX() + x;
+//
+//                // Récupération du tileID dans le vector s_LayerTiles
+//                // Ex: index = 32 => tileNumber = s_LayerTiles[32] = 6
+//                // tileNumber correspond au GID de la tile dans le tileset
+//                int tile_gid = layerTiled->m_LayerTiles[index];
+//
+//                // Si tileNumber == 0, la case est vide => on ne dessine rien
+//                if (tile_gid == 0) continue;
+//
+//                TilesetTiled* tempTileset = nullptr;
+//                for (auto& ts : m_tilesets)
+//                {
+//                    if (tile_gid < ts->m_baliseTileset.s_TilesetFirstgid)
+//                    {
+//                        continue;
+//                    }
+//                    else
+//                    {
+//                        tempTileset = ts;
+//                    }
+//                }
+//                if (!tempTileset)
+//                {
+//                    continue;
+//                }
+//                if (tempTileset->GetIdTilesetTexture() == "empty")
+//                {
+//                    continue;
+//                }
+//
+//                // Calcul de la position de la tile dans le tileset
+//                int localID = tile_gid - tempTileset->m_baliseTileset.s_TilesetFirstgid; // GID local (commence à 0)
+//
+//                // CORRIGÉ : Calcul des coordonnées UV dans le tileset
+//                // Ex: localID = 6, tilesPerRow = 4
+//                // tu = 6 % 4 = 2 (colonne dans le tileset)
+//                // tv = 6 / 4 = 1 (ligne dans le tileset)
+//                // tu et tv sont les coordonnées de la tile dans le tileset, exprimées en pixels
+//                int tu, tv;
+//                if (tempTileset->m_TilesetColumns == 0) {
+//                    // Tile invalide : skip ou tuile vide
+//                    tu = 0; tv = 0;
+//                }
+//                else {
+//                    tu = (localID % tempTileset->m_TilesetColumns) * m_TileDimension.GetX();
+//                    tv = (localID / tempTileset->m_TilesetColumns) * m_TileDimension.GetY();
+//                }
+//
+//                SDL_FRect srcRect = {
+//                    tu,                        // left
+//                    tv,                        // top
+//                    m_TileDimension.GetX(),    // width
+//                    m_TileDimension.GetY()     // height
+//                };
+//
+//                // Position de la tile sur la fenêtre
+//
+//                Vector2i postile = p_camera->WorldToScreen<int>({ x * m_TileDimension.GetX(), y * m_TileDimension.GetY() });
+//                SDL_FRect dstRect = {
+//                    postile.GetX(),    // pos X � l'�cran
+//                    postile.GetY(),    // pos Y � l'�cran
+//                    m_TileDimension.GetX() * p_camera->GetZoom(),        // width
+//                    m_TileDimension.GetY() * p_camera->GetZoom()         // height
+//                };
+//
+//                // Dessiner la tile
+//                if (SDL_RenderTexture(
+//                    f_render->m_renderer,
+//                    AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
+//                    &srcRect,
+//                    &dstRect
+//                ) == false)
+//                {
+//                    SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderCopy/cela na pas fonctionné : %s", SDL_GetError());
+//                    return;
+//                }
+//            }
+//        }
+//    }
+//}

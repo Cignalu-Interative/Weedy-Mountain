@@ -712,6 +712,24 @@
       "path": "../../res/Game/Assets/Textures/carrot_04.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/dr/coin.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/dr/fruit.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/dr/huh/platforms.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/dr/huh/slime_green.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/dr/huh/slime_purple.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/dr/knight.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/player.png"
     },
     {
@@ -734,6 +752,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/wheat_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/world_tileset.png"
     }
   ]
 }

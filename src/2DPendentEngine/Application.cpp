@@ -10,9 +10,9 @@
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
 #include "2DPendentLib/SDLShader.h"
-
 #include "DialogueManager.h"
 #include "PhysicsManager.h"
+#include "2DPendentLib/BatchRenderer2D.h"
 
 Application::Application()
 {
@@ -66,6 +66,7 @@ void Application::Init()
 	//SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
 	m_timerFPS.SetCurrentTime();
+	BatchRenderer2D::Get()->SetRenderer(m_render.GetRenderer());
 
 	std::cerr << "Application initialized successfully." << std::endl;
 }

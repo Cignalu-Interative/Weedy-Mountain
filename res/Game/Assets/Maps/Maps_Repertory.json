@@ -5,6 +5,18 @@
     },
     {
       "path": "../../res/Game/Assets/Maps/tmx/Village.tmx"
+    },
+    {
+      "path": "../../res/Game/Assets/Maps/tmx/drdrtitre.tmx"
+    },
+    {
+      "path": "../../res/Game/Assets/Maps/tmx/sans titre.tmx"
+    },
+    {
+      "path": "../../res/Game/Assets/Maps/tmx/ss titre.tmx"
+    },
+    {
+      "path": "../../res/Game/Assets/Maps/tmx/tftyftfttmx.tmx"
     }
   ]
 }

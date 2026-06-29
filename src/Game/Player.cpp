@@ -49,12 +49,12 @@ void Player::OnEvent()
 		/*if (InputManager::Get()->IsKeyboardDown(K_i))
 			hasPickaxe = !hasPickaxe;*/
 
-	if (InputManager::Get()->IsKeyboardDown(K_B))
+	if (InputManager::Get()->IsKeyboardDown(K_b))
 	{
 		hasSpade = !hasSpade;
 		std::cout << "hasspade : " << std::to_string(hasSpade) << std::endl;
 	}
-	if (InputManager::Get()->IsKeyboardDown(K_U))
+	if (InputManager::Get()->IsKeyboardDown(K_u))
 	{
 		SetIsUsingToolInHand(!m_isUsingToolInHand);
 		std::cout << "is using : " << std::to_string(m_isUsingToolInHand) << std::endl;
@@ -72,19 +72,19 @@ void Player::OnEvent()
 	if (m_isInDialog == false)
 	{
 		//Input Clavier
-		if (InputManager::Get()->IsKeyboardHeld(K_Z)) {
+		if (InputManager::Get()->IsKeyboardHeld(K_z)) {
 			SetDirection({ GetDirection().GetX(), -1.0f });
 			GetCollider("actionBox")->SetOffset({ 0, -8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_S)) {
+		if (InputManager::Get()->IsKeyboardHeld(K_s)) {
 			SetDirection({ GetDirection().GetX(), 1.0f });
 			GetCollider("actionBox")->SetOffset({ 0, 24 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_Q)) {
+		if (InputManager::Get()->IsKeyboardHeld(K_q)) {
 			SetDirection({ -1.0f, GetDirection().GetY() });
 			GetCollider("actionBox")->SetOffset({ -16, 8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_D)) {
+		if (InputManager::Get()->IsKeyboardHeld(K_d)) {
 			SetDirection({ 1.0f, GetDirection().GetY() });
 			GetCollider("actionBox")->SetOffset({ 16, 8 });
 		}
@@ -141,9 +141,9 @@ void Player::HandleFarmAction()
 
 	case FarmTileState::TILLED:
 		// T maintenu = arroser, Y maintenu = planter, sinon = d�-b�cher
-		if (InputManager::Get()->IsKeyboardHeld(K_T))
+		if (InputManager::Get()->IsKeyboardHeld(K_t))
 			target->Water(currentDay);
-		else if (InputManager::Get()->IsKeyboardHeld(K_Y))
+		else if (InputManager::Get()->IsKeyboardHeld(K_y))
 			target->Plant(m_selectedCrop, currentDay);
 		else
 			target->Till(currentDay);
@@ -151,7 +151,7 @@ void Player::HandleFarmAction()
 
 	case FarmTileState::WATERED:
 		// Y maintenu = planter
-		if (InputManager::Get()->IsKeyboardHeld(K_Y))
+		if (InputManager::Get()->IsKeyboardHeld(K_y))
 			target->Plant(m_selectedCrop, currentDay);
 		break;
 
@@ -344,9 +344,9 @@ void Player::SetupStateMachine()
 
 		// to walk states
 		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKING);
-		Condition<Player>* c0 = new IsPlayerStatic;
-		c0->ExpectedValue = false;
-		transition->AddCondition(c0);
+		Condition<Player>* c = new IsPlayerStatic;
+		c->ExpectedValue = false;
+		transition->AddCondition(c);
 	}
 
 	//DIGGING 
@@ -357,7 +357,7 @@ void Player::SetupStateMachine()
 		transition->AddCondition(c);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE);
-		Condition<Player>* c1 = new IsPlayerUsingToolInHand;
+		c = new IsPlayerUsingToolInHand;
 		c->ExpectedValue = false;
 		transition->AddCondition(c);
 
@@ -370,7 +370,7 @@ void Player::SetupStateMachine()
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKING);
-		Condition<Player>* c2 = new IsPlayerStatic;
+		Condition<Player>* c = new IsPlayerStatic;
 		c->ExpectedValue = false;
 		transition->AddCondition(c);
 	}
@@ -378,14 +378,14 @@ void Player::SetupStateMachine()
 	//WATERING
 	{
 		auto transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::IDLE);
-		Condition<Player>* c3 = new HasWateringCanInHands;
-		c3->ExpectedValue = false;
-		transition->AddCondition(c3);
+		Condition<Player>* c = new HasWateringCanInHands;
+		c->ExpectedValue = false;
+		transition->AddCondition(c);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::IDLE);
-		Condition<Player>* c4 = new IsPlayerUsingToolInHand;
-		c4->ExpectedValue = false;
-		transition->AddCondition(c4);
+		Condition<Player>* c = new IsPlayerUsingToolInHand;
+		c->ExpectedValue = false;
+		transition->AddCondition(c);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::MINING);
 		transition->AddCondition(new HasWateringCanInHands);
@@ -396,22 +396,22 @@ void Player::SetupStateMachine()
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::WALKING);
-		Condition<Player>* c5 = new IsPlayerStatic;
-		c5->ExpectedValue = false;
-		transition->AddCondition(c5);
+		Condition<Player>* c = new IsPlayerStatic;
+		c->ExpectedValue = false;
+		transition->AddCondition(c);
 	}
 
 	//MINING 
 	{
 		auto transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::IDLE);
-		Condition<Player>* c6 = new IsPlayerUsingToolInHand;
-		c6->ExpectedValue = false;
-		transition->AddCondition(c6);
+		Condition<Player>* c = new IsPlayerUsingToolInHand;
+		c->ExpectedValue = false;
+		transition->AddCondition(c);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::IDLE);
-		Condition<Player>* c7 = new HasPickaxeInHands;
-		c7->ExpectedValue = false;
-		transition->AddCondition(c7);
+		Condition<Player>* c = new HasPickaxeInHands;
+		c->ExpectedValue = false;
+		transition->AddCondition(c);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::DIGGING);
 		transition->AddCondition(new HasSpadeInHands);
@@ -422,9 +422,9 @@ void Player::SetupStateMachine()
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::WALKING);
-		Condition<Player>* c8 = new IsPlayerStatic;
-		c8->ExpectedValue = false;
-		transition->AddCondition(c8);
+		Condition<Player>* c = new IsPlayerStatic;
+		c->ExpectedValue = false;
+		transition->AddCondition(c);
 
 	}
 

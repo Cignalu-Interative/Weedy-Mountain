@@ -51,11 +51,11 @@ void Sprite::ChangeTexture(const std::string& p_texturePath)
 {
     m_texture = AssetManager::Get()->GetTexture(p_texturePath);
 }
-void Sprite::SetSourceRectSprite(SDL_FRect p_SDLrect)
+void Sprite::SetSourceRectSprite(SDL_Rect p_SDLrect)
 {
     if (m_srcRect == nullptr)
     {
-        m_srcRect = new SDL_FRect();
+        m_srcRect = new SDL_Rect();
     }
     *m_srcRect = p_SDLrect;
 }
@@ -192,6 +192,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     }
 
     // 1. SOURCE : Le morceau � d�couper dans la texture (ou NULL pour tout afficher)
+    SDL_FRect* srcRect = nullptr;
     //if (m_totalFrames > 1)  // Sprite sheet ?
     //{
     //    srcRect = new SDL_FRect{
@@ -260,7 +261,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     // 3. Rendu avec ROTATION compl�te
     if (SDL_RenderTextureRotated(renderer, m_texture,
-        m_srcRect,           // Frame du sprite sheet (ou NULL)
+        srcRect,           // Frame du sprite sheet (ou NULL)
         &dstRect,          // Position/taille � l'�cran
         GetAngle(),        // Angle Transformable (degr�s)
         &rotationCenter,   // Centre rotation pr�-calcul�

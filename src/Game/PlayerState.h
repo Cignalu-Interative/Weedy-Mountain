@@ -15,18 +15,6 @@ class PlayerIdleState : public StateBase<Player>
 	{
 		switch (currentState)
 		{
-		case (int)PlayerState::WALKUP:
-			return true;
-			break;
-		case (int)PlayerState::WALKDOWN:
-			return true;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return true;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return true;
-			break;
 		case (int)PlayerState::MINING:
 			return true;
 			break;
@@ -43,7 +31,7 @@ class PlayerIdleState : public StateBase<Player>
 
 class PlayerWalkingState : public StateBase<Player>
 {
-	void Start(Player* p_player);
+	void Start(Player* p_player) {};
 
 	void Update(Player* p_player, float dt) 
 	{
@@ -79,15 +67,6 @@ class PlayerWateringState : public StateBase<Player>
 		case (int)PlayerState::IDLE:
 			return true;
 			break;
-		case (int)PlayerState::WALKUP:
-			return false;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return false;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return false;
-			break;
 		case (int)PlayerState::MINING:
 			return false;
 			break;
@@ -115,15 +94,6 @@ class PlayerDiggingState : public StateBase<Player>
 		case (int)PlayerState::IDLE:
 			return true;
 			break;
-		case (int)PlayerState::WALKUP:
-			return false;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return false;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return false;
-			break;
 		case (int)PlayerState::MINING:
 			return false;
 			break;
@@ -150,15 +120,6 @@ class PlayerMiningState : public StateBase<Player>
 		{
 		case (int)PlayerState::IDLE:
 			return true;
-			break;
-		case (int)PlayerState::WALKUP:
-			return false;
-			break;
-		case (int)PlayerState::WALKRIGHT:
-			return false;
-			break;
-		case (int)PlayerState::WALKLEFT:
-			return false;
 			break;
 		case (int)PlayerState::WATERING:
 			return false;

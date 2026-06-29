@@ -16,10 +16,6 @@
 
 void Player::OnInitialize()
 {
-	m_inventory = GetScene()->CreateEntity<Inventory>({}, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	m_inventory->SetVisible(false);
-	m_inventory->AddItem(ITEM_WOOD, 10, false);
-	
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
 	m_jobs.push_back(gatherer);
@@ -344,22 +340,22 @@ void Player::SetupStateMachine()
 
 		// to walk states
 		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKING);
-		Condition<Player>* c = new IsPlayerStatic;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* playerStaticCondition = new IsPlayerStatic;
+		playerStaticCondition->ExpectedValue = false;
+		transition->AddCondition(playerStaticCondition);
 	}
 
 	//DIGGING 
 	{
 		auto transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE);
-		Condition<Player>* c = new HasSpadeInHands;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* hasSpadeInHandsCondition = new HasSpadeInHands;
+		hasSpadeInHandsCondition->ExpectedValue = false;
+		transition->AddCondition(hasSpadeInHandsCondition);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE);
-		c = new IsPlayerUsingToolInHand;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* digToIdleCondition = new IsPlayerUsingToolInHand;
+		digToIdleCondition->ExpectedValue = false;
+		transition->AddCondition(digToIdleCondition);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::MINING);
 		transition->AddCondition(new HasPickaxeInHands);
@@ -370,22 +366,22 @@ void Player::SetupStateMachine()
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKING);
-		Condition<Player>* c = new IsPlayerStatic;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* isStaticCondition = new IsPlayerStatic;
+		isStaticCondition->ExpectedValue = false;
+		transition->AddCondition(isStaticCondition);
 	}
 
 	//WATERING
 	{
 		auto transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::IDLE);
-		Condition<Player>* c = new HasWateringCanInHands;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* hasWateringCanCondition = new HasWateringCanInHands;
+		hasWateringCanCondition->ExpectedValue = false;
+		transition->AddCondition(hasWateringCanCondition);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::IDLE);
-		Condition<Player>* c = new IsPlayerUsingToolInHand;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* playerUsingToolCondition = new IsPlayerUsingToolInHand;
+		playerUsingToolCondition->ExpectedValue = false;
+		transition->AddCondition(playerUsingToolCondition);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::MINING);
 		transition->AddCondition(new HasWateringCanInHands);
@@ -396,22 +392,22 @@ void Player::SetupStateMachine()
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::WALKING);
-		Condition<Player>* c = new IsPlayerStatic;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* playerStaticCondition = new IsPlayerStatic;
+		playerStaticCondition->ExpectedValue = false;
+		transition->AddCondition(playerStaticCondition);
 	}
 
 	//MINING 
 	{
 		auto transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::IDLE);
-		Condition<Player>* c = new IsPlayerUsingToolInHand;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* playerUsingToolCondition = new IsPlayerUsingToolInHand;
+		playerUsingToolCondition->ExpectedValue = false;
+		transition->AddCondition(playerUsingToolCondition);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::IDLE);
-		Condition<Player>* c = new HasPickaxeInHands;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* hasPickaxeCondition = new HasPickaxeInHands;
+		hasPickaxeCondition->ExpectedValue = false;
+		transition->AddCondition(hasPickaxeCondition);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::DIGGING);
 		transition->AddCondition(new HasSpadeInHands);
@@ -422,9 +418,9 @@ void Player::SetupStateMachine()
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
 		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::WALKING);
-		Condition<Player>* c = new IsPlayerStatic;
-		c->ExpectedValue = false;
-		transition->AddCondition(c);
+		Condition<Player>* isStaticCondition = new IsPlayerStatic;
+		isStaticCondition->ExpectedValue = false;
+		transition->AddCondition(isStaticCondition);
 
 	}
 

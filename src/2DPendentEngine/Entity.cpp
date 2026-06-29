@@ -45,7 +45,7 @@ void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::st
 	if (p_animation)
 	{
 		m_animation = new Animation();
-		m_animation->Init(spriteContainer->m_sprite,"default", true, p_jsonAnimation);
+		m_animation->Init(spriteContainer->m_sprite, "default", true, p_jsonAnimation);
 	}
 
 	OnInitialize();
@@ -73,7 +73,7 @@ void Entity::Draw(Render* f_render, Window* f_window)
 
 	for (SpriteContainer* sc : m_sprites)
 	{
-		if (!sc->m_sprite || sc->m_visible == false) 
+		if (!sc->m_sprite || sc->m_visible == false)
 			continue;
 
 		hasAnySprite = true;
@@ -113,7 +113,7 @@ void Entity::Draw(Render* f_render, Window* f_window)
 	// It�re sur tous les colliders
 	for (Collider* c : m_colliders)
 	{
-		if (c->IsShow() == false) 
+		if (c->IsShow() == false)
 			continue;
 
 		switch (c->GetShape())
@@ -202,17 +202,17 @@ void Entity::SetDimension(Vector2i p_newDimension)
 
 	for (SpriteContainer* sc : m_sprites)
 	{
-		if (!sc->m_sprite) 
+		if (!sc->m_sprite)
 			continue;
 
 		Vector2i oldSpriteDim = sc->m_sprite->GetDimension();
-		sc->m_sprite->SetDimension({static_cast<int>(oldSpriteDim.GetX() * ratioX), static_cast<int>(oldSpriteDim.GetY() * ratioY)});
+		sc->m_sprite->SetDimension({ static_cast<int>(oldSpriteDim.GetX() * ratioX), static_cast<int>(oldSpriteDim.GetY() * ratioY) });
 	}
 
 	for (Collider* col : m_colliders)
 	{
 		Vector2i oldSpriteDim = col->GetDimension();
-		col->SetDimension({static_cast<int>(oldSpriteDim.GetX() * ratioX), static_cast<int>(oldSpriteDim.GetY() * ratioY)});
+		col->SetDimension({ static_cast<int>(oldSpriteDim.GetX() * ratioX), static_cast<int>(oldSpriteDim.GetY() * ratioY) });
 	}
 }
 
@@ -264,7 +264,7 @@ bool Entity::GetIsGUI() const
 	return false;
 }
 
-Collider* Entity::AddCollider(const std::string& p_id, Vector2i p_dimension,Shape p_shape, Vector2f p_offset, bool p_isTrigger, uint32_t p_layer, uint32_t p_mask)
+Collider* Entity::AddCollider(const std::string& p_id, Vector2i p_dimension, Shape p_shape, Vector2f p_offset, bool p_isTrigger, uint32_t p_layer, uint32_t p_mask)
 {
 	Collider* col = nullptr;
 
@@ -355,8 +355,8 @@ SpriteContainer* Entity::AddSprite(const std::string& p_id, const std::string& p
 
 	// Insertion tri�e par zOrder
 	auto it = std::lower_bound(m_sprites.begin(), m_sprites.end(), sc, [](const SpriteContainer* a, const SpriteContainer* b)
-		{ 
-			return a->m_zOrder < b->m_zOrder; 
+		{
+			return a->m_zOrder < b->m_zOrder;
 		});
 	m_sprites.insert(it, sc);
 
@@ -420,7 +420,7 @@ void Entity::SetSpriteVisible(const std::string& p_id, bool p_visible)
 {
 	SpriteContainer* sc = GetSpriteContainer(p_id);
 
-	if (sc) 
+	if (sc)
 		sc->m_visible = p_visible;
 }
 
@@ -435,10 +435,10 @@ void Entity::SyncSprites()
 	Vector2f center = GetPosition({ 0.5f, 0.5f });
 	for (SpriteContainer* sc : m_sprites)
 	{
-		if (!sc->m_sprite) 
+		if (!sc->m_sprite)
 			continue;
 
-		sc->m_sprite->SetPosition({center.GetX() + sc->m_offset.GetX(), center.GetY() + sc->m_offset.GetY()});
+		sc->m_sprite->SetPosition({ center.GetX() + sc->m_offset.GetX(), center.GetY() + sc->m_offset.GetY() });
 	}
 }
 
@@ -452,5 +452,7 @@ void Entity::SetIsVisible(bool p_isVisible)
 
 void Entity::SetAnimationByName(const std::string& p_nameAnimation)
 {
+	if (m_animation == nullptr)
+		return;
 	m_animation->SetAnimationByName(p_nameAnimation);
 }

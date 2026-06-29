@@ -1,19 +1,15 @@
 #pragma once
-#include <SDL3/SDL.h>
-#include <SDL3_image/SDL_image.h>
+#include <SDL.h>
+#include <SDL_image.h>
 #include <functional>
 #include "Keys.h"
 #include "Vector2.h"
 //Version 4.1.1
 // faire des fonction pour détecter l'orientation des axis
 
-class Window;
-
 class InputManager
 {
 public:
-
-	friend class Application;
 
 	//Singleton de l'InputManager
 	static InputManager* Get();
@@ -78,10 +74,6 @@ public:
 	//Obtention de la position du curseur de la souris
 	Vector2f GetMousePosition();
 
-	Vector2i GetABSMousePosition();
-
-	Vector2i GetRELMousePosition();
-
 	int GetMouseWheelX();
 	int GetMouseWheelY();
 	Vector2i GetMouseWheel();
@@ -102,20 +94,6 @@ public:
 	//Affichage des direction des joystick 
 	void DebugControllerAxis(); 
 #endif
-
-	//Permet de Placer le curseur de la souris à une position spécifique dans la fenêtre de l'application (en coordonnées absolues)
-	//Exemple : SetSDLWarpMouseInWindow(Vector2f(100, 100)); // Place le curseur de la souris à la position (100, 100) dans la fenêtre
-	void SetSDLWarpMouseInWindow(Vector2f p_position);
-
-	//Permet de définir le mode de la souris en relatif ou absolu
-	//En mode relatif, le curseur de la souris est caché et les mouvements de la souris sont rapportés par rapport à la dernière position connue, plutôt que par rapport à l'écran.
-	// Cela est utile pour les jeux en 3D ou les applications où vous voulez que le mouvement de la souris soit interprété comme un changement de direction
-	// plutôt qu'une position absolue.
-	void SetRelativeMouseMode(bool p_bool);
-
-	void ClearMouseRelative();
-
-	Window* GetWindow() { return m_window; }
 
 private:
 
@@ -149,14 +127,11 @@ private:
 	//Stocker la valeur de chaque axe de manette pour pouvoir calculer l'orientation des joystick
 	float m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_MAX];
 
-	Vector2i m_ABSMousePosition;
-	Vector2i m_RELMousePosition;
-
 	Sint32 m_mouseWheelX = 0; // Stocker la valeur du scroll horizontal de la souris
 	Sint32 m_mouseWheelY = 0; // Stocker la valeur du scroll vertical de la souris
 
 	//Pointeur pour stocker la manette de jeu
-	SDL_Gamepad* m_gameController = nullptr;
+	SDL_GameController* m_gameController = nullptr;
 
 	SDL_Cursor* m_cursor = nullptr; //Pointeur pour stocker le curseur de la souris
 
@@ -164,12 +139,17 @@ private:
 
 	static constexpr float AXIS_DEAD_ZONE = 0.15f; //Zone morte pour les axes de manette (valeurs entre -0.15 et 0.15 seront considérées comme 0)
 
-	Window* m_window;
-
-	void SetWindow(Window* p_window);
 
 	//Constructeur de InputManager
-	InputManager();
+	InputManager()
+	{
+		std::memset(m_keyboardStates, 0, sizeof(State) * NUM_SCANCODES);
+		std::memset(m_mouseStates, 0, sizeof(State) * MOUSE_BUTTON_MAX);
+		std::memset(m_mouseScrollStates, 0, sizeof(State) * SCROLL_MAX);
+		std::memset(m_gameControllerButtonStates, 0, sizeof(State) * CONTROLLER_BUTTON_MAX);
+		std::memset(m_gameControllerAxisStates, 0, sizeof(State) * CONTROLLER_AXIS_MAX);
+		std::memset(m_gameControllerAxisStatesFloat, 0, sizeof(float) * CONTROLLER_AXIS_MAX);
+	}
 	//Destructeur de InputManager
 	~InputManager();
 };

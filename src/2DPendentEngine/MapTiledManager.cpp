@@ -58,7 +58,7 @@ void MapTiledManager::AddMaps(const std::string& p_pathMaps)
 		{
 			SetCurrentMap(m_infoMapToLoad.s_MapName);
 		}
-		//std::cerr << "Map Charger : " << m_infoMapToLoad.s_MapName << std::endl;
+		std::cerr << "Map Charger : " << m_infoMapToLoad.s_MapName << std::endl;
 	}
 }
 

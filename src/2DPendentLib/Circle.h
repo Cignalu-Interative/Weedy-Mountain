@@ -1,5 +1,6 @@
 #pragma once
-#include <SDL3/SDL.h>
+#include <SDL.h>
+#include <SDL2_gfxPrimitives.h>
 #include <vector>
 #include "Geometry.h"
 #include "Vector2.h"

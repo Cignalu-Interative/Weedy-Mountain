@@ -298,7 +298,6 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
             countTexture++;
         }
     }
-    
     if (countTexture == 0)
     {
         //std::cerr << "Pas de texture pour draw" << std::endl;
@@ -389,7 +388,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     tv = (localID / tempTileset->m_TilesetColumns) * m_TileDimension.GetY();
                 }
 
-                SDL_FRect srcRect = {
+                SDL_Rect srcRect = {
                     tu,                        // left
                     tv,                        // top
                     m_TileDimension.GetX(),    // width
@@ -399,19 +398,19 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                 // Position de la tile sur la fenêtre
 
                 Vector2i postile = p_camera->WorldToScreen<int>({ x * m_TileDimension.GetX(), y * m_TileDimension.GetY() });
-                SDL_FRect dstRect = {
-                    postile.GetX(),    // pos X � l'�cran
-                    postile.GetY(),    // pos Y � l'�cran
+                SDL_Rect dstRect = {
+                    postile.GetX(),    // pos X à l'écran
+                    postile.GetY(),    // pos Y à l'écran
                     m_TileDimension.GetX() * p_camera->GetZoom(),        // width
                     m_TileDimension.GetY() * p_camera->GetZoom()         // height
                 };
                 // Dessiner la tile
-                if (SDL_RenderTexture(
+                if (SDL_RenderCopy(
                     f_render->m_renderer,
                     AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
                     &srcRect,
                     &dstRect
-                ) == false)
+                ) < 0)
                 {
                     SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderCopy/cela na pas fonctionné : %s", SDL_GetError());
                     return;

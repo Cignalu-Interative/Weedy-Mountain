@@ -1,2 +1,3 @@
 puis shader
 mettre toute verif de sdl en debug uniquement
+ajouter le choix de l'alpha dans la map tiled

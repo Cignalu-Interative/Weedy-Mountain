@@ -117,12 +117,6 @@ AudioFormat Sound::DetectAudioFormat(const std::string& p_path)
 
 void Sound::Play(const Vector2f& p_listenerPosition)
 {
-	if (m_audio == nullptr)
-	{
-		SDL_Log("Lib/Sound.cpp/Play/m_audio is nullptr");
-		return;
-	}
-
 	if (m_audioFormat == AudioFormat::WAV)
 	{
 		MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
@@ -224,6 +218,7 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 			if (MIX_SetTrackAudio(m_pisteMusique, m_audio) == false)
 			{
 				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackAudio MP3 failed: %s", SDL_GetError());
+				MIX_DestroyTrack(m_pisteMusique);
 				return;
 			}
 		}
@@ -354,7 +349,6 @@ void Sound::Pause() const
 				SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
-			
 		}
 	}
 }
@@ -545,7 +539,6 @@ void Sound::ApplySpatialization(const Vector2f& p_listenerPosition, float p_delt
 		}
 		else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
 		{
-			// 4. On applique les valeurs LISSÉES aux pistes
 			for (MIX_Track* piste : m_pistesSFX)
 			{
 				if (MIX_SetTrack3DPosition(piste, &finalPosition) == false)

@@ -9,7 +9,10 @@ Render::Render()
 
 Render::~Render()
 {
-	SDL_DestroyRenderer(m_renderer);
+	if (m_renderer != NULL)
+	{
+		SDL_DestroyRenderer(m_renderer);
+	}
 }
 
 bool Render::CreateRenderer(Window& f_window)
@@ -39,7 +42,11 @@ void Render::ClearRenderer()
 
 void Render::PresentRenderer()
 {
-	SDL_RenderPresent(m_renderer);
+	if (SDL_RenderPresent(m_renderer) == false)
+	{
+		SDL_Log("Lib/Render.cpp/PresentRenderer/SDL_RenderPresent non reussie : %s", SDL_GetError());
+		return;
+	}
 }
 
 //void Render::ClearOpenGL()

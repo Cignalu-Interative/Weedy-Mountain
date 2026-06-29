@@ -1,3 +1,4 @@
 puis shader
-mettre toute verif de sdl en debug uniquement
 ajouter le choix de l'alpha dans la map tiled
+terminer l'opti de la map avec un BatchRenderer2D
+et faire un script python pour opti au max le mode release automatiquement

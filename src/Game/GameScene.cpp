@@ -34,6 +34,8 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
+	Application::Get()->SetFPSUserWanted(10000);
+
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });
 	m_player->GetCollider()->SetOffset({ 0,8 });
@@ -60,7 +62,7 @@ void GameScene::OnInitialize()
 	tree->InitialisePhysicsBody(ShapeBodyPhysics::Static);
 	
 	GetCamera()->SetZoom(5.f);
-	GetCamera()->Follow(m_player);
+	//GetCamera()->Follow(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
@@ -91,6 +93,15 @@ void GameScene::OnEvent()
 		EnviroSpawn* spawn = new EnviroSpawn();
 		spawn->InitEnviroSpawn();
 		spawn->SpawnEnviroProps();
+	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
+	{
+		Application::Get()->SetIsAutoFPS(false);
+	}
+	if (InputManager::Get()->IsKeyboardDown(K_KP_2))
+	{
+		Application::Get()->SetIsAutoFPS(true);
 	}
 }
 

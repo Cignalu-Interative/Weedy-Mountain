@@ -77,6 +77,8 @@ private:
 	bool m_autoFPS = true; // Si true, le jeu ajustera automatiquement le nombre de frames par seconde par rapport au fps trouvé grace à la fonction V_Sync
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
 
+	int m_FPSUserWant = 0;
+
 	bool m_cameraIsClamp = false;
 
 	void ClampCameraToCurrentMap();
@@ -105,6 +107,11 @@ public:
 	void Update();
 	//Fonction pour dessiner les différentes parties du jeu, notamment en dessinant les entités, les scènes et les éléments de debug
 	void Draw();
+
+	void SetIsAutoFPS(bool p_value);
+	bool IsAutoFPS() { return m_autoFPS; };
+
+	void SetFPSUserWanted(int p_fps) { m_FPSUserWant = p_fps; };
 
 	//Fonction pour définir le nombre de frames par seconde cible
 	void SetFPS(int p_targetFPS); 

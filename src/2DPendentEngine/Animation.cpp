@@ -46,12 +46,12 @@ void Animation::Update(float p_deltaTime)
 		//float frameX = m_currentFrame * m_frameSize.GetX();
 		//float frameY = m_currentRow * m_frameSize.GetY();
 
-        SDL_Rect* srcRect = m_sprite->GetSpriteRect();
+        SDL_FRect* srcRect = m_sprite->GetSpriteRect();
 
         
         if (srcRect == nullptr)
         {
-            srcRect = new SDL_Rect();
+            srcRect = new SDL_FRect();
         }
 
          srcRect->x = static_cast<int>(frameX);

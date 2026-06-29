@@ -1,4 +1,4 @@
 puis shader
 ajouter le choix de l'alpha dans la map tiled
-terminer l'opti de la map avec un BatchRenderer2D
+terminer l'opti de sprite avec le BatchRenderer2D
 et faire un script python pour opti au max le mode release automatiquement

@@ -1,5 +1,32 @@
 #include "pch.h"
 #include "Sound.h"
+#include "Utils.h"
+
+Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
+{
+	m_mixer = p_mixer;
+	m_propertiesID = SDL_CreateProperties();
+	if(m_propertiesID == 0)
+	{
+		SDL_Log("Lib/Sound.cpp/Sound/SDL_CreateProperties failed: %s", SDL_GetError());
+		return;
+	}
+	float distanceDiagonale = std::hypot(p_wSize.GetX(), p_wSize.GetY());
+	SetLimitDistanceToListen(100.0f, distanceDiagonale);
+
+	// Param�tres du son
+	m_loopCount = 0; // Nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
+	m_StartTimeMs = 0; // Point de d�part de la boucle en millisecondes pour la lecture du son
+	m_LoopStartTimeMs = 0; // Point de d�part de la boucle en millisecondes pour la lecture du son
+	m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son d�passe cette dur�e, il sera arr�t� automatiquement
+	m_fadeInMs = 0; // Dur�e du fondu d'entr�e en millisecondes, utilis�e pour le fondu d'entr�e du son
+	m_gainVolumeFadeIn = 1.0f; // Volume initial pour le fondu d'entr�e, utilis� pour le fondu d'entr�e du son
+	m_fadeOutMs = 0; // Dur�e du fondu de sortie en millisecondes, utilis�e pour le fondu de sortie du son
+	m_soundReverberation = 0; //Dur�e de la r�verb�ration du son en millisecondes, utilis�e pour la r�verb�ration du son
+
+	m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activ�e ou non, utile pour la fonction Play() pour d�cider d'appliquer ou non les param�tres de spatialisation
+
+}
 
 Sound::~Sound() {
 	if (m_WAV) {

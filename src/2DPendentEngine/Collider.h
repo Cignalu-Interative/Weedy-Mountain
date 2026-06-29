@@ -6,6 +6,11 @@
 
 enum class CollisionSide { TOP, BOTTOM, LEFT, RIGHT, NONE };
 
+struct AABB
+{
+    float minX = 0.f, minY = 0.f, maxX = 0.f, maxY = 0.f;
+};
+
 class Entity;
 class Render;
 class Window;
@@ -24,6 +29,8 @@ protected:
     bool m_isShow = false;
     bool m_isTrigger = false; // trigger = détecte sans résoudre la physique
     Entity* m_owner = nullptr;
+
+    AABB m_cachedAABB;
 
 public:
     Collider() = default;
@@ -66,4 +73,6 @@ public:
 
     void SetIsTrigger(bool p_trigger) { m_isTrigger = p_trigger; }
     bool IsTrigger() const { return m_isTrigger; }
+
+    const AABB& GetCachedAABB() const { return m_cachedAABB; }
 };

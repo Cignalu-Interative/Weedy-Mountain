@@ -3,7 +3,7 @@
 
 ThreadManager::ThreadManager()
 {
-    m_threads.reserve(std::thread::hardware_concurrency()); // nombre de cœurs logiques de la machine
+	m_threads.reserve(std::thread::hardware_concurrency() - 1); // nombre de cœurs logiques de la machine -1 pour ne pas bloquer le thread principal
     m_logs.reserve(256); // dépend de la verbosité de tes logs
 }
 

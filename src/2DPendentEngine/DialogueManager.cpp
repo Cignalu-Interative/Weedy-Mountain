@@ -11,6 +11,8 @@ DialogueManager* DialogueManager::Get()
 
 DialogueManager::DialogueManager()
 {
+	m_dialoguesMap.reserve(100);
+	m_dialoguesVector.reserve(100);
 }
 
 DialogueManager::~DialogueManager()

@@ -10,15 +10,15 @@
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
 #include "2DPendentLib/SDLShader.h"
-
 #include "DialogueManager.h"
 #include "PhysicsManager.h"
+#include "2DPendentLib/BatchRenderer2D.h"
 
 Application::Application()
 {
-	m_entities.reserve(256); // Réserver de la mémoire pour 256 entités afin d'éviter les reallocations fréquentes lors de l'ajout d'entités
-	m_entityToDestroy.reserve(32); // Réserver de la mémoire pour 32 entités à détruire afin d'éviter les reallocations fréquentes lors de la destruction d'entités
-	m_entityToAdd.reserve(32); // Réserver de la mémoire pour 32 entités à ajouter afin d'éviter les reallocations fréquentes lors de l'ajout d'entités
+	m_entities.reserve(1000); // Réserver de la mémoire pour 256 entités afin d'éviter les reallocations fréquentes lors de l'ajout d'entités
+	m_entityToDestroy.reserve(64); // Réserver de la mémoire pour 32 entités à détruire afin d'éviter les reallocations fréquentes lors de la destruction d'entités
+	m_entityToAdd.reserve(64); // Réserver de la mémoire pour 32 entités à ajouter afin d'éviter les reallocations fréquentes lors de l'ajout d'entités
 }
 
 Application::~Application()
@@ -61,6 +61,7 @@ void Application::Init()
 	MapTiledManager::Get()->SetRender(&m_render);
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
 	m_timerFPS.SetCurrentTime();
+	BatchRenderer2D::Get()->SetRenderer(m_render.GetRenderer());
 
 	std::cerr << "Application initialized successfully." << std::endl;
 }

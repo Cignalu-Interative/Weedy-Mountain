@@ -20,7 +20,11 @@ void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p
     m_texture = AssetManager::Get()->GetTexture(p_id);
 
     float textureWidth, textureHeight;
-    SDL_GetTextureSize(m_texture, &textureWidth, &textureHeight);
+    if (SDL_GetTextureSize(m_texture, &textureWidth, &textureHeight) == false)
+    {
+        SDL_Log("Lib/Sprite.cpp/Initialise/SDL_GetTextureSize/cela na pas fonctionn� : %s", SDL_GetError());
+		return;
+    }
     Vector2i spriteDimention = { static_cast<int>(textureWidth), static_cast<int>(textureHeight) };
     SetDimension(spriteDimention);
     //AutoDetectFrameSize(spriteDimention);
@@ -255,9 +259,17 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     //        flip = SDL_FLIP_NONE;
     //}
 
-    SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND);
+    if (SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND) == false)
+    {
+        SDL_Log("Lib/Sprite.cpp/Draw/SDL_SetTextureBlendMode/cela na pas fonctionn� : %s", SDL_GetError());
+		return;
+    }
 
-    SDL_SetTextureAlphaMod(m_texture, m_oppacity);
+    if (SDL_SetTextureAlphaMod(m_texture, m_oppacity) == false)
+    {
+		SDL_Log("Lib/Sprite.cpp/Draw/SDL_SetTextureAlphaMod/cela na pas fonctionn� : %s", SDL_GetError());
+        return;
+    }
 
     // 3. Rendu avec ROTATION compl�te
     if (SDL_RenderTextureRotated(renderer, m_texture,

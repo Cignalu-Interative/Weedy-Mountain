@@ -4,9 +4,10 @@
 
 Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 {
+	m_pistesSFX.reserve(24);
 	m_mixer = p_mixer;
 	m_propertiesID = SDL_CreateProperties();
-	if(m_propertiesID == 0)
+	if (m_propertiesID == 0)
 	{
 		SDL_Log("Lib/Sound.cpp/Sound/SDL_CreateProperties failed: %s", SDL_GetError());
 		return;
@@ -25,7 +26,6 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 	m_soundReverberation = 0; //Dur�e de la r�verb�ration du son en millisecondes, utilis�e pour la r�verb�ration du son
 
 	m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activ�e ou non, utile pour la fonction Play() pour d�cider d'appliquer ou non les param�tres de spatialisation
-
 }
 
 Sound::~Sound() {
@@ -117,24 +117,18 @@ AudioFormat Sound::DetectAudioFormat(const std::string& p_path)
 
 void Sound::Play(const Vector2f& p_listenerPosition)
 {
-	if (m_audio == nullptr)
-	{
-		SDL_Log("Lib/Sound.cpp/Play/m_audio is nullptr");
-		return;
-	}
-
 	if (m_audioFormat == AudioFormat::WAV)
 	{
 		MIX_Track* newTrack = MIX_CreateTrack(m_mixer);
 		if (newTrack == nullptr)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: MIX_CreateTrack failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: MIX_CreateTrack WAV failed: %s", SDL_GetError());
 			return;
 		}
 
 		if (MIX_SetTrackAudio(newTrack, m_audio) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackAudio failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackAudio WAV failed: %s", SDL_GetError());
 			MIX_DestroyTrack(newTrack);
 			return;
 		}
@@ -155,12 +149,12 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 
 			if (MIX_SetTrack3DPosition(newTrack, &position) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrack3DPosition failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrack3DPosition WAV failed: %s", SDL_GetError());
 				return;
 			}
 			if (MIX_SetTrackGain(newTrack, gain) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackGain failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackGain WAV failed: %s", SDL_GetError());
 				MIX_DestroyTrack(newTrack);
 				return;
 			}
@@ -168,43 +162,43 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOPS_NUMBER, m_loopCount) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOPS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOPS_NUMBER) WAV failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_START_MILLISECOND_NUMBER, m_StartTimeMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_START_MILLISECOND_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_START_MILLISECOND_NUMBER) WAV failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER, m_LoopStartTimeMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER) WAV failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER, m_maxTimeToPlayMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER) WAV failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, m_fadeInMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER) WAV failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetFloatProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT, m_gainVolumeFadeIn) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetFloatProperty (MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetFloatProperty (MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT) WAV failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER, m_soundReverberation) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER) WAV failed: %s", SDL_GetError());
 			return;
 		}
 
 		if (MIX_PlayTrack(newTrack, m_propertiesID) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: MIX_PlayTrack failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: MIX_PlayTrack WAV failed: %s", SDL_GetError());
 			return;
 		}
 
@@ -218,12 +212,13 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 			m_pisteMusique = MIX_CreateTrack(m_mixer);
 			if (m_pisteMusique == nullptr)
 			{
-				SDL_Log("Lib/Sound.cpp/Play: MIX_CreateTrack failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Play: MIX_CreateTrack MP3 failed: %s", SDL_GetError());
 				return;
 			}
 			if (MIX_SetTrackAudio(m_pisteMusique, m_audio) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackAudio failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackAudio MP3 failed: %s", SDL_GetError());
+				MIX_DestroyTrack(m_pisteMusique);
 				return;
 			}
 		}
@@ -244,55 +239,55 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 
 			if (MIX_SetTrack3DPosition(m_pisteMusique, &position) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrack3DPosition failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrack3DPosition MP3 failed: %s", SDL_GetError());
 				return;
 			}
 			if (MIX_SetTrackGain(m_pisteMusique, gain) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackGain failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Play: MIX_SetTrackGain MP3 failed: %s", SDL_GetError());
 				return;
 			}
 		}
 
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOPS_NUMBER, m_loopCount) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOPS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOPS_NUMBER) MP3 failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_START_MILLISECOND_NUMBER, m_StartTimeMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_START_MILLISECOND_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_START_MILLISECOND_NUMBER) MP3 failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER, m_LoopStartTimeMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_LOOP_START_MILLISECOND_NUMBER) MP3 failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER, m_maxTimeToPlayMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_MAX_MILLISECONDS_NUMBER) MP3 failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER, m_fadeInMs) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_FADE_IN_MILLISECONDS_NUMBER) MP3 failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetFloatProperty(m_propertiesID, MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT, m_gainVolumeFadeIn) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetFloatProperty (MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetFloatProperty (MIX_PROP_PLAY_FADE_IN_START_GAIN_FLOAT) MP3 failed: %s", SDL_GetError());
 			return;
 		}
 		if (SDL_SetNumberProperty(m_propertiesID, MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER, m_soundReverberation) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER) failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: SDL_SetNumberProperty (MIX_PROP_PLAY_APPEND_SILENCE_MILLISECONDS_NUMBER) MP3 failed: %s", SDL_GetError());
 			return;
 		}
 
 		if (MIX_PlayTrack(m_pisteMusique, m_propertiesID) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Play: MIX_PlayTrack failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Play: MIX_PlayTrack MP3 failed: %s", SDL_GetError());
 			return;
 		}
 	}
@@ -306,12 +301,12 @@ void Sound::Stop()
 		Sint64 MsInFrame = MIX_TrackMSToFrames(m_pisteMusique, m_fadeOutMs);
 		if (MsInFrame < 0)
 		{
-			SDL_Log("Lib/Sound.cpp/Stop: MIX_TrackMSToFrames failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Stop: MIX_TrackMSToFrames MP3 failed: %s", SDL_GetError());
 			return;
 		}
 		if (MIX_StopTrack(m_pisteMusique, MsInFrame) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Stop: MIX_StopTrack failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Stop: MIX_StopTrack MP3 failed: %s", SDL_GetError());
 			return;
 		}
 	}
@@ -323,12 +318,12 @@ void Sound::Stop()
 			MsInFrame = MIX_TrackMSToFrames(piste, m_fadeOutMs);
 			if (MsInFrame < 0)
 			{
-				SDL_Log("Lib/Sound.cpp/Stop: MIX_TrackMSToFrames failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Stop: MIX_TrackMSToFrames WAV failed: %s", SDL_GetError());
 				return;
 			}
 			if (MIX_StopTrack(piste, MsInFrame) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Stop: MIX_StopTrack failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Stop: MIX_StopTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
 		}
@@ -341,7 +336,7 @@ void Sound::Pause() const
 	{
 		if (MIX_PauseTrack(m_pisteMusique) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseTrack failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseTrack MP3 failed: %s", SDL_GetError());
 			return;
 		}
 	}
@@ -351,10 +346,9 @@ void Sound::Pause() const
 		{
 			if (MIX_PauseTrack(piste) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseTrack failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
-			
 		}
 	}
 }
@@ -365,7 +359,7 @@ void Sound::Resume() const
 	{
 		if (MIX_ResumeTrack(m_pisteMusique) == false)
 		{
-			SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeTrack failed: %s", SDL_GetError());
+			SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeTrack MP3 failed: %s", SDL_GetError());
 			return;
 		}
 	}
@@ -375,7 +369,7 @@ void Sound::Resume() const
 		{
 			if (MIX_ResumeTrack(piste) == false)
 			{
-				SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeTrack failed: %s", SDL_GetError());
+				SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
 		}
@@ -474,13 +468,21 @@ void Sound::UpdateRelativeVolume(float p_globalVolume)
 
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
-		MIX_SetTrackGain(m_pisteMusique, m_relativeVolume);
+		if (MIX_SetTrackGain(m_pisteMusique, m_relativeVolume) == false)
+		{
+			SDL_Log("Lib/Sound.cpp/UpdateRelativeVolume: MIX_SetTrackGain MP3 failed: %s", SDL_GetError());
+			return;
+		}
 	}
 	else if (m_audioFormat == AudioFormat::WAV)
 	{
 		for (MIX_Track* piste : m_pistesSFX)
 		{
-			MIX_SetTrackGain(piste, m_relativeVolume);
+			if (MIX_SetTrackGain(piste, m_relativeVolume) == false)
+			{
+				SDL_Log("Lib/Sound.cpp/UpdateRelativeVolume: MIX_SetTrackGain WAV failed: %s", SDL_GetError());
+				return;
+			}
 		}
 	}
 }
@@ -524,16 +526,31 @@ void Sound::ApplySpatialization(const Vector2f& p_listenerPosition, float p_delt
 
 		if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 		{
-			MIX_SetTrack3DPosition(m_pisteMusique, &finalPosition);
-			MIX_SetTrackGain(m_pisteMusique, m_currentSmoothedGain);
+			if( MIX_SetTrack3DPosition(m_pisteMusique, &finalPosition) == false)
+			{
+				SDL_Log("Lib/Sound.cpp/ApplySpatialization: MIX_SetTrack3DPosition MP3 failed: %s", SDL_GetError());
+				return;
+			}
+			if (MIX_SetTrackGain(m_pisteMusique, m_currentSmoothedGain) == false)
+			{
+				SDL_Log("Lib/Sound.cpp/ApplySpatialization: MIX_SetTrackGain MP3 failed: %s", SDL_GetError());
+				return;
+			}
 		}
 		else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
 		{
-			// 4. On applique les valeurs LISS�ES aux pistes
 			for (MIX_Track* piste : m_pistesSFX)
 			{
-				MIX_SetTrack3DPosition(piste, &finalPosition);
-				MIX_SetTrackGain(piste, m_currentSmoothedGain);
+				if (MIX_SetTrack3DPosition(piste, &finalPosition) == false)
+				{
+					SDL_Log("Lib/Sound.cpp/ApplySpatialization: MIX_SetTrack3DPosition WAV failed: %s", SDL_GetError());
+					return;
+				}
+				if (MIX_SetTrackGain(piste, m_currentSmoothedGain) == false)
+				{
+					SDL_Log("Lib/Sound.cpp/ApplySpatialization: MIX_SetTrackGain WAV failed: %s", SDL_GetError());
+					return;
+				}
 			}
 		}
 	}

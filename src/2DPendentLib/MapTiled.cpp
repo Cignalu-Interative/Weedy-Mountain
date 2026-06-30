@@ -10,6 +10,7 @@
 #include "AssetManager.h"
 #include "Camera.h"
 #include "Window.h"
+#include "BatchRenderer2D.h"
 
 //Private
 void MapTiled::LoadXML(const std::string& p_path, Render* p_render)
@@ -230,6 +231,36 @@ void MapTiled::ReadImageLayer(tinyxml2::XMLElement* p_mapElement)
     m_imageLayers.push_back(tempImageLayerTiled);
 }
 
+void MapTiled::BuildGidLookupTable()
+{
+    if (m_tilesets.empty()) return;
+
+    int maxGid = 0;
+    for (auto& ts : m_tilesets)
+    {
+        int tilesetMaxGid = ts->m_baliseTileset.s_TilesetFirstgid + ts->m_TilesetTileCount;
+        maxGid = Utils::LimitMin(maxGid, tilesetMaxGid);
+    }
+
+	m_gidToTileset.assign(maxGid + 1, nullptr);
+
+    std::vector<TilesetTiled*> sorted = m_tilesets;
+    Utils::Sort(sorted.begin(), sorted.end(), [](TilesetTiled* a, TilesetTiled* b)
+        {
+            return a->m_baliseTileset.s_TilesetFirstgid < b->m_baliseTileset.s_TilesetFirstgid;
+        });
+
+    for (auto& ts : sorted)
+    {
+        int first = ts->m_baliseTileset.s_TilesetFirstgid;
+        int count = ts->m_TilesetTileCount;
+        for (int gid = first; gid < first + count; gid++)
+        {
+            m_gidToTileset[gid] = ts;
+        }
+    }
+}
+
 //Public
 MapTiled::MapTiled(const std::string& p_path, Render* p_render)
 {
@@ -240,8 +271,12 @@ MapTiled::MapTiled(const std::string& p_path, Render* p_render)
     m_objectGroups.reserve(8);  // groupes d'objets
     m_imageLayers.reserve(4);   // image layers
 
+	m_gidToTileset.reserve(10000); // 10000 GID max par map (Tiled limite à 65536 mais c'est rare)
+
 	m_render = p_render;
     LoadXML(p_path, m_render);
+
+	BuildGidLookupTable();
 }
 
 MapTiled::~MapTiled()
@@ -305,6 +340,13 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         return;
     }
 
+    Vector2i dimensionWindow = f_window->GetWindowSize();
+
+    Vector2f worldTopLeft = p_camera->ScreenToWorld<float>({ 0.0f, 0.0f }); // en haut a gauche de l'écran
+    Vector2f worldBottomRight = p_camera->ScreenToWorld<float>({ (float)dimensionWindow.GetX(), (float)dimensionWindow.GetY() }); // en bas a droite de l'écran
+
+	int margin = 1; // marge pour dessiner les tiles autour de la caméra
+
     for (LayerTiled* layerTiled : m_layers)
     {
         if (layerTiled->m_LayerVisible == false)
@@ -312,30 +354,43 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
             continue;
         }
 
-        float posTileX;
-        float posTileY;
+        int xMin = static_cast<int>(std::floor(worldTopLeft.GetX() / m_TileDimension.GetX())) - margin;
+        int yMin = static_cast<int>(std::floor(worldTopLeft.GetY() / m_TileDimension.GetY())) - margin;
 
-        Vector2i dimensionWindow = f_window->GetWindowSize();
+        int xMax = static_cast<int>(std::ceil(worldBottomRight.GetX() / m_TileDimension.GetX())) + margin;
+        int yMax = static_cast<int>(std::ceil(worldBottomRight.GetY() / m_TileDimension.GetY())) + margin;
+
+		xMin = Utils::LimitMin(xMin, 0);   
+		yMin = Utils::LimitMin(yMin, 0);
+
+		xMax = Utils::LimitMax(xMax, layerTiled->m_LayerDimension.GetX());
+		yMax = Utils::LimitMax(yMax, layerTiled->m_LayerDimension.GetY());
+
+
+        int posTileX;
+        int posTileY;
+
+		float zoom = p_camera->GetZoom();
 
         // Parcours de chaque ligne de la layer
-        for (int y = 0; y < layerTiled->m_LayerDimension.GetY(); y++)
+        for (int y = yMin; y < yMax; y++)
         {
             posTileY = y * m_TileDimension.GetY();
 
             // Parcours de chaque colonne de la layer
-            for (int x = 0; x < layerTiled->m_LayerDimension.GetX(); x++)
+            for (int x = xMin; x < xMax; x++)
             {
                 posTileX = x * m_TileDimension.GetX();
 
-                Vector2f screenPosTopLeft = p_camera->WorldToScreen<float>({ posTileX, posTileY });
-                Vector2f screenPosBottomRight = p_camera->WorldToScreen<float>({ posTileX + m_TileDimension.GetX(), posTileY + m_TileDimension.GetY() });
+                //Vector2f screenPosTopLeft = p_camera->WorldToScreen<float>({ posTileX, posTileY });
+                //Vector2f screenPosBottomRight = p_camera->WorldToScreen<float>({ posTileX + m_TileDimension.GetX(), posTileY + m_TileDimension.GetY() });
 
-                if (screenPosBottomRight.GetX() < 0 || screenPosTopLeft.GetX() > dimensionWindow.GetX() ||
-                    screenPosBottomRight.GetY() < 0 || screenPosTopLeft.GetY() > dimensionWindow.GetY())
-                {
-                    //std::cerr << "no draw" << std::endl;
-                    continue;
-                }
+                //if (screenPosBottomRight.GetX() < 0 || screenPosTopLeft.GetX() > dimensionWindow.GetX() ||
+                //    screenPosBottomRight.GetY() < 0 || screenPosTopLeft.GetY() > dimensionWindow.GetY())
+                //{
+                //    //std::cerr << "no draw" << std::endl;
+                //    continue;
+                //}
 
                  // Calcul de l'index dans le vector 1D à partir de coordonnées 2D (x,y)
                  // Ex: x=2, y=3, largeur de la layer = 10 => index = 3*10 + 2 = 32
@@ -350,7 +405,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                 // Si tileNumber == 0, la case est vide => on ne dessine rien
                 if (tile_gid == 0) continue;
 
-                TilesetTiled* tempTileset = nullptr;
+                /*TilesetTiled* tempTileset = nullptr;
                 for (auto& ts : m_tilesets)
                 {
                     if (tile_gid < ts->m_baliseTileset.s_TilesetFirstgid)
@@ -361,7 +416,9 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     {
                         tempTileset = ts;
                     }
-                }
+                }*/
+
+                TilesetTiled* tempTileset = (tile_gid < (int)m_gidToTileset.size()) ? m_gidToTileset[tile_gid] : nullptr;
                 if (!tempTileset)
                 {
                     continue;
@@ -394,20 +451,24 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     tv,                        // top
                     m_TileDimension.GetX(),    // width
                     m_TileDimension.GetY()     // height
-                };
+				}; // le srcRect est la zone de la texture du tileset à copier pour dessiner la tile
 
-                // Position de la tile sur la fenêtre
-
-                Vector2i postile = p_camera->WorldToScreen<int>({ x * m_TileDimension.GetX(), y * m_TileDimension.GetY() });
+                Vector2i postile = p_camera->WorldToScreen<int>({ posTileX, posTileY });
                 SDL_FRect dstRect = {
-                    postile.GetX(),    // pos X � l'�cran
-                    postile.GetY(),    // pos Y � l'�cran
-                    m_TileDimension.GetX() * p_camera->GetZoom(),        // width
-                    m_TileDimension.GetY() * p_camera->GetZoom()         // height
-                };
+                    postile.GetX(),    // pos X à l'écran
+                    postile.GetY(),    // pos Y à l'écran
+                    m_TileDimension.GetX() * zoom,        // width
+                    m_TileDimension.GetY() * zoom         // height
+				}; // le dstRect est la zone de la fenêtre où dessiner la tile
+
+                BatchRenderer2D::Get()->Fill(TileTiledCommand{
+                    AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
+                    srcRect,
+                    dstRect
+					});
 
                 // Dessiner la tile
-                if (SDL_RenderTexture(
+                /*if (SDL_RenderTexture(
                     f_render->m_renderer,
                     AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
                     &srcRect,
@@ -416,8 +477,21 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                 {
                     SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderCopy/cela na pas fonctionné : %s", SDL_GetError());
                     return;
-                }
+                }*/
             }
+        }
+    }
+	const std::vector<Data>& batches = BatchRenderer2D::Get()->Flush();
+    for (const auto& batch : batches)
+    {
+        if (batch.s_vertices.empty())
+            continue; // sécurité : un slot recyclé mais pas réutilisé cette frame
+
+        if (SDL_RenderGeometry(f_render->m_renderer, batch.s_texture,
+            batch.s_vertices.data(), static_cast<int>(batch.s_vertices.size()),
+            batch.s_indices.data(), static_cast<int>(batch.s_indices.size())) == false)
+        {
+			SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderGeometry/cela na pas fonctionné : %s", SDL_GetError());
         }
     }
 }

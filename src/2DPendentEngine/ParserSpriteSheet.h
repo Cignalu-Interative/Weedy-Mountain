@@ -10,6 +10,14 @@ struct InfoAnimation
 	float s_frameTime;
 	//int row;
 	bool s_loop;
+
+	InfoAnimation()
+	{
+		s_nameAnimation = "default";
+		s_nbFrames.reserve(10);
+		s_frameTime = 1.0f;
+		s_loop = true;
+	}
 };
 
 class ParserSpriteSheet
@@ -21,7 +29,10 @@ class ParserSpriteSheet
 
 	std::string m_texturePath;
 
+
 public :
+
+	ParserSpriteSheet();
 
 	//static ParserSpriteSheet* Get();
 

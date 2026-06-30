@@ -3,8 +3,8 @@
 template<typename T>
 StateMachine<T>::StateMachine()
 {
-	m_states.reserve(10); // Réserver de la mémoire pour 10 états afin d'éviter les reallocations fréquentes lors de l'ajout d'états
-	m_transitions.reserve(10); // Réserver de la mémoire pour 10 états afin d'éviter les reallocations fréquentes lors de l'ajout d'états
+	m_states.reserve(14); // Réserver de la mémoire pour 10 états afin d'éviter les reallocations fréquentes lors de l'ajout d'états
+	m_transitions.reserve(14); // Réserver de la mémoire pour 10 états afin d'éviter les reallocations fréquentes lors de l'ajout d'états
 }
 
 template <typename T>

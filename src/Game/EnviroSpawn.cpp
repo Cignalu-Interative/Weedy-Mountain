@@ -3,6 +3,13 @@
 #include "EnviroProps.h"
 #include "SpriteContainer.h"
 #include "GameScene.h"
+#include "GameData.h"
+#include "FarmManager.h"
+
+EnviroSpawn* EnviroSpawn::Get() {
+	static EnviroSpawn instance;
+	return &instance;
+}
 
 void EnviroSpawn::InitEnviroSpawn()
 {
@@ -53,11 +60,29 @@ void EnviroSpawn::SpawnEnviroProps()
 	}
 }
 
+int EnviroSpawn::GetEnviroDay()
+{
+	constexpr float IRL_SECONDS_PER_GAME_HOUR = 40.0f;
+	constexpr float HOURS_PER_DAY = 24.f;
+	constexpr float SIX_HOURS = 6.f * IRL_SECONDS_PER_GAME_HOUR;
+
+	float secPerDay = HOURS_PER_DAY * IRL_SECONDS_PER_GAME_HOUR;
+	float timeSpent = GameData::Get().GetTimeSpent();
+
+	float shifted = timeSpent - SIX_HOURS;
+
+	if (shifted < 0.f)
+		shifted = 0.f;
+
+	return static_cast<int>(shifted / secPerDay);
+}
+
 void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 {
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
-	Props = gs->CreateEntity<EnviroProps>({ Aleatory::GetFloat(0.f, 200.f), Aleatory::GetFloat(0.f, 200.f) }, { 128,128 }, "", Shape::Rectangle);
+	int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size());
+	Props = gs->CreateEntity<EnviroProps>( FarmManager::Get()->GetAllFarmTiles()[tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);
@@ -95,4 +120,17 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	default:
 		break;
 	}
+}
+
+void EnviroSpawn::Update() {
+	int curentDay = GetEnviroDay();
+
+	if (curentDay == m_lastDay) return;
+
+	if (m_lastDay != -1) {
+		SpawnEnviroProps();
+	}
+	
+
+	m_lastDay = curentDay;
 }

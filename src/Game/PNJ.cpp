@@ -68,6 +68,9 @@ void PNJ::OnEvent()
 void PNJ::OnUpdate()
 {
 	m_timer -= GetDeltaTime();
+
+	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
+
 	if (!m_isTalking)
 		return;
 	if (m_isFinished)

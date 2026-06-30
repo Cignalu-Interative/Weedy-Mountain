@@ -24,6 +24,7 @@ void ItemOnGround::OnEvent()
 
 void ItemOnGround::OnUpdate()
 {
+	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 	MoveKinematic();
 }
 
@@ -68,7 +69,6 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		if (text) {
 			text->SetPosition(this->GetPosition({1,1}));
 		}
-
 		SetResetDirection(false);
 		SetSpeed(15);
 	}
@@ -83,5 +83,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 
 void ItemOnGround::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	SetResetDirection(true);
+	if (_other->GetID() == "interact") {
+		SetResetDirection(true);
+	}
 }

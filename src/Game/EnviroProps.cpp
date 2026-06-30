@@ -26,14 +26,9 @@ void EnviroProps::OnEvent()
 	}
 
 	Vector2f playerPos = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition();
+	int playerLayer = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetDrawLayer();
 
-	if (playerPos.GetY() < GetPosition().GetY()+16) {
-		SetDrawLayer(3);
-
-	}
-	else SetDrawLayer(1);
-
-	if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30 && GetDrawLayer() == 3 && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
+	if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30 && playerLayer < GetDrawLayer() && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
 		if(Sprite* sprite = GetSprite("default"))sprite->SetOpacity(100);
 	}
 	else {
@@ -44,7 +39,7 @@ void EnviroProps::OnEvent()
 
 void EnviroProps::OnUpdate()
 {
-
+	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 }
 
 void EnviroProps::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
@@ -102,7 +97,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_WOOD",1)), 3,4 };
 		EnviroLoots* loot2 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 1,2 };
 		m_loots.push_back(loot1);
-		//m_Loots.push_back(loot2);
+		m_loots.push_back(loot2);
 		break;
 	}
 	case EnviroSpawnName::Shrub:

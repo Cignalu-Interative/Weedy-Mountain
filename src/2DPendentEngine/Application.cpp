@@ -47,23 +47,20 @@ void Application::Init()
 	{
 		m_isRunning = true;
 	}
-	SDLShader::Get()->InitializeGPUDevice(&m_window);
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;
 		});
 	InputManager::Get()->SetQuitCallback([this]()
 		{ m_isRunning = false; });
-	InputManager::Get()->SetCursor("../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_c.png", { 0.0f, 0.0f });
-	InputManager::Get()->SetWindow(&m_window);
 	FontManager::Get()->AddFontByPath("../../res/2DPendentEngine/Assets/Fonts/DefaultPolice.ttf");
-	SoundManager::Get()->SetMixer(m_window.GetMixer());
+	InputManager::Get()->SetCursor("../../res/2DPendentEngine/Assets/Textures/Cursor/Basic/Default/pointer_c.png", { 0.0f, 0.0f });
 	Vector2i sizeWindow = m_window.GetWindowSize();
 	m_camera = new Camera(sizeWindow);
 	AssetManager::Get()->SetRenderer(m_render.GetRenderer());
 	MapTiledManager::Get()->SetRender(&m_render);
 	// La distance maximale à laquelle un son peut être entendu est définie comme la diagonale de la fenêtre, ce qui permet d'entendre les sons dans toute la fenêtre
-	//SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
+	SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
 	m_timerFPS.SetCurrentTime();
 
@@ -92,10 +89,6 @@ void Application::Run()
 
 void Application::Shutdown()
 {
-	/*triangle.Destroy();
-	quadMesh.Destroy();*/
-
-
 	//detruire toute les instances de chaque classe et les ressources
 	for (Entity* entity : m_entities)
 	{
@@ -176,75 +169,6 @@ void Application::HandleInput()
 
 void Application::Update()
 {
-
-	//if (InputManager::Get()->IsKeyboardHeld(K_o))
-	//{
-	//	for (TVVertex tvvertx : m_tvVertexVector)
-	//	{
-	//		//tvvertx.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() + 0.01f);
-	//	}
-	//	m_testTVVertex.SetTranslation(m_testTVVertex.GetTranslation() + glm::vec3{0.0f,0.0f,0.01f});
-	//	m_TVVertex2.SetTranslation(m_TVVertex2.GetTranslation() + glm::vec3{ 0.0f,0.0f,0.01f });
-	//	//m_testTVVertex.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() + 0.01f);
-	//	std::cerr << "g_uOffset K_o : " << m_testTVVertex.GetUOffesetGL() << std::endl;
-	//}
-	//if (InputManager::Get()->IsKeyboardHeld(K_l))
-	//{
-	//	for (TVVertex tvvertx : m_tvVertexVector)
-	//	{
-	//		//tvvertx.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() - 0.01f);
-	//	}
-	//	m_testTVVertex.SetTranslation(m_testTVVertex.GetTranslation() - glm::vec3{ 0.0f,0.0f,0.01f });
-	//	m_TVVertex2.SetTranslation(m_TVVertex2.GetTranslation() - glm::vec3{ 0.0f,0.0f,0.01f });
-	//	//m_testTVVertex.SetUOffsetGL(m_testTVVertex.GetUOffesetGL() - 0.01f);
-	//	std::cerr << "g_uOffset K_l : " << m_testTVVertex.GetUOffesetGL() << std::endl;
-	//}
-	//if (InputManager::Get()->IsKeyboardHeld(K_k))
-	//{
-	//	for (TVVertex tvvertx : m_tvVertexVector)
-	//	{
-	//		tvvertx.SetURotate(m_testTVVertex.GetURotate() + 0.80f);
-	//	}
-	//	m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() + 0.80f);
-	//	m_TVVertex2.SetURotate(m_TVVertex2.GetURotate() + 0.80f);
-	//	std::cerr << "g_uRotate K_k : " << m_testTVVertex.GetURotate() << std::endl;
-	//}
-	//if (InputManager::Get()->IsKeyboardHeld(K_m))
-	//{
-	//	for (TVVertex tvvertx : m_tvVertexVector)
-	//	{
-	//		tvvertx.SetURotate(m_testTVVertex.GetURotate() - 0.80f);
-	//	}
-	//	m_testTVVertex.SetURotate(m_testTVVertex.GetURotate() - 0.80f);
-	//	m_TVVertex2.SetURotate(m_TVVertex2.GetURotate() - 0.80f);
-	//	std::cerr << "g_uRotate K_m : " << m_testTVVertex.GetURotate() << std::endl;
-	//}
-
-	//m_testTVVertex.GetCameraOpenGL()->MouseLook();
-
-	//float speed = 0.025f;
-	//if (InputManager::Get()->IsKeyboardHeld(K_z))
-	//{
-	//	m_testTVVertex.GetCameraOpenGL()->MoveForward(speed);
-	//	m_TVVertex2.GetCameraOpenGL()->MoveForward(speed);
-	//}
-	//if (InputManager::Get()->IsKeyboardHeld(K_s))
-	//{
-	//	m_testTVVertex.GetCameraOpenGL()->MoveBackward(speed);
-	//	m_TVVertex2.GetCameraOpenGL()->MoveBackward(speed);
-	//}
-	//if (InputManager::Get()->IsKeyboardHeld(K_q))
-	//{
-	//	m_testTVVertex.GetCameraOpenGL()->MoveLeft(speed);
-	//	m_TVVertex2.GetCameraOpenGL()->MoveLeft(speed);
-	//}
-	//if (InputManager::Get()->IsKeyboardHeld(K_d))
-	//{
-	//	m_testTVVertex.GetCameraOpenGL()->MoveRight(speed);
-	//	m_TVVertex2.GetCameraOpenGL()->MoveRight(speed);
-	//}
-	//std::cerr << "FPS : " + std::to_string(GetCurrentFPS()) << std::endl;
-
 	/*if (SceneManager::Get()->GetCurrentScene() == nullptr)
 	{
 		return;
@@ -276,17 +200,16 @@ void Application::Update()
 
 	IsEneableToUpdate();
 
-	SoundManager::Get()->Update(m_deltaTime);
+	SoundManager::Get()->Update();
 
 	Vector2i sizeWindow = m_window.GetWindowSize();
 	if (m_camera->GetDimension().GetX() != sizeWindow.GetX() || m_camera->GetDimension().GetY() != sizeWindow.GetY())
 	{
 		m_camera->SetDimension(m_window.GetWindowSize());
-		//TO DO RE AUTOMATE 
-		/*if (SoundManager::Get()->GetAutoMaxDistance())
+		if (SoundManager::Get()->GetAutoMaxDistance())
 		{
 			SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
-		}*/
+		}
 	}
 
 	for (auto it = m_entityToDestroy.begin(); it != m_entityToDestroy.end(); ++it)
@@ -360,8 +283,6 @@ void Application::Draw()
 {
 	m_render.ClearRenderer();
 
-	////////////////////////////////////////////////////////////
-
 	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
 	std::vector<Entity*> entToDraw = m_entities;
@@ -383,13 +304,7 @@ void Application::Draw()
 		m_camera->Draw(&m_render, &m_window, m_camera);
 	}
 
-
-	/*triangle.Draw();
-	quadMesh.Draw();
-	spriteOpenGL.DrawSprite(texture, 10, 10, 200, 200);*/
-
 	m_render.PresentRenderer();
-	//m_render.RenderOpenGL(&m_window);
 }
 
 void Application::SetFPS(int p_targetFPS)

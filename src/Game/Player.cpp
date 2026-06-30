@@ -187,6 +187,8 @@ void Player::HandleFarmAction()
 void Player::OnUpdate()
 {
 	m_stateMachine.Update(this, GetDeltaTime());
+	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
+
 	UpdateJobs();
 	MoveKinematic();
 }

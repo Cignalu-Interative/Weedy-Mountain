@@ -59,7 +59,7 @@ void GameScene::OnInitialize()
 	
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
-	Application::Get()->SetClampCameraToCurrentMap(true);
+	//Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
 

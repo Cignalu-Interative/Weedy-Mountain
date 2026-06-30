@@ -1,4 +1,4 @@
-#include "pch.h"
+﻿#include "pch.h"
 #include "Scene.h"
 #include "Application.h"
 #include "Entity.h"
@@ -38,6 +38,61 @@ void Scene::Update()
 	{
 		return;
 	}
+
+	const float windowWidth = static_cast<float>(GetWindowWidth());
+	const float windowHeight = static_cast<float>(GetWindowHeight());
+
+	for(Entity* entity : m_entities)
+	{
+		float PosLeft = entity->GetPosition({ 0.0f, 0.5f }).GetX();
+		float PosRight = entity->GetPosition({ 1.0f, 0.5f }).GetX();
+		float PosTop = entity->GetPosition({ 0.5f, 0.0f }).GetY();
+		float PosBottom = entity->GetPosition({ 0.5f, 1.0f }).GetY();
+
+		float centerX = entity->GetPosition().GetX();
+		float centerY = entity->GetPosition().GetY();
+
+		bool outX = PosLeft < 0.0f || PosRight > windowWidth;
+		bool outY = PosTop < 0.0f || PosBottom > windowHeight;
+
+		if (outX || outY)
+		{
+			if (entity->m_clampToWindow)
+			{
+				if (PosLeft < 0.0f)
+				{
+					entity->SetPosition({ 0.0f, centerY }, { 0.0f, 0.5f });
+				}
+				else if (PosRight > windowWidth)
+				{
+					entity->SetPosition({ windowWidth, centerY }, { 1.0f, 0.5f });
+				}
+
+				if (PosTop < 0.0f)
+				{
+					entity->SetPosition({ centerX, 0.0f }, { 0.5f, 0.0f });
+				}
+				else if (PosBottom > windowHeight)
+				{
+					entity->SetPosition({ centerX, windowHeight }, { 0.5f, 1.0f });
+				}
+				if (entity->m_physicsBody)
+				{
+					// Si l'entit� est sortie horizontalement, on met la v�locit� horizontale � 0, sinon on la conserve
+						// Si l'entit� est sortie verticalement, on met la v�locit� verticale � 0, sinon on la conserve
+					entity->m_physicsBody->SetLinearVelocity({
+						outX ? 0.0f : entity->m_physicsBody->GetLinearVelocity().GetX(),
+						outY ? 0.0f : entity->m_physicsBody->GetLinearVelocity().GetY() }
+						);
+				}
+			}
+			else
+			{
+				entity->OnOutBorder();
+			}
+		}
+	}
+
 	OnUpdate();
 }
 

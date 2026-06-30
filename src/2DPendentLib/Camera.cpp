@@ -3,8 +3,8 @@
 #include "2DPendentLib/Utils.h"
 #include "Render.h"
 #include "Window.h"
+#include <SDL3/SDL.h>
 #include "2DPendentEngine/Entity.h"
-#include <SDL.h>
 
 //Camera::Camera(Vector2f p_position, Vector2i p_dimension)
 //{
@@ -51,7 +51,7 @@ void Camera::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
     Vector2i margin = { 2, 2 };
 
-    // Dimension du frustum en monde = dimension écran / zoom
+    // Dimension du frustum en monde = dimension ï¿½cran / zoom
     Vector2i worldDimension(
         Vector2f(
             (GetDimension().GetX() - margin.GetX()) / m_zoomFactor,
@@ -66,6 +66,6 @@ void Camera::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     {
         Vector2f a = p_camera->WorldToScreen(corners[i]);
         Vector2f b = p_camera->WorldToScreen(corners[(i + 1) % 4]);
-        SDL_RenderDrawLineF(f_render->m_renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY());
+        SDL_RenderLine(f_render->m_renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY());
     }
 }

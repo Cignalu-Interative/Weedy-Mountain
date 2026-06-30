@@ -1,5 +1,7 @@
 #pragma once
-#include <SDL.h>
+//#include "2DPendentLib/glm/glm.hpp"
+#include <SDL3/SDL.h>
+#include "Color.h"
 //Version 2.2.0
 class Window;
 class Render
@@ -9,7 +11,13 @@ private:
 	//Pointeur qui stock le render
 	SDL_Renderer* m_renderer = nullptr;
 
+	Color m_backgroundColor;
+
+	//glm::vec4 m_OpenGLColor;
+
 public:
+
+	Render();
 
 	~Render(); //Destructeur du render
 
@@ -21,6 +29,14 @@ public:
 	void PresentRenderer(); 
 	//Obtention du render
 	SDL_Renderer* GetRenderer() const { return m_renderer; }
+
+	//Clear le render en cours pour les éléments OpenGL,
+	//cela permet d'éviter les problèmes de rendu lors du dessin d'éléments OpenGL et d'éléments SDL dans la même scène
+	/*void ClearOpenGL();
+
+	void RenderOpenGL(Window* f_window);*/
+
+	void SetBackgroundColor(Color p_color);
 
 	//Liste des class amie avec la class Render
 	friend class Circle;

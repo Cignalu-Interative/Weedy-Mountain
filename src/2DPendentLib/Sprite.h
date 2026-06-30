@@ -1,6 +1,6 @@
 #pragma once
-#include <SDL.h>
-#include <SDL_image.h>
+#include <SDL3/SDL.h>
+#include <SDL3_image/SDL_image.h>
 #include <string>
 #include <chrono>
 #include "Vector2.h"
@@ -13,7 +13,7 @@ private:
 
 	SDL_Texture* m_texture = nullptr; //Texture du sprite
 	SDL_FRect m_spriteRect; //Rectangle de la texture à dessiner
-	SDL_Rect* m_srcRect = nullptr;
+	SDL_FRect* m_srcRect = nullptr;
 
 	bool m_isGUI = false; //Bool pour savoir si le sprite est un élément d'interface utilisateur (GUI), il ne sera pas affecté par la physique et les collisions
 
@@ -57,8 +57,8 @@ public:
 	void SetOpacity(Uint8 p_oppacity);
 	Uint8 GetOpacity() const { return m_oppacity; }
 
-	SDL_Rect* GetSpriteRect() { return m_srcRect; }
-	void SetSourceRectSprite(SDL_Rect p_SDLrect);
+	SDL_FRect* GetSpriteRect() { return m_srcRect; }
+	void SetSourceRectSprite(SDL_FRect p_SDLrect);
 
 	//Fonction pour dessinner le sprite à l'écran
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;

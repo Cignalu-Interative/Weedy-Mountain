@@ -14,6 +14,20 @@
 #include "SoundManager.h"
 #include "Aleatory.h"
 #include "2DPendentLib/AssetManager.h"
+
+
+//#include "2DPendentLib/glad/glad.h"
+//#include "2DPendentLib/glm/glm.hpp"
+//#include "2DPendentLib/glm/gtc/type_ptr.hpp"
+//#include "2DPendentLib/Triangle.h"
+//#include "2DPendentLib/Shader.h"
+//#include "2DPendentLib/Mesh.h"
+//#include "2DPendentLib/Texture2D.h"
+//#include "2DPendentLib/SpriteOpenGL.h"
+//
+//#include "2DPendentLib/TVVertex.h"
+//#include "2DPendentLib/CameraOpenGL.h"
+
 //Version 3.4.0
 
 class Entity;
@@ -63,6 +77,8 @@ private:
 	bool m_autoFPS = true; // Si true, le jeu ajustera automatiquement le nombre de frames par seconde par rapport au fps trouvé grace à la fonction V_Sync
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
 
+	int m_FPSUserWant = 0;
+
 	bool m_cameraIsClamp = false;
 
 	void ClampCameraToCurrentMap();
@@ -92,10 +108,15 @@ public:
 	//Fonction pour dessiner les différentes parties du jeu, notamment en dessinant les entités, les scènes et les éléments de debug
 	void Draw();
 
+	void SetIsAutoFPS(bool p_value);
+	bool IsAutoFPS() { return m_autoFPS; };
+
+	void SetFPSUserWanted(int p_fps) { m_FPSUserWant = p_fps; };
+
 	//Fonction pour définir le nombre de frames par seconde cible
-	void SetFPS(int p_targetFPS);
+	void SetFPS(int p_targetFPS); 
 	//Fonction pour limiter les fps en fonction du nombre de frames par seconde cible et du temps écoulé entre deux frames
-	void CapFPS();
+	void CapFPS(); 
 	//Fonction pour mettre à jour le compteur de FPS en utilisant un lissage exponentiel pour éviter les fluctuations brusques
 	// (doit être appelé à chaque frame avec le temps écoulé depuis la dernière frame en nanosecondes)
 	void UpdateFPSCounter();

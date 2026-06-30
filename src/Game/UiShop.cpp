@@ -22,7 +22,7 @@ void UiShop::OnInitialize()
 	Vector2f offset = topRightPos + Vector2f{ -offsetX, offsetY };
 
 	m_slot = scene->CreateEntity<InventorySlot>(offset, { 200,150 }, "", Shape::Rectangle, true);
-	m_slot->ShowCollider(true);
+	//m_slot->ShowCollider(true);
 	m_slot->GetCollider()->SetIsTrigger(true);
 
 	m_slot->AddSprite("item_texture", "", m_slot->GetDimension(), 1, { 0.0f, 0.0f }, true);
@@ -110,7 +110,7 @@ void UiShop::OnEvent()
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_slot->IsMouseIn())
 		m_slot->Clear();
 
-	if (InputManager::Get()->IsKeyboardDown(K_n))
+	if (InputManager::Get()->IsKeyboardDown(K_N))
 		SetVisible(!GetIsVisible());
 }
 

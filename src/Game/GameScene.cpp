@@ -110,10 +110,10 @@ void GameScene::OnEvent()
 		spawn->SpawnEnviroProps();
 	}
 
-	if (im->IsKeyboardDown(K_a))
+	if (im->IsKeyboardDown(K_A))
 		GetCamera()->SetZoom(5);
 
-	if (im->IsKeyboardDown(K_e))
+	if (im->IsKeyboardDown(K_E))
 		GetCamera()->SetZoom(1);
 }
 

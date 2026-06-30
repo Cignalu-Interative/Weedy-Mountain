@@ -13,8 +13,6 @@
 #include "PlayerState.h"
 #include "PlayerConditions.h"
 
-#include "Inventory.h"
-
 void Player::OnInitialize()
 {
 
@@ -39,7 +37,7 @@ void Player::OnInitialize()
 	m_jobs.push_back(killer);
 	PlayerJob* dealer = new PlayerJob();
 	dealer->m_name = JobType::Dealer;
-	m_jobs.push_back(dealer);
+	m_jobs.push_back(dealer);*/
 
 
 	SetupStateMachine();
@@ -341,9 +339,9 @@ void Player::SetupStateMachine()
 { 
 	m_stateMachine.AddState(new PlayerIdleState);//0
 	m_stateMachine.AddState(new PlayerWalkingState);//1
-	m_stateMachine.AddState(new PlayerWateringState);//5
-	m_stateMachine.AddState(new PlayerDiggingState);//6
-	m_stateMachine.AddState(new PlayerMiningState);//7
+	m_stateMachine.AddState(new PlayerWateringState);//2
+	m_stateMachine.AddState(new PlayerDiggingState);//3
+	m_stateMachine.AddState(new PlayerMiningState);//4
 
 	//TRANSITIONS 
 
@@ -450,7 +448,7 @@ void Player::SetupStateMachine()
 
 	}
 
-	SetState(PlayerState::IDLE);
+	SetState(PlayerState::WALKING);
 }
 
 bool Player::IsRecipeUnlocked(Recipes _toUnlock)

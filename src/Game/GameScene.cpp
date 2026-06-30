@@ -30,9 +30,9 @@
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
-	//MapTiledManager* mm = MapTiledManager::Get();
-	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	//mm->SetCurrentMap("Farm");
+	MapTiledManager* mm = MapTiledManager::Get();
+	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	mm->SetCurrentMap("Farm");
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
@@ -89,14 +89,14 @@ void GameScene::OnInitialize()
 	//}
 
 
-	m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
-	m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
-	m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
+	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
+	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
+	//m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
 
-	UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	a->GetSprite()->SetDimension(a->GetDimension());
-	a->SyncSprites();
-	//a->ShowCollider(true);
+	//UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	//a->GetSprite()->SetDimension(a->GetDimension());
+	//a->SyncSprites();
+	////a->ShowCollider(true);
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 }

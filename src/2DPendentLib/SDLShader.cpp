@@ -28,13 +28,13 @@ SDLShader::~SDLShader()
 
 void SDLShader::InitializeGPUDevice(Window* p_window)
 {
-	m_gpuDevice = SDL_CreateGPUDeviceWithProperties(m_propertiesID);
+	/*m_gpuDevice = SDL_CreateGPUDeviceWithProperties(m_propertiesID);
 
 	if (m_gpuDevice == nullptr)
 	{
 		SDL_Log("Lib/SDLShader.cpp/InitializeGPUDevice/SDL_CreateGPUDeviceWithProperties failed: %s", SDL_GetError());
 		return;
-	}
+	}*/
 
 	
 	

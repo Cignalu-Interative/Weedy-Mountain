@@ -54,7 +54,6 @@ Text::~Text()
 
 void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color)
 {
-	SDL_Log("renderer=%p", m_renderer);
 
 	SetColor(p_color);
 	if (p_text == "")

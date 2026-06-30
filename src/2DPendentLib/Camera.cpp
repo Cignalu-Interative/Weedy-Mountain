@@ -1,5 +1,4 @@
-
-=#include "pch.h"
+#include "pch.h"
 #include "Camera.h"
 #include "2DPendentLib/Utils.h"
 #include "Render.h"

@@ -13,6 +13,13 @@ CollisionManager* CollisionManager::Get()
     return &instance;
 }
 
+CollisionManager::CollisionManager()
+{
+	m_colliders.reserve(6000);
+	m_staticColliders.reserve(5000);
+	m_dynamicColliders.reserve(500);
+}
+
 ColliderPair CollisionManager::MakePair(Collider* a, Collider* b) const
 {
     // Ordre canonique pour que (A,B) == (B,A)

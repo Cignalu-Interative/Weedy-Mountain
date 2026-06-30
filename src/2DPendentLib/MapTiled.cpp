@@ -271,6 +271,8 @@ MapTiled::MapTiled(const std::string& p_path, Render* p_render)
     m_objectGroups.reserve(8);  // groupes d'objets
     m_imageLayers.reserve(4);   // image layers
 
+	m_gidToTileset.reserve(10000); // 10000 GID max par map (Tiled limite à 65536 mais c'est rare)
+
 	m_render = p_render;
     LoadXML(p_path, m_render);
 

@@ -5,6 +5,11 @@
 #include "Camera.h"
 #include "Utils.h"
 
+Circle::Circle()
+{
+	m_scanlineCache.reserve(100); // Réserve de l'espace pour 100 lignes de scan
+}
+
 void Circle::Initialize(Vector2f p_position, Vector2i p_dimension, Color p_color)
 {
 	SetColor(p_color);

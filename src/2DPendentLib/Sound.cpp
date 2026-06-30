@@ -4,6 +4,7 @@
 
 Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 {
+	m_pistesSFX.reserve(24);
 	m_mixer = p_mixer;
 	m_propertiesID = SDL_CreateProperties();
 	if (m_propertiesID == 0)
@@ -25,7 +26,6 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 	m_soundReverberation = 0; //Durée de la réverbération du son en millisecondes, utilisée pour la réverbération du son
 
 	m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
-
 }
 
 Sound::~Sound() {

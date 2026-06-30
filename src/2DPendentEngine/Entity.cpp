@@ -10,6 +10,12 @@
 #include "SpriteContainer.h"
 #include "Animation.h"
 
+Entity::Entity()
+{
+	m_sprites.reserve(4);
+	m_colliders.reserve(4);
+}
+
 Entity::~Entity()
 {
 	for (SpriteContainer* sc : m_sprites)

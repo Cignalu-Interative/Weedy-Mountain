@@ -46,7 +46,7 @@ private:
 
     AABB m_worldBounds = { -2000.f, -2000.f, 6000.f, 6000.f };
 
-    CollisionManager() = default;
+    CollisionManager();
 
     ColliderPair MakePair(Collider* a, Collider* b) const;
 

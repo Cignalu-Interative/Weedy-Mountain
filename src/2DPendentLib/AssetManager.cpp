@@ -12,9 +12,9 @@ AssetManager* AssetManager::Get()
 
 AssetManager::AssetManager()
 {
-	m_texturesMap.reserve(512);      // nombre de textures chargées en même temps
-	m_texturesVector.reserve(512);   // cohérent avec la map
-	m_textureIdsVector.reserve(512); // cohérent avec la map
+	m_texturesMap.reserve(1000);      // nombre de textures chargées en même temps
+	m_texturesVector.reserve(1000);   // cohérent avec la map
+	m_textureIdsVector.reserve(1000); // cohérent avec la map
 }
 
 AssetManager::~AssetManager()

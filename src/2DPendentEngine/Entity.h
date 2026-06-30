@@ -77,7 +77,7 @@ protected:
 public:
 
 	//Constructeur par défaut de Entity
-	Entity() = default;
+	Entity();
 	//Destructeur de Entity, il est virtuel pour permettre aux classes qui héritent de Entity de définir leur propre logique de destruction
 	virtual ~Entity();
 

@@ -11,6 +11,13 @@ struct Data
 	SDL_Texture* s_texture = nullptr;
 	std::vector<SDL_Vertex> s_vertices;
 	std::vector<int> s_indices;
+
+	Data()
+	{
+		s_vertices.reserve(10000); // Réserve de l'espace pour 1000 sommets
+		s_indices.reserve(15000);  // Réserve de l'espace pour 1500 indices
+	}
+
 };
 
 class BatchRenderer2D

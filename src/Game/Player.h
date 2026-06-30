@@ -105,8 +105,9 @@ private:
 
 	std::vector<Recipes> m_unlockedRecipes;
 
-	bool m_isInDialog = false;
 	bool m_isUsingToolInHand = false;
+
+	bool m_inputBlocker = false;
 
 protected:
 
@@ -132,12 +133,15 @@ public:
 	void SetupStateMachine();
 
 	void SetIsUsingToolInHand(bool p_isUsing) { m_isUsingToolInHand = p_isUsing; }
-	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
 	void SetState(PlayerState p_state);
 
 	bool IsRecipeUnlocked(Recipes _toUnlock);
 	bool IsUsingToolInHand() { return m_isUsingToolInHand; }
 
+	void LockInputs();
+	void UnlockInputs();
+
+	// temp en attendant d'avoir la hotbar et le current item en main
 	bool hasSpade = false;
 	bool hasPickaxe = false;
 	bool hasWateringCan = false;

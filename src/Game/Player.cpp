@@ -39,23 +39,6 @@ void Player::OnInitialize()
 
 void Player::OnEvent()
 {
-	/*if (InputManager::Get()->IsKeyboardDown(K_n))
-		hasWateringCan = !hasWateringCan;*/
-
-		/*if (InputManager::Get()->IsKeyboardDown(K_i))
-			hasPickaxe = !hasPickaxe;*/
-
-	if (InputManager::Get()->IsKeyboardDown(K_b))
-	{
-		hasSpade = !hasSpade;
-		std::cout << "hasspade : " << std::to_string(hasSpade) << std::endl;
-	}
-	if (InputManager::Get()->IsKeyboardDown(K_u))
-	{
-		SetIsUsingToolInHand(!m_isUsingToolInHand);
-		std::cout << "is using : " << std::to_string(m_isUsingToolInHand) << std::endl;
-	}
-
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
 		SetSpeed(m_stats.m_playerSpeed * 2);
 	}
@@ -68,26 +51,28 @@ void Player::OnEvent()
 	Vector2f dir = {0.f, 0.f};
 	Collider* boxCollider = GetCollider("actionBox");
 	//Input Clavier
-	// lock les mouvements pendant les dialogues
-	if (m_isInDialog == false)
+	// Mettre les inputs pour lesquels on ne veux pas pouvoir les detecter lorsqu'on est dans un shop dialogues etc ... 
+	if (m_inputBlocker == false)
 	{
+		
+
 		//Input Clavier
-		if (InputManager::Get()->IsKeyboardHeld(K_Z))
+		if (InputManager::Get()->IsKeyboardHeld(K_z))
 		{
 			dir.SetY(dir.GetY() - 1.f);
 			GetCollider("actionBox")->SetOffset({ 0, -8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_S)) 
+		if (InputManager::Get()->IsKeyboardHeld(K_s)) 
 		{
 			dir.SetY(dir.GetY() + 1.f);
 			GetCollider("actionBox")->SetOffset({ 0, 24 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_Q)) 
+		if (InputManager::Get()->IsKeyboardHeld(K_q)) 
 		{
 			dir.SetX(dir.GetX() - 1.f);
 			GetCollider("actionBox")->SetOffset({ -16, 8 });
 		}
-		if (InputManager::Get()->IsKeyboardHeld(K_D))
+		if (InputManager::Get()->IsKeyboardHeld(K_d))
 		{
 			dir.SetX(dir.GetX() + 1.f);
 			GetCollider("actionBox")->SetOffset({ 16, 8 });
@@ -96,6 +81,20 @@ void Player::OnEvent()
 		if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
 			//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
 		}
+
+		if (InputManager::Get()->IsKeyboardDown(K_1))
+			m_selectedCrop = CropCatalog::Wheat();
+		if (InputManager::Get()->IsKeyboardDown(K_2))
+			m_selectedCrop = CropCatalog::Carrot();
+
+		// Action farm 
+		// TEMP - AGRI
+
+		// S�lection plante 
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+			HandleFarmAction();
+
+
 
 	}
 
@@ -108,20 +107,6 @@ void Player::OnEvent()
 	{
 		body->SetLinearVelocity({dir.GetX() * currentSpeed, dir.GetY() * currentSpeed});
 	}
-
-	// TEMP - AGRI
-
-	// S�lection plante 
-	if (InputManager::Get()->IsKeyboardDown(K_1))
-		m_selectedCrop = CropCatalog::Wheat();
-	if (InputManager::Get()->IsKeyboardDown(K_2))
-		m_selectedCrop = CropCatalog::Carrot();
-
-	// Action farm 
-	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
-		HandleFarmAction();
-
-	/*if (InputManager::Get()->IsKeyboardDown(K_u))*/
 
 }
 
@@ -149,9 +134,9 @@ void Player::HandleFarmAction()
 
 	case FarmTileState::TILLED:
 		// T maintenu = arroser, Y maintenu = planter, sinon = d�-b�cher
-		if (InputManager::Get()->IsKeyboardHeld(K_T))
+		if (InputManager::Get()->IsKeyboardHeld(K_t))
 			target->Water(currentDay);
-		else if (InputManager::Get()->IsKeyboardHeld(K_Y))
+		else if (InputManager::Get()->IsKeyboardHeld(K_y))
 			target->Plant(m_selectedCrop, currentDay);
 		else
 			target->Till(currentDay);
@@ -159,7 +144,7 @@ void Player::HandleFarmAction()
 
 	case FarmTileState::WATERED:
 		// Y maintenu = planter
-		if (InputManager::Get()->IsKeyboardHeld(K_Y))
+		if (InputManager::Get()->IsKeyboardHeld(K_y))
 			target->Plant(m_selectedCrop, currentDay);
 		break;
 
@@ -450,6 +435,16 @@ bool Player::IsRecipeUnlocked(Recipes _toUnlock)
 
 	}
 	return false;
+}
+
+void Player::LockInputs()
+{
+	m_inputBlocker = true;
+}
+
+void Player::UnlockInputs()
+{
+	m_inputBlocker = false;
 }
 
 void Player::SetState(PlayerState p_state)

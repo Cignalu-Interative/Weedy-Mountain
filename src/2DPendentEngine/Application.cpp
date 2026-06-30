@@ -59,8 +59,6 @@ void Application::Init()
 	m_camera = new Camera(sizeWindow);
 	AssetManager::Get()->SetRenderer(m_render.GetRenderer());
 	MapTiledManager::Get()->SetRender(&m_render);
-	// La distance maximale à laquelle un son peut être entendu est définie comme la diagonale de la fenêtre, ce qui permet d'entendre les sons dans toute la fenêtre
-	SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
 	m_timerFPS.SetCurrentTime();
 
@@ -200,16 +198,12 @@ void Application::Update()
 
 	IsEneableToUpdate();
 
-	SoundManager::Get()->Update();
+	SoundManager::Get()->Update(m_deltaTime);
 
 	Vector2i sizeWindow = m_window.GetWindowSize();
 	if (m_camera->GetDimension().GetX() != sizeWindow.GetX() || m_camera->GetDimension().GetY() != sizeWindow.GetY())
 	{
 		m_camera->SetDimension(m_window.GetWindowSize());
-		if (SoundManager::Get()->GetAutoMaxDistance())
-		{
-			SoundManager::Get()->SetMaxAudibleDistance(std::sqrtf(sizeWindow.GetX() * sizeWindow.GetX() + sizeWindow.GetY() * sizeWindow.GetY()));
-		}
 	}
 
 	for (auto it = m_entityToDestroy.begin(); it != m_entityToDestroy.end(); ++it)

@@ -31,6 +31,9 @@ protected:
 	void OnSleep() override;
 
 	void OnWake() override;
+
+	void OnDraw() override;
+
 public:
 
 	GameScene() = default;

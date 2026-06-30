@@ -137,3 +137,8 @@ void GameScene::OnSleep()
 void GameScene::OnWake()
 {
 }
+
+void GameScene::OnDraw()
+{
+
+}

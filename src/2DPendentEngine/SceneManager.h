@@ -5,6 +5,10 @@
 
 class Scene;
 class Application;
+class Render;
+class Window;
+class Camera;
+
 class SceneManager
 {
 private:
@@ -62,6 +66,8 @@ public:
 	void EventScenesInStack();
 
 	void UpdateScenesInStack();
+
+	void DrawScenesInStack(Render* f_render, Window* f_window, Camera* p_camera);
 
 	bool IsSceneInStack() const;
 

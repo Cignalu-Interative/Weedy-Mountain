@@ -2,6 +2,9 @@
 #include "SceneManager.h"
 #include "Application.h"
 #include "Scene.h"
+#include "2DPendentLib/Render.h"
+#include "2DPendentLib/Window.h"
+#include "2DPendentLib/Camera.h"
 
 SceneManager::SceneManager()
 {
@@ -177,6 +180,14 @@ void SceneManager::UpdateScenesInStack()
 	for (Scene* scene : m_scenesInStackVector)
 	{
 		scene->Update();
+	}
+}
+
+void SceneManager::DrawScenesInStack(Render* f_render, Window* f_window, Camera* p_camera)
+{
+	for (Scene* scene : m_scenesInStackVector)
+	{
+		scene->Draw(f_render, f_window, p_camera);
 	}
 }
 

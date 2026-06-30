@@ -1,5 +1,9 @@
 #pragma once
-class Ui
+#include"Entity.h" 
+
+
+class Ui : public Entity
 {
+
 };
 

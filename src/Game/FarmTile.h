@@ -31,6 +31,8 @@ private:
 
     bool m_wateredToday = false;
 
+    bool m_canGrow = true;
+
     void UpdateVisuals();
     int ComputeGrowthStage() const;
 
@@ -54,4 +56,7 @@ public:
     bool IsReady() const { return m_state == FarmTileState::READY; }
     bool HasCrop() const { return m_crop.has_value(); }
     const CropDefinition* GetCrop() const { return m_crop.has_value() ? &m_crop.value() : nullptr; }
+
+    const bool CanGrow() { return m_canGrow; }
+    void SetCanGrow(bool p_canGrow) { m_canGrow = p_canGrow; }
 };

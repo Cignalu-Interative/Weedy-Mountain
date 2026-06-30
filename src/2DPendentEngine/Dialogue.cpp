@@ -2,6 +2,11 @@
 #include "Dialogue.h"
 #include <regex>
 
+Dialogue::Dialogue()
+{
+	m_dialogues.reserve(100); // On reserve 100 dialogues par defaut pour eviter les reallocations
+}
+
 Dialogue::~Dialogue()
 {
 }

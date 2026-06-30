@@ -441,15 +441,20 @@ void InputManager::SetCursor(const std::string& path, Vector2f p_position)
 	}
 
 	m_cursor = SDL_CreateColorCursor(surf, p_position.GetX(), p_position.GetY());
+
 	SDL_DestroySurface(surf);
 
-	if (m_cursor == nullptr)
+	if (m_cursor == NULL)
 	{
 		SDL_Log("Lib/InputManager.cpp/SetCursor/SDL_CreateColorCursor/SDL_CreateColorCursor non reussie : %s", SDL_GetError());
 		return;
 	}
 
-	SDL_SetCursor(m_cursor);
+	if (SDL_SetCursor(m_cursor) == false)
+	{
+		SDL_Log("Lib/InputManager.cpp/SetCursor/SDL_SetCursor/SDL_SetCursor non reussie : %s", SDL_GetError());
+		return;
+	}
 }
 
 #ifdef _DEBUG
@@ -512,7 +517,11 @@ void InputManager::SetSDLWarpMouseInWindow(Vector2f p_position)
 }
 void InputManager::SetRelativeMouseMode(bool p_bool)
 {
-	SDL_SetWindowRelativeMouseMode(m_window->GetWindow(), p_bool);
+	if (SDL_SetWindowRelativeMouseMode(m_window->GetWindow(), p_bool) == false)
+	{
+		SDL_Log("Lib/InputManager.cpp/SetRelativeMouseMode/SDL_SetWindowRelativeMouseMode non reussie : %s", SDL_GetError());
+		return;
+	}
 }
 
 void InputManager::ClearMouseRelative()

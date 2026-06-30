@@ -32,6 +32,14 @@ Debug::Debug()
 
 	m_texts.reserve(32);
 	m_textsVector.reserve(32);
+
+	m_autoPointsCache.reserve(32);
+	m_autoLinesCache.reserve(32);
+	m_autoRectsCache.reserve(32);
+	m_autoFillRectsCache.reserve(32);
+	m_autoCirclesCache.reserve(32);
+	m_autoFillCirclesCache.reserve(32);
+	m_autoTextsCache.reserve(32);
 }
 
 Debug::~Debug()

@@ -40,6 +40,7 @@ void GameScene::OnInitialize()
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	Application::Get()->SetFPSUserWanted(10000);
+	Application::Get()->SetIsAutoFPS(false);
 
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });

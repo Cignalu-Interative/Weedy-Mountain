@@ -20,14 +20,19 @@ private :
 		std::string s_speaker;
 		std::string s_text;
 		std::vector<Choice> s_choices;  // vide = pas de question
+
+		DialogNode()
+		{
+			s_choices.reserve(4); // On reserve 4 choix par defaut pour eviter les reallocations
+		}
 	};
 
 	std::unordered_map<int, DialogNode> m_dialogues; // int représente la balise de chaque texte
 
 public :
  
+	Dialogue();
 
-	Dialogue() = default;
 	~Dialogue();
 
 	bool ParserDialogueFile(const std::string& p_path);

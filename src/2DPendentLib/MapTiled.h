@@ -50,6 +50,8 @@ private:
 	std::vector<ObjectGroupTiled*> m_objectGroups;
 	std::vector<ImageLayerTiled*> m_imageLayers;
 
+	std::vector<TilesetTiled*> m_gidToTileset;
+
 	int m_MapNextLayerId;
 	int m_MapNextObjectId;
 
@@ -75,6 +77,8 @@ private:
 	void ReadObjectGroup(tinyxml2::XMLElement* p_mapElement);
 
 	void ReadImageLayer(tinyxml2::XMLElement* p_mapElement);
+
+	void BuildGidLookupTable();
 
 public:
 

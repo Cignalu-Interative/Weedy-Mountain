@@ -61,11 +61,19 @@ void Camera::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     auto corners = Utils::GetCorners(GetPosition(), worldDimension, GetAngle(), GetRotationPoint());
 
-    SDL_SetRenderDrawColor(f_render->m_renderer, m_color.r, m_color.g, m_color.b, m_color.a);
+    if (SDL_SetRenderDrawColor(f_render->m_renderer, m_color.r, m_color.g, m_color.b, m_color.a) == false)
+    {
+        SDL_Log("Lib/Camera.cpp/Draw/SDL_SetRenderDrawColor/cela na pas fonctionné : %s", SDL_GetError());
+        return;
+	}
     for (int i = 0; i < 4; i++)
     {
         Vector2f a = p_camera->WorldToScreen(corners[i]);
         Vector2f b = p_camera->WorldToScreen(corners[(i + 1) % 4]);
-        SDL_RenderLine(f_render->m_renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY());
+        if (SDL_RenderLine(f_render->m_renderer, a.GetX(), a.GetY(), b.GetX(), b.GetY()) == false)
+        {
+            SDL_Log("Lib/Camera.cpp/Draw/SDL_RenderLine/cela na pas fonctionné : %s", SDL_GetError());
+            return;
+        }
     }
 }

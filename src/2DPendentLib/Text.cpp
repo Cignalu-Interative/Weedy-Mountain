@@ -10,7 +10,7 @@
 void Text::CreateTexture()
 {
 	int textSizeW, textSizeH;
-	if (TTF_GetStringSize(m_font, m_text.c_str(), 0, &textSizeW, &textSizeH) == -1)
+	if (TTF_GetStringSize(m_font, m_text.c_str(), 0, &textSizeW, &textSizeH) == false)
 	{
 		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_GetStringSize/cela na pas fonctionn� : %s", SDL_GetError());
 		return;
@@ -21,7 +21,7 @@ void Text::CreateTexture()
 		SDL_DestroyTexture(m_textTexture);
 		m_textTexture = nullptr;
 	}
-	m_textTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, textSizeW, textSizeH);
+	m_textTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, textSizeW, textSizeH);
 	if (m_textTexture == NULL)
 	{
 		SDL_Log("Lib/Debug.cpp/CreateTexture/SDL_CreateTexture/SDL_CreateTexture non reussie : %s", SDL_GetError());
@@ -37,19 +37,27 @@ void Text::CreateTexture()
 Text::Text(const std::string& p_idFont, int p_sizeFont)
 {
 	m_font = TTF_OpenFont(FontManager::Get()->GetFont(p_idFont).c_str(), p_sizeFont);
-	m_fontPath = FontManager::Get()->GetFont(p_idFont);
-	m_fontSize = p_sizeFont;
 	if (m_font == NULL)
 	{
 		SDL_Log("Lib/Text.cpp/Text/TTF_OpenFont/La font n'a pas pu etre ouverte : %s", SDL_GetError());
 		return;
 	}
+	m_fontPath = FontManager::Get()->GetFont(p_idFont);
+	m_fontSize = p_sizeFont;
 }
 
 Text::~Text()
 {
-	TTF_CloseFont(m_font);
-	SDL_DestroyTexture(m_textTexture);
+	if (m_font != nullptr)
+	{
+		TTF_CloseFont(m_font);
+		m_font = nullptr;
+	}
+	if (m_textTexture != nullptr)
+	{
+		SDL_DestroyTexture(m_textTexture);
+		m_textTexture = nullptr;
+	}
 }
 
 void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color)
@@ -265,6 +273,11 @@ void Text::UpdateTexture()
 	}
 
 	SDL_PropertiesID props = SDL_GetTextureProperties(m_textTexture);
+	if (props == 0)
+	{
+		SDL_Log("Lib/Debug.cpp/Update/SDL_GetTextureProperties/SDL_GetTextureProperties non reussie : %s", SDL_GetError());
+		return;
+	}
 
 	int format = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_FORMAT_NUMBER, 0);
 	int access = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_ACCESS_NUMBER, 0);

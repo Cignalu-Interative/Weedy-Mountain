@@ -55,7 +55,7 @@ private:
 protected:
 
 	//Constructeur par défaut de Scene
-	Scene() = default;
+	Scene();
 	//Destructeur de Scene, il est virtuel pour permettre aux classes qui héritent de Scene de définir leur propre logique de destruction
 	virtual ~Scene() {};
 

@@ -11,6 +11,11 @@
 //}
 
 
+ParserSpriteSheet::ParserSpriteSheet()
+{
+	m_animations.reserve(10);
+}
+
 void ParserSpriteSheet::ReadJson(const std::string& p_path)
 {
   //  std::ifstream file(p_path);

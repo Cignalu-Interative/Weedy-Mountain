@@ -16,7 +16,7 @@ private:
 
 	const float m_GRAVITY = 98.1f;
 
-	PhysicsManager() = default;
+	PhysicsManager();
 
 public:
 

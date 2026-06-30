@@ -5,6 +5,11 @@
 #include "2DPendentLib/Utils.h"
 #include <algorithm>
 
+PhysicsManager::PhysicsManager()
+{
+	m_bodies.reserve(1000); // Réserve de l'espace pour 100 entités au départ
+}
+
 PhysicsManager* PhysicsManager::Get()
 {
 	static PhysicsManager instance;

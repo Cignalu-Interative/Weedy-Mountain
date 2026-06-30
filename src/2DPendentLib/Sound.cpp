@@ -6,7 +6,7 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 {
 	m_mixer = p_mixer;
 	m_propertiesID = SDL_CreateProperties();
-	if (m_propertiesID == 0)
+	if(m_propertiesID == 0)
 	{
 		SDL_Log("Lib/Sound.cpp/Sound/SDL_CreateProperties failed: %s", SDL_GetError());
 		return;
@@ -14,17 +14,17 @@ Sound::Sound(MIX_Mixer* p_mixer, Vector2i p_wSize)
 	float distanceDiagonale = std::hypot(p_wSize.GetX(), p_wSize.GetY());
 	SetLimitDistanceToListen(100.0f, distanceDiagonale);
 
-	// Paramètres du son
+	// Paramï¿½tres du son
 	m_loopCount = 0; // Nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
-	m_StartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
-	m_LoopStartTimeMs = 0; // Point de départ de la boucle en millisecondes pour la lecture du son
-	m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son dépasse cette durée, il sera arrêté automatiquement
-	m_fadeInMs = 0; // Durée du fondu d'entrée en millisecondes, utilisée pour le fondu d'entrée du son
-	m_gainVolumeFadeIn = 1.0f; // Volume initial pour le fondu d'entrée, utilisé pour le fondu d'entrée du son
-	m_fadeOutMs = 0; // Durée du fondu de sortie en millisecondes, utilisée pour le fondu de sortie du son
-	m_soundReverberation = 0; //Durée de la réverbération du son en millisecondes, utilisée pour la réverbération du son
+	m_StartTimeMs = 0; // Point de dï¿½part de la boucle en millisecondes pour la lecture du son
+	m_LoopStartTimeMs = 0; // Point de dï¿½part de la boucle en millisecondes pour la lecture du son
+	m_maxTimeToPlayMs = -1; // Temps maximum de lecture du son en millisecondes. Si le son dï¿½passe cette durï¿½e, il sera arrï¿½tï¿½ automatiquement
+	m_fadeInMs = 0; // Durï¿½e du fondu d'entrï¿½e en millisecondes, utilisï¿½e pour le fondu d'entrï¿½e du son
+	m_gainVolumeFadeIn = 1.0f; // Volume initial pour le fondu d'entrï¿½e, utilisï¿½ pour le fondu d'entrï¿½e du son
+	m_fadeOutMs = 0; // Durï¿½e du fondu de sortie en millisecondes, utilisï¿½e pour le fondu de sortie du son
+	m_soundReverberation = 0; //Durï¿½e de la rï¿½verbï¿½ration du son en millisecondes, utilisï¿½e pour la rï¿½verbï¿½ration du son
 
-	m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+	m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activï¿½e ou non, utile pour la fonction Play() pour dï¿½cider d'appliquer ou non les paramï¿½tres de spatialisation
 
 }
 
@@ -87,7 +87,7 @@ void Sound::RemoveOldTrack()
 {
 	for (auto it = m_pistesSFX.begin(); it != m_pistesSFX.end(); )
 	{
-		// Si la piste ne joue plus (épuisée), on la libère de la mémoire
+		// Si la piste ne joue plus (ï¿½puisï¿½e), on la libï¿½re de la mï¿½moire
 		if (MIX_TrackPlaying(*it) == false)
 		{
 			MIX_DestroyTrack(*it);
@@ -382,7 +382,7 @@ void Sound::Resume() const
 	}
 }
 
-// Définit le nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles).
+// Dï¿½finit le nombre de boucles pour la lecture du son (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles).
 void Sound::SetLoopCount(int p_loopCount)
 {
 	m_loopCount = p_loopCount;
@@ -399,7 +399,7 @@ void Sound::SetStartAtTime(int p_startTime)
 
 }
 
-// Définit le point de départ de la boucle en secondes pour la lecture du son.
+// Dï¿½finit le point de dï¿½part de la boucle en secondes pour la lecture du son.
 void Sound::SetLoopStartAtTime(int p_startTime)
 {
 	if (p_startTime == 0)
@@ -410,7 +410,7 @@ void Sound::SetLoopStartAtTime(int p_startTime)
 	m_LoopStartTimeMs = static_cast<Sint64>(p_startTime * 1000.0);
 }
 
-// Définit le temps maximum de lecture du son en secondes. Si le son dépasse cette durée, il sera arrêté automatiquement.
+// Dï¿½finit le temps maximum de lecture du son en secondes. Si le son dï¿½passe cette durï¿½e, il sera arrï¿½tï¿½ automatiquement.
 void Sound::SetMaxTimeToPlay(int p_maxTime)
 {
 	if (p_maxTime == -1)
@@ -422,7 +422,7 @@ void Sound::SetMaxTimeToPlay(int p_maxTime)
 	m_maxTimeToPlayMs = static_cast<Sint64>(p_maxTime * 1000.0);
 }
 
-// Définit le volume initial et la durée du fondu d'entrée en millisecondes.
+// Dï¿½finit le volume initial et la durï¿½e du fondu d'entrï¿½e en millisecondes.
 void Sound::SetVolumeFadeIn(int p_seconde, int p_volume)
 {
 	Utils::LimitMin(p_seconde, 0);
@@ -441,7 +441,7 @@ void Sound::SetVolumeFadeIn(int p_seconde, int p_volume)
 	m_gainVolumeFadeIn = gain;
 }
 
-// Définit le volume initial et la durée du fondu de sortie en secondes.
+// Dï¿½finit le volume initial et la durï¿½e du fondu de sortie en secondes.
 void Sound::SetVolumeFadeOut(int p_seconde)
 {
 	int fadeout = Utils::LimitMin(p_seconde, 0);
@@ -449,10 +449,10 @@ void Sound::SetVolumeFadeOut(int p_seconde)
 	m_fadeOutMs = static_cast<Sint64>(fadeout * 1000);
 }
 
-//Durée de la réverbération du son en seconde, utilisée pour la réverbération du son
+//Durï¿½e de la rï¿½verbï¿½ration du son en seconde, utilisï¿½e pour la rï¿½verbï¿½ration du son
 void Sound::SetSoundReverberation(int p_seconde)
 {
-	// Sécurité pour rester au dessus de 0
+	// Sï¿½curitï¿½ pour rester au dessus de 0
 	int reverb = Utils::LimitMin(p_seconde, 0);
 
 	m_soundReverberation = static_cast<Sint64>(reverb * 1000);
@@ -505,21 +505,21 @@ void Sound::ApplySpatialization(const Vector2f& p_listenerPosition, float p_delt
 		MIX_Point3D targetPosition;
 		float targetGain;
 
-		// 1. On récupère les valeurs CIBLES (mathématiquement parfaites)
+		// 1. On rï¿½cupï¿½re les valeurs CIBLES (mathï¿½matiquement parfaites)
 		ComputeSpatialization(targetPosition, targetGain);
 
 		// 2. Calcul de la vitesse d'interpolation (Slew Rate)
 		// 15.0f est une bonne valeur de base : assez rapide pour suivre l'action, 
-		// mais assez doux pour éviter les "clics" audio.
+		// mais assez doux pour ï¿½viter les "clics" audio.
 		float interpSpeed = 15.0f * p_deltaTime;
-		Utils::Clamp(interpSpeed, 0.0f, 1.0f); // Sécurité anti-lag
+		Utils::Clamp(interpSpeed, 0.0f, 1.0f); // Sï¿½curitï¿½ anti-lag
 
-		// 3. Interpolation Linéaire (Lerp) depuis la valeur actuelle vers la cible
+		// 3. Interpolation Linï¿½aire (Lerp) depuis la valeur actuelle vers la cible
 		m_currentSmoothedGain = std::lerp(m_currentSmoothedGain, targetGain, interpSpeed);
 		m_currentSmoothedPanX = std::lerp(m_currentSmoothedPanX, targetPosition.x, interpSpeed);
 		m_currentSmoothedPanZ = std::lerp(m_currentSmoothedPanZ, targetPosition.z, interpSpeed);
 
-		// Création du vecteur de position lissé
+		// Crï¿½ation du vecteur de position lissï¿½
 		MIX_Point3D finalPosition = { m_currentSmoothedPanX, 0.0f, m_currentSmoothedPanZ };
 
 		if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
@@ -529,7 +529,7 @@ void Sound::ApplySpatialization(const Vector2f& p_listenerPosition, float p_delt
 		}
 		else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
 		{
-			// 4. On applique les valeurs LISSÉES aux pistes
+			// 4. On applique les valeurs LISSï¿½ES aux pistes
 			for (MIX_Track* piste : m_pistesSFX)
 			{
 				MIX_SetTrack3DPosition(piste, &finalPosition);
@@ -545,7 +545,7 @@ float Sound::ComputeDistanceGain(float p_distance) const
 	if (p_distance >= m_maxDistanceToListen) return 0.0f; // vrai silence garanti
 
 	float t = (p_distance - m_minDistanceToListen) / (m_maxDistanceToListen - m_minDistanceToListen);
-	return 1.0f - t; // linéaire ; remplace par (1.0f - t) * (1.0f - t) pour une chute plus douce au début
+	return 1.0f - t; // linï¿½aire ; remplace par (1.0f - t) * (1.0f - t) pour une chute plus douce au dï¿½but
 }
 
 void Sound::UpdateRelativePosition(const Vector2f& p_listenerPosition)
@@ -582,16 +582,16 @@ void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) 
 		float panX = dx / distance;
 		float panZ = dy / distance;
 
-		// 2. Lissage si on est très proche de la source
+		// 2. Lissage si on est trï¿½s proche de la source
 		if (distance < m_minDistanceToListen)
 		{
-			// Crée un ratio de 0.0 (au centre exact) à 1.0 (sur la bordure de la distance min)
+			// Crï¿½e un ratio de 0.0 (au centre exact) ï¿½ 1.0 (sur la bordure de la distance min)
 			float x = distance / m_minDistanceToListen;
 
-			// Optionnel : Mettre au carré pour rendre la transition vers le centre encore plus douce
+			// Optionnel : Mettre au carrï¿½ pour rendre la transition vers le centre encore plus douce
 			float centerBlend = (x * x) * (3.0f - 2.0f * x);
 
-			// Applique le ratio : plus on est proche, plus le son est forcé au centre (0.0)
+			// Applique le ratio : plus on est proche, plus le son est forcï¿½ au centre (0.0)
 			panX *= centerBlend;
 			panZ *= centerBlend;
 		}
@@ -601,7 +601,7 @@ void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) 
 	}
 	else
 	{
-		// Exactement sur la source = son parfaitement centré (omnidirectionnel)
+		// Exactement sur la source = son parfaitement centrï¿½ (omnidirectionnel)
 		p_outPosition.x = 0.0f;
 		p_outPosition.z = 0.0f;
 	}
@@ -611,7 +611,7 @@ void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) 
 
 	if (distance > m_minDistanceToListen)
 	{
-		// Ratio de 0.0 (à la distance min) jusqu'à 1.0 (à la distance max)
+		// Ratio de 0.0 (ï¿½ la distance min) jusqu'ï¿½ 1.0 (ï¿½ la distance max)
 		t = (distance - m_minDistanceToListen) / (m_maxDistanceToListen - m_minDistanceToListen);
 	}
 
@@ -620,7 +620,7 @@ void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) 
 	// Inverse le ratio (1 = proche, 0 = loin)
 	float invertedRatio = 1.0f - t;
 
-	// On met au carré pour créer une courbe qui s'estompe doucement à la fin
+	// On met au carrï¿½ pour crï¿½er une courbe qui s'estompe doucement ï¿½ la fin
 	float naturalAttenuation = invertedRatio * invertedRatio;
 
 	p_outGain = m_relativeVolume * naturalAttenuation;

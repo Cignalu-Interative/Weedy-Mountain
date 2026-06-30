@@ -1,5 +1,4 @@
 #pragma once
-
 template<typename T>
 class Condition
 {
@@ -24,6 +23,10 @@ public:
         {
             return TestBool(type) == ExpectedValue;
 		}
+        else
+        {
+            return TestBool(type) == ExpectedValue;
+        }
     }
 
 	// Fonctions de test virtuelles en Int

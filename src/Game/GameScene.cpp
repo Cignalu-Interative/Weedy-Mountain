@@ -39,6 +39,7 @@ void GameScene::OnInitialize()
 	gm.Initialize();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	Application::Get()->SetFPSUserWanted(10000);
 
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });
@@ -115,6 +116,14 @@ void GameScene::OnEvent()
 
 	if (im->IsKeyboardDown(K_E))
 		GetCamera()->SetZoom(1);
+	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
+	{
+		Application::Get()->SetIsAutoFPS(false);
+	}
+	if (InputManager::Get()->IsKeyboardDown(K_KP_2))
+	{
+		Application::Get()->SetIsAutoFPS(true);
+	}
 }
 
 void GameScene::OnUpdate()

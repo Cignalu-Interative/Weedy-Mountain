@@ -25,7 +25,7 @@
 //
 //DemoScene::DemoScene()
 //{
-//	m_players.reserve(64); // Réserver de la mémoire pour 64 entites afin d'éviter les reallocations fréquentes lors de l'ajout de joueurs
+//	m_players.reserve(64); // Rï¿½server de la mï¿½moire pour 64 entites afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de joueurs
 //}
 //
 //void DemoScene::OnInitialize()
@@ -151,7 +151,7 @@
 //	GetEntities().clear();
 //}
 //
-//void DemoScene::TestVélocité()
+//void DemoScene::TestVï¿½locitï¿½()
 //{
 //	for (Player* player : m_players)
 //	{

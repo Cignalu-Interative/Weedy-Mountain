@@ -9,7 +9,7 @@ private:
 
 	SDL_PropertiesID m_propertiesID = 0;
 
-	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utilisé pour gérer les shaders et les textures
+	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utilis pour grer les shaders et les textures
 
 public:
 

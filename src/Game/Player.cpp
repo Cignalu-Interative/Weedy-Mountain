@@ -10,6 +10,11 @@
 #include "GameData.h" 
 #include "Inventory.h"
 
+#include "PlayerState.h"
+#include "PlayerConditions.h"
+
+#include "Inventory.h"
+
 void Player::OnInitialize()
 {
 
@@ -31,14 +36,24 @@ void Player::OnInitialize()
 
 	/*PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
-	m_Jobs.push_back(killer);
+	m_jobs.push_back(killer);
 	PlayerJob* dealer = new PlayerJob();
 	dealer->m_name = JobType::Dealer;
-	m_Jobs.push_back(dealer);*/
+	m_jobs.push_back(dealer);
+
+
+	SetupStateMachine();
+
 }
 
 void Player::OnEvent()
 {
+	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
+		SetSpeed(m_stats.m_playerSpeed * 2);
+	}
+	else SetSpeed(m_stats.m_playerSpeed);
+
+	Vector2f direction = GetDirection();
 	float currentSpeed = InputManager::Get()->IsKeyboardHeld(K_LSHIFT) ? m_stats.m_playerSpeed * 2.f : m_stats.m_playerSpeed;
 	SetSpeed(currentSpeed);
 
@@ -50,9 +65,11 @@ void Player::OnEvent()
 	Vector2f dir = {0.f, 0.f};
 	Collider* boxCollider = GetCollider("actionBox");
 	//Input Clavier
-	// lock les mouvements pendant les dialogues
-	if (m_isInDialog == false)
+	// Mettre les inputs pour lesquels on ne veux pas pouvoir les detecter lorsqu'on est dans un shop dialogues etc ... 
+	if (m_inputBlocker == false)
 	{
+		
+
 		//Input Clavier
 		if (InputManager::Get()->IsKeyboardHeld(K_Z))
 		{
@@ -78,6 +95,20 @@ void Player::OnEvent()
 		if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
 			//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
 		}
+
+		if (InputManager::Get()->IsKeyboardDown(K_1))
+			m_selectedCrop = CropCatalog::Wheat();
+		if (InputManager::Get()->IsKeyboardDown(K_2))
+			m_selectedCrop = CropCatalog::Carrot();
+
+		// Action farm 
+		// TEMP - AGRI
+
+		// S�lection plante 
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+			HandleFarmAction();
+
+
 
 	}
 
@@ -157,8 +188,8 @@ void Player::HandleFarmAction()
 
 void Player::OnUpdate()
 {
+	m_stateMachine.Update(this, GetDeltaTime());
 	UpdateJobs();
-
 	MoveKinematic();
 }
 
@@ -205,6 +236,7 @@ void Player::UpdateJobs()
 				UnlockRecipe(Recipes::EnergizingL2);
 				break;
 			}
+			break;
 
 		case JobType::Farmer:
 			switch (m_jobs[i]->m_lvl) {
@@ -213,14 +245,14 @@ void Player::UpdateJobs()
 				break;
 			case 3:
 				UnlockRecipe(Recipes::AutoWateringL1);
-				
+
 				break;
 			case 4:
 				GetStats().m_farmerSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::FertilizerL2);
-				
+
 				break;
 			case 6:
 				UnlockRecipe(Recipes::AutoWateringL2);
@@ -232,22 +264,22 @@ void Player::UpdateJobs()
 			switch (m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::StoneTools);
-				
+
 				break;
 			case 3:
 				UnlockRecipe(Recipes::IronTools);
-				
+
 				break;
 			case 4:
 				GetStats().m_miningSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::GoldTools);
-				
+
 				break;
 			case 6:
 				UnlockRecipe(Recipes::DiamondTools);
-				
+
 				break;
 			}
 			break;
@@ -302,7 +334,123 @@ void Player::UnlockRecipe(Recipes _toUnlock)
 		m_unlockedRecipes.push_back(_toUnlock);
 		std::cout << "item unlocked" << std::endl;
 	}
-		
+
+}
+
+void Player::SetupStateMachine()
+{ 
+	m_stateMachine.AddState(new PlayerIdleState);//0
+	m_stateMachine.AddState(new PlayerWalkingState);//1
+	m_stateMachine.AddState(new PlayerWateringState);//5
+	m_stateMachine.AddState(new PlayerDiggingState);//6
+	m_stateMachine.AddState(new PlayerMiningState);//7
+
+	//TRANSITIONS 
+
+	//IDLE
+	{
+		// to digging
+		auto transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING);
+		transition->AddCondition(new HasSpadeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		// to mining
+		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::MINING);
+		transition->AddCondition(new HasPickaxeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		// to watering
+		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WATERING);
+		transition->AddCondition(new HasWateringCanInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		// to walk states
+		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKING);
+		Condition<Player>* playerStaticCondition = new IsPlayerStatic;
+		playerStaticCondition->ExpectedValue = false;
+		transition->AddCondition(playerStaticCondition);
+	}
+
+	//DIGGING 
+	{
+		auto transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE);
+		Condition<Player>* hasSpadeInHandsCondition = new HasSpadeInHands;
+		hasSpadeInHandsCondition->ExpectedValue = false;
+		transition->AddCondition(hasSpadeInHandsCondition);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::IDLE);
+		Condition<Player>* digToIdleCondition = new IsPlayerUsingToolInHand;
+		digToIdleCondition->ExpectedValue = false;
+		transition->AddCondition(digToIdleCondition);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::MINING);
+		transition->AddCondition(new HasPickaxeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WATERING);
+		transition->AddCondition(new HasWateringCanInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::DIGGING, (int)PlayerState::WALKING);
+		Condition<Player>* isStaticCondition = new IsPlayerStatic;
+		isStaticCondition->ExpectedValue = false;
+		transition->AddCondition(isStaticCondition);
+	}
+
+	//WATERING
+	{
+		auto transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::IDLE);
+		Condition<Player>* hasWateringCanCondition = new HasWateringCanInHands;
+		hasWateringCanCondition->ExpectedValue = false;
+		transition->AddCondition(hasWateringCanCondition);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::IDLE);
+		Condition<Player>* playerUsingToolCondition = new IsPlayerUsingToolInHand;
+		playerUsingToolCondition->ExpectedValue = false;
+		transition->AddCondition(playerUsingToolCondition);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::MINING);
+		transition->AddCondition(new HasWateringCanInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::DIGGING);
+		transition->AddCondition(new HasSpadeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::WATERING, (int)PlayerState::WALKING);
+		Condition<Player>* playerStaticCondition = new IsPlayerStatic;
+		playerStaticCondition->ExpectedValue = false;
+		transition->AddCondition(playerStaticCondition);
+	}
+
+	//MINING 
+	{
+		auto transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::IDLE);
+		Condition<Player>* playerUsingToolCondition = new IsPlayerUsingToolInHand;
+		playerUsingToolCondition->ExpectedValue = false;
+		transition->AddCondition(playerUsingToolCondition);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::IDLE);
+		Condition<Player>* hasPickaxeCondition = new HasPickaxeInHands;
+		hasPickaxeCondition->ExpectedValue = false;
+		transition->AddCondition(hasPickaxeCondition);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::DIGGING);
+		transition->AddCondition(new HasSpadeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::WATERING);
+		transition->AddCondition(new HasWateringCanInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::MINING, (int)PlayerState::WALKING);
+		Condition<Player>* isStaticCondition = new IsPlayerStatic;
+		isStaticCondition->ExpectedValue = false;
+		transition->AddCondition(isStaticCondition);
+
+	}
+
+	SetState(PlayerState::IDLE);
 }
 
 bool Player::IsRecipeUnlocked(Recipes _toUnlock)
@@ -316,4 +464,19 @@ bool Player::IsRecipeUnlocked(Recipes _toUnlock)
 
 	}
 	return false;
+}
+
+void Player::LockInputs()
+{
+	m_inputBlocker = true;
+}
+
+void Player::UnlockInputs()
+{
+	m_inputBlocker = false;
+}
+
+void Player::SetState(PlayerState p_state)
+{
+	m_stateMachine.TryTransitionTo(this, (int)p_state);
 }

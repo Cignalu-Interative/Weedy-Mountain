@@ -1,6 +1,21 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
-#include "CropDefinition.h" 
+#include "CropDefinition.h"
+#include "StateMachine.h"
+
+
+enum class PlayerState
+{
+	IDLE,
+	WALKING,
+
+	WATERING,
+	DIGGING,
+	MINING,
+
+	COUNT
+};
+
 
 enum class JobType
 {
@@ -78,6 +93,8 @@ class Inventory;
 class Player : public Entity
 {
 private:
+	StateMachine<Player> m_stateMachine;
+
 	PlayerStats m_stats;
 	std::vector<PlayerJob*> m_jobs;
 	Inventory* m_inventory;
@@ -88,7 +105,9 @@ private:
 
 	std::vector<Recipes> m_unlockedRecipes;
 
-	bool m_isInDialog = false;
+	bool m_isUsingToolInHand = false;
+
+	bool m_inputBlocker = false;
 
 	int m_money = 2000000;
 
@@ -114,14 +133,25 @@ public:
 
 	void UpdateJobs();
 	void UnlockRecipe(Recipes _toUnlock);
-	bool IsRecipeUnlocked(Recipes _toUnlock);
-
-	void SetIsInDialog(bool p_isInDialog) { m_isInDialog = p_isInDialog; }
+	void SetupStateMachine();
 
 	Inventory* GetInventory() { return m_inventory; }
 
 	int GetMoney() { return m_money; }
 	void AddMoney(int p_amount) { m_money += p_amount; }
 	void DecreaseMoney(int p_amount) { m_money -= p_amount; }
+	void SetIsUsingToolInHand(bool p_isUsing) { m_isUsingToolInHand = p_isUsing; }
+	void SetState(PlayerState p_state);
+
+	bool IsRecipeUnlocked(Recipes _toUnlock);
+	bool IsUsingToolInHand() { return m_isUsingToolInHand; }
+
+	void LockInputs();
+	void UnlockInputs();
+
+	// temp en attendant d'avoir la hotbar et le current item en main
+	bool hasSpade = false;
+	bool hasPickaxe = false;
+	bool hasWateringCan = false;
 };
 

@@ -5,6 +5,7 @@
 #include "2DPendentLib/Render.h"
 #include "2DPendentLib/Window.h"
 #include "2DPendentLib/Camera.h"
+#include "2DPendentLib/BatchRenderer2D.h"
 
 SceneManager::SceneManager()
 {
@@ -189,6 +190,21 @@ void SceneManager::DrawScenesInStack(Render* f_render, Window* f_window, Camera*
 	{
 		scene->Draw(f_render, f_window, p_camera);
 	}
+
+	const std::vector<Data>& batches = BatchRenderer2D::Get()->Flush();
+	for (const auto& batch : batches)
+	{
+		if (batch.s_vertices.empty())
+			continue; // sécurité : un slot recyclé mais pas réutilisé cette frame
+
+		if (SDL_RenderGeometry(f_render->GetRenderer(), batch.s_texture,
+			batch.s_vertices.data(), static_cast<int>(batch.s_vertices.size()),
+			batch.s_indices.data(), static_cast<int>(batch.s_indices.size())) == false)
+		{
+			SDL_Log("Engine/SceneManager.cpp/DrawScenesInStack/SDL_RenderGeometry/cela na pas fonctionné : %s", SDL_GetError());
+		}
+	}
+
 }
 
 bool SceneManager::IsSceneInStack() const

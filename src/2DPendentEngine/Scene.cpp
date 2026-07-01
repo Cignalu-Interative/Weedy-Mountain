@@ -120,14 +120,13 @@ void Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 	{
 		return;
 	}
-	//
-
-	std::list<Entity*> entToDraw = m_entities;
 
 	/*std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
 	{
 		return a->GetDrawLayer() < b->GetDrawLayer();
 	});*/
+
+	std::list<Entity*> entToDraw = m_entities;
 
 	entToDraw.sort([](const Entity* a, const Entity* b)
 	{
@@ -139,7 +138,6 @@ void Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		entity->Draw(f_render, f_window);
 	}
 
-	//
 	OnDraw();
 }
 

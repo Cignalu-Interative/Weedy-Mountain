@@ -13,4 +13,6 @@ struct SpriteCommand
 	SDL_Texture* s_texture = nullptr;
 	SDL_FRect s_srcRect{};
 	SDL_FRect s_dstRect{};
+	float s_angle = 0.0f;
+	SDL_FPoint s_rotationCenter{};
 };

@@ -17,7 +17,6 @@ struct Data
 		s_vertices.reserve(10000); // Réserve de l'espace pour 1000 sommets
 		s_indices.reserve(15000);  // Réserve de l'espace pour 1500 indices
 	}
-
 };
 
 class BatchRenderer2D
@@ -32,7 +31,6 @@ private:
 
 	template <typename T>
 	void AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, const T& p_Command);
-
 
 public:
 

@@ -5,6 +5,8 @@
 #include "AssetManager.h"
 #include "Camera.h"
 #include "Utils.h"
+#include "BatchRenderer2D.h"
+#include"BatchCommand.h"
 
 Sprite::~Sprite()
 {
@@ -271,7 +273,12 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         return;
     }
 
-    // 3. Rendu avec ROTATION compl�te
+	/*BatchRenderer2D::Get()->Fill(SpriteCommand{
+        m_texture, m_srcRect ? *m_srcRect : SDL_FRect{0, 0, (float)GetDimension().GetX(), (float)GetDimension().GetY()}, dstRect, GetAngle(), rotationCenter });*/
+
+    // 3. Rendu avec ROTATION complete
+
+
     if (SDL_RenderTextureRotated(renderer, m_texture,
         m_srcRect,           // Frame du sprite sheet (ou NULL)
         &dstRect,          // Position/taille � l'�cran

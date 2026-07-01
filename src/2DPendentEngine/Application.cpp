@@ -220,6 +220,8 @@ void Application::Update()
 	}
 	m_entityToAdd.clear();
 
+	m_camera->Follow();
+	
 	if (m_cameraIsClamp)
 		ClampCameraToCurrentMap();
 }
@@ -265,6 +267,9 @@ void Application::ClampCameraToCurrentMap()
 
 	Vector2f min = realCamDim / 2.f;
 	Vector2f max = mapDimensions - min;
+
+	if (max < min)
+		return;
 
 	Vector2f clampPosition = {}; // Utils::Clamp(cameraPos, Vector2f{}, max);
 

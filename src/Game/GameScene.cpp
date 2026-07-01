@@ -60,6 +60,7 @@ void GameScene::OnInitialize()
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
 	Application::Get()->SetClampCameraToCurrentMap(true);
+	GetCamera()->SetFollowedEntity(m_player);
 
 	MapTiled* map = mm->GetCurrentMap();
 
@@ -116,7 +117,7 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
-	GetCamera()->Follow(m_player);
+	
 	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();

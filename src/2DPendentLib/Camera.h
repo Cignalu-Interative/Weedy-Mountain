@@ -19,6 +19,8 @@ private:
 
 	float m_smoothSpeed = 1;
 
+	Entity* m_followedEntity = nullptr;
+
 public:
 
 	//Constructeur de Camera, il prend en paramètre la position et la dimension de la caméra
@@ -31,8 +33,6 @@ public:
 	float GetZoom() const { return m_zoomFactor; }
 	void ZoomIn(float p_amount);
 	void ZoomOut(float p_amount);
-
-	void Follow(Entity* p_entity);
 
 	//MONDE -> ECRAN
 	template<typename T>
@@ -47,6 +47,9 @@ public:
 
 	void SetSmoothSpeed(float p_smoothSpeed) { m_smoothSpeed = p_smoothSpeed; }
 	float GetSmoothSpeed() const { return m_smoothSpeed; }
+
+	void SetFollowedEntity(Entity* p_entity) { m_followedEntity = p_entity; }
+	void Follow();
 
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 };

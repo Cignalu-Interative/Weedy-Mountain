@@ -102,8 +102,6 @@ void GameScene::OnEvent()
 	if (im->IsKeyboardDown(K_A))
 		GetCamera()->SetZoom(5);
 
-	if (im->IsKeyboardDown(K_E))
-		GetCamera()->SetZoom(1);
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{
 		Application::Get()->SetIsAutoFPS(false);

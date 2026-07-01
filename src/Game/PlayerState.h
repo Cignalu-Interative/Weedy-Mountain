@@ -9,7 +9,10 @@ class PlayerIdleState : public StateBase<Player>
 		p_player->SetAnimationByName("Idle");
 	};
 
-	void Update(Player* p_player, float dt)override {};
+	void Update(Player* p_player, float dt)override 
+	{
+		
+	};
 	void End(Player* p_player) override {};
 	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
@@ -36,27 +39,14 @@ class PlayerWalkingState : public StateBase<Player>
 		else if (playerDir.GetY() < 0)
 			p_player->SetAnimationByName("WalkUp");
 
+		
 	};
 
 	void End(Player* p_player)override {};
 
 	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
-		switch (currentState)
-		{
-		case (int)PlayerState::IDLE:
-			return true;
-			break;
-		case (int)PlayerState::WATERING:
-			return false;
-			break;
-		case (int)PlayerState::DIGGING:
-			return false;
-			break;
-		case (int)PlayerState::MINING: 
-			return false;
-			break; 
-		}
+		return true;
 	};
 };
 

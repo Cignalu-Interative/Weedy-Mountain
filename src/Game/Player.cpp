@@ -51,7 +51,6 @@ void Player::OnEvent()
 	}
 	else SetSpeed(m_stats.m_playerSpeed);
 
-	Vector2f direction = GetDirection();
 	float currentSpeed = InputManager::Get()->IsKeyboardHeld(K_LSHIFT) ? m_stats.m_playerSpeed * 2.f : m_stats.m_playerSpeed;
 	SetSpeed(currentSpeed);
 
@@ -109,6 +108,8 @@ void Player::OnEvent()
 
 
 	}
+
+	SetDirection(dir);
 
 	float len = std::sqrtf(dir.GetX() * dir.GetX() + dir.GetY() * dir.GetY());
 	if (len > 0.f)
@@ -349,8 +350,14 @@ void Player::SetupStateMachine()
 
 	//IDLE
 	{
+		// to walking
+		auto transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKING);
+		Condition<Player>* isStaticCondition = new IsPlayerStatic;
+		isStaticCondition->ExpectedValue = false;
+		transition->AddCondition(isStaticCondition);
+
 		// to digging
-		auto transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING);
+		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::DIGGING);
 		transition->AddCondition(new HasSpadeInHands);
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
@@ -364,11 +371,6 @@ void Player::SetupStateMachine()
 		transition->AddCondition(new HasWateringCanInHands);
 		transition->AddCondition(new IsPlayerUsingToolInHand);
 
-		// to walk states
-		transition = m_stateMachine.AddTransition((int)PlayerState::IDLE, (int)PlayerState::WALKING);
-		Condition<Player>* playerStaticCondition = new IsPlayerStatic;
-		playerStaticCondition->ExpectedValue = false;
-		transition->AddCondition(playerStaticCondition);
 	}
 
 	//DIGGING 
@@ -450,7 +452,27 @@ void Player::SetupStateMachine()
 
 	}
 
-	SetState(PlayerState::IDLE);
+	//WALKING
+	{
+		auto transition = m_stateMachine.AddTransition((int)PlayerState::WALKING, (int)PlayerState::IDLE);
+		transition->AddCondition(new IsPlayerStatic);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::WALKING, (int)PlayerState::MINING);
+		transition->AddCondition(new HasPickaxeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::WALKING, (int)PlayerState::DIGGING);
+		transition->AddCondition(new HasSpadeInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+		transition = m_stateMachine.AddTransition((int)PlayerState::WALKING, (int)PlayerState::WATERING);
+		transition->AddCondition(new HasWateringCanInHands);
+		transition->AddCondition(new IsPlayerUsingToolInHand);
+
+
+	}
+
+	SetState(PlayerState::DIGGING);
 }
 
 bool Player::IsRecipeUnlocked(Recipes _toUnlock)

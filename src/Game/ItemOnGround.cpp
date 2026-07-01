@@ -25,7 +25,15 @@ void ItemOnGround::OnEvent()
 void ItemOnGround::OnUpdate()
 {
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
-	MoveKinematic();
+	if (m_timer > 0) {
+		m_timer -= GetDeltaTime();
+	}
+	else MoveKinematic();
+
+	m_timeToDestroy -= GetDeltaTime();
+	if (m_timeToDestroy <= 0) {
+		Destroy();
+	}
 }
 
 void ItemOnGround::OnDestroy()
@@ -52,6 +60,7 @@ void ItemOnGround::OnCollisionEnter(Collider* _self, Collider* _other, Collision
 		Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
 		if(text) text->SetText(std::to_string(m_ItemInfo.GetAmount()));
 		otherItem->Destroy();
+		m_timeToDestroy = 300.f;
 	}
 }
 

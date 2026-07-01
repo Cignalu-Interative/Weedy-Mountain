@@ -4,11 +4,13 @@
 #include "Tool.h"
 #include "EnviroSpawn.h"
 #include "ItemStack.h"
+#include "FarmTile.h"
 
 struct EnviroStats {
 	int m_hitToDestroy = 1;
 	Rarity m_minToolsRarity = Rarity::Wooden;
 	std::vector<ToolType> m_toolType;
+	FarmTile* m_position;
 };
 
 struct EnviroLoots {
@@ -39,11 +41,12 @@ protected:
 	void OnDestroy() override;
 
 	void CreateItem(int lootPos);
-
 public:
 	EnviroProps() = default;
+
 	void SetType(EnviroSpawnName p_name);
 
+	void SetFarmTile(FarmTile* position) { m_stats.m_position = position; }
 
 };
 

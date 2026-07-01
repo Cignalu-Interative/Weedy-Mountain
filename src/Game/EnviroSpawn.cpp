@@ -82,6 +82,9 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
 	int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size());
+	if (FarmManager::Get()->GetAllFarmTiles()[tile]->CanGrow() == false) {
+		return;
+	}
 	Props = gs->CreateEntity<EnviroProps>( FarmManager::Get()->GetAllFarmTiles()[tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
@@ -90,7 +93,8 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Props->GetCollider()->SetLayer(ENVIRO);
 	Props->GetCollider()->SetMask(PLAYER);
 	Props->InitialisePhysicsBody(ShapeBodyPhysics::Static);
-
+	Props->SetFarmTile(FarmManager::Get()->GetAllFarmTiles()[tile]);
+	FarmManager::Get()->GetAllFarmTiles()[tile]->SetCanGrow(false);
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:

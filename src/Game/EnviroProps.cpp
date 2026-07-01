@@ -67,6 +67,8 @@ void EnviroProps::OnDestroy()
 			CreateItem(i);
 		}
 	}
+
+	m_stats.m_position->SetCanGrow(true);
 }
 
 void EnviroProps::CreateItem(int lootPos)
@@ -76,7 +78,7 @@ void EnviroProps::CreateItem(int lootPos)
 	float posY = GetPosition().GetY();
 	ItemOnGround* Loot;
 	std::string path = ItemDataBase::Get()->GetItem(m_loots[lootPos]->m_item.GetID())->GetPath();
-	Loot = sc->CreateEntity<ItemOnGround>({ Aleatory::GetFloat(posX,posX + 50),Aleatory::GetFloat(posY, posY + 50) }, { 16,16 }, path, Shape::Circle);
+	Loot = sc->CreateEntity<ItemOnGround>({ Aleatory::GetFloat(posX-25,posX + 25),Aleatory::GetFloat(posY - 10, posY + 10) }, { 16,16 }, path, Shape::Circle);
 	Loot->SetItem(m_loots[lootPos]->m_item);
 	Loot->SetTag(3);
 	Loot->GetCollider()->Resize({ 20,20 });

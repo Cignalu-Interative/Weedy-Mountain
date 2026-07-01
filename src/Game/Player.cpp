@@ -450,7 +450,7 @@ void Player::SetupStateMachine()
 
 	}
 
-	SetState(PlayerState::WALKING);
+	SetState(PlayerState::IDLE);
 }
 
 bool Player::IsRecipeUnlocked(Recipes _toUnlock)

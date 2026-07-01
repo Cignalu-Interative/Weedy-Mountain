@@ -30,41 +30,9 @@ class HasWateringCanInHands : public Condition<Player>
 	}
 };
 
-class IsPlayerGoingDown : public Condition<Player>
-{
-	bool TestBool(Player* p_player) override
-	{
-		return p_player->GetDirection().GetY() < 0;
-	}
-};
-
-class IsPlayerGoingUp : public Condition<Player>
-{
-	bool TestBool(Player* p_player) override
-	{
-		return p_player->GetDirection().GetY() > 0;
-	}
-};
-
-class IsPlayerGoingLeft : public Condition<Player>
-{
-	bool TestBool(Player* p_player) override
-	{
-		return p_player->GetDirection().GetX() < 0;
-	}
-};
-
-class IsPlayerGoingRight : public Condition<Player>
-{
-	bool TestBool(Player* p_player) override
-	{
-		return p_player->GetDirection().GetX() > 0;
-	}
-};
-
 class IsPlayerStatic : public Condition<Player>
 {
-	bool TestBool(Player* p_player)
+	bool TestBool(Player* p_player) override
 	{
 		return p_player->GetDirection().GetX() == 0 && p_player->GetDirection().GetY() == 0;
 	}
@@ -72,7 +40,7 @@ class IsPlayerStatic : public Condition<Player>
 
 class IsPlayerUsingToolInHand : public Condition<Player>
 {
-	bool TestBool(Player* p_player)
+	bool TestBool(Player* p_player) override
 	{
 		return p_player->IsUsingToolInHand();
 	}
@@ -80,7 +48,7 @@ class IsPlayerUsingToolInHand : public Condition<Player>
 
 class CanPlayerDig : public Condition<Player>
 {
-	bool TestBool(Player* p_player)
+	bool TestBool(Player* p_player) override
 	{
 		return p_player->IsUsingToolInHand() && p_player->hasSpade;
 	}

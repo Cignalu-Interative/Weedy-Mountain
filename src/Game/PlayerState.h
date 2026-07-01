@@ -4,36 +4,26 @@
 
 class PlayerIdleState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
-		//p_player->SetAnimationByName("Idle");
+	void Start(Player* p_player) override {
 		std::cout << "Idle" << std::endl;
+		p_player->SetAnimationByName("Idle");
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	void Update(Player* p_player, float dt)override {};
+	void End(Player* p_player) override {};
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
-		switch (currentState)
-		{
-		case (int)PlayerState::MINING:
-			return true;
-			break;
-		case (int)PlayerState::DIGGING:
-			return true;
-			break;
-		case (int)PlayerState::WATERING:
-			return true;
-			break;
-
-		}
+		return true;
 	};
 };
 
 class PlayerWalkingState : public StateBase<Player>
 {
-	void Start(Player* p_player) {};
+	void Start(Player* p_player) override {
+		std::cout << "Walking" << std::endl;
+	};
 
-	void Update(Player* p_player, float dt) 
+	void Update(Player* p_player, float dt) override
 	{
 		Vector2f playerDir = p_player->GetDirection();
 		if (playerDir.GetX() > 0)
@@ -47,20 +37,40 @@ class PlayerWalkingState : public StateBase<Player>
 			p_player->SetAnimationByName("WalkUp");
 
 	};
-	void End(Player* p_player) {};
+
+	void End(Player* p_player)override {};
+
+	bool CanTransitionFrom(Player* p_player, int currentState)override
+	{
+		switch (currentState)
+		{
+		case (int)PlayerState::IDLE:
+			return true;
+			break;
+		case (int)PlayerState::WATERING:
+			return false;
+			break;
+		case (int)PlayerState::DIGGING:
+			return false;
+			break;
+		case (int)PlayerState::MINING: 
+			return false;
+			break; 
+		}
+	};
 };
 
 class PlayerWateringState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
-		//p_player->SetAnimationByName("WalkLeft");
+	void Start(Player* p_player) override {
+		p_player->SetAnimationByName("Watering");
 		std::cout << "watering" << std::endl;
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
+	void Update(Player* p_player, float dt) override {};
+	void End(Player* p_player) override {};
 
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
 		switch (currentState)
 		{
@@ -79,15 +89,15 @@ class PlayerWateringState : public StateBase<Player>
 
 class PlayerDiggingState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
-		//p_player->SetAnimationByName("WalkLeft");
+	void Start(Player* p_player)override {
+		p_player->SetAnimationByName("Digging");
 		std::cout << "digging" << std::endl;
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
+	void Update(Player* p_player, float dt) override {};
+	void End(Player* p_player) override {};
 
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
 		switch (currentState)
 		{
@@ -106,15 +116,15 @@ class PlayerDiggingState : public StateBase<Player>
 
 class PlayerMiningState : public StateBase<Player>
 {
-	void Start(Player* p_player) {
-		//p_player->SetAnimationByName("WalkLeft");
+	void Start(Player* p_player) override {
+		p_player->SetAnimationByName("Mining");
 		std::cout << "mining" << std::endl;
 	};
 
-	void Update(Player* p_player, float dt) {};
-	void End(Player* p_player) {};
+	void Update(Player* p_player, float dt) override {};
+	void End(Player* p_player) override {};
 
-	bool CanTransitionFrom(Player* p_player, int currentState)
+	bool CanTransitionFrom(Player* p_player, int currentState)override
 	{
 		switch (currentState)
 		{

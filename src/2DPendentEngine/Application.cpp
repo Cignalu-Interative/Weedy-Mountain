@@ -219,8 +219,6 @@ void Application::Update()
 		m_entities.push_back(*it);
 	}
 	m_entityToAdd.clear();
-
-	m_camera->Follow();
 	
 	if (m_cameraIsClamp)
 		ClampCameraToCurrentMap();
@@ -357,6 +355,7 @@ void Application::IsEneableToUpdate()
 	while (m_accumulator >= m_FIX_UPDATE)
 	{
 		FixedUpdate();
+		m_camera->Follow();
 		m_accumulator -= m_FIX_UPDATE;
 	}
 

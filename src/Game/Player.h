@@ -76,7 +76,7 @@ struct PlayerStats {
 	float m_Hp = m_maxHp;
 
 	float m_maxStamina = 100.f;
-	float m_Stamina = m_maxStamina;
+	float m_stamina = m_maxStamina;
 
 	float m_maxToxicity = 100.f;
 	float m_toxicity = 0.f;

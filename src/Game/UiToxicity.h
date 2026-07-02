@@ -1,5 +1,11 @@
 #pragma once
-class UiToxicity
+#include "Ui.h"
+
+class UiToxicity : public Ui
 {
+public :
+	void OnInitialize() override;
+
+	void OnUpdate() override;
 };
 

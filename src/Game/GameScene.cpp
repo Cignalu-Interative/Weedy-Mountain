@@ -27,19 +27,23 @@
 #include "UiShop.h"
 #include "SpriteContainer.h"
 
+#include "UiLife.h"
+#include "UiStamina.h"
+#include "UiToxicity.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
-	MapTiledManager* mm = MapTiledManager::Get();
-	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Farm");
+	//MapTiledManager* mm = MapTiledManager::Get();
+	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	//mm->SetCurrentMap("Farm");
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
-	Application::Get()->SetFPSUserWanted(10000);
+	Application::Get()->SetFPSUserWanted(60);
 	Application::Get()->SetIsAutoFPS(false);
 
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
@@ -56,31 +60,33 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetGravityEnabled(false);
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
-	
+	//
 	GetCamera()->SetZoom(5.f);
-	GetCamera()->SetSmoothSpeed(2);
-	Application::Get()->SetClampCameraToCurrentMap(true);
+	//GetCamera()->SetSmoothSpeed(2);
+	//Application::Get()->SetClampCameraToCurrentMap(true);
 
-	MapTiled* map = mm->GetCurrentMap();
+	//MapTiled* map = mm->GetCurrentMap();
 
-	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
-	int size = canGrowTiles.size();
-	Vector2i tileDim = map->GetTileDimension();
+	//std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
+	//int size = canGrowTiles.size();
+	//Vector2i tileDim = map->GetTileDimension();
 
-	for (const TileInfo& info : canGrowTiles)
-	{
-		Vector2f center = {
-			info.worldPos.GetX() + tileDim.GetX() / 2.f,
-			info.worldPos.GetY() + tileDim.GetY() / 2.f
-		};
-		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->GetCollider()->SetLayer(FARMTILE);
-		tile->GetCollider()->SetMask(NoNE);
-		//tile->ShowCollider(true);
-		FarmManager::Get()->RegisterTile(tile);
-	}
+	//for (const TileInfo& info : canGrowTiles)
+	//{
+	//	Vector2f center = {
+	//		info.worldPos.GetX() + tileDim.GetX() / 2.f,
+	//		info.worldPos.GetY() + tileDim.GetY() / 2.f
+	//	};
+	//	FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
+	//	tile->GetCollider()->SetLayer(FARMTILE);
+	//	tile->GetCollider()->SetMask(NoNE);
+	//	//tile->ShowCollider(true);
+	//	FarmManager::Get()->RegisterTile(tile);
+	//}
 
-
+	UiLife* b = CreateEntity<UiLife>({ m_player->GetPosition() - 200 }, { 8 * 5,32 * 5 }, "", Shape::Rectangle, true);
+	UiStamina* c = CreateEntity<UiStamina>({ m_player->GetPosition() - 300 }, { 8 * 5,32 * 5 }, "", Shape::Rectangle, true);
+	UiToxicity* d = CreateEntity<UiToxicity>({ m_player->GetPosition() - 400 }, { 8 * 5,32 * 5 }, "", Shape::Rectangle, true);
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
 	//m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
@@ -112,13 +118,18 @@ void GameScene::OnEvent()
 	{
 		Application::Get()->SetIsAutoFPS(true);
 	}
+	if (im->IsKeyboardDown(K_K))
+		m_player->GetStats().m_Hp -= 5;
+
+	if (im->IsKeyboardDown(K_O))
+		m_player->GetStats().m_Hp += 5;
 }
 
 void GameScene::OnUpdate()
 {
 	GetCamera()->Follow(m_player);
-	FarmManager::Get()->Update();
-	EnviroSpawn::Get()->Update();
+	//FarmManager::Get()->Update();
+	//EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
 	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);

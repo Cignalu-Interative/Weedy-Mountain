@@ -11,7 +11,7 @@
 
 void EnviroProps::OnInitialize()
 {
-	
+
 }
 
 void EnviroProps::OnEvent()
@@ -28,7 +28,7 @@ void EnviroProps::OnEvent()
 	Vector2f playerPos = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition();
 	int playerLayer = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetDrawLayer();
 
-	if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30 && playerLayer < GetDrawLayer() && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
+	if (playerPos.GetX() > GetPosition().GetX() - 50 && playerPos.GetX() < GetPosition().GetX() + 50 && playerLayer < GetDrawLayer() && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
 		if(Sprite* sprite = GetSprite("default"))sprite->SetOpacity(100);
 	}
 	else {
@@ -39,6 +39,7 @@ void EnviroProps::OnEvent()
 
 void EnviroProps::OnUpdate()
 {
+	SetPosition(m_stats.m_position->GetPosition());
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 }
 

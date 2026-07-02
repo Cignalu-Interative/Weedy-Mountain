@@ -81,7 +81,7 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 {
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
-	int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size());
+	int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size()-1);
 	if (FarmManager::Get()->GetAllFarmTiles()[tile]->CanGrow() == false) {
 		return;
 	}
@@ -98,14 +98,13 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:
-		Props->AddSprite("default", "Oak_Tree", {128, 128}, 0);
+		Props->AddSprite("default", "Oak_Tree", {128, 128}, 0,{0, -28});
 		Props->GetCollider()->Resize({ 16,16 });
-		Props->GetCollider()->SetOffset({ 0,28 });
+		//Props->GetCollider()->SetOffset({ 0,28 });
 		break;
 	case EnviroSpawnName::Shrub:
-		Props->AddSprite("default", "Oak_Shrub", { 46, 68 }, 0);
+		Props->AddSprite("default", "Oak_Shrub", { 46, 68 }, 0, { 1,-18 });
 		Props->GetCollider()->Resize({ 8,8 });
-		Props->GetCollider()->SetOffset({ 0,18 });
 		break;
 	case EnviroSpawnName::Grass:
 		Props->AddSprite("default", "Grass", { 18, 18 }, 0);

@@ -11,6 +11,10 @@ class UiStats : public Ui
 private : 
 	std::vector<Ui> m_statsUi;
 
+	UiLife* m_uiLife = nullptr;
+	UiToxicity* m_uiToxicity = nullptr;
+	UiStamina* m_uiStamina = nullptr;
+
 
 public : 
 	void OnInitialize() override;

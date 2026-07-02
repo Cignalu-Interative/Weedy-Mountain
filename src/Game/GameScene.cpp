@@ -31,6 +31,8 @@
 #include "UiStamina.h"
 #include "UiToxicity.h"
 
+#include "UiStats.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -84,9 +86,8 @@ void GameScene::OnInitialize()
 	//	FarmManager::Get()->RegisterTile(tile);
 	//}
 
-	UiLife* b = CreateEntity<UiLife>({ m_player->GetPosition() - 200 }, { 8 * 5,32 * 5 }, "", Shape::Rectangle, true);
-	UiStamina* c = CreateEntity<UiStamina>({ m_player->GetPosition() - 300 }, { 8 * 5,32 * 5 }, "", Shape::Rectangle, true);
-	UiToxicity* d = CreateEntity<UiToxicity>({ m_player->GetPosition() - 400 }, { 8 * 5,32 * 5 }, "", Shape::Rectangle, true);
+	UiStats* e = CreateEntity<UiStats>({ m_player->GetPosition() + 200 }, { 400,200 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	e->ShowCollider(true);
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
 	//m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);

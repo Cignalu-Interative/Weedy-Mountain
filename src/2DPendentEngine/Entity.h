@@ -204,6 +204,7 @@ public:
 	friend class Application;
 	friend class Scene;
 	friend class PhysicsManager;
+	friend class SceneManager;
 };
 
 #include "Entity.inl"

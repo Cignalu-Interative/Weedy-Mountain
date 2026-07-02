@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "BatchRenderer2D.h"
 #include "Render.h"
+#include "AssetManager.h"
 
 BatchRenderer2D* BatchRenderer2D::Get()
 {
@@ -47,6 +48,11 @@ const std::vector<Data>& BatchRenderer2D::Flush()
         std::visit([&](auto&& p_command)
             {
                 SDL_Texture* texture = p_command.s_texture;
+
+                if (texture == AssetManager::Get()->GetTexture("Oak_Tree"))
+                {
+                    //std::cerr << "Draw Oak_Tree" << std::endl;
+                }
 
                 size_t batchIndex;
                 auto it = batchIndexByTexture.find(texture);

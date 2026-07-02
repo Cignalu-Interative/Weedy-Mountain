@@ -191,7 +191,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     if (m_texture == AssetManager::Get()->GetTexture("Oak_Tree"))
     {
-        std::cerr << "Draw Oak_Tree" << std::endl;
+        //std::cerr << "Draw Oak_Tree" << std::endl;
     }
 
     SDL_Renderer* renderer = f_render->m_renderer;
@@ -248,6 +248,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     float width = dimension.GetX();
     float height = dimension.GetY();
+    //SetDimension({ (int)width, (int)height });
     SDL_FRect dstRect = { posX, posY, width, height };
 
     Vector2f rotPoint = GetRotationPoint();           // ex: (0,0) ou (0.5,0.5)
@@ -278,8 +279,15 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         return;
     }
 
+    if (m_srcRect == nullptr)
+    {
+		float textureWidth, textureHeight;
+		SDL_GetTextureSize(m_texture, &textureWidth, &textureHeight);
+		m_srcRect = new SDL_FRect{ 0, 0, textureWidth, textureHeight };
+    }
+
 	BatchRenderer2D::Get()->Fill(SpriteCommand{
-        m_texture, m_srcRect ? *m_srcRect : SDL_FRect{0, 0, (float)GetDimension().GetX(), (float)GetDimension().GetY()}, dstRect, GetAngle(), rotationCenter });
+        m_texture, *m_srcRect, dstRect, GetAngle(), rotationCenter });
 
     // 3. Rendu avec ROTATION complete
 

@@ -43,18 +43,18 @@ inline void BatchRenderer2D::AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, 
 		}
 		else if constexpr (std::is_same_v<T, SpriteCommand>) // Pour ajouter un traitement spécifique pour SpriteCommand si nécessaire
 		{
-			//Utils::InfoRotate inforotate = Utils::CreateInfoToRotate(
-			//	Vector2f(x1, y1), Vector2f(x2, y2), p_Command.s_angle, Vector2f(p_Command.s_rotationCenter.x, p_Command.s_rotationCenter.y));
+			Utils::InfoRotate inforotate = Utils::CreateInfoToRotate(
+				Vector2f(x1, y1), Vector2f(x2, y2), p_Command.s_angle, Vector2f(p_Command.s_rotationCenter.x, p_Command.s_rotationCenter.y));
 
-			//Vector2f v2f1 = Utils::Rotate(Vector2f(x1, y1), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Top-Left
-			//Vector2f v2f2 = Utils::Rotate(Vector2f(x2, y1), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Top-Right
-			//Vector2f v2f3 = Utils::Rotate(Vector2f(x1, y2), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Bottom-Left
-			//Vector2f v2f4 = Utils::Rotate(Vector2f(x2, y2), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Bottom-Right
+			Vector2f v2f1 = Utils::Rotate(Vector2f(x1, y1), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Top-Left
+			Vector2f v2f2 = Utils::Rotate(Vector2f(x2, y1), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Top-Right
+			Vector2f v2f3 = Utils::Rotate(Vector2f(x1, y2), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Bottom-Left
+			Vector2f v2f4 = Utils::Rotate(Vector2f(x2, y2), inforotate.s_centerQuad, inforotate.s_cos, inforotate.s_sin); // Bottom-Right
 
-			//p1.x = v2f1.GetX(); p1.y = v2f1.GetY();
-			//p2.x = v2f2.GetX(); p2.y = v2f2.GetY();
-			//p3.x = v2f3.GetX(); p3.y = v2f3.GetY();
-			//p4.x = v2f4.GetX(); p4.y = v2f4.GetY();
+			p1.x = v2f1.GetX(); p1.y = v2f1.GetY();
+			p2.x = v2f2.GetX(); p2.y = v2f2.GetY();
+			p3.x = v2f3.GetX(); p3.y = v2f3.GetY();
+			p4.x = v2f4.GetX(); p4.y = v2f4.GetY();
 		} 
 
 		SDL_Vertex V1 = { p1, white, {u1, v1} };

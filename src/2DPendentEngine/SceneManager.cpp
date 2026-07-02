@@ -186,9 +186,27 @@ void SceneManager::UpdateScenesInStack()
 
 void SceneManager::DrawScenesInStack(Render* f_render, Window* f_window, Camera* p_camera)
 {
+	std::list<Entity*> entToDraw;
+	std::list<Entity*> tempEntity;
 	for (Scene* scene : m_scenesInStackVector)
 	{
-		scene->Draw(f_render, f_window, p_camera);
+		tempEntity = scene->GetEntities();
+		for (Entity* entity : tempEntity)
+		{
+			entToDraw.push_back(entity);
+		}
+		scene->OnDraw();
+		//scene->Draw(f_render, f_window, p_camera);
+	}
+
+	entToDraw.sort([](const Entity* a, const Entity* b)
+	{
+		return a->GetDrawLayer() < b->GetDrawLayer();
+	});
+
+	for (Entity* entity : entToDraw)
+	{
+		entity->Draw(f_render, f_window);
 	}
 
 	const std::vector<Data>& batches = BatchRenderer2D::Get()->Flush();

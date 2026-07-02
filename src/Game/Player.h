@@ -100,7 +100,7 @@ private:
 	std::vector<PlayerJob*> m_jobs;
 	Hotbar* m_hotbar;
 	Inventory* m_inventory;
-	PlayerInventory* m_Playerinventory;
+	PlayerInventory* m_playerInventory;
 
 	// TEMP - AGRI
 	CropDefinition m_selectedCrop = CropCatalog::Wheat(); 
@@ -138,7 +138,7 @@ public:
 	void UnlockRecipe(Recipes _toUnlock);
 	void SetupStateMachine();
 
-	PlayerInventory* GetInventory() { return m_Playerinventory; }
+	PlayerInventory* GetInventory() { return m_playerInventory; }
 
 	int GetMoney() { return m_money; }
 	void AddMoney(int p_amount) { m_money += p_amount; }

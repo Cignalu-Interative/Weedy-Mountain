@@ -25,7 +25,7 @@ void Player::OnInitialize()
 	m_hotbar = GetScene()->CreateEntity<Hotbar>({}, { 212,32 }, "Hotbar", Shape::Rectangle, true);
 	m_hotbar->AddItem("ITEM_WOOD", 10, false);
 
-	m_Playerinventory = new PlayerInventory(m_inventory, m_hotbar);
+	m_playerInventory = new PlayerInventory(m_inventory, m_hotbar);
 
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
@@ -63,13 +63,13 @@ void Player::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_TAB))
 	{
-		if (m_Playerinventory->IsOpen())
+		if (m_playerInventory->IsOpen())
 		{
-			m_Playerinventory->Close();
+			m_playerInventory->Close();
 		}
 		else
 		{
-			m_Playerinventory->Open();
+			m_playerInventory->Open();
 		}
 	}
 

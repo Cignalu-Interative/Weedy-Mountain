@@ -89,15 +89,18 @@ struct PlayerStats {
 	float m_drugSellEfficency = 1.f; 
 };
 
+class PlayerInventory;
+class Hotbar;
 class Inventory;
 class Player : public Entity
 {
 private:
 	StateMachine<Player> m_stateMachine;
-
 	PlayerStats m_stats;
 	std::vector<PlayerJob*> m_jobs;
+	Hotbar* m_hotbar;
 	Inventory* m_inventory;
+	PlayerInventory* m_Playerinventory;
 
 	// TEMP - AGRI
 	CropDefinition m_selectedCrop = CropCatalog::Wheat(); 
@@ -135,7 +138,7 @@ public:
 	void UnlockRecipe(Recipes _toUnlock);
 	void SetupStateMachine();
 
-	Inventory* GetInventory() { return m_inventory; }
+	PlayerInventory* GetInventory() { return m_Playerinventory; }
 
 	int GetMoney() { return m_money; }
 	void AddMoney(int p_amount) { m_money += p_amount; }

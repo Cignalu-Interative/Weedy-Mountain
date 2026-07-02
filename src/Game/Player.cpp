@@ -8,7 +8,10 @@
 
 #include "FarmManager.h"   
 #include "GameData.h" 
+
+#include "PlayerInventory.h"
 #include "Inventory.h"
+#include "Hotbar.h"
 
 #include "PlayerState.h"
 #include "PlayerConditions.h"
@@ -18,8 +21,12 @@ void Player::OnInitialize()
 
 	m_inventory = GetScene()->CreateEntity<Inventory>({}, {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_inventory->SetVisible(false);
-	m_inventory->AddItem("ITEM_WOOD", 10, false);
-	
+
+	m_hotbar = GetScene()->CreateEntity<Hotbar>({}, { 212,32 }, "Hotbar", Shape::Rectangle, true);
+	m_hotbar->AddItem("ITEM_WOOD", 10, false);
+
+	m_Playerinventory = new PlayerInventory(m_inventory, m_hotbar);
+
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
 	m_jobs.push_back(gatherer);
@@ -56,7 +63,14 @@ void Player::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_TAB))
 	{
-		m_inventory->SetVisible(!m_inventory->GetIsVisible());
+		if (m_Playerinventory->IsOpen())
+		{
+			m_Playerinventory->Close();
+		}
+		else
+		{
+			m_Playerinventory->Open();
+		}
 	}
 
 	Vector2f dir = {0.f, 0.f};
@@ -65,8 +79,6 @@ void Player::OnEvent()
 	// Mettre les inputs pour lesquels on ne veux pas pouvoir les detecter lorsqu'on est dans un shop dialogues etc ... 
 	if (m_inputBlocker == false)
 	{
-		
-
 		//Input Clavier
 		if (InputManager::Get()->IsKeyboardHeld(K_Z))
 		{

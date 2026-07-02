@@ -17,6 +17,7 @@ class Camera;
 class Geometry;
 class Button;
 class Slider;
+class TextBox;
 
 class Scene : public Drawable
 {
@@ -92,6 +93,8 @@ public:
 	Button* CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI = true);
 
 	Slider* CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_id, int p_stateCount = -1, bool p_isGUI = true);
+
+	TextBox* CreateTextBox(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = true);
 
 	//Fonction pour obtenir la largeur de la fenêtre de jeu en utilisant la fonction GetWindowSize() de l'application
 	int GetWindowWidth() const; 

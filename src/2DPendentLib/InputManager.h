@@ -113,9 +113,12 @@ public:
 	// plutôt qu'une position absolue.
 	void SetRelativeMouseMode(bool p_bool);
 
+	//Permet de réinitialiser la position relative de la souris à (0, 0)
 	void ClearMouseRelative();
 
 	Window* GetWindow() { return m_window; }
+
+	void SetStartTextInput(bool p_start);
 
 private:
 
@@ -167,6 +170,8 @@ private:
 	Window* m_window;
 
 	void SetWindow(Window* p_window);
+
+	bool m_startTextInput = false;
 
 	//Constructeur de InputManager
 	InputManager();

@@ -106,6 +106,10 @@ void InputManager::Update()
 			m_keyboardStates[m_event.key.scancode].s_isUp = true;
 			break;
 
+		case SDL_EVENT_TEXT_INPUT:
+			//std::cerr << "Texte saisi : " << m_event.text.text << std::endl;
+			break;
+
 		case SDL_EVENT_MOUSE_BUTTON_DOWN:
 			/*int x, y;
 			SDL_GetMouseState(&x, &y);*/
@@ -528,6 +532,27 @@ void InputManager::ClearMouseRelative()
 {
 	m_RELMousePosition.SetX(0);
 	m_RELMousePosition.SetY(0);
+}
+
+void InputManager::SetStartTextInput(bool p_start)
+{
+	m_startTextInput = p_start;
+	if (m_startTextInput)
+	{
+		if (SDL_StartTextInput(m_window->GetWindow()) == false)
+		{
+			SDL_Log("Lib/InputManager.cpp/SetStartTextInput/SDL_StartTextInput non reussie : %s", SDL_GetError());
+			return;
+		}
+	}
+	else
+	{
+		if (SDL_StopTextInput(m_window->GetWindow()) == false)
+		{
+			SDL_Log("Lib/InputManager.cpp/SetStartTextInput/SDL_StopTextInput non reussie : %s", SDL_GetError());
+			return;
+		}
+	}
 }
 
 void InputManager::SetWindow(Window* p_window)

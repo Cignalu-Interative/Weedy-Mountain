@@ -12,6 +12,7 @@
 #include "PhysicsManager.h"
 #include "Button.h"
 #include "Slider.h"
+#include "TextBox.h"
 
 void Scene::Initialize()
 {
@@ -175,6 +176,25 @@ Slider* Scene::CreateSlider(Vector2f p_position, Vector2i p_dimention, const std
 	AddEntity(slider);
 
 	return slider;
+}
+
+TextBox* Scene::CreateTextBox(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI)
+{
+	if (m_application == nullptr)
+	{
+		return nullptr;
+	}
+
+	TextBox* textBox = new TextBox();
+
+	textBox->SetScene(this);
+	textBox->SetWindow(m_application->GetWindow());
+	textBox->Initialize(p_position, p_dimension, "", m_application->GetRender(), Shape::Rectangle, p_isGUI, false, "");
+	textBox->InitTextBox(p_id, p_color, p_isGUI);
+	m_application->m_entityToAdd.push_back(textBox);
+	AddEntity(textBox);
+
+	return textBox;
 }
 
 int Scene::GetWindowWidth() const

@@ -189,6 +189,11 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         return;
 	}
 
+    if (m_texture == AssetManager::Get()->GetTexture("Oak_Tree"))
+    {
+        std::cerr << "Draw Oak_Tree" << std::endl;
+    }
+
     SDL_Renderer* renderer = f_render->m_renderer;
 
     // V�rifications s�curit�
@@ -273,22 +278,22 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         return;
     }
 
-	/*BatchRenderer2D::Get()->Fill(SpriteCommand{
-        m_texture, m_srcRect ? *m_srcRect : SDL_FRect{0, 0, (float)GetDimension().GetX(), (float)GetDimension().GetY()}, dstRect, GetAngle(), rotationCenter });*/
+	BatchRenderer2D::Get()->Fill(SpriteCommand{
+        m_texture, m_srcRect ? *m_srcRect : SDL_FRect{0, 0, (float)GetDimension().GetX(), (float)GetDimension().GetY()}, dstRect, GetAngle(), rotationCenter });
 
     // 3. Rendu avec ROTATION complete
 
 
-    if (SDL_RenderTextureRotated(renderer, m_texture,
-        m_srcRect,           // Frame du sprite sheet (ou NULL)
-        &dstRect,          // Position/taille � l'�cran
-        GetAngle(),        // Angle Transformable (degr�s)
-        &rotationCenter,   // Centre rotation pr�-calcul�
-        flip) == false)       //  miroir (optionnel)
-    {
-        SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionn� : %s", SDL_GetError());
-        return;
-    }
+    //if (SDL_RenderTextureRotated(renderer, m_texture,
+    //    m_srcRect,           // Frame du sprite sheet (ou NULL)
+    //    &dstRect,          // Position/taille � l'�cran
+    //    GetAngle(),        // Angle Transformable (degr�s)
+    //    &rotationCenter,   // Centre rotation pr�-calcul�
+    //    flip) == false)       //  miroir (optionnel)
+    //{
+    //    SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionn� : %s", SDL_GetError());
+    //    return;
+    //}
 
     // Nettoyage
     //delete srcRect;

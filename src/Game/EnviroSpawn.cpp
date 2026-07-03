@@ -42,6 +42,8 @@ void EnviroSpawn::InitEnviroSpawn()
 
 		m_enviroList.push_back(Enviro);
 	}
+
+	NewGameEnviroSpawn();
 }
 
 void EnviroSpawn::SpawnEnviroProps()
@@ -55,7 +57,7 @@ void EnviroSpawn::SpawnEnviroProps()
 		int spawnCount = Aleatory::GetInt(m_enviroList[i]->m_stats.m_minSpawn, m_enviroList[i]->m_stats.m_maxSpawn);
 
 		for (int j = 0; j < spawnCount; j++) {
-			CreateEnviroProps(m_enviroList[i]->m_name);
+			CreateEnviroProps(m_enviroList[i]->m_name, -1);
 		}
 	}
 }
@@ -77,15 +79,28 @@ int EnviroSpawn::GetEnviroDay()
 	return static_cast<int>(shifted / secPerDay);
 }
 
-void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
+void EnviroSpawn::NewGameEnviroSpawn()
+{
+	for (int i = 0; i < 200; i++) {
+		int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size() - 1);
+		while (FarmManager::Get()->GetAllFarmTiles()[tile]->GetPosition().GetX() >= 500) {
+			tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size() - 1);
+		}
+		CreateEnviroProps((EnviroSpawnName)Aleatory::GetInt(0, (int)EnviroSpawnName::Count - 1), tile);
+	}
+}
+
+void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 {
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
-	int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size()-1);
-	if (FarmManager::Get()->GetAllFarmTiles()[tile]->CanGrow() == false) {
+	if (_tile < 0) {
+		_tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size() - 1);
+	}
+	if (FarmManager::Get()->GetAllFarmTiles()[_tile]->CanGrow() == false) {
 		return;
 	}
-	Props = gs->CreateEntity<EnviroProps>( FarmManager::Get()->GetAllFarmTiles()[tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
+	Props = gs->CreateEntity<EnviroProps>( FarmManager::Get()->GetAllFarmTiles()[_tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);
@@ -93,14 +108,13 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Props->GetCollider()->SetLayer(ENVIRO);
 	Props->GetCollider()->SetMask(PLAYER);
 	Props->InitialisePhysicsBody(ShapeBodyPhysics::Static);
-	Props->SetFarmTile(FarmManager::Get()->GetAllFarmTiles()[tile]);
-	FarmManager::Get()->GetAllFarmTiles()[tile]->SetCanGrow(false);
+	Props->SetFarmTile(FarmManager::Get()->GetAllFarmTiles()[_tile]);
+	FarmManager::Get()->GetAllFarmTiles()[_tile]->SetCanGrow(false);
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:
 		Props->AddSprite("default", "Oak_Tree", {128, 128}, 0,{0, -28});
 		Props->GetCollider()->Resize({ 16,16 });
-		//Props->GetCollider()->SetOffset({ 0,28 });
 		break;
 	case EnviroSpawnName::Shrub:
 		Props->AddSprite("default", "Oak_Shrub", { 46, 68 }, 0, { 1,-18 });

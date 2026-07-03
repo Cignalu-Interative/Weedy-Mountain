@@ -31,11 +31,13 @@ class EnviroSpawn
 	int m_lastDay = -1;
 protected:
 
-	void CreateEnviroProps(EnviroSpawnName _name);
+	void CreateEnviroProps(EnviroSpawnName _name, int _tile);
 
 	void SpawnEnviroProps();
 
 	int GetEnviroDay();
+
+	void NewGameEnviroSpawn();
 
 public:
 

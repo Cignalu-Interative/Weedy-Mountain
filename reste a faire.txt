@@ -1,5 +1,6 @@
 terminer l'opti de sprite avec le BatchRenderer2D
 crée des zones de text
+faire un script python pour auto placer les dll
 appeler Peter pour le deltatime
 puis shader
 verifier le cap des fps exemple set 2000 -> 1800

@@ -115,11 +115,11 @@ void Scene::Destroy()
 	OnDestroy();
 }
 
-void Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
+bool Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	if (m_isSleepDraw)
 	{
-		return;
+		return false;
 	}
 
 	/*std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
@@ -127,7 +127,7 @@ void Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		return a->GetDrawLayer() < b->GetDrawLayer();
 	});*/
 
-	std::list<Entity*> entToDraw = m_entities;
+	/*std::list<Entity*> entToDraw = m_entities;
 
 	entToDraw.sort([](const Entity* a, const Entity* b)
 	{
@@ -137,9 +137,11 @@ void Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 	for (Entity* entity : entToDraw)
 	{
 		entity->Draw(f_render, f_window);
-	}
+	}*/
 
 	OnDraw();
+
+	return true;
 }
 
 Button* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)

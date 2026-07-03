@@ -3,6 +3,7 @@
 #include "Button.h"
 #include "2DPendentLib/Vector2.h"
 #include "2DPendentLib/Color.h"
+#include "SDLEncapsulation.h"
 
 class Window;
 class TextBox : public Button
@@ -12,7 +13,7 @@ private:
 	Window* m_window = nullptr;
 	void SetWindow(Window* p_window) { m_window = p_window; }
 
-	SDL_Rect* m_BoxText = nullptr;
+	SDLEncapsulation::S_Rect* m_BoxText = nullptr;
 
 public:
 

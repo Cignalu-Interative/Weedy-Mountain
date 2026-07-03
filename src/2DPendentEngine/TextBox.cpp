@@ -14,9 +14,5 @@ void TextBox::InitTextBox(const std::string& p_id, Color p_color, bool p_isGUI)
 	m_BoxText->w = dimension.GetX();
 	m_BoxText->h = dimension.GetY();
 
-	if (SDL_SetTextInputArea(m_window->GetWindow(), m_BoxText, 0) == false)
-	{
-		SDL_Log("Lib/TextBox.cpp/InitTextBox/SDL_SetTextInputArea non reussie : %s", SDL_GetError());
-		return;
-	}
+	SDLEncapsulation::SetTextInputArea(m_window, m_BoxText, 0);
 }

@@ -192,12 +192,15 @@ void SceneManager::DrawScenesInStack(Render* f_render, Window* f_window, Camera*
 	std::list<Entity*> tempEntity;
 	for (Scene* scene : m_scenesInStackVector)
 	{
+		if (scene->Draw(f_render, f_window, p_camera) == false)
+		{
+			continue;
+		}
 		tempEntity = scene->GetEntities();
 		for (Entity* entity : tempEntity)
 		{
 			m_entToDraw.push_back(entity);
 		}
-		scene->OnDraw();
 		//scene->Draw(f_render, f_window, p_camera);
 	}
 

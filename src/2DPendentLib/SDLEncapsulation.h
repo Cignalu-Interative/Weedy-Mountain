@@ -10,7 +10,7 @@ namespace SDLEncapsulation
 		int x, y, w, h;
 	};
 
-	static bool SetTextInputArea(Window* p_window, S_Rect p_rect, int p_cursor);
+	static void SetTextInputArea(Window* p_window, S_Rect* p_rect, int p_cursor);
 
 
 

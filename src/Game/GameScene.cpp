@@ -92,9 +92,9 @@ void GameScene::OnInitialize()
 	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 400,200 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	e->ShowCollider(true);
 
-	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 200, 50}, {120,64}, "", Shape::Rectangle, true);
+	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
 	f->ShowCollider(true);
-	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 200, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	f->ShowCollider(true);
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);

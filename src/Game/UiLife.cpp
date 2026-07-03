@@ -9,15 +9,16 @@ void UiLife::OnInitialize()
 	m_currentValue = gameScene->GetPlayer()->GetStats().m_Hp;
 	m_maxValue = gameScene->GetPlayer()->GetStats().m_maxHp;
 
+	AddSprite("Heart", "Heart", { 32,32 }, 0, {}, true);
 	AddSprite("LifeFull", "UiLifeFull", GetDimension(), 0, {}, true);
 	AddSprite("LifeEmpty", "UiEmpty", GetDimension(), 0, {}, true);
 
 	GetSprite("LifeEmpty")->SetDimension(GetDimension());
 	GetSprite("LifeFull")->SetDimension(GetDimension());
-	
-	
-	ShowCollider(true);
+
 	SyncSprites();
+
+	GetSprite("Heart")->SetPosition(GetSprite("LifeEmpty")->GetPosition(),{0.5f,0});
 }
 
 void UiLife::OnUpdate()

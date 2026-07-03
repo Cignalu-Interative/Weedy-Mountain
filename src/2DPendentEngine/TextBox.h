@@ -16,7 +16,7 @@ private:
 
 public:
 
-	void InitTextBox(const std::string& p_id, Color p_color = ColorsNamed::Yellow, bool p_isGUI);
+	void InitTextBox(const std::string& p_id, Color p_color = ColorsNamed::Yellow, bool p_isGUI = true);
 
 
 	friend class Scene;

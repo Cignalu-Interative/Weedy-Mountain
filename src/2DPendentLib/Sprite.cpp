@@ -189,11 +189,6 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
         return;
 	}
 
-    if (m_texture == AssetManager::Get()->GetTexture("Oak_Tree"))
-    {
-        //std::cerr << "Draw Oak_Tree" << std::endl;
-    }
-
     SDL_Renderer* renderer = f_render->m_renderer;
 
     // V�rifications s�curit�
@@ -286,8 +281,10 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		m_srcRect = new SDL_FRect{ 0, 0, textureWidth, textureHeight };
     }
 
+	SDL_FColor color = { 1.f, 1.f, 1.f, (float)m_oppacity / 255.f };
+
 	BatchRenderer2D::Get()->Fill(SpriteCommand{
-        m_texture, *m_srcRect, dstRect, GetAngle(), rotationCenter });
+        m_texture, *m_srcRect, dstRect, GetAngle(), rotationCenter, color });
 
     // 3. Rendu avec ROTATION complete
 

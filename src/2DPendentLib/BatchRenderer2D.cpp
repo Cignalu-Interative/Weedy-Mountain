@@ -13,6 +13,7 @@ BatchRenderer2D::BatchRenderer2D()
 {
 	m_commands.reserve(10000); // Réserve de l'espace pour 1000 commandes de rendu
 	m_batches.reserve(100); // Réserve de l'espace pour 100 batches
+	m_batchIndexByTexture.reserve(100); // Réserve de l'espace pour 100 textures différentes
 }
 
 BatchRenderer2D::~BatchRenderer2D()
@@ -31,7 +32,6 @@ const std::vector<Data>& BatchRenderer2D::Flush()
 
 	if (m_commands.empty())
 	{
-		m_commands.clear();
 		return m_batches;
 	}
 
@@ -41,7 +41,6 @@ const std::vector<Data>& BatchRenderer2D::Flush()
 	//m_vertexBuffer.reserve(m_commands.size() * 4);
 	//m_indicesBuffer.reserve(m_commands.size() * 6);
 
-	std::unordered_map<SDL_Texture*, size_t> batchIndexByTexture;
 	size_t batchCount = 0;
     for (const auto& command : m_commands)
     {
@@ -49,17 +48,12 @@ const std::vector<Data>& BatchRenderer2D::Flush()
             {
                 SDL_Texture* texture = p_command.s_texture;
 
-                if (texture == AssetManager::Get()->GetTexture("Oak_Tree"))
-                {
-                    //std::cerr << "Draw Oak_Tree" << std::endl;
-                }
-
                 size_t batchIndex;
-                auto it = batchIndexByTexture.find(texture);
-                if (it == batchIndexByTexture.end())
+                auto it = m_batchIndexByTexture.find(texture);
+                if (it == m_batchIndexByTexture.end())
                 {
                     batchIndex = batchCount++;
-                    batchIndexByTexture[texture] = batchIndex;
+					m_batchIndexByTexture.emplace(texture, batchIndex);
 
                     if (batchIndex >= m_batches.size())
                         m_batches.push_back(Data{}); // ne grandit que si vraiment nécessaire
@@ -91,5 +85,6 @@ const std::vector<Data>& BatchRenderer2D::Flush()
         m_batches.resize(batchCount);
 
     m_commands.clear();
+    m_batchIndexByTexture.clear();
     return m_batches;
 }

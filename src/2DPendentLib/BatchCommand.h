@@ -15,4 +15,5 @@ struct SpriteCommand
 	SDL_FRect s_dstRect{};
 	float s_angle = 0.0f;
 	SDL_FPoint s_rotationCenter{};
+	SDL_FColor s_color{ 1.f, 1.f, 1.f, 1.f};
 };

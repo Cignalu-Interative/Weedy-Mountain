@@ -15,11 +15,7 @@ private :
 	UiToxicity* m_uiToxicity = nullptr;
 	UiStamina* m_uiStamina = nullptr;
 
-
-public : 
 	void OnInitialize() override;
 	void OnUpdate() override;
-
-
 };
 

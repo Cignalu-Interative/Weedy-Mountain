@@ -733,10 +733,16 @@
       "path": "../../res/Game/Assets/Textures/SunFlower.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/UiCash.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/UiEmpty.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/UiLifeFull.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UiMoney.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/UiStaminaFull.png"

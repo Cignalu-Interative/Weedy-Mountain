@@ -32,6 +32,8 @@
 #include "UiToxicity.h"
 
 #include "UiStats.h"
+#include "UiMoney.h"
+#include "UiCash.h"
 
 void GameScene::OnInitialize()
 {
@@ -45,7 +47,7 @@ void GameScene::OnInitialize()
 	gm.Initialize();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
-	Application::Get()->SetFPSUserWanted(60);
+	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
@@ -86,8 +88,15 @@ void GameScene::OnInitialize()
 	//	FarmManager::Get()->RegisterTile(tile);
 	//}
 
-	UiStats* e = CreateEntity<UiStats>({ m_player->GetPosition() + 200 }, { 400,200 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	Vector2f uiStatsPos = {1050, 600};
+	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 400,200 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	e->ShowCollider(true);
+
+	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 200, 50}, {120,64}, "", Shape::Rectangle, true);
+	f->ShowCollider(true);
+	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 200, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	f->ShowCollider(true);
+
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
 	//m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
@@ -120,10 +129,10 @@ void GameScene::OnEvent()
 		Application::Get()->SetIsAutoFPS(true);
 	}
 	if (im->IsKeyboardDown(K_K))
-		m_player->GetStats().m_Hp -= 5;
+		m_player->AddCash(10);//m_player->GetStats().m_Hp -= 5;
 
 	if (im->IsKeyboardDown(K_O))
-		m_player->GetStats().m_Hp += 5;
+		m_player->DecreaseCash(10);//m_player->GetStats().m_Hp += 5;
 }
 
 void GameScene::OnUpdate()
@@ -133,7 +142,7 @@ void GameScene::OnUpdate()
 	//EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
-	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
+	//CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
 	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }

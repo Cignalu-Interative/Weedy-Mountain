@@ -165,6 +165,11 @@ int Scene::GetWindowHeight() const
 	return m_application->m_window.GetWindowSize().GetY();
 }
 
+Vector2i Scene::GetWindowSize() const
+{
+	return m_application->m_window.GetWindowSize();
+}
+
 float Scene::GetDeltaTime() const
 {
 	return m_application->m_deltaTime;

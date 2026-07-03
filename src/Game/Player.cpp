@@ -476,6 +476,20 @@ void Player::UnlockInputs()
 	m_inputBlocker = false;
 }
 
+void Player::DecreaseMoney(int p_amount)
+{
+	m_money -= p_amount;
+	if (m_money < 0)
+		m_money = 0;
+}
+
+void Player::DecreaseCash(int p_amount)
+{
+	m_cash -= p_amount;
+	if (m_cash < 0)
+		m_cash = 0;
+}
+
 void Player::SetState(PlayerState p_state)
 {
 	m_stateMachine.TryTransitionTo(this, (int)p_state);

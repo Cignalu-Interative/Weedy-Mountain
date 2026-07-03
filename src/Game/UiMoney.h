@@ -1,5 +1,10 @@
 #pragma once
-class UiMoney
+#include "Ui.h"
+
+class UiMoney : public Ui
 {
+	void OnInitialize() override;
+	void OnUpdate() override;
+	
 };
 

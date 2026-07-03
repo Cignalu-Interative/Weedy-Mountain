@@ -109,7 +109,8 @@ private:
 
 	bool m_inputBlocker = false;
 
-	int m_money = 2000000;
+	int m_money = 200;
+	int m_cash = 0;
 
 protected:
 
@@ -137,9 +138,14 @@ public:
 
 	Inventory* GetInventory() { return m_inventory; }
 
-	int GetMoney() { return m_money; }
+	int GetMoney() const { return m_money; }
 	void AddMoney(int p_amount) { m_money += p_amount; }
-	void DecreaseMoney(int p_amount) { m_money -= p_amount; }
+	void DecreaseMoney(int p_amount);
+
+	int GetCash() const { return m_cash; }
+	void AddCash(int p_amount) { m_cash += p_amount; }
+	void DecreaseCash(int p_amount);
+
 	void SetIsUsingToolInHand(bool p_isUsing) { m_isUsingToolInHand = p_isUsing; }
 	void SetState(PlayerState p_state);
 

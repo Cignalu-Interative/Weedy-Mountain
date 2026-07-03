@@ -73,6 +73,9 @@ class PlayerWateringState : public StateBase<Player>
 		case (int)PlayerState::DIGGING:
 			return false;
 			break;
+		case (int)PlayerState::WALKING:
+			return false;
+			break;
 		}
 	};
 };
@@ -100,6 +103,9 @@ class PlayerDiggingState : public StateBase<Player>
 		case (int)PlayerState::WATERING:
 			return false;
 			break;
+		case (int)PlayerState::WALKING:
+			return false;
+			break;
 		}
 	};
 };
@@ -125,6 +131,9 @@ class PlayerMiningState : public StateBase<Player>
 			return false;
 			break;
 		case (int)PlayerState::DIGGING:
+			return false;
+			break;
+		case (int)PlayerState::WALKING:
 			return false;
 			break;
 		}

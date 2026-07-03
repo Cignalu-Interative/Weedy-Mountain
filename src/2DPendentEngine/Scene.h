@@ -55,7 +55,7 @@ private:
 	void Sleep();
 	void Wake();
 	void Destroy();
-	bool Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
+	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 
 protected:
 

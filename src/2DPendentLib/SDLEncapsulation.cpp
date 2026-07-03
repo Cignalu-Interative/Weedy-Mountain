@@ -4,7 +4,7 @@
 
 namespace SDLEncapsulation
 {
-	void SDLEncapsulation::SetTextInputArea(Window* p_window, S_Rect* p_rect, int p_cursor)
+	void SetTextInputArea(Window* p_window, S_Rect* p_rect, int p_cursor)
 	{
 		SDL_Rect sdlRect;
 		sdlRect.x = p_rect->x;

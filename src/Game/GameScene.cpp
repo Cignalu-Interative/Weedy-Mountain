@@ -27,6 +27,9 @@
 #include "UiShop.h"
 #include "SpriteContainer.h"
 
+#include "TextBox.h"
+
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -92,6 +95,8 @@ void GameScene::OnInitialize()
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
+
+	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::White, true);
 }
 
 
@@ -112,6 +117,26 @@ void GameScene::OnEvent()
 	{
 		Application::Get()->SetIsAutoFPS(true);
 	}
+
+
+	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
+	{
+		im->StartTextInput();
+	}
+	if (im->IsMouseDown(BUTTON_RIGHT	))
+	{
+		im->StopTextInput();
+	}
+	if (im->IsTextInputActive() == true && im->IsKeyboardHeld(K_DELETE))
+	{
+		im->DeleteLastCharInFinalTextInput();
+	}
+	if (im->IsTextInputActive() == true)
+	{
+		m_textBox->SetText(im->GetfinalTextInput());
+	}
+	std::string t = im->GetfinalTextInput();
+	std::cerr << "TextInput : " << t << std::endl;
 }
 
 void GameScene::OnUpdate()

@@ -118,7 +118,18 @@ public:
 
 	Window* GetWindow() { return m_window; }
 
-	void SetStartTextInput(bool p_start);
+	void StartTextInput();
+	void StopTextInput();
+
+	bool IsTextInputActive() const { return m_isTextInput; }
+
+	Sint32 GetCursorPositionX() const { return m_cursorPositionX; }
+	Sint32 GetCursorLength() const { return m_cursorLength; }
+
+	const std::string& GetCompositionTextInput() const { return m_compositionTextInput; }
+	const std::string& GetfinalTextInput() const { return m_finalTextInput; }
+
+	void DeleteLastCharInFinalTextInput() { if (!m_finalTextInput.empty()) m_finalTextInput.pop_back(); }
 
 private:
 
@@ -171,7 +182,12 @@ private:
 
 	void SetWindow(Window* p_window);
 
-	bool m_startTextInput = false;
+	bool m_isTextInput = false;
+
+	Sint32 m_cursorPositionX = 0; // Position du curseur dans le texte en cours de composition
+	Sint32 m_cursorLength = 0; // Longueur du texte sélectionné dans le texte en cours de composition
+	std::string m_compositionTextInput; // Coressepond au texte en cours de composition
+	std::string m_finalTextInput; // Coressepond au texte final après la composition
 
 	//Constructeur de InputManager
 	InputManager();

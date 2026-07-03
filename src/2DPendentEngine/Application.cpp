@@ -51,6 +51,7 @@ void Application::Init()
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;
 		});
+	InputManager::Get()->SetWindow(&m_window);
 	InputManager::Get()->SetQuitCallback([this]()
 		{ m_isRunning = false; });
 	FontManager::Get()->AddFontByPath("../../res/2DPendentEngine/Assets/Fonts/DefaultPolice.ttf");

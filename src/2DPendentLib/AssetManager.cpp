@@ -34,7 +34,7 @@ void AssetManager::AddTextureByRepertory(const std::string& p_path)
 	std::ifstream file(p_path);
 	if (!file.is_open())
 	{
-		SDL_Log("Lib/AssetManager.cpp/AddTexture/failed to open file: %s", p_path.c_str());
+		SDL_Log("Lib/AssetManager.cpp/AddTextureByRepertory/failed to open file: %s", p_path.c_str());
 		return;
 	}
 
@@ -50,23 +50,23 @@ void AssetManager::AddTextureByRepertory(const std::string& p_path)
 			auto it = m_texturesMap.find(autoId);
 			if (it != m_texturesMap.end())
 			{
-				SDL_Log("Lib/AssetManager.cpp/AddTexture/GetNameFromPath/Texture already loaded with ID : %s", autoId.c_str());
+				SDL_Log("Lib/AssetManager.cpp/AddTextureByRepertory/GetNameFromPath/Texture already loaded with ID : %s", autoId.c_str());
 				continue;
 			}
 			SDL_Texture* texture = IMG_LoadTexture(m_renderer, path.c_str());
 			if (texture == nullptr)
 			{
-				SDL_Log("Lib/AssetManager.cpp/AddTexture/IMG_LoadTexture/failed to load texture: %s", SDL_GetError());
+				SDL_Log("Lib/AssetManager.cpp/AddTextureByRepertory/IMG_LoadTexture/failed to load texture: %s", SDL_GetError());
 				continue;
 			}
 			if (SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_PIXELART) == false)
 			{
-				SDL_Log("Lib/AssetManager.cpp/AddTexture/SDL_SetTextureScaleMode/failed to set texture scale mode: %s", SDL_GetError());
+				SDL_Log("Lib/AssetManager.cpp/AddTextureByRepertory/SDL_SetTextureScaleMode/failed to set texture scale mode: %s", SDL_GetError());
 				return;
 			}
 			if (SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) == false)
 			{
-				SDL_Log("Lib/AssetManager.cpp/Draw/SDL_SetTextureBlendMode/cela na pas fonctionner : %s", SDL_GetError());
+				SDL_Log("Lib/AssetManager.cpp/AddTextureByRepertory/SDL_SetTextureBlendMode/cela na pas fonctionner : %s", SDL_GetError());
 				return;
 			}
 
@@ -90,6 +90,16 @@ void AssetManager::AddTextureByPath(const std::string& p_path)
 	if (texture == nullptr)
 	{
 		SDL_Log("Lib/AssetManager.cpp/AddTextureByPath/IMG_LoadTexture/failed to load texture: %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_PIXELART) == false)
+	{
+		SDL_Log("Lib/AssetManager.cpp/AddTextureByPath/SDL_SetTextureScaleMode/failed to set texture scale mode: %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) == false)
+	{
+		SDL_Log("Lib/AssetManager.cpp/AddTextureByPath/SDL_SetTextureBlendMode/cela na pas fonctionner : %s", SDL_GetError());
 		return;
 	}
 	m_texturesMap[autoId] = m_texturesVector.size();

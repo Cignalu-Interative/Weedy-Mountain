@@ -5,12 +5,12 @@ class Window;
 
 namespace SDLEncapsulation
 {
-	static struct S_Rect
+	struct S_Rect
 	{
-		int x, y, w, h;
+		int x = 0, y = 0, w = 0, h = 0;
 	};
 
-	static void SetTextInputArea(Window* p_window, S_Rect* p_rect, int p_cursor);
+	void SetTextInputArea(Window* p_window, S_Rect* p_rect, int p_cursor);
 
 
 

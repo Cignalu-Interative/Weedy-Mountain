@@ -13,7 +13,6 @@ BatchRenderer2D::BatchRenderer2D()
 {
 	m_commands.reserve(10000); // Réserve de l'espace pour 1000 commandes de rendu
 	m_batches.reserve(100); // Réserve de l'espace pour 100 batches
-	m_batchIndexByTexture.reserve(100); // Réserve de l'espace pour 100 textures différentes
 }
 
 BatchRenderer2D::~BatchRenderer2D()
@@ -25,66 +24,57 @@ const std::vector<Data>& BatchRenderer2D::Flush()
 {
 	for (auto& batch : m_batches)
 	{
-		batch.s_vertices.clear(); // garde la capacité
+		batch.s_vertices.clear();
 		batch.s_indices.clear();
 		batch.s_texture = nullptr;
 	}
 
 	if (m_commands.empty())
-	{
 		return m_batches;
-	}
-
-	//m_vertexBuffer.clear(); // Garde la capacité, remet à zéro la taille
-	//m_indicesBuffer.clear();
-
-	//m_vertexBuffer.reserve(m_commands.size() * 4);
-	//m_indicesBuffer.reserve(m_commands.size() * 6);
 
 	size_t batchCount = 0;
-    for (const auto& command : m_commands)
-    {
-        std::visit([&](auto&& p_command)
-            {
-                SDL_Texture* texture = p_command.s_texture;
+	SDL_Texture* lastTexture = nullptr;
+	bool hasBatch = false;
 
-                size_t batchIndex;
-                auto it = m_batchIndexByTexture.find(texture);
-                if (it == m_batchIndexByTexture.end())
-                {
-                    batchIndex = batchCount++;
-					m_batchIndexByTexture.emplace(texture, batchIndex);
+	for (const auto& command : m_commands)
+	{
+		std::visit([&](auto&& p_command)
+			{
+				SDL_Texture* texture = p_command.s_texture;
 
-                    if (batchIndex >= m_batches.size())
-                        m_batches.push_back(Data{}); // ne grandit que si vraiment nécessaire
+				// Nouveau batch seulement si la texture change (ou 1er passage) :
+				// garde l'ordre de dessin (donc le draw layer) intact.
+				if (!hasBatch || texture != lastTexture)
+				{
+					if (batchCount >= m_batches.size())
+					{
+						m_batches.push_back(Data{});
+					}
 
-                    m_batches[batchIndex].s_texture = texture;
-                }
-                else
-                {
-                    batchIndex = it->second;
-                }
+					m_batches[batchCount].s_texture = texture;
+					batchCount++;
+					lastTexture = texture;
+					hasBatch = true;
+				}
 
-                Data& batch = m_batches[batchIndex];
-                int indexOffset = static_cast<int>(batch.s_vertices.size());
+				Data& batch = m_batches[batchCount - 1];
+				int indexOffset = static_cast<int>(batch.s_vertices.size());
 
-                this->AddQuadToBuffer(batch.s_vertices, p_command);
+				this->AddQuadToBuffer(batch.s_vertices, p_command);
 
-                batch.s_indices.push_back(indexOffset + 0);
-                batch.s_indices.push_back(indexOffset + 1);
-                batch.s_indices.push_back(indexOffset + 2);
-                batch.s_indices.push_back(indexOffset + 1);
-                batch.s_indices.push_back(indexOffset + 2);
-                batch.s_indices.push_back(indexOffset + 3);
+				batch.s_indices.push_back(indexOffset + 0);
+				batch.s_indices.push_back(indexOffset + 1);
+				batch.s_indices.push_back(indexOffset + 2);
+				batch.s_indices.push_back(indexOffset + 1);
+				batch.s_indices.push_back(indexOffset + 2);
+				batch.s_indices.push_back(indexOffset + 3);
 
-            }, command);
-    }
+			}, command);
+	}
 
-	// Redimensionne le vecteur m_batches pour ne conserver que les batches utilisés
-    if (batchCount < m_batches.size())
-        m_batches.resize(batchCount);
+	if (batchCount < m_batches.size())
+		m_batches.resize(batchCount);
 
-    m_commands.clear();
-    m_batchIndexByTexture.clear();
-    return m_batches;
+	m_commands.clear();
+	return m_batches;
 }

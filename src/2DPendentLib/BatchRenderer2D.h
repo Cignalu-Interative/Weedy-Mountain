@@ -27,8 +27,6 @@ private:
 
 	std::vector<CommandVariant> m_commands;
 
-	std::unordered_map<SDL_Texture*, size_t> m_batchIndexByTexture;
-
 	std::vector<Data> m_batches;
 
 	SDL_Texture* m_lastSizedTexture = nullptr; // cache pour GetTextureSize

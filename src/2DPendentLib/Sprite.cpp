@@ -262,17 +262,11 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     //        flip = SDL_FLIP_NONE;
     //}
 
-    if (SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND) == false)
-    {
-        SDL_Log("Lib/Sprite.cpp/Draw/SDL_SetTextureBlendMode/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
-    }
-
-    if (SDL_SetTextureAlphaMod(m_texture, m_oppacity) == false)
+    /*if (SDL_SetTextureAlphaMod(m_texture, m_oppacity) == false)
     {
 		SDL_Log("Lib/Sprite.cpp/Draw/SDL_SetTextureAlphaMod/cela na pas fonctionn� : %s", SDL_GetError());
         return;
-    }
+    }*/
 
     if (m_srcRect == nullptr)
     {

@@ -6,6 +6,7 @@
 #include "2DPendentLib/Window.h"
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/BatchRenderer2D.h"
+#include "Entity.h"
 
 SceneManager::SceneManager()
 {
@@ -14,6 +15,8 @@ SceneManager::SceneManager()
 
 	m_scenesInStack.reserve(12); // Réserver de la mémoire pour 12 scènes afin d'éviter les reallocations fréquentes lors de l'ajout de scènes
 	m_scenesInStackVector.reserve(12); // Réserver de la mémoire pour 12 scènes afin d'éviter les reallocations fréquentes lors de l'ajout de scènes
+
+	m_entToDraw.reserve(4000); // Réserver de la mémoire pour 1000 entités afin d'éviter les reallocations fréquentes lors de l'ajout d'entités
 }
 
 SceneManager::~SceneManager()
@@ -186,28 +189,34 @@ void SceneManager::UpdateScenesInStack()
 
 void SceneManager::DrawScenesInStack(Render* f_render, Window* f_window, Camera* p_camera)
 {
-	std::list<Entity*> entToDraw;
 	std::list<Entity*> tempEntity;
 	for (Scene* scene : m_scenesInStackVector)
 	{
 		tempEntity = scene->GetEntities();
 		for (Entity* entity : tempEntity)
 		{
-			entToDraw.push_back(entity);
+			m_entToDraw.push_back(entity);
 		}
 		scene->OnDraw();
 		//scene->Draw(f_render, f_window, p_camera);
 	}
 
-	entToDraw.sort([](const Entity* a, const Entity* b)
+	std::sort(m_entToDraw.begin(), m_entToDraw.end(), [](const Entity* a, const Entity* b)
 	{
 		return a->GetDrawLayer() < b->GetDrawLayer();
 	});
 
-	for (Entity* entity : entToDraw)
+	/*entToDraw.sort([](const Entity* a, const Entity* b)
+	{
+		return a->GetDrawLayer() < b->GetDrawLayer();
+	});*/
+
+	for (Entity* entity : m_entToDraw)
 	{
 		entity->Draw(f_render, f_window);
 	}
+
+	m_entToDraw.clear();
 
 	const std::vector<Data>& batches = BatchRenderer2D::Get()->Flush();
 	for (const auto& batch : batches)

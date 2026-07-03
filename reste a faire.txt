@@ -1,6 +1,4 @@
-et faire des variables temporaire pour les singleton dans map tiled
 terminer l'opti de sprite avec le BatchRenderer2D
-et faire un script python pour opti au max le mode release automatiquement
 crée des zones de text
 puis shader
 verifier le cap des fps exemple set 2000 -> 1800

@@ -64,6 +64,12 @@ void AssetManager::AddTextureByRepertory(const std::string& p_path)
 				SDL_Log("Lib/AssetManager.cpp/AddTexture/SDL_SetTextureScaleMode/failed to set texture scale mode: %s", SDL_GetError());
 				return;
 			}
+			if (SDL_SetTextureBlendMode(texture, SDL_BLENDMODE_BLEND) == false)
+			{
+				SDL_Log("Lib/AssetManager.cpp/Draw/SDL_SetTextureBlendMode/cela na pas fonctionner : %s", SDL_GetError());
+				return;
+			}
+
 			m_texturesMap[autoId] = m_texturesVector.size();
 			m_texturesVector.push_back(texture);
 			m_textureIdsVector.push_back(autoId);

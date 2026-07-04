@@ -4,3 +4,5 @@ puis shader
 verifier le cap des fps exemple set 2000 -> 1800
 crée les trois type de text solid shaded blended et wrapped et UTF8 et style et contours
 voir pour opti le draw de text box en appelant le draw d'entity Entity::Draw() puis ajouter les code particulier
+
+multi threader le moteur 

@@ -82,4 +82,10 @@ public:
 
 	void SetBackgroundColor(Color p_color) { m_backgroundColor = p_color; }
 	Color GetBackgroundColor() const { return m_backgroundColor; }
+
+	void SetIsWrapped(bool p_wrapped) { m_isWrapped = p_wrapped; }
+	bool GetIsWrapped() const { return m_isWrapped; }
+
+	void SetWrapWidth(int p_wrapWidth) { m_wrapWidth = p_wrapWidth; }
+	int GetWrapWidth() const { return m_wrapWidth; }
 };

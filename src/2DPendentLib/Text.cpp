@@ -10,10 +10,23 @@
 void Text::CreateTexture()
 {
 	int textSizeW, textSizeH;
-	if (TTF_GetStringSize(m_font, m_text.c_str(), 0, &textSizeW, &textSizeH) == false)
+	size_t lenText = strlen(m_text.c_str());
+
+	if (m_isWrapped)
 	{
-		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_GetStringSize/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
+		if (TTF_GetStringSizeWrapped(m_font, m_text.c_str(), lenText, m_wrapWidth, &textSizeW, &textSizeH) == false)
+		{
+			SDL_Log("Lib/Text.cpp/CreateTexture/TTF_GetStringSizeWrapped/cela na pas fonctionn� : %s", SDL_GetError());
+			return;
+		}
+	}
+	else
+	{
+		if (TTF_GetStringSize(m_font, m_text.c_str(), lenText, &textSizeW, &textSizeH) == false)
+		{
+			SDL_Log("Lib/Text.cpp/CreateTexture/TTF_GetStringSize/cela na pas fonctionn� : %s", SDL_GetError());
+			return;
+		}
 	}
 
 	if (m_textTexture != nullptr)
@@ -254,11 +267,26 @@ void Text::UpdateTexture()
 	}
 
 	int textSizeW, textSizeH;
-	if (TTF_GetStringSize(m_font, m_text.c_str(), 0, &textSizeW, &textSizeH) == -1)
+
+	size_t lenText = strlen(m_text.c_str());
+
+	if (m_isWrapped)
 	{
-		SDL_Log("Lib/Text.cpp/Update/TTF_GetStringSize/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
+		if (TTF_GetStringSizeWrapped(m_font, m_text.c_str(), lenText, m_wrapWidth, &textSizeW, &textSizeH) == false)
+		{
+			SDL_Log("Lib/Text.cpp/Update/TTF_GetStringSizeWrapped/cela na pas fonctionn� : %s", SDL_GetError());
+			return;
+		}
 	}
+	else
+	{
+		if (TTF_GetStringSize(m_font, m_text.c_str(), lenText, &textSizeW, &textSizeH) == false)
+		{
+			SDL_Log("Lib/Text.cpp/Update/TTF_GetStringSize/cela na pas fonctionn� : %s", SDL_GetError());
+			return;
+		}
+	}
+	
 	int sizetetureX = GetDimension().GetX();
 	int sizetextureY = GetDimension().GetY();
 
@@ -271,22 +299,39 @@ void Text::UpdateTexture()
 	}
 
 	SDL_Surface* textSurface = nullptr;
-	size_t lenText = strlen(m_text.c_str());
 	switch (m_typeText)
 	{
 	case Solid:
-		textSurface = TTF_RenderText_Solid(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a });
-
+		if (m_isWrapped)
+		{
+			textSurface = TTF_RenderText_Solid_Wrapped(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a }, m_wrapWidth);
+		}
+		else
+		{
+			textSurface = TTF_RenderText_Solid(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a });
+		}
 		break;
 
 	case Shaded:
-		textSurface = TTF_RenderText_Shaded(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a }, { m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a });
-
+		if (m_isWrapped)
+		{
+			textSurface = TTF_RenderText_Shaded_Wrapped(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a }, { m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a }, m_wrapWidth);
+		}
+		else
+		{
+			textSurface = TTF_RenderText_Shaded(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a }, { m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a });
+		}
 		break;
 
 	case Blended:
-		textSurface = TTF_RenderText_Blended(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a });
-
+		if (m_isWrapped)
+		{
+			textSurface = TTF_RenderText_Blended_Wrapped(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a }, m_wrapWidth);
+		}
+		else
+		{
+			textSurface = TTF_RenderText_Blended(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a });
+		}
 		break;
 	}
 

@@ -7,6 +7,7 @@
 #include "SpriteContainer.h"
 #include "ItemOnGround.h"
 #include "ItemDataBase.h"
+#include "FarmManager.h"
 
 
 void EnviroProps::OnInitialize()
@@ -70,6 +71,21 @@ void EnviroProps::OnDestroy()
 	}
 
 	m_stats.m_position->SetCanGrow(true);
+
+	if (m_name == EnviroSpawnName::Stone) {
+		std::vector<FarmTile*> m_farmTiles = FarmManager::Get()->GetAllFarmTiles();
+		float radius = 23.f;
+		float radiusSqr = radius * radius;
+		for (int tile = 0; tile < m_farmTiles.size(); tile++) {
+
+			float dx = m_farmTiles[tile]->GetPosition().GetX() - m_stats.m_position->GetPosition().GetX();
+			float dy = m_farmTiles[tile]->GetPosition().GetY() - m_stats.m_position->GetPosition().GetY();
+
+			if ((dx * dx + dy * dy) <= radiusSqr) {
+				m_farmTiles[tile]->SetCanGrow(true);
+			}
+		}
+	}
 }
 
 void EnviroProps::CreateItem(int lootPos)

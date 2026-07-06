@@ -46,7 +46,10 @@ public:
 
 	void SetType(EnviroSpawnName p_name);
 
+	EnviroSpawnName GetType() { return m_name; }
+
 	void SetFarmTile(FarmTile* position) { m_stats.m_position = position; }
 
+	FarmTile* GetFarmTile() { return m_stats.m_position; }
 };
 

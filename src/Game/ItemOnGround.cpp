@@ -28,7 +28,8 @@ void ItemOnGround::OnUpdate()
 	if (m_timer > 0) {
 		m_timer -= GetDeltaTime();
 	}
-	else MoveKinematic();
+
+	MoveKinematic();
 
 	m_timeToDestroy -= GetDeltaTime();
 	if (m_timeToDestroy <= 0) {
@@ -69,7 +70,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 	if (_other->GetOwner()->GetTag() != 1 || this->m_toDestroy)
 		return;
 
-	if (_other->GetID() == "interact") {
+	if (_other->GetID() == "interact" && m_timer <= 0) {
 		float diffX = _other->GetPosition().GetX() - GetPosition().GetX();
 		float diffY = _other->GetPosition().GetY() - GetPosition().GetY();
 		SetDirection({ diffX / Utils::Distance(GetPosition(),_other->GetPosition()), diffY / Utils::Distance(GetPosition(),_other->GetPosition()) });

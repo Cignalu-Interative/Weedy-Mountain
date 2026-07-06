@@ -36,9 +36,9 @@
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
-	//MapTiledManager* mm = MapTiledManager::Get();
-	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	//mm->SetCurrentMap("Farm");
+	MapTiledManager* mm = MapTiledManager::Get();
+	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	mm->SetCurrentMap("Farm");
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
@@ -64,27 +64,27 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 	//
 	GetCamera()->SetZoom(5.f);
-	//GetCamera()->SetSmoothSpeed(2);
-	//Application::Get()->SetClampCameraToCurrentMap(true);
+	GetCamera()->SetSmoothSpeed(2);
+	Application::Get()->SetClampCameraToCurrentMap(true);
 
-	//MapTiled* map = mm->GetCurrentMap();
+	MapTiled* map = mm->GetCurrentMap();
 
-	//std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
-	//int size = canGrowTiles.size();
-	//Vector2i tileDim = map->GetTileDimension();
+	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
+	int size = canGrowTiles.size();
+	Vector2i tileDim = map->GetTileDimension();
 
-	//for (const TileInfo& info : canGrowTiles)
-	//{
-	//	Vector2f center = {
-	//		info.worldPos.GetX() + tileDim.GetX() / 2.f,
-	//		info.worldPos.GetY() + tileDim.GetY() / 2.f
-	//	};
-	//	FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-	//	tile->GetCollider()->SetLayer(FARMTILE);
-	//	tile->GetCollider()->SetMask(NoNE);
-	//	//tile->ShowCollider(true);
-	//	FarmManager::Get()->RegisterTile(tile);
-	//}
+	for (const TileInfo& info : canGrowTiles)
+	{
+		Vector2f center = {
+			info.worldPos.GetX() + tileDim.GetX() / 2.f,
+			info.worldPos.GetY() + tileDim.GetY() / 2.f
+		};
+		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
+		tile->GetCollider()->SetLayer(FARMTILE);
+		tile->GetCollider()->SetMask(NoNE);
+		//tile->ShowCollider(true);
+		FarmManager::Get()->RegisterTile(tile);
+	}
 
 	Vector2f uiStatsPos = {1050, 600};
 	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
@@ -139,7 +139,7 @@ void GameScene::OnUpdate()
 {
 	GetCamera()->Follow(m_player);
 	//FarmManager::Get()->Update();
-	//EnviroSpawn::Get()->Update();
+	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
 	//CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);

@@ -350,6 +350,13 @@ void Text::UpdateTexture()
 		return;
 	}
 
+	/*TTF_FontStyleFlags flags;
+	flags = TTF_GetFontStyle(m_font);
+	if (flags != 0)
+	{
+		int i = 0;
+	}*/
+
 	//SDL_PropertiesID props = SDL_GetTextureProperties(m_textTexture);
 	//if (props == 0)
 	//{
@@ -390,4 +397,32 @@ void Text::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
 {
 	Transformable::SetPosition(p_position, p_anchor);
 	m_positionWanted = p_position;
+}
+
+void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_strikethrough)
+{
+	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
+
+	if (p_bold)
+	{
+		style |= TTF_STYLE_BOLD;
+	}
+	if (p_italic)
+	{
+		style |= TTF_STYLE_ITALIC;
+	}
+	if (p_underline)
+	{
+		style |= TTF_STYLE_UNDERLINE;
+	}
+	if (p_strikethrough)
+	{
+		style |= TTF_STYLE_STRIKETHROUGH;
+	}
+	
+	m_fontStyle = style;
+
+	TTF_SetFontStyle(m_font, m_fontStyle);
+
+	UpdateTexture();
 }

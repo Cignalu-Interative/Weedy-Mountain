@@ -82,7 +82,9 @@ void GameScene::OnInitialize()
 		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}
-
+	CreateText("KAKA", { 500, 450 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::Indigo, true);
+	Debug::Get()->GetText("KAKA")->SetFontSize(40);
+	Debug::Get()->GetText("KAKA")->SetFontStyle();
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);

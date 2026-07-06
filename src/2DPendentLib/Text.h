@@ -15,6 +15,17 @@ enum TypeText
 	MaxType
 };
 
+enum FontStyle : TTF_FontStyleFlags
+{
+	Normal = TTF_STYLE_NORMAL,
+	Bold = TTF_STYLE_BOLD,
+	Italic = TTF_STYLE_ITALIC,
+	Underline = TTF_STYLE_UNDERLINE,
+	Strikethrough = TTF_STYLE_STRIKETHROUGH,
+
+	MaxFontStyle
+};
+
 class Text : public Geometry, public Drawable
 {
 private:
@@ -48,6 +59,8 @@ private:
 	int m_wrapWidth = 0; // Largeur maximale du texte avant de faire un retour à la ligne automatique (en pixels)
 
 	Color m_backgroundColor = ColorsNamed::Transparent; // Couleur de fond du texte (par défaut transparent)
+
+	TTF_FontStyleFlags m_fontStyle = TTF_STYLE_NORMAL; // Style de police utilisé pour le texte (par défaut normal)
 
 public:
 
@@ -88,4 +101,11 @@ public:
 
 	void SetWrapWidth(int p_wrapWidth) { m_wrapWidth = p_wrapWidth; }
 	int GetWrapWidth() const { return m_wrapWidth; }
+
+	void SetTypeText(TypeText p_typeText) { m_typeText = p_typeText; }
+	TypeText GetTypeText() const { return m_typeText; }
+
+	void SetFontStyle(bool p_bold = true, bool p_italic = false, bool p_underline = false, bool p_strikethrough = false);
 };
+
+#include "Text.inl"

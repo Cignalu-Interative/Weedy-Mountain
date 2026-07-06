@@ -18,13 +18,19 @@ void UiLife::OnInitialize()
 
 	SyncSprites();
 
-	GetSprite("Heart")->SetPosition(GetSprite("LifeEmpty")->GetPosition(),{0.5f,0});
+	GetSprite("Heart")->SetPosition(GetSprite("LifeEmpty")->GetPosition({ 0.5f,0 }), { 0.5f,1 });
 }
 
 void UiLife::OnUpdate()
 {
+
 	GameScene* gameScene = GetScene<GameScene>();
 	int hp = gameScene->GetPlayer()->GetStats().m_Hp;
+
+	if (hp == gameScene->GetPlayer()->GetStats().m_maxHp)
+		SetIsVisible(false);
+	else
+		SetIsVisible(true);
 
 	if (m_currentValue == hp)
 		return;

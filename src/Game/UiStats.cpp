@@ -8,8 +8,8 @@ void UiStats::OnInitialize()
 	Vector2i dimension = GetDimension();
 	
 	Vector2f lifePos = { GetPosition({0.5f,0}).GetX() - dimension.GetX() * 0.25f,GetPosition().GetY() };
-	Vector2f staminaPos = GetPosition();
-	Vector2f toxicityPos = { GetPosition({0.5f,1}).GetX() + dimension.GetX() * 0.25f,  GetPosition().GetY()};
+	Vector2f staminaPos = { GetPosition({0.5f,1}).GetX() + dimension.GetX() * 0.25f,  GetPosition().GetY() };
+	Vector2f toxicityPos = GetPosition();
 
 	int drawLayer = GetDrawLayer() + 1;
 

@@ -1,13 +1,25 @@
 {
   "textures": [
     {
+      "path": "../../res/Game/Assets/Textures/Calendar.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc_Actions.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Clock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Drugs.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Egg.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Energy.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Environment/Backgrounds/Harvest BG.png"

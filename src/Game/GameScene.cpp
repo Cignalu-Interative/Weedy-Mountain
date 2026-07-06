@@ -27,13 +27,11 @@
 #include "UiShop.h"
 #include "SpriteContainer.h"
 
-#include "UiLife.h"
-#include "UiStamina.h"
-#include "UiToxicity.h"
-
 #include "UiStats.h"
 #include "UiMoney.h"
 #include "UiCash.h"
+#include "UiDate.h"
+#include "UiTime.h"
 
 void GameScene::OnInitialize()
 {
@@ -89,13 +87,15 @@ void GameScene::OnInitialize()
 	//}
 
 	Vector2f uiStatsPos = {1050, 600};
-	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 400,200 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	e->ShowCollider(true);
+	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	//e->ShowCollider(true);
 
 	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
-	f->ShowCollider(true);
+	//f->ShowCollider(true);
 	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	f->ShowCollider(true);
+	//f->ShowCollider(true);
+	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
@@ -105,7 +105,7 @@ void GameScene::OnInitialize()
 	//a->GetSprite()->SetDimension(a->GetDimension());
 	//a->SyncSprites();
 	////a->ShowCollider(true);
-	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
+	//CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
 }
@@ -129,10 +129,10 @@ void GameScene::OnEvent()
 		Application::Get()->SetIsAutoFPS(true);
 	}
 	if (im->IsKeyboardDown(K_K))
-		m_player->AddCash(10);//m_player->GetStats().m_Hp -= 5;
+		m_player->GetStats().m_Hp -= 5;
 
 	if (im->IsKeyboardDown(K_O))
-		m_player->DecreaseCash(10);//m_player->GetStats().m_Hp += 5;
+		m_player->GetStats().m_Hp += 5;
 }
 
 void GameScene::OnUpdate()
@@ -143,7 +143,7 @@ void GameScene::OnUpdate()
 	GameData& gm = GameData::Get();
 	gm.Update();
 	//CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
-	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
+	//Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 

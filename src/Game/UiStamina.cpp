@@ -9,14 +9,16 @@ void UiStamina::OnInitialize()
 	m_currentValue = gameScene->GetPlayer()->GetStats().m_stamina;
 	m_maxValue = gameScene->GetPlayer()->GetStats().m_maxStamina;
 
+	AddSprite("Energy", "Energy", { 32,32 }, 0, {}, true);
 	AddSprite("StaminaFull", "UiStaminaFull", GetDimension(), 0, {}, true);
 	AddSprite("StaminaEmpty", "UiEmpty", GetDimension(), 0, {}, true);
 
 	GetSprite("StaminaEmpty")->SetDimension(GetDimension());
 	GetSprite("StaminaFull")->SetDimension(GetDimension());
 
-	ShowCollider(true);
 	SyncSprites();
+	
+	GetSprite("Energy")->SetPosition(GetSprite("StaminaEmpty")->GetPosition({ 0.5f,0 }), { 0.5f,1 });
 }
 
 void UiStamina::OnUpdate()

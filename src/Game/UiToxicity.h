@@ -3,9 +3,8 @@
 
 class UiToxicity : public Ui
 {
-public :
-	void OnInitialize() override;
 
+	void OnInitialize() override;
 	void OnUpdate() override;
 };
 

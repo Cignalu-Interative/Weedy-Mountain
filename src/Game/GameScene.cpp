@@ -32,6 +32,7 @@
 #include "UiCash.h"
 #include "UiDate.h"
 #include "UiTime.h"
+#include "UiJobs.h"
 
 void GameScene::OnInitialize()
 {
@@ -94,8 +95,12 @@ void GameScene::OnInitialize()
 	//f->ShowCollider(true);
 	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	//f->ShowCollider(true);
-	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+
+	UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
+	j->ShowCollider(true);
+	//j->SyncSprites();
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);

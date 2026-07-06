@@ -132,6 +132,8 @@ public:
 	std::vector<PlayerJob*>& GetJobs() { return m_jobs; }
 	PlayerStats& GetStats() { return m_stats; }
 
+	PlayerJob* GetJobByName(JobType p_name);
+
 	void UpdateJobs();
 	void UnlockRecipe(Recipes _toUnlock);
 	void SetupStateMachine();

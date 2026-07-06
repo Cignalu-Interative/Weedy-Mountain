@@ -736,6 +736,9 @@
       "path": "../../res/Game/Assets/Textures/Oak_Tree.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Pickaxe.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Potatoe.png"
     },
     {
@@ -785,6 +788,24 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/carrot_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/cisailles.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/emptyHorizontal.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/faucille.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/fullHorizontalBlue.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/fullHorizontalRed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/fullHorizontalWhite.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/inventory.png"

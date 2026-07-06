@@ -212,6 +212,17 @@ void Player::OnDestroy()
 
 }
 
+PlayerJob* Player::GetJobByName(JobType p_type)
+{
+	for (PlayerJob* job : m_jobs)
+	{
+		if (job->m_name == p_type)
+			return job ;
+	}
+
+	return nullptr;
+}
+
 void Player::UpdateJobs()
 {
 	for (int i = 0; i < m_jobs.size(); i++) {

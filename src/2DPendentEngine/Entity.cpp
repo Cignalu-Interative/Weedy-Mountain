@@ -55,7 +55,7 @@ void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::st
 	}
 
 	if (p_isGUI)
-		SetDrawLayer(INT_MAX);
+		m_drawLayer = INT_MAX;
 
 	OnInitialize();
 }

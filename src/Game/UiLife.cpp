@@ -20,7 +20,7 @@ void UiLife::OnInitialize()
 
 	GetSprite("Heart")->SetPosition(GetSprite("LifeEmpty")->GetPosition({ 0.5f,0 }), { 0.5f,1 });
 }
-
+	
 void UiLife::OnUpdate()
 {
 

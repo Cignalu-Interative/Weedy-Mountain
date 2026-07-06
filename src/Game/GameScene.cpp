@@ -97,6 +97,7 @@ void GameScene::OnInitialize()
 	EnviroSpawn::Get()->InitEnviroSpawn();
 
 	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::White, true);
+	m_textBox->GetCollider()->SetIsTrigger(true);
 }
 
 

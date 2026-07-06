@@ -21,6 +21,7 @@ void Text::CreateTexture()
 		SDL_DestroyTexture(m_textTexture);
 		m_textTexture = nullptr;
 	}
+
 	m_textTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, textSizeW, textSizeH);
 	if (m_textTexture == NULL)
 	{
@@ -60,10 +61,8 @@ Text::~Text()
 	}
 }
 
-void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color)
+void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color, TypeText p_typeText, bool p_wrapped)
 {
-
-	SetColor(p_color);
 	if (p_text == "")
 	{
 		m_text = " ";
@@ -72,6 +71,12 @@ void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_col
 	{
 		m_text = p_text;
 	}
+
+	m_typeText = p_typeText;
+
+	m_isWrapped = p_wrapped;
+
+	SetColor(p_color);
 
 	CreateTexture();
 
@@ -265,38 +270,66 @@ void Text::UpdateTexture()
 		}
 	}
 
-	SDL_Surface* textSurface = TTF_RenderText_Blended(m_font, m_text.c_str(), 0, { 255, 255, 255, 255 });
+	SDL_Surface* textSurface = nullptr;
+	size_t lenText = strlen(m_text.c_str());
+	switch (m_typeText)
+	{
+	case Solid:
+		textSurface = TTF_RenderText_Solid(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a });
+
+		break;
+
+	case Shaded:
+		textSurface = TTF_RenderText_Shaded(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a }, { m_backgroundColor.r, m_backgroundColor.g, m_backgroundColor.b, m_backgroundColor.a });
+
+		break;
+
+	case Blended:
+		textSurface = TTF_RenderText_Blended(m_font, m_text.c_str(), lenText, { m_color.r, m_color.g, m_color.b, m_color.a });
+
+		break;
+	}
+
 	if (textSurface == NULL)
 	{
 		SDL_Log("Lib/Debug.cpp/Update/TTF_RenderText_Blended/TTF_RenderText_Blended non reussie : %s", SDL_GetError());
 		return;
 	}
 
-	SDL_PropertiesID props = SDL_GetTextureProperties(m_textTexture);
-	if (props == 0)
-	{
-		SDL_Log("Lib/Debug.cpp/Update/SDL_GetTextureProperties/SDL_GetTextureProperties non reussie : %s", SDL_GetError());
-		return;
-	}
-
-	int format = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_FORMAT_NUMBER, 0);
-	int access = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_ACCESS_NUMBER, 0);
-	int width = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0);
-	int height = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0);
-
-	std::vector<Uint32> pixels(width * height, 0);
-	if (SDL_UpdateTexture(m_textTexture, NULL, pixels.data(), width * sizeof(Uint32)) == false)
-	{
-		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
-	}
-
-	if (SDL_UpdateTexture(m_textTexture, NULL, textSurface->pixels, textSurface->pitch) == false)
-	{
-		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
-	}
+	SDL_Surface* convertedSurface = SDL_ConvertSurface(textSurface, SDL_PIXELFORMAT_RGBA32);
 	SDL_DestroySurface(textSurface);
+
+	if (convertedSurface == NULL)
+	{
+		SDL_Log("Lib/Debug.cpp/Update/SDL_ConvertSurface/SDL_ConvertSurface non reussie : %s", SDL_GetError());
+		return;
+	}
+
+	//SDL_PropertiesID props = SDL_GetTextureProperties(m_textTexture);
+	//if (props == 0)
+	//{
+	//	SDL_Log("Lib/Debug.cpp/Update/SDL_GetTextureProperties/SDL_GetTextureProperties non reussie : %s", SDL_GetError());
+	//	return;
+	//}
+
+	//int format = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_FORMAT_NUMBER, 0);
+	//int access = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_ACCESS_NUMBER, 0);
+	//int width = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_WIDTH_NUMBER, 0);
+	//int height = (int)SDL_GetNumberProperty(props, SDL_PROP_TEXTURE_HEIGHT_NUMBER, 0);
+
+	//std::vector<Uint32> pixels(width * height, 0); // Crée un vecteur de pixels initialisé à zéro (transparent)
+	//if (SDL_UpdateTexture(m_textTexture, NULL, pixels.data(), width * sizeof(Uint32)) == false)
+	//{
+	//	SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionn� : %s", SDL_GetError());
+	//	return;
+	//}
+
+	if (SDL_UpdateTexture(m_textTexture, NULL, convertedSurface->pixels, convertedSurface->pitch) == false)
+	{
+		SDL_Log("Lib/Text.cpp/Update/SDL_UpdateTexture/cela na pas fonctionn� : %s", SDL_GetError());
+		return;
+	}
+	SDL_DestroySurface(convertedSurface);
 
 	float textWidth, textHeight;
 	if (SDL_GetTextureSize(m_textTexture, &textWidth, &textHeight) == false)

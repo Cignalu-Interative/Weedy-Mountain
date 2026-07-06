@@ -6,12 +6,23 @@
 #include "Geometry.h"
 #include "Drawable.h"
 
+enum TypeText
+{
+	Solid,
+	Shaded,
+	Blended,
+
+	MaxType
+};
+
 class Text : public Geometry, public Drawable
 {
 private:
 
 	std::string m_fontPath; // Chemin vers le fichier de police utilisé pour le texte
 	std::string m_text; // Texte à afficher
+
+	TypeText m_typeText; // Type de rendu du texte (Solid, Shaded, Blended)
 
 	TTF_Font* m_font = nullptr; // Police de caractères utilisée pour le texte
 
@@ -32,12 +43,18 @@ private:
 
 	Vector2f m_positionWanted; //Position voulue pour le texte, indépendante de la position réelle du texte avec la taille du texte
 
+	bool m_isWrapped = false; // Si true, le texte fera des retours à la ligne automatiques si la largeur du texte dépasse la largeur maximale spécifiée
+
+	int m_wrapWidth = 0; // Largeur maximale du texte avant de faire un retour à la ligne automatique (en pixels)
+
+	Color m_backgroundColor = ColorsNamed::Transparent; // Couleur de fond du texte (par défaut transparent)
+
 public:
 
 	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 28);
 	~Text();
 
-	void Initialize(Vector2f p_position, const std::string p_text, Color p_color = ColorsNamed::White);
+	void Initialize(Vector2f p_position, const std::string p_text, Color p_color = ColorsNamed::White, TypeText p_typeText = Solid, bool p_wrapped = false);
 
 	void SetFont(const std::string& p_idFont, int p_sizeFont);
 	TTF_Font* GetFont() const { return m_font; }
@@ -62,4 +79,7 @@ public:
 	void UpdateTexture();
 
 	void SetPosition(const Vector2f& p_position, Vector2f p_anchor = { 0.5f, 0.5f });
+
+	void SetBackgroundColor(Color p_color) { m_backgroundColor = p_color; }
+	Color GetBackgroundColor() const { return m_backgroundColor; }
 };

@@ -1,4 +1,5 @@
 crée des zones de text
+remplacer les divisions de flottant par une multiplication de son inverse
 appeler Peter pour le deltatime
 puis shader
 verifier le cap des fps exemple set 2000 -> 1800

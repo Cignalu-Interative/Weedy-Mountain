@@ -256,7 +256,6 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		SDL_Log("Lib/Text.cpp/Draw/SDL_RenderCopyF/cela na pas fonctionn� : %s", SDL_GetError());
 		return;
 	}*/
-
 }
 
 void Text::UpdateTexture()

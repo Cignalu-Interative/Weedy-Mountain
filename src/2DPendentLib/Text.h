@@ -15,6 +15,16 @@ enum TypeText
 	MaxType
 };
 
+enum HorizontalAlignment
+{
+	Invalid = TTF_HORIZONTAL_ALIGN_INVALID,
+	Left = TTF_HORIZONTAL_ALIGN_LEFT,
+	Center = TTF_HORIZONTAL_ALIGN_CENTER,
+	Right = TTF_HORIZONTAL_ALIGN_RIGHT,
+
+	MaxHorizontalAlignment
+};
+
 enum FontStyle : TTF_FontStyleFlags
 {
 	Normal = TTF_STYLE_NORMAL,
@@ -36,6 +46,10 @@ private:
 	TypeText m_typeText; // Type de rendu du texte (Solid, Shaded, Blended)
 
 	TTF_Font* m_font = nullptr; // Police de caractères utilisée pour le texte
+
+	TTF_TextEngine* m_textEngine = nullptr; // Moteur de rendu de texte utilisé pour le rendu du texte
+
+	TTF_Text* m_dynamicText = nullptr; // Texte dynamique utilisé pour le rendu du texte
 
 	SDL_Texture* m_textTexture = nullptr; // Texture du texte
 
@@ -64,25 +78,29 @@ private:
 
 	bool m_isHasOutline = false; // Si true, le texte aura un contour (outline) autour des caractères
 
-	int m_outlineSize = 2; // Taille du contour (outline) autour des caractères du texte (en pixels)
+	int m_outlineSize = 0; // Taille du contour (outline) autour des caractères du texte (en pixels)
 
 	Color m_outlineColor = ColorsNamed::Red;
+
+	int m_lineSpacing = 0; // Espacement entre les lignes de texte (en pixels)
 
 public:
 
 	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 28);
 	~Text();
 
+	void SetTextEngine(TTF_TextEngine* p_engine) { m_textEngine = p_engine; }
+
 	void Initialize(Vector2f p_position, const std::string p_text, Color p_color = ColorsNamed::White, TypeText p_typeText = Solid, bool p_wrapped = false);
 
 	void SetFont(const std::string& p_idFont, int p_sizeFont);
-	TTF_Font* GetFont() const { return m_font; }
+	TTF_Font* GetFont() const;
 
 	void SetText(const std::string& p_text);
 	std::string GetText() const { return m_text; }
 
 	void SetFontSize(int p_size);
-	int GetFontSize() const { return m_fontSize; }
+	int GetFontSize() const;
 
 	void SetTimeToUpdate(float p_timeToUpdate) { m_updateInterval = p_timeToUpdate; }
 	float GetTimeToUpdate() const { return m_updateInterval; }
@@ -99,24 +117,38 @@ public:
 
 	void SetPosition(const Vector2f& p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 
+	void SetColor(Color p_color);
+	Color GetColor() const;
+
 	void SetBackgroundColor(Color p_color) { m_backgroundColor = p_color; }
 	Color GetBackgroundColor() const { return m_backgroundColor; }
 
 	void SetIsWrapped(bool p_wrapped) { m_isWrapped = p_wrapped; }
 	bool GetIsWrapped() const { return m_isWrapped; }
 
-	void SetWrapWidth(int p_wrapWidth) { m_wrapWidth = p_wrapWidth; }
-	int GetWrapWidth() const { return m_wrapWidth; }
+	void SetWrapWidth(int p_wrapWidth);
+	int GetWrapWidth() const;
 
 	void SetTypeText(TypeText p_typeText) { m_typeText = p_typeText; }
 	TypeText GetTypeText() const { return m_typeText; }
 
 	void SetFontStyle(bool p_bold = false, bool p_italic = false, bool p_underline = false, bool p_strikethrough = false);
+	TTF_FontStyleFlags GetFontStyle() const;
 
 	void SetOutline(int p_outlineSize);
 
 	void SetOutLineColor(Color p_color) { m_outlineColor = p_color; }
 	Color GetOutLineColor() const { return m_outlineColor; }
+
+	void SetLineSpacing(int p_lineSpacing);
+	int GetLineSpacing() const;
+
+	void HorizontalAlignText(HorizontalAlignment p_alignment);
+	HorizontalAlignment GetHorizontalAlignText() const;
+
+	Vector2i GetTextSize() const;
+
+	
 
 };
 

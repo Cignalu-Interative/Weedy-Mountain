@@ -26,6 +26,15 @@ void Text::CreateTexture(Vector2i p_dimention)
 		SDL_Log("Lib/Text.cpp/CreateTexture/SDL_SetTextureBlendMode/SDL_SetTextureBlendMode non reussie : %s", SDL_GetError());
 		return;
 	}
+
+	size_t lenText = strlen(m_text.c_str());
+
+	m_dynamicText = TTF_CreateText(m_textEngine, m_font, m_text.c_str(), lenText);
+	if (m_dynamicText == NULL)
+	{
+		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_CreateText/TTF_CreateText non reussie : %s", SDL_GetError());
+		return;
+	}
 }
 
 Text::Text(const std::string& p_idFont, int p_sizeFont)
@@ -51,6 +60,11 @@ Text::~Text()
 	{
 		SDL_DestroyTexture(m_textTexture);
 		m_textTexture = nullptr;
+	}
+	if (m_dynamicText)
+	{
+		TTF_DestroyText(m_dynamicText);
+		m_dynamicText = nullptr;
 	}
 }
 
@@ -95,6 +109,25 @@ void Text::SetFont(const std::string& p_idFont, int p_sizeFont)
 	m_fontPath = FontManager::Get()->GetFont(p_idFont);
 	UpdateTexture();
 	SetPosition(m_positionWanted);
+
+	if(TTF_SetTextFont(m_dynamicText, m_font) == false)
+	{
+		SDL_Log("Text::SetFont/TTF_SetTextFont failed : %s", SDL_GetError());
+		return;
+	}
+}
+
+TTF_Font* Text::GetFont() const
+{
+	return m_font;
+
+	TTF_Font* font = TTF_GetTextFont(m_dynamicText);
+	if (font == NULL)
+	{
+		SDL_Log("Text::GetFont/TTF_GetTextFont failed : %s", SDL_GetError());
+		return nullptr;
+	}
+	return font;
 }
 
 void Text::SetText(const std::string& p_text)
@@ -123,6 +156,14 @@ void Text::SetText(const std::string& p_text)
 		UpdateTexture();
 	}
 	SetPosition(m_positionWanted);
+
+	size_t lenText = strlen(m_text.c_str());
+
+	if (TTF_SetTextString(m_dynamicText, m_text.c_str(), lenText) == false)
+	{
+		SDL_Log("Text::SetText/TTF_SetTextString failed : %s", SDL_GetError());
+		return;
+	}
 }
 
 void Text::SetFontSize(int p_size)
@@ -149,7 +190,27 @@ void Text::SetFontSize(int p_size)
 
 	UpdateTexture();
 	SetPosition(m_positionWanted);
+
+	if (TTF_SetFontSize(m_font, m_fontSize) == false)
+	{
+		SDL_Log("Text::SetFontSize/TTF_SetFontSize failed : %s", SDL_GetError());
+		return;
+	}
 }
+
+int Text::GetFontSize() const
+{
+	return m_fontSize;
+
+	float size = TTF_GetFontSize(m_font);
+	if (size <= 0.0f)
+	{
+		SDL_Log("Text::GetFontSize/TTF_GetFontSize failed : %s", SDL_GetError());
+		return 0;
+	}
+	return static_cast<int>(size); //convertir en float quand je passerais que en dynamique
+}
+
 
 void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
@@ -238,6 +299,8 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		return;
 	}
 
+	TTF_DrawRendererText(m_dynamicText, m_textRect.x, m_textRect.y);
+
 	/*if (SDL_RenderCopyF(renderer, m_textTexture, NULL, &m_textRect) < 0)
 	{
 		SDL_Log("Lib/Text.cpp/Draw/SDL_RenderCopyF/cela na pas fonctionn� : %s", SDL_GetError());
@@ -256,53 +319,7 @@ void Text::UpdateTexture()
 
 	size_t lenText = strlen(m_text.c_str());
 
-	/*int textSizeW, textSizeH;
-	if (m_isWrapped)
-	{
-		if (TTF_GetStringSizeWrapped(m_font, m_text.c_str(), lenText, m_wrapWidth, &textSizeW, &textSizeH) == false)
-		{
-			SDL_Log("Lib/Text.cpp/Update/TTF_GetStringSizeWrapped/cela na pas fonctionn� : %s", SDL_GetError());
-			return;
-		}
-	}
-	else
-	{
-		if (TTF_GetStringSize(m_font, m_text.c_str(), lenText, &textSizeW, &textSizeH) == false)
-		{
-			SDL_Log("Lib/Text.cpp/Update/TTF_GetStringSize/cela na pas fonctionn� : %s", SDL_GetError());
-			return;
-		}
-	}*/
-	
-	/*int sizetetureX = GetDimension().GetX();
-	int sizetextureY = GetDimension().GetY();
-
-	if (sizetetureX > 0 || sizetextureY > 0)
-	{
-		if (textSizeW != sizetetureX || textSizeH != sizetextureY)
-		{
-			CreateTexture();
-		}
-	}*/
-
-	//int finalW = textSizeW;
-	//int finalH = textSizeH;
-	//if (m_outlineSize > 0)
-	//{
-	//	finalW += m_outlineSize * 2;
-	//	finalH += m_outlineSize * 2;
-	//}
-
-	//int sizetetureX = GetDimension().GetX();
-	//int sizetextureY = GetDimension().GetY();
-
-	//if (sizetetureX > 0 || sizetextureY > 0)
-	//{
-	//	if (finalW != sizetetureX || finalH != sizetextureY) // <-- finalW/finalH, pas textSizeW/textSizeH
-	//	{
-	//		CreateTexture();
-	//	}
-	//}
+	//TTF_SetFontSDF(m_font, true);
 
 	auto RenderPass = [&](const Color& p_color) -> SDL_Surface*
 		{
@@ -459,6 +476,46 @@ void Text::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
 	m_positionWanted = p_position;
 }
 
+void Text::SetColor(Color p_color)
+{
+	Geometry::SetColor(p_color);
+
+	if (TTF_SetTextColor(m_dynamicText, p_color.r, p_color.g, p_color.b, p_color.a) == false)
+	{
+		SDL_Log("Text::SetColor/TTF_SetTextColor failed : %s", SDL_GetError());
+		return;
+	}
+}
+
+Color Text::GetColor() const
+{
+	return m_color;
+
+	Color color;
+	if (TTF_GetTextColor(m_dynamicText, &color.r, &color.g, &color.b, &color.a) == false)
+	{
+		SDL_Log("Text::GetColor/TTF_GetTextColor failed : %s", SDL_GetError());
+		return { 0, 0, 0, 0 };
+	}
+	return color;
+}
+
+void Text::SetWrapWidth(int p_wrapWidth)
+{
+	if (p_wrapWidth < 0)
+	{
+		SDL_Log("Lib/Text.cpp/SetWrapWidth/La largeur de retour � la ligne ne peut pas etre negative");
+		return;
+	}
+	m_wrapWidth = p_wrapWidth;
+	UpdateTexture();
+}
+
+int Text::GetWrapWidth() const
+{
+	return m_wrapWidth;
+}
+
 void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_strikethrough)
 {
 	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
@@ -498,6 +555,14 @@ void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_str
 	UpdateTexture();
 }
 
+TTF_FontStyleFlags Text::GetFontStyle() const
+{
+	return m_fontStyle;
+
+	TTF_FontStyleFlags style = TTF_GetFontStyle(m_font);
+	return style;
+}
+
 void Text::SetOutline(int p_outlineSize)
 {
 	if (p_outlineSize < 0)
@@ -515,4 +580,39 @@ void Text::SetOutline(int p_outlineSize)
 	{
 		m_isHasOutline = false;
 	}
+}
+
+void Text::SetLineSpacing(int p_lineSpacing)
+{
+	TTF_SetFontLineSkip(m_font, p_lineSpacing);
+}
+
+int Text::GetLineSpacing() const
+{
+	return m_lineSpacing;
+
+	int spacing = TTF_GetFontLineSkip(m_font);
+	return spacing;
+}
+
+void Text::HorizontalAlignText(HorizontalAlignment p_alignment)
+{
+	TTF_SetFontWrapAlignment(m_font, (TTF_HorizontalAlignment)p_alignment);
+}
+
+HorizontalAlignment Text::GetHorizontalAlignText() const
+{
+	HorizontalAlignment alignment = (HorizontalAlignment)TTF_GetFontWrapAlignment(m_font);
+	return alignment;
+}
+
+Vector2i Text::GetTextSize() const
+{
+	int width, height;
+	if (TTF_GetTextSize(m_dynamicText, &width, &height) == false)
+	{
+		SDL_Log("Text::GetTextSize/TTF_GetTextSize failed : %s", SDL_GetError());
+		return { 0, 0 };
+	}
+	return { width, height };
 }

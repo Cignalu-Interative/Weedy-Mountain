@@ -77,6 +77,10 @@ private:
 	mutable std::vector<Circle*> m_autoFillCirclesCache;
 	mutable std::vector<Text*> m_autoTextsCache;
 
+	TTF_TextEngine* m_textEngine = nullptr; // Moteur de rendu de texte pour les textes de debug
+
+	SDL_PropertiesID m_textEnginePropertiesID = 0; // ID des propriétés du moteur de rendu de texte pour les textes de debug
+
 public:
 
 	// Singleton de Debug
@@ -87,9 +91,13 @@ public:
 	// Destructeur de Debug
 	~Debug();
 
-	void SetRenderer(SDL_Renderer* p_renderer) { m_renderer = p_renderer; }
+	void SetRenderer(SDL_Renderer* p_renderer);
+
+	bool CreateTextEngineProperties();
 
 	SDL_Renderer* SDL_GetRenderer() const { return m_renderer; }
+
+	TTF_TextEngine* GetTextEngine() const { return m_textEngine; }
 
 	using DeltaTimeCallback = std::function<float()>;
 

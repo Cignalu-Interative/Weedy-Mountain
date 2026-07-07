@@ -69,6 +69,7 @@ void GameScene::OnInitialize()
 	//
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
+	GetCamera()->SetFollowedEntity(m_player);
 	//Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
@@ -101,8 +102,8 @@ void GameScene::OnInitialize()
 	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
-	UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);
+	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
+	j->ShowCollider(true);*/
 
 	
 	CreateText("KAKA", { 500, 550 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
@@ -181,7 +182,6 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
-	GetCamera()->Follow(m_player);
 	//FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();

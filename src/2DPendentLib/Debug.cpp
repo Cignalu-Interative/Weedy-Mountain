@@ -40,6 +40,8 @@ Debug::Debug()
 	m_autoCirclesCache.reserve(32);
 	m_autoFillCirclesCache.reserve(32);
 	m_autoTextsCache.reserve(32);
+
+	m_textEnginePropertiesID = SDL_CreateProperties();
 }
 
 Debug::~Debug()
@@ -51,6 +53,33 @@ Debug::~Debug()
 	m_circles.clear();
 	m_fillCircles.clear();
 	m_texts.clear();
+	if (m_textEnginePropertiesID)
+	{
+		SDL_DestroyProperties(m_textEnginePropertiesID);
+	}
+	if (m_textEngine)
+	{
+		TTF_DestroyRendererTextEngine(m_textEngine);
+	}
+}
+
+void Debug::SetRenderer(SDL_Renderer* p_renderer)
+{
+	m_renderer = p_renderer;
+}
+
+bool Debug::CreateTextEngineProperties()
+{
+	if (m_renderer == nullptr)
+	{
+		SDL_Log("Debug::CreateTextEngineProperties: Renderer is null, cannot create text engine properties.");
+		return false;
+	}
+
+	SDL_SetPointerProperty(m_textEnginePropertiesID, "SDL_ttf.renderer_text_engine.create.renderer", m_renderer);
+	SDL_SetNumberProperty(m_textEnginePropertiesID, "SDL_ttf.renderer_text_engine.create.atlas_texture_size", 2048);
+
+	m_textEngine = TTF_CreateRendererTextEngineWithProperties(m_textEnginePropertiesID);
 }
 
 void Debug::SetDeltaTimeCallback(DeltaTimeCallback p_callback)
@@ -252,6 +281,7 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 
 	Text* text = new Text();
 	text->SetRenderer(m_renderer);
+	text->SetTextEngine(m_textEngine);
 	text->Initialize(p_position, p_text, p_color);
 	text->SetIsGUI(p_isGUI);
 	text->SetIsClamp(p_clampToScreen);

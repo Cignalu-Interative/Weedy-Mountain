@@ -105,7 +105,7 @@ void GameScene::OnInitialize()
 	j->ShowCollider(true);
 
 	
-	CreateText("KAKA", { 500, 450 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
+	CreateText("KAKA", { 500, 550 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	Debug::Get()->GetText("KAKA")->SetFontSize(55);
 	Debug::Get()->GetText("KAKA")->SetFontStyle();
 

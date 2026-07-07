@@ -37,9 +37,11 @@ void Hotbar::OnInitialize()
 		slot->InitText("slot_" + std::to_string(i + m_invSlotCount) + "_amount_text", "");
 
 		slot->SetDrawLayer(101);
-
+		slot->GetCollider()->SetIsTrigger(true);
 		m_slots.push_back(slot);
 	}
+	GetCollider()->SetIsTrigger(true);
+
 }
 
 

@@ -3,7 +3,7 @@
 #include "2DPendentLib/Debug.h"
 #include "2dPendentLib/Utils.h"
 #include "Player.h"
-#include "Inventory.h"
+#include "PlayerInventory.h"
 
 static Uint32 m_id = 0;
 

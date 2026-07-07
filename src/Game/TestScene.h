@@ -18,6 +18,8 @@ protected:
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de réveil
 	void OnWake() override;
 
+	void OnDraw() override {};
+
 public:
 
 	TestScene() = default;

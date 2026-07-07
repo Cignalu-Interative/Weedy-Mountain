@@ -9,6 +9,7 @@
 #include "FarmManager.h"   
 #include "GameData.h" 
 #include "Inventory.h"
+#include "PlayerInventory.h"
 
 #include "PlayerState.h"
 #include "PlayerConditions.h"
@@ -16,9 +17,10 @@
 void Player::OnInitialize()
 {
 
-	m_inventory = GetScene()->CreateEntity<Inventory>({}, {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
-	m_inventory->SetVisible(false);
-	m_inventory->AddItem("ITEM_WOOD", 10, false);
+	m_inventory = GetScene()->CreateEntity<Inventory>(GetPosition(), {636, 210}, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_hotbar = GetScene()->CreateEntity<Hotbar>(GetPosition() + Vector2f(0,300), {636, 210}, "Hotbar", Shape::Rectangle, true);
+
+	m_playerInventory = new PlayerInventory(m_inventory, m_hotbar);
 	
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
@@ -189,6 +191,7 @@ void Player::OnUpdate()
 	m_stateMachine.Update(this, GetDeltaTime());
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 
+	std::cout << GetPosition().GetX() << "   " << GetPosition().GetY() << std::endl;
 	UpdateJobs();
 	MoveKinematic();
 }

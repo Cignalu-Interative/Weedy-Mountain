@@ -17,8 +17,6 @@ private:
 
 	Player* m_player2 = nullptr;
 
-	TextBox* m_textBox = nullptr;
-
 protected:
 
 	void OnInitialize() override;

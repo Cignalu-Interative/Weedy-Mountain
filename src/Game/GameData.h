@@ -2,6 +2,7 @@
 
 #include "Timer.h"
 #include <string>
+#include "PlayerData.h"
 
 class GameData
 {
@@ -15,6 +16,7 @@ private:
 
 	GameData() = default;
 
+	PlayerData m_playerData;
 
 public:
 
@@ -39,4 +41,6 @@ public:
 	void SetTimeScale(float newScale);
 
 	void Sleep();
+
+	PlayerData GetPlayerData() { return m_playerData; }
 };

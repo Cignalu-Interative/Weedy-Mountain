@@ -101,13 +101,8 @@ void GameScene::OnInitialize()
 	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
-	UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);
-
-	
-	CreateText("KAKA", { 500, 550 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
-	Debug::Get()->GetText("KAKA")->SetFontSize(55);
-	Debug::Get()->GetText("KAKA")->SetFontStyle();
+	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
+	j->ShowCollider(true);*/
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
@@ -121,8 +116,6 @@ void GameScene::OnInitialize()
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
 
-	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::White, true);
-	m_textBox->GetCollider()->SetIsTrigger(true);
 }
 
 
@@ -158,25 +151,12 @@ void GameScene::OnEvent()
 		m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
 	}
 
+	if (im->IsKeyboardDown(K_R))
+	{
+		
+		SceneManager::Get()->PushScene("village");
+	}
 
-	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
-	{
-		im->StartTextInput();
-	}
-	if (im->IsMouseDown(BUTTON_RIGHT	))
-	{
-		im->StopTextInput();
-	}
-	if (im->IsTextInputActive() == true && im->IsKeyboardHeld(K_DELETE))
-	{
-		im->DeleteLastCharInFinalTextInput();
-	}
-	if (im->IsTextInputActive() == true)
-	{
-		m_textBox->SetText(im->GetfinalTextInput());
-	}
-	std::string t = im->GetfinalTextInput();
-	std::cerr << "TextInput : " << t << std::endl;
 }
 
 void GameScene::OnUpdate()
@@ -197,6 +177,7 @@ void GameScene::OnDestroy()
 
 void GameScene::OnSleep()
 {
+	GameData::Get().GetPlayerData().SavePlayerData(m_player);
 }
 
 void GameScene::OnWake()

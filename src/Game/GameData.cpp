@@ -20,6 +20,7 @@ GameData& GameData::Get()
 void GameData::Initialize()
 {
 	m_timer.SetCurrentTime();
+
 }
 
 void GameData::Update()

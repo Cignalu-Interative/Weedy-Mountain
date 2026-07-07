@@ -27,6 +27,7 @@ enum class JobType
 	Count
 };
 
+
 struct PlayerJob
 {
 	JobType m_name;
@@ -90,6 +91,8 @@ struct PlayerStats {
 };
 
 class Inventory;
+class PlayerInventory;
+class Hotbar;
 class Player : public Entity
 {
 private:
@@ -97,7 +100,10 @@ private:
 
 	PlayerStats m_stats;
 	std::vector<PlayerJob*> m_jobs;
-	Inventory* m_inventory;
+
+	PlayerInventory* m_playerInventory = nullptr;
+	Inventory* m_inventory = nullptr;
+	Hotbar* m_hotbar = nullptr;
 
 	// TEMP - AGRI
 	CropDefinition m_selectedCrop = CropCatalog::Wheat(); 
@@ -138,7 +144,7 @@ public:
 	void UnlockRecipe(Recipes _toUnlock);
 	void SetupStateMachine();
 
-	Inventory* GetInventory() { return m_inventory; }
+	PlayerInventory* GetInventory() { return m_playerInventory; }
 
 	int GetMoney() const { return m_money; }
 	void AddMoney(int p_amount) { m_money += p_amount; }

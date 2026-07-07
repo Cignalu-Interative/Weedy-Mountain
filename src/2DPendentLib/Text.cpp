@@ -401,7 +401,7 @@ void Text::UpdateTexture()
 
 		convertedSurface = outlineRGBA;
 		SDL_DestroySurface(textRGBA);
-		SDL_DestroySurface(outlineRGBA);
+		//SDL_DestroySurface(outlineRGBA);
 	}
 
 	float currentW, currentH;

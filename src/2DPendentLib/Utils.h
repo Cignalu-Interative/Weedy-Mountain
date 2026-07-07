@@ -508,8 +508,6 @@ namespace Utils
 	static std::size_t Max_Arg_Size();
 
 
-
-
 	static void MakeOrtho(float p_mat[16],
 		float left, float right,
 		float bottom, float top,
@@ -552,63 +550,52 @@ namespace Utils
 		p_mat[15] = 1.0f;
 	}
 
-	//static void CheckGLError(const char* p_location)
-	//{
-	//	GLenum err;
-	//	while ((err = glGetError()) != GL_NO_ERROR)
-	//	{
-	//		const char* msg = "INCONNU";
-	//		switch (err)
-	//		{
-	//		case GL_INVALID_ENUM:      msg = "INVALID_ENUM";      break;
-	//		case GL_INVALID_VALUE:     msg = "INVALID_VALUE";     break;
-	//		case GL_INVALID_OPERATION: msg = "INVALID_OPERATION"; break;
-	//		case GL_OUT_OF_MEMORY:     msg = "OUT_OF_MEMORY";     break;
-	//		}
-	//		SDL_Log("[GL] Erreur %s à %s", msg, p_location);
-	//	}
-	//}
+	static struct InfoRotate
+	{
+		Vector2f s_centerQuad;
+		float s_cos;
+		float s_sin;
+	};
+	
+	// Fonction pour calculer les informations de rotation d'un quadrilatère autour d'un point donné avec un angle spécifié
+	static InfoRotate CreateInfoToRotate(Vector2f p_XY1, Vector2f p_XY2, float p_angle, Vector2f p_point)
+	{
+		float x1 = p_XY1.GetX();
+		float y1 = p_XY1.GetY();
+		float x2 = p_XY2.GetX();
+		float y2 = p_XY2.GetY();
 
-	//static void APIENTRY GLDebugCallback(GLenum source, GLenum type, GLuint id,
-	//	GLenum severity, GLsizei length,
-	//	const GLchar* message, const void* userParam)
-	//{
-	//	// Ignorer les infos non critiques
-	//	if (severity == GL_DEBUG_SEVERITY_NOTIFICATION) return;
+		float angleRad = Utils::DegToRad(p_angle);
+		float cosA = Utils::Cos(angleRad);
+		float sinA = Utils::Sin(angleRad);
 
-	//	const char* srcStr = "?";
-	//	const char* typeStr = "?";
-	//	const char* sevStr = "?";
+		float cx = (x1 + x2) * p_point.GetX();
+		float cy = (y1 + y2) * p_point.GetY();
 
-	//	switch (source) {
-	//	case GL_DEBUG_SOURCE_API:             srcStr = "API";        break;
-	//	case GL_DEBUG_SOURCE_SHADER_COMPILER: srcStr = "SHADER";     break;
-	//	case GL_DEBUG_SOURCE_APPLICATION:     srcStr = "APP";        break;
-	//	}
-	//	switch (type) {
-	//	case GL_DEBUG_TYPE_ERROR:             typeStr = "ERREUR";    break;
-	//	case GL_DEBUG_TYPE_PERFORMANCE:       typeStr = "PERF";      break;
-	//	case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR: typeStr = "DEPRECATED"; break;
-	//	}
-	//	switch (severity) {
-	//	case GL_DEBUG_SEVERITY_HIGH:   sevStr = "HAUTE";   break;
-	//	case GL_DEBUG_SEVERITY_MEDIUM: sevStr = "MOYENNE"; break;
-	//	case GL_DEBUG_SEVERITY_LOW:    sevStr = "FAIBLE";  break;
-	//	}
+		InfoRotate info;
+		info.s_centerQuad = Vector2f(cx, cy);
+		info.s_cos = cosA;
+		info.s_sin = sinA;
+		return info;
+	}
 
-	//	SDL_Log("[GL DEBUG] [%s][%s][%s] ID=%u : %s", srcStr, typeStr, sevStr, id, message);
-	//}
+	// Fonction pour faire tourner un point autour d'un centre donné avec des valeurs de cosinus et de sinus spécifiées
+	static Vector2f Rotate(Vector2f p_XY, Vector2f p_centerQuad, float p_cos, float p_sin)
+	{
+		float x = p_XY.GetX();
+		float y = p_XY.GetY();
 
+		float cx = p_centerQuad.GetX();
+		float cy = p_centerQuad.GetY();
 
-	//static void EnableGLDebug()
-	//{
-	//	glEnable(GL_DEBUG_OUTPUT);
-	//	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS); // erreurs synchrones (plus facile à debugger)
-	//	glDebugMessageCallback(GLDebugCallback, nullptr);
-	//	glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DEBUG_SEVERITY_NOTIFICATION,
-	//		0, nullptr, GL_FALSE); // silence les notifications
-	//}
+		float dx = x - cx;
+		float dy = y - cy;
 
+		Vector2f rotatedPoint;
+		rotatedPoint.SetX(cx + dx * p_cos - dy * p_sin);
+		rotatedPoint.SetY(cy + dx * p_sin + dy * p_cos);
+		return rotatedPoint;
+	}
 };
 
 #include "Utils.inl"

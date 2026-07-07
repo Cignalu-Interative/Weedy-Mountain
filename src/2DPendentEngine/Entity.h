@@ -66,6 +66,8 @@ protected:
 	//Fonction virtuelle pour permettre aux classes qui héritent de Entity de définir leur propre logique de destruction
 	virtual void OnDestroy() {};
 
+	virtual void OnDraw(Render* f_render, Window* f_window) {};
+
 	// Déplace l'entité à la vélocité de son PhysicsBody (Kinematic uniquement).
 	// Pour un déplacement cinématique contrôlé par script, appelez cette fonction
 	// depuis OnUpdate() en passant la direction et la vitesse souhaitées.
@@ -204,6 +206,7 @@ public:
 	friend class Application;
 	friend class Scene;
 	friend class PhysicsManager;
+	friend class SceneManager;
 };
 
 #include "Entity.inl"

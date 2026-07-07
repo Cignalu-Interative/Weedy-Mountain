@@ -97,4 +97,6 @@ struct ColorsNamed
 	static constexpr Color LightTurquoise = { 140, 240, 235, 255 };
 	static constexpr Color Turquoise = { 60, 200, 190, 255 };
 	static constexpr Color DarkTurquoise = { 0, 140, 140, 255 };
+
+	static constexpr Color Transparent = { 0, 0, 0, 0 };
 };

@@ -113,9 +113,23 @@ public:
 	// plutôt qu'une position absolue.
 	void SetRelativeMouseMode(bool p_bool);
 
+	//Permet de réinitialiser la position relative de la souris à (0, 0)
 	void ClearMouseRelative();
 
 	Window* GetWindow() { return m_window; }
+
+	void StartTextInput();
+	void StopTextInput();
+
+	bool IsTextInputActive() const { return m_isTextInput; }
+
+	Sint32 GetCursorPositionX() const { return m_cursorPositionX; }
+	Sint32 GetCursorLength() const { return m_cursorLength; }
+
+	const std::string& GetCompositionTextInput() const { return m_compositionTextInput; }
+	const std::string& GetfinalTextInput() const { return m_finalTextInput; }
+
+	void DeleteLastCharInFinalTextInput() { if (!m_finalTextInput.empty()) m_finalTextInput.pop_back(); }
 
 private:
 
@@ -167,6 +181,13 @@ private:
 	Window* m_window;
 
 	void SetWindow(Window* p_window);
+
+	bool m_isTextInput = false;
+
+	Sint32 m_cursorPositionX = 0; // Position du curseur dans le texte en cours de composition
+	Sint32 m_cursorLength = 0; // Longueur du texte sélectionné dans le texte en cours de composition
+	std::string m_compositionTextInput; // Coressepond au texte en cours de composition
+	std::string m_finalTextInput; // Coressepond au texte final après la composition
 
 	//Constructeur de InputManager
 	InputManager();

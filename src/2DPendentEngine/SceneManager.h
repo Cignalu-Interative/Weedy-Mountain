@@ -5,6 +5,11 @@
 
 class Scene;
 class Application;
+class Render;
+class Window;
+class Camera;
+class Entity;
+
 class SceneManager
 {
 private:
@@ -18,6 +23,8 @@ private:
 	//Scene* m_currentScene = nullptr;
 	std::unordered_map<std::string, size_t> m_scenesInStack;
 	std::vector<Scene*> m_scenesInStackVector; //Vector pour stocker les scènes actuellement update, utilisé pour itérer plus rapidement lors de la mise à jour des scènes
+
+	std::vector<Entity*> m_entToDraw;
 
 	//void ChangeCurrentScene();
 
@@ -62,6 +69,8 @@ public:
 	void EventScenesInStack();
 
 	void UpdateScenesInStack();
+
+	void DrawScenesInStack(Render* f_render, Window* f_window, Camera* p_camera);
 
 	bool IsSceneInStack() const;
 

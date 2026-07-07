@@ -5,6 +5,8 @@
 #include "AssetManager.h"
 #include "Camera.h"
 #include "Utils.h"
+#include "BatchRenderer2D.h"
+#include"BatchCommand.h"
 
 Sprite::~Sprite()
 {
@@ -241,6 +243,7 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
     float width = dimension.GetX();
     float height = dimension.GetY();
+    //SetDimension({ (int)width, (int)height });
     SDL_FRect dstRect = { posX, posY, width, height };
 
     Vector2f rotPoint = GetRotationPoint();           // ex: (0,0) ou (0.5,0.5)
@@ -259,29 +262,37 @@ void Sprite::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     //        flip = SDL_FLIP_NONE;
     //}
 
-    if (SDL_SetTextureBlendMode(m_texture, SDL_BLENDMODE_BLEND) == false)
-    {
-        SDL_Log("Lib/Sprite.cpp/Draw/SDL_SetTextureBlendMode/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
-    }
-
-    if (SDL_SetTextureAlphaMod(m_texture, m_oppacity) == false)
+    /*if (SDL_SetTextureAlphaMod(m_texture, m_oppacity) == false)
     {
 		SDL_Log("Lib/Sprite.cpp/Draw/SDL_SetTextureAlphaMod/cela na pas fonctionn� : %s", SDL_GetError());
         return;
+    }*/
+
+    if (m_srcRect == nullptr)
+    {
+		float textureWidth, textureHeight;
+		SDL_GetTextureSize(m_texture, &textureWidth, &textureHeight);
+		m_srcRect = new SDL_FRect{ 0, 0, textureWidth, textureHeight };
     }
 
-    // 3. Rendu avec ROTATION compl�te
-    if (SDL_RenderTextureRotated(renderer, m_texture,
-        m_srcRect,           // Frame du sprite sheet (ou NULL)
-        &dstRect,          // Position/taille � l'�cran
-        GetAngle(),        // Angle Transformable (degr�s)
-        &rotationCenter,   // Centre rotation pr�-calcul�
-        flip) == false)       //  miroir (optionnel)
-    {
-        SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionn� : %s", SDL_GetError());
-        return;
-    }
+	SDL_FColor color = { 1.f, 1.f, 1.f, (float)m_oppacity / 255.f };
+
+	BatchRenderer2D::Get()->Fill(SpriteCommand{
+        m_texture, *m_srcRect, dstRect, GetAngle(), rotationCenter, color });
+
+    // 3. Rendu avec ROTATION complete
+
+
+    //if (SDL_RenderTextureRotated(renderer, m_texture,
+    //    m_srcRect,           // Frame du sprite sheet (ou NULL)
+    //    &dstRect,          // Position/taille � l'�cran
+    //    GetAngle(),        // Angle Transformable (degr�s)
+    //    &rotationCenter,   // Centre rotation pr�-calcul�
+    //    flip) == false)       //  miroir (optionnel)
+    //{
+    //    SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionn� : %s", SDL_GetError());
+    //    return;
+    //}
 
     // Nettoyage
     //delete srcRect;

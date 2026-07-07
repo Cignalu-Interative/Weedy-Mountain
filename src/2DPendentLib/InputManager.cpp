@@ -79,6 +79,12 @@ void InputManager::Update()
 
 	ClearMouseRelative();
 
+	if (m_isTextInput == false)
+	{
+		m_compositionTextInput.clear();
+		m_finalTextInput.clear();
+	}
+
 	while (SDL_PollEvent(&m_event))
 	{
 		switch (m_event.type)
@@ -106,9 +112,19 @@ void InputManager::Update()
 			m_keyboardStates[m_event.key.scancode].s_isUp = true;
 			break;
 
+		case SDL_EVENT_TEXT_EDITING:
+			//std::cerr << "Texte en cours d'édition : " << m_event.edit.text << std::endl;
+			m_compositionTextInput = m_event.edit.text;
+			m_cursorPositionX = m_event.edit.start;
+			m_cursorLength = m_event.edit.length;
+			break;
+
+		case SDL_EVENT_TEXT_INPUT:
+			//std::cerr << "Texte saisi : " << m_event.text.text << std::endl;
+			m_finalTextInput += m_event.text.text;
+			break;
+
 		case SDL_EVENT_MOUSE_BUTTON_DOWN:
-			/*int x, y;
-			SDL_GetMouseState(&x, &y);*/
 			m_mouseStates[m_event.button.button].s_isDown = true;
 			break;
 
@@ -164,21 +180,6 @@ void InputManager::Update()
 			break;
 
 		case SDL_EVENT_GAMEPAD_AXIS_MOTION:
-			/*int axis = m_event.gaxis.axis;
-			float rawValue = static_cast<float>(m_event.gaxis.value) / 32767.0f;
-			float absValue = fabsf(rawValue);
-			if (absValue > AXIS_DEAD_ZONE)
-			{
-				m_gameControllerAxisStates[axis].s_isDown = true;
-				m_gameControllerAxisStatesFloat[axis] = rawValue;
-			}
-			else
-			{
-				m_gameControllerAxisStates[axis].s_isUp = true;
-				m_gameControllerAxisStatesFloat[axis] = 0.0f;
-			}
-			break;*/
-
 			int axis = m_event.gaxis.axis;
 			Sint16 rawValue = m_event.gaxis.value;
 			float normalized = (rawValue < 0) ? (rawValue / 32768.0f) : (rawValue / 32767.0f);
@@ -358,32 +359,6 @@ Vector2i InputManager::GetMouseWheel()
 
 Vector2f InputManager::GetJoyStickOrientation(JoyStick p_joystick)
 {
-	//Vector2f dir{ 0.0f, 0.0f };
-
-	//switch (p_joystick) {
-	//case JOYSTICK_LEFT:
-	//	dir.SetX(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTX]);
-	//	dir.SetY(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_LEFTY]);
-	//	break;
-	//case JOYSTICK_RIGHT:
-	//	dir.SetX(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTX]);
-	//	dir.SetY(m_gameControllerAxisStatesFloat[CONTROLLER_AXIS_RIGHTY]);
-	//	break;
-	//}
-
-	//// Deadzone + normalisation
-	//float len = sqrtf(dir.GetX() * dir.GetX() + dir.GetY() * dir.GetY());
-
-	//if (len > AXIS_DEAD_ZONE) {
-	//	dir.SetX(dir.GetX() / len);
-	//	dir.SetY(dir.GetY() / len);
-	//}
-	//else {
-	//	dir.SetX(0.0f);
-	//	dir.SetY(0.0f);
-	//}
-	//return dir;
-
 	Vector2f dir{ 0.0f, 0.0f };
 
 	float x, y;
@@ -528,6 +503,27 @@ void InputManager::ClearMouseRelative()
 {
 	m_RELMousePosition.SetX(0);
 	m_RELMousePosition.SetY(0);
+}
+
+void InputManager::StartTextInput()
+{
+	m_isTextInput = true;
+	if (SDL_StartTextInput(m_window->GetWindow()) == false)
+	{
+		SDL_Log("Lib/InputManager.cpp/SetStartTextInput/SDL_StartTextInput non reussie : %s", SDL_GetError());
+		return;
+	}
+	std::cerr << "InputManager : SDL_StartTextInput" << std::endl;
+}
+void InputManager::StopTextInput()
+{
+	m_isTextInput = false;
+	if (SDL_StopTextInput(m_window->GetWindow()) == false)
+	{
+		SDL_Log("Lib/InputManager.cpp/SetStartTextInput/SDL_StopTextInput non reussie : %s", SDL_GetError());
+		return;
+	}
+	std::cerr << "InputManager : SDL_StopTextInput" << std::endl;
 }
 
 void InputManager::SetWindow(Window* p_window)

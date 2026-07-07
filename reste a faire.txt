@@ -1,7 +1,9 @@
-verifier le clamp windows d'entity et comment avoir les joystick analogique 
-verifier les .reserve pour tout les vector
-ajouter le choix de l'alpha dans la map tiled
-et faire des variables temporaire pour les singleton dans map tiled
-terminer l'opti de sprite avec le BatchRenderer2D
-et faire un script python pour opti au max le mode release automatiquement
+crée des zones de text
+remplacer les divisions de flottant par une multiplication de son inverse
+appeler Peter pour le deltatime
 puis shader
+verifier le cap des fps exemple set 2000 -> 1800
+crée les trois type de text solid shaded blended et wrapped et UTF8 et style et contours
+voir pour opti le draw de text box en appelant le draw d'entity Entity::Draw() puis ajouter les code particulier
+
+multi threader le moteur 

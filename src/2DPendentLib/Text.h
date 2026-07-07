@@ -50,7 +50,7 @@ private:
 
 	bool m_clampToScreen = false; // Si true, la geometry sera dessiné à la position la plus proche sur l'écran si sa position dépasse les limites de l'écran
 
-	void CreateTexture();
+	void CreateTexture(Vector2i p_dimention);
 
 	Vector2f m_positionWanted; //Position voulue pour le texte, indépendante de la position réelle du texte avec la taille du texte
 
@@ -61,6 +61,12 @@ private:
 	Color m_backgroundColor = ColorsNamed::Transparent; // Couleur de fond du texte (par défaut transparent)
 
 	TTF_FontStyleFlags m_fontStyle = TTF_STYLE_NORMAL; // Style de police utilisé pour le texte (par défaut normal)
+
+	bool m_isHasOutline = false; // Si true, le texte aura un contour (outline) autour des caractères
+
+	int m_outlineSize = 2; // Taille du contour (outline) autour des caractères du texte (en pixels)
+
+	Color m_outlineColor = ColorsNamed::Red;
 
 public:
 
@@ -105,7 +111,13 @@ public:
 	void SetTypeText(TypeText p_typeText) { m_typeText = p_typeText; }
 	TypeText GetTypeText() const { return m_typeText; }
 
-	void SetFontStyle(bool p_bold = true, bool p_italic = false, bool p_underline = false, bool p_strikethrough = false);
+	void SetFontStyle(bool p_bold = false, bool p_italic = false, bool p_underline = false, bool p_strikethrough = false);
+
+	void SetOutline(int p_outlineSize);
+
+	void SetOutLineColor(Color p_color) { m_outlineColor = p_color; }
+	Color GetOutLineColor() const { return m_outlineColor; }
+
 };
 
 #include "Text.inl"

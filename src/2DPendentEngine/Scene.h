@@ -5,8 +5,6 @@
 #include "2DPendentLib/Vector2.h"
 #include "2DPendentLib/SoundOrientation.h"
 #include "2DPendentLib/Color.h"
-#include "2DPendentLib/Drawable.h"
-
 
 class SoundManager;
 enum class Shape : uint8_t;
@@ -17,9 +15,8 @@ class Camera;
 class Geometry;
 class Button;
 class Slider;
-class TextBox;
 
-class Scene : public Drawable
+class Scene
 {
 private:
 
@@ -38,7 +35,6 @@ private:
 
 	bool m_isSleepEvent = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnEvent() ne sera pas appelée
 	bool m_isSleepUpdate = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnUpdate() ne sera pas appelée
-	bool m_isSleepDraw = false; //Indique si la scène est en veille ou non, si elle est en veille, la fonction OnDraw() ne sera pas appelée
 
 	std::list<Entity*> m_entities; //Vector de pointeurs vers les entités présentes dans la scène
 	std::list<Geometry*> m_geometries; //Vector de pointeurs vers les géometries présentes dans la scène, utilisé pour les éléments de décor et les éléments de l'interface utilisateur
@@ -55,12 +51,11 @@ private:
 	void Sleep();
 	void Wake();
 	void Destroy();
-	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 
 protected:
 
 	//Constructeur par défaut de Scene
-	Scene() = default;
+	Scene();
 	//Destructeur de Scene, il est virtuel pour permettre aux classes qui héritent de Scene de définir leur propre logique de destruction
 	virtual ~Scene() {};
 
@@ -79,8 +74,6 @@ protected:
 	virtual void OnWake() = 0;
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de destruction
 	virtual void OnDestroy() = 0; 
-	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de dessin
-	virtual void OnDraw() = 0;
 
 public:
 
@@ -93,8 +86,6 @@ public:
 	Button* CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI = true);
 
 	Slider* CreateSlider(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_id, int p_stateCount = -1, bool p_isGUI = true);
-
-	TextBox* CreateTextBox(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = true);
 
 	//Fonction pour obtenir la largeur de la fenêtre de jeu en utilisant la fonction GetWindowSize() de l'application
 	int GetWindowWidth() const; 
@@ -156,8 +147,6 @@ public:
 	void SetSleepUpdate(bool p_sleep) { m_isSleepUpdate = p_sleep; }
 	bool GetSleepUpdate() const { return m_isSleepUpdate; }
 
-	void SetSleepDraw(bool p_sleep) { m_isSleepDraw = p_sleep; }
-	bool GetSleepDraw() const { return m_isSleepDraw; }
 
 	void SetIsInCache(bool p_isInCache) { m_isInCache = p_isInCache; }
 	bool GetIsInCache() const { return m_isInCache; }

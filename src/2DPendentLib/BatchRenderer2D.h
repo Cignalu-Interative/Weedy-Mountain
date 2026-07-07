@@ -17,6 +17,7 @@ struct Data
 		s_vertices.reserve(10000); // Réserve de l'espace pour 1000 sommets
 		s_indices.reserve(15000);  // Réserve de l'espace pour 1500 indices
 	}
+
 };
 
 class BatchRenderer2D
@@ -29,13 +30,9 @@ private:
 
 	std::vector<Data> m_batches;
 
-	SDL_Texture* m_lastSizedTexture = nullptr; // cache pour GetTextureSize
-
-	float m_lastTexW = 0.f;
-	float m_lastTexH = 0.f;
-
 	template <typename T>
 	void AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, const T& p_Command);
+
 
 public:
 

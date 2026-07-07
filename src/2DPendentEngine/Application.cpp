@@ -51,7 +51,6 @@ void Application::Init()
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;
 		});
-	InputManager::Get()->SetWindow(&m_window);
 	InputManager::Get()->SetQuitCallback([this]()
 		{ m_isRunning = false; });
 	FontManager::Get()->AddFontByPath("../../res/2DPendentEngine/Assets/Fonts/DefaultPolice.ttf");
@@ -281,11 +280,7 @@ void Application::Draw()
 
 	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
-	//
-
-	SceneManager::Get()->DrawScenesInStack(&m_render, &m_window, m_camera);
-
-	/*std::vector<Entity*> entToDraw = m_entities;
+	std::vector<Entity*> entToDraw = m_entities;
 
 	std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
 		{
@@ -295,9 +290,7 @@ void Application::Draw()
 	for (Entity* entity : entToDraw)
 	{
 		entity->Draw(&m_render, &m_window);
-	}*/
-
-	//
+	}
 
 	Debug::Get()->Draw(&m_render, &m_window, m_camera);
 

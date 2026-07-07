@@ -135,7 +135,6 @@ void Entity::Draw(Render* f_render, Window* f_window)
 			break;
 		}
 	}
-	OnDraw(f_render, f_window);
 }
 
 void Entity::Destroy()

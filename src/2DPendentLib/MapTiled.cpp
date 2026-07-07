@@ -315,6 +315,7 @@ MapTiled::~MapTiled()
 
 void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
+
     if (m_tilesets.empty())
     {
         //std::cerr << "Pas de tileset pour draw" << std::endl;
@@ -345,11 +346,6 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     Vector2f worldBottomRight = p_camera->ScreenToWorld<float>({ (float)dimensionWindow.GetX(), (float)dimensionWindow.GetY() }); // en bas a droite de l'écran
 
 	int margin = 1; // marge pour dessiner les tiles autour de la caméra
-
-	TilesetTiled* tempTileset = nullptr;
-
-    BatchRenderer2D* batchRenderer2D = BatchRenderer2D::Get();
-	AssetManager* assetManager = AssetManager::Get();
 
     for (LayerTiled* layerTiled : m_layers)
     {
@@ -422,7 +418,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     }
                 }*/
 
-                tempTileset = (tile_gid < (int)m_gidToTileset.size()) ? m_gidToTileset[tile_gid] : nullptr;
+                TilesetTiled* tempTileset = (tile_gid < (int)m_gidToTileset.size()) ? m_gidToTileset[tile_gid] : nullptr;
                 if (!tempTileset)
                 {
                     continue;
@@ -465,11 +461,27 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
                     m_TileDimension.GetY() * zoom         // height
 				}; // le dstRect est la zone de la fenêtre où dessiner la tile
 
-                batchRenderer2D->Fill(TileTiledCommand{ assetManager->GetTexture(tempTileset->GetIdTilesetTexture()), srcRect, dstRect });
+                BatchRenderer2D::Get()->Fill(TileTiledCommand{
+                    AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
+                    srcRect,
+                    dstRect
+					});
+
+                // Dessiner la tile
+                /*if (SDL_RenderTexture(
+                    f_render->m_renderer,
+                    AssetManager::Get()->GetTexture(tempTileset->GetIdTilesetTexture()),
+                    &srcRect,
+                    &dstRect
+                ) == false)
+                {
+                    SDL_Log("Lib/MapTiled.cpp/Draw/SDL_RenderCopy/cela na pas fonctionné : %s", SDL_GetError());
+                    return;
+                }*/
             }
         }
     }
-	const std::vector<Data>& batches = batchRenderer2D->Flush();
+	const std::vector<Data>& batches = BatchRenderer2D::Get()->Flush();
     for (const auto& batch : batches)
     {
         if (batch.s_vertices.empty())

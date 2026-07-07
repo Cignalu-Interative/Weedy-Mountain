@@ -34,8 +34,6 @@
 #include "Ui/UiTime.h"
 #include "Ui/UiJobs.h"
 #include "Ui/UiGatherer.h"
-#include "TextBox.h"
-
 
 void GameScene::OnInitialize()
 {
@@ -69,7 +67,7 @@ void GameScene::OnInitialize()
 	//
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
-	//Application::Get()->SetClampCameraToCurrentMap(true);
+	Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
 
@@ -105,9 +103,6 @@ void GameScene::OnInitialize()
 	j->ShowCollider(true);
 
 	
-	CreateText("KAKA", { 500, 450 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
-	Debug::Get()->GetText("KAKA")->SetFontSize(55);
-	Debug::Get()->GetText("KAKA")->SetFontStyle();
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
@@ -120,9 +115,6 @@ void GameScene::OnInitialize()
 	//CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
-
-	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::White, true);
-	m_textBox->GetCollider()->SetIsTrigger(true);
 }
 
 
@@ -156,26 +148,6 @@ void GameScene::OnEvent()
 		m_player->GetJobByName(JobType::Miner)->m_exp -= 5;
 		m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
 	}
-
-
-	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
-	{
-		im->StartTextInput();
-	}
-	if (im->IsMouseDown(BUTTON_RIGHT	))
-	{
-		im->StopTextInput();
-	}
-	if (im->IsTextInputActive() == true && im->IsKeyboardHeld(K_DELETE))
-	{
-		im->DeleteLastCharInFinalTextInput();
-	}
-	if (im->IsTextInputActive() == true)
-	{
-		m_textBox->SetText(im->GetfinalTextInput());
-	}
-	std::string t = im->GetfinalTextInput();
-	std::cerr << "TextInput : " << t << std::endl;
 }
 
 void GameScene::OnUpdate()
@@ -200,9 +172,4 @@ void GameScene::OnSleep()
 
 void GameScene::OnWake()
 {
-}
-
-void GameScene::OnDraw()
-{
-
 }

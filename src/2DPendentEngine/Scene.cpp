@@ -12,7 +12,6 @@
 #include "PhysicsManager.h"
 #include "Button.h"
 #include "Slider.h"
-#include "TextBox.h"
 
 void Scene::Initialize()
 {
@@ -115,31 +114,9 @@ void Scene::Destroy()
 	OnDestroy();
 }
 
-void Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
+Scene::Scene()
 {
-	if (m_isSleepDraw)
-	{
-		return;
-	}
 
-	/*std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
-	{
-		return a->GetDrawLayer() < b->GetDrawLayer();
-	});*/
-
-	/*std::list<Entity*> entToDraw = m_entities;
-
-	entToDraw.sort([](const Entity* a, const Entity* b)
-	{
-		return a->GetDrawLayer() < b->GetDrawLayer();
-	});
-
-	for (Entity* entity : entToDraw)
-	{
-		entity->Draw(f_render, f_window);
-	}*/
-
-	OnDraw();
 }
 
 Button* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
@@ -176,25 +153,6 @@ Slider* Scene::CreateSlider(Vector2f p_position, Vector2i p_dimention, const std
 	AddEntity(slider);
 
 	return slider;
-}
-
-TextBox* Scene::CreateTextBox(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI)
-{
-	if (m_application == nullptr)
-	{
-		return nullptr;
-	}
-
-	TextBox* textBox = new TextBox();
-
-	textBox->SetScene(this);
-	textBox->SetWindow(m_application->GetWindow());
-	textBox->Initialize(p_position, p_dimension, "", m_application->GetRender(), Shape::Rectangle, p_isGUI, false, "");
-	textBox->InitTextBox(p_id, p_color, p_isGUI);
-	m_application->m_entityToAdd.push_back(textBox);
-	AddEntity(textBox);
-
-	return textBox;
 }
 
 int Scene::GetWindowWidth() const

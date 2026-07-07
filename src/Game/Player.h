@@ -70,13 +70,13 @@ enum class Recipes
 };
 
 struct PlayerStats {
-	float m_playerSpeed = 100.f;
+	float m_playerSpeed = 50.f;
 
 	float m_maxHp = 100.f;
 	float m_Hp = m_maxHp;
 
 	float m_maxStamina = 100.f;
-	float m_Stamina = m_maxStamina;
+	float m_stamina = m_maxStamina;
 
 	float m_maxToxicity = 100.f;
 	float m_toxicity = 0.f;
@@ -109,7 +109,8 @@ private:
 
 	bool m_inputBlocker = false;
 
-	int m_money = 2000000;
+	int m_money = 200;
+	int m_cash = 0;
 
 protected:
 
@@ -131,15 +132,22 @@ public:
 	std::vector<PlayerJob*>& GetJobs() { return m_jobs; }
 	PlayerStats& GetStats() { return m_stats; }
 
+	PlayerJob* GetJobByName(JobType p_name);
+
 	void UpdateJobs();
 	void UnlockRecipe(Recipes _toUnlock);
 	void SetupStateMachine();
 
 	Inventory* GetInventory() { return m_inventory; }
 
-	int GetMoney() { return m_money; }
+	int GetMoney() const { return m_money; }
 	void AddMoney(int p_amount) { m_money += p_amount; }
-	void DecreaseMoney(int p_amount) { m_money -= p_amount; }
+	void DecreaseMoney(int p_amount);
+
+	int GetCash() const { return m_cash; }
+	void AddCash(int p_amount) { m_cash += p_amount; }
+	void DecreaseCash(int p_amount);
+
 	void SetIsUsingToolInHand(bool p_isUsing) { m_isUsingToolInHand = p_isUsing; }
 	void SetState(PlayerState p_state);
 

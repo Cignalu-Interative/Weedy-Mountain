@@ -100,6 +100,9 @@ public:
 	int GetWindowWidth() const; 
 	//Fonction pour obtenir la hauteur de la fenêtre de jeu en utilisant la fonction GetWindowSize() de l'application
 	int GetWindowHeight() const; 
+
+	Vector2i GetWindowSize() const;
+
 	//Fonction pour obtenir le temps écoulé entre deux frames en nanosecondes
 	float GetDeltaTime() const; 
 

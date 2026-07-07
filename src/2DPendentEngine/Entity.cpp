@@ -54,6 +54,9 @@ void Entity::Initialize(Vector2f p_position, Vector2i p_dimension, const std::st
 		m_animation->Init(spriteContainer->m_sprite, "default", true, p_jsonAnimation);
 	}
 
+	if (p_isGUI)
+		m_drawLayer = INT_MAX;
+
 	OnInitialize();
 }
 

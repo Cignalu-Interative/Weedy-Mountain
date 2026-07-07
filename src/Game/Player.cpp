@@ -212,6 +212,17 @@ void Player::OnDestroy()
 
 }
 
+PlayerJob* Player::GetJobByName(JobType p_type)
+{
+	for (PlayerJob* job : m_jobs)
+	{
+		if (job->m_name == p_type)
+			return job ;
+	}
+
+	return nullptr;
+}
+
 void Player::UpdateJobs()
 {
 	for (int i = 0; i < m_jobs.size(); i++) {
@@ -474,6 +485,20 @@ void Player::LockInputs()
 void Player::UnlockInputs()
 {
 	m_inputBlocker = false;
+}
+
+void Player::DecreaseMoney(int p_amount)
+{
+	m_money -= p_amount;
+	if (m_money < 0)
+		m_money = 0;
+}
+
+void Player::DecreaseCash(int p_amount)
+{
+	m_cash -= p_amount;
+	if (m_cash < 0)
+		m_cash = 0;
 }
 
 void Player::SetState(PlayerState p_state)

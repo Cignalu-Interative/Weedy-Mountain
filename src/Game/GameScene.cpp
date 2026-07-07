@@ -24,9 +24,16 @@
 #include "2DPendentLib/Debug.h" 
 
 #include "PNJ.h"
-#include "UiShop.h"
+#include "Ui/UiShop.h"
 #include "SpriteContainer.h"
 
+#include "Ui/UiStats.h"
+#include "Ui/UiMoney.h"
+#include "Ui/UiCash.h"
+#include "Ui/UiDate.h"
+#include "Ui/UiTime.h"
+#include "Ui/UiJobs.h"
+#include "Ui/UiGatherer.h"
 #include "TextBox.h"
 
 
@@ -59,7 +66,7 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetGravityEnabled(false);
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
-	
+	//
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
 	//Application::Get()->SetClampCameraToCurrentMap(true);
@@ -82,6 +89,22 @@ void GameScene::OnInitialize()
 		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}
+
+	Vector2f uiStatsPos = {1050, 600};
+	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	//e->ShowCollider(true);
+
+	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
+	//f->ShowCollider(true);
+	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	//f->ShowCollider(true);
+	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+
+	UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
+	j->ShowCollider(true);
+
+	
 	CreateText("KAKA", { 500, 450 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	Debug::Get()->GetText("KAKA")->SetFontSize(55);
 	Debug::Get()->GetText("KAKA")->SetFontStyle();
@@ -94,7 +117,7 @@ void GameScene::OnInitialize()
 	//a->GetSprite()->SetDimension(a->GetDimension());
 	//a->SyncSprites();
 	////a->ShowCollider(true);
-	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
+	//CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
 
@@ -119,6 +142,19 @@ void GameScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_KP_2))
 	{
 		Application::Get()->SetIsAutoFPS(true);
+	}
+	if (im->IsKeyboardDown(K_K))
+	{
+		m_player->GetJobByName(JobType::Gatherer)->m_exp += 5;
+		m_player->GetJobByName(JobType::Miner)->m_exp += 5;
+		m_player->GetJobByName(JobType::Farmer)->m_exp += 5;
+	}
+
+	if (im->IsKeyboardDown(K_O))
+	{
+		m_player->GetJobByName(JobType::Gatherer)->m_exp -= 5;
+		m_player->GetJobByName(JobType::Miner)->m_exp -= 5;
+		m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
 	}
 
 
@@ -145,12 +181,12 @@ void GameScene::OnEvent()
 void GameScene::OnUpdate()
 {
 	GetCamera()->Follow(m_player);
-	FarmManager::Get()->Update();
+	//FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
-	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
-	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
+	//CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
+	//Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 

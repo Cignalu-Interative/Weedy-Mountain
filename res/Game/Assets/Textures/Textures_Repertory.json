@@ -1,13 +1,25 @@
 {
   "textures": [
     {
+      "path": "../../res/Game/Assets/Textures/Calendar.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc_Actions.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Clock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Drugs.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Egg.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Energy.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Environment/Backgrounds/Harvest BG.png"
@@ -691,6 +703,9 @@
       "path": "../../res/Game/Assets/Textures/Grass.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Heart.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Helmet.png"
     },
     {
@@ -721,6 +736,9 @@
       "path": "../../res/Game/Assets/Textures/Oak_Tree.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Pickaxe.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Potatoe.png"
     },
     {
@@ -731,6 +749,24 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/SunFlower.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UiCash.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UiEmpty.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UiLifeFull.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UiMoney.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UiStaminaFull.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UiToxicityFull.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/button.png"
@@ -752,6 +788,24 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/carrot_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/cisailles.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/emptyHorizontal.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/faucille.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/fullHorizontalBlue.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/fullHorizontalRed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/fullHorizontalWhite.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/inventory.png"

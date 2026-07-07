@@ -401,22 +401,33 @@ void Text::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
 void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_strikethrough)
 {
 	TTF_FontStyleFlags style = TTF_STYLE_NORMAL;
+	int verif = 0;
 
 	if (p_bold)
 	{
 		style |= TTF_STYLE_BOLD;
+		verif += 1;
 	}
 	if (p_italic)
 	{
 		style |= TTF_STYLE_ITALIC;
+		verif += 2;
 	}
 	if (p_underline)
 	{
 		style |= TTF_STYLE_UNDERLINE;
+		verif += 4;
 	}
 	if (p_strikethrough)
 	{
 		style |= TTF_STYLE_STRIKETHROUGH;
+		verif += 8;
+	}
+
+	if (verif != style)
+	{
+		SDL_Log("Lib/Text.cpp/SetFontStyle/Erreur dans la combinaison des styles de police");
+		return;
 	}
 	
 	m_fontStyle = style;

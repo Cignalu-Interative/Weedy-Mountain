@@ -24,15 +24,16 @@
 #include "2DPendentLib/Debug.h" 
 
 #include "PNJ.h"
-#include "UiShop.h"
+#include "Ui/UiShop.h"
 #include "SpriteContainer.h"
 
-#include "UiStats.h"
-#include "UiMoney.h"
-#include "UiCash.h"
-#include "UiDate.h"
-#include "UiTime.h"
-#include "UiJobs.h"
+#include "Ui/UiStats.h"
+#include "Ui/UiMoney.h"
+#include "Ui/UiCash.h"
+#include "Ui/UiDate.h"
+#include "Ui/UiTime.h"
+#include "Ui/UiJobs.h"
+#include "Ui/UiGatherer.h"
 
 void GameScene::OnInitialize()
 {
@@ -100,7 +101,8 @@ void GameScene::OnInitialize()
 
 	UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
 	j->ShowCollider(true);
-	//j->SyncSprites();
+
+	
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
@@ -134,10 +136,18 @@ void GameScene::OnEvent()
 		Application::Get()->SetIsAutoFPS(true);
 	}
 	if (im->IsKeyboardDown(K_K))
-		m_player->GetStats().m_Hp -= 5;
+	{
+		m_player->GetJobByName(JobType::Gatherer)->m_exp += 5;
+		m_player->GetJobByName(JobType::Miner)->m_exp += 5;
+		m_player->GetJobByName(JobType::Farmer)->m_exp += 5;
+	}
 
 	if (im->IsKeyboardDown(K_O))
-		m_player->GetStats().m_Hp += 5;
+	{
+		m_player->GetJobByName(JobType::Gatherer)->m_exp -= 5;
+		m_player->GetJobByName(JobType::Miner)->m_exp -= 5;
+		m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
+	}
 }
 
 void GameScene::OnUpdate()

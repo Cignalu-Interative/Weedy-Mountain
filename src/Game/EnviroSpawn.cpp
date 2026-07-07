@@ -42,6 +42,10 @@ void EnviroSpawn::InitEnviroSpawn()
 
 		m_enviroList.push_back(Enviro);
 	}
+
+	UpdateFreeFarmTiles();
+
+	NewGameEnviroSpawn();
 }
 
 void EnviroSpawn::SpawnEnviroProps()
@@ -55,7 +59,7 @@ void EnviroSpawn::SpawnEnviroProps()
 		int spawnCount = Aleatory::GetInt(m_enviroList[i]->m_stats.m_minSpawn, m_enviroList[i]->m_stats.m_maxSpawn);
 
 		for (int j = 0; j < spawnCount; j++) {
-			CreateEnviroProps(m_enviroList[i]->m_name);
+			CreateEnviroProps(m_enviroList[i]->m_name, -1);
 		}
 	}
 }
@@ -77,12 +81,42 @@ int EnviroSpawn::GetEnviroDay()
 	return static_cast<int>(shifted / secPerDay);
 }
 
-void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
+void EnviroSpawn::NewGameEnviroSpawn()
+{
+	for (int i = 0; i < 200; i++) {
+		int tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
+		while (m_freeFarmTiles[tile]->GetPosition().GetX() >= 500) {
+			tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
+		}
+		CreateEnviroProps((EnviroSpawnName)Aleatory::GetInt(0, (int)EnviroSpawnName::Count - 1), tile);
+	}
+}
+
+void EnviroSpawn::UpdateFreeFarmTiles()
+{
+	m_freeFarmTiles.clear();
+	std::vector<FarmTile*> farmTile = FarmManager::Get()->GetAllFarmTiles();
+	for (int i = 0; i < farmTile.size(); i++) {
+		if (farmTile[i]->CanGrow() == true) {
+			m_freeFarmTiles.push_back(farmTile[i]);
+		}
+	}
+	for (int j = 0; j < m_freeFarmTiles.size() / 2; j++) {
+		std::swap(m_freeFarmTiles[j], m_freeFarmTiles[Aleatory::GetInt(0, m_freeFarmTiles.size() - 1)]);
+	}
+}
+
+void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 {
 	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
-	int tile = Aleatory::GetInt(0, FarmManager::Get()->GetAllFarmTiles().size());
-	Props = gs->CreateEntity<EnviroProps>( FarmManager::Get()->GetAllFarmTiles()[tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
+	if (_tile < 0) {
+		_tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
+	}
+	if (m_freeFarmTiles[_tile]->CanGrow() == false) {
+		return;
+	}
+	Props = gs->CreateEntity<EnviroProps>(m_freeFarmTiles[_tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);
@@ -90,18 +124,15 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 	Props->GetCollider()->SetLayer(ENVIRO);
 	Props->GetCollider()->SetMask(PLAYER);
 	Props->InitialisePhysicsBody(ShapeBodyPhysics::Static);
-
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:
-		Props->AddSprite("default", "Oak_Tree", {128, 128}, 0);
+		Props->AddSprite("default", "Oak_Tree", {128, 128}, 0,{0, -28});
 		Props->GetCollider()->Resize({ 16,16 });
-		Props->GetCollider()->SetOffset({ 0,28 });
 		break;
 	case EnviroSpawnName::Shrub:
-		Props->AddSprite("default", "Oak_Shrub", { 46, 68 }, 0);
+		Props->AddSprite("default", "Oak_Shrub", { 46, 68 }, 0, { 1,-18 });
 		Props->GetCollider()->Resize({ 8,8 });
-		Props->GetCollider()->SetOffset({ 0,18 });
 		break;
 	case EnviroSpawnName::Grass:
 		Props->AddSprite("default", "Grass", { 18, 18 }, 0);
@@ -113,13 +144,67 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name)
 		Props->GetCollider()->Resize({ 16,16 });
 		break;
 	case EnviroSpawnName::Stone:
-		Props->AddSprite("default", "Stone", { 32, 32 }, 0);
+		Props->AddSprite("default", "Stone", { 32, 32 }, 0, {0,-8});
 		Props->GetCollider()->Resize({ 32,16 });
-		Props->GetCollider()->SetOffset({ 0,8 });
 		break;
+
 	default:
 		break;
 	}
+
+	if (Props->GetType() == EnviroSpawnName::Stone) {
+		float radius = 23.f;
+		float radiusSqr = radius * radius;
+		int posCheck = 0;
+
+		for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
+
+			float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - m_freeFarmTiles[_tile]->GetPosition().GetX();
+			float dy = m_freeFarmTiles[tile]->GetPosition().GetY() - m_freeFarmTiles[_tile]->GetPosition().GetY();
+
+			if ((dx * dx + dy * dy) <= radiusSqr && m_freeFarmTiles[tile]->CanGrow() == true) {
+				posCheck++;
+			}
+		}
+		if (posCheck <= 9) {
+			for (int pos = 0; pos < m_freeFarmTiles.size(); pos++) {
+				if (m_freeFarmTiles[pos]->GetPosition().GetX() >= 500) continue;
+				posCheck = 0;
+				for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
+					
+					float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - m_freeFarmTiles[pos]->GetPosition().GetX();
+					float dy = m_freeFarmTiles[tile]->GetPosition().GetY() - m_freeFarmTiles[pos]->GetPosition().GetY();
+
+					if ((dx * dx + dy * dy) <= radiusSqr && m_freeFarmTiles[tile]->CanGrow() == true) {
+						posCheck++;
+					}
+				}
+				if (posCheck >= 9) {
+					Props->SetFarmTile(m_freeFarmTiles[pos]);
+					break;
+				}
+			}
+		}
+		else {
+			Props->SetFarmTile(m_freeFarmTiles[_tile]);
+		}
+		for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
+
+			float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - Props->GetFarmTile()->GetPosition().GetX();
+			float dy = m_freeFarmTiles[tile]->GetPosition().GetY() - Props->GetFarmTile()->GetPosition().GetY();
+
+			if ((dx * dx + dy * dy) <= radiusSqr) {
+				m_freeFarmTiles[tile]->SetCanGrow(false);
+			}
+		}
+	}
+
+	else {
+		Props->SetFarmTile(m_freeFarmTiles[_tile]);
+		m_freeFarmTiles[_tile]->SetCanGrow(false);
+	}
+
+	UpdateFreeFarmTiles();
 }
 
 void EnviroSpawn::Update() {

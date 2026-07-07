@@ -25,7 +25,16 @@ void ItemOnGround::OnEvent()
 void ItemOnGround::OnUpdate()
 {
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
+	if (m_timer > 0) {
+		m_timer -= GetDeltaTime();
+	}
+
 	MoveKinematic();
+
+	m_timeToDestroy -= GetDeltaTime();
+	if (m_timeToDestroy <= 0) {
+		Destroy();
+	}
 }
 
 void ItemOnGround::OnDestroy()
@@ -52,6 +61,7 @@ void ItemOnGround::OnCollisionEnter(Collider* _self, Collider* _other, Collision
 		Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
 		if(text) text->SetText(std::to_string(m_ItemInfo.GetAmount()));
 		otherItem->Destroy();
+		m_timeToDestroy = 300.f;
 	}
 }
 
@@ -60,7 +70,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 	if (_other->GetOwner()->GetTag() != 1 || this->m_toDestroy)
 		return;
 
-	if (_other->GetID() == "interact") {
+	if (_other->GetID() == "interact" && m_timer <= 0) {
 		float diffX = _other->GetPosition().GetX() - GetPosition().GetX();
 		float diffY = _other->GetPosition().GetY() - GetPosition().GetY();
 		SetDirection({ diffX / Utils::Distance(GetPosition(),_other->GetPosition()), diffY / Utils::Distance(GetPosition(),_other->GetPosition()) });
@@ -72,7 +82,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		SetResetDirection(false);
 		SetSpeed(15);
 	}
-	else SetSpeed(0);
+
 
 	if (_other->GetID() == "default" && ToDestroy() == false) {
 		std::cout << "Item Collected" << std::endl;
@@ -84,6 +94,7 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 void ItemOnGround::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
 {
 	if (_other->GetID() == "interact") {
+		SetSpeed(0);
 		SetResetDirection(true);
 	}
 }

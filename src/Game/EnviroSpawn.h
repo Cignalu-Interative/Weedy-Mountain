@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include "FarmTile.h"
 
 enum class EnviroSpawnName
 {
@@ -27,15 +28,20 @@ class EnviroSpawn
 	int m_maxTiles = 100;
 	int m_numOfEnviro = 0;
 	std::vector<EnviroInfo*> m_enviroList;
+	std::vector<FarmTile*> m_freeFarmTiles;
 
 	int m_lastDay = -1;
 protected:
 
-	void CreateEnviroProps(EnviroSpawnName _name);
+	void CreateEnviroProps(EnviroSpawnName _name, int _tile);
 
 	void SpawnEnviroProps();
 
 	int GetEnviroDay();
+
+	void NewGameEnviroSpawn();
+
+	void UpdateFreeFarmTiles();
 
 public:
 

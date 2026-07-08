@@ -188,6 +188,12 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 		else {
 			Props->SetFarmTile(m_freeFarmTiles[_tile]);
 		}
+
+		if (Props->GetFarmTile() == NULL) {
+			Props->Destroy();
+			return;
+		}
+
 		for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
 
 			float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - Props->GetFarmTile()->GetPosition().GetX();

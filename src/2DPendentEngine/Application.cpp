@@ -363,12 +363,7 @@ bool Application::CapFPS()
 		return false;
 	}
 
-
-
 	return true;
-
-
-
 
 	//double elpasedTime = m_timerFPS.GetElapsed();
 	//m_deltaTime = static_cast<float>(elpasedTime);

@@ -9,3 +9,5 @@ voir pour opti le draw de text box en appelant le draw d'entity Entity::Draw() p
 
 multi threader le moteur 
 faire des compute shader
+
+

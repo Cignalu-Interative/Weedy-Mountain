@@ -32,7 +32,14 @@ void Text::CreateTexture(Vector2i p_dimention)
 	m_dynamicText = TTF_CreateText(m_textEngine, m_font, m_text.c_str(), lenText);
 	if (m_dynamicText == NULL)
 	{
-		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_CreateText/TTF_CreateText non reussie : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_CreateText/TTF_CreateText m_dynamicText non reussie : %s", SDL_GetError());
+		return;
+	}
+
+	m_outlineText = TTF_CreateText(m_textEngine, m_font, "", 0);
+	if (m_outlineText == NULL)
+	{
+		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_CreateText/TTF_CreateText m_outlineText non reussie : %s", SDL_GetError());
 		return;
 	}
 }
@@ -42,11 +49,18 @@ Text::Text(const std::string& p_idFont, int p_sizeFont)
 	m_font = TTF_OpenFont(FontManager::Get()->GetFont(p_idFont).c_str(), p_sizeFont);
 	if (m_font == NULL)
 	{
-		SDL_Log("Lib/Text.cpp/Text/TTF_OpenFont/La font n'a pas pu etre ouverte : %s", SDL_GetError());
+		SDL_Log("Lib/Text.cpp/Text/TTF_OpenFont/La font pour m_font n'a pas pu etre ouverte : %s", SDL_GetError());
 		return;
 	}
 	m_fontPath = FontManager::Get()->GetFont(p_idFont);
 	m_fontSize = p_sizeFont;
+
+	m_outlineFont = TTF_OpenFont(FontManager::Get()->GetFont(p_idFont).c_str(), p_sizeFont);
+	if (m_outlineFont == NULL)
+	{
+		SDL_Log("Lib/Text.cpp/Text/TTF_OpenFont/La font pour m_outlineFont n'a pas pu etre ouverte : %s", SDL_GetError());
+		return;
+	}
 }
 
 Text::~Text()
@@ -65,6 +79,11 @@ Text::~Text()
 	{
 		TTF_DestroyText(m_dynamicText);
 		m_dynamicText = nullptr;
+	}
+	if (m_outlineText)
+	{
+		TTF_DestroyText(m_outlineText);
+		m_outlineText = nullptr;
 	}
 }
 
@@ -299,6 +318,17 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		return;
 	}
 
+	int outlineWidth, outlineHeight;
+	if (TTF_GetStringSize(m_outlineFont, m_outlineText->text, strlen(m_text.c_str()), &outlineWidth, &outlineHeight) == false)
+	{
+		SDL_Log("Lib/Text.cpp/Draw/TTF_GetStringSize/cela na pas fonctionner pour m_outlineText : %s", SDL_GetError());
+		return;
+	}
+	if (outlineHeight > 0 && outlineWidth > 0)
+	{
+		TTF_DrawRendererText(m_outlineText, m_textRect.x, m_textRect.y);
+	}
+
 	TTF_DrawRendererText(m_dynamicText, m_textRect.x, m_textRect.y);
 
 	/*if (SDL_RenderCopyF(renderer, m_textTexture, NULL, &m_textRect) < 0)
@@ -494,7 +524,7 @@ Color Text::GetColor() const
 	Color color;
 	if (TTF_GetTextColor(m_dynamicText, &color.r, &color.g, &color.b, &color.a) == false)
 	{
-		SDL_Log("Text::GetColor/TTF_GetTextColor failed : %s", SDL_GetError());
+		SDL_Log("Text::GetColor/TTF_GetTextColor m_dynamicText failed : %s", SDL_GetError());
 		return { 0, 0, 0, 0 };
 	}
 	return color;
@@ -509,11 +539,21 @@ void Text::SetWrapWidth(int p_wrapWidth)
 	}
 	m_wrapWidth = p_wrapWidth;
 	UpdateTexture();
+
+
+	TTF_SetTextWrapWidth(m_dynamicText, p_wrapWidth);
+
 }
 
 int Text::GetWrapWidth() const
 {
 	return m_wrapWidth;
+
+	int wrapWidth;
+
+	TTF_GetTextWrapWidth(m_dynamicText, &wrapWidth);
+
+	return wrapWidth;
 }
 
 void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_strikethrough)
@@ -555,31 +595,63 @@ void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_str
 	UpdateTexture();
 }
 
-TTF_FontStyleFlags Text::GetFontStyle() const
+FontStyle Text::GetFontStyle() const
 {
-	return m_fontStyle;
+	return (FontStyle)m_fontStyle;
 
 	TTF_FontStyleFlags style = TTF_GetFontStyle(m_font);
-	return style;
+	return (FontStyle)style;
 }
 
-void Text::SetOutline(int p_outlineSize)
+void Text::SetOutlineSize(int p_outlineSize)
 {
-	if (p_outlineSize < 0)
+	if (p_outlineSize <= 0)
 	{
 		m_isHasOutline = false;
-		SDL_Log("Lib/Text.cpp/SetOutline/La taille du contour ne peut pas etre negative");
+		if (m_outlineText)
+		{
+			if (TTF_SetFontOutline(m_outlineFont, 0) == false)
+			{
+				SDL_Log("Text::SetOutlineSize/TTF_SetFontOutline failed : %s", SDL_GetError());
+				return;
+			}
+			TTF_DeleteTextString(m_outlineText, 0, -1);
+		}
+		SDL_Log("Lib/Text.cpp/SetOutlineSize/La taille du contour ne peut pas etre negative");
 		return;
 	}
 	else if (p_outlineSize > 0)
 	{
 		m_isHasOutline = true;
 		m_outlineSize = p_outlineSize;
+
+		if (TTF_SetFontOutline(m_outlineFont, m_outlineSize) == false)
+		{
+			SDL_Log("Text::SetOutlineSize/TTF_SetFontOutline failed : %s", SDL_GetError());
+			return;
+		}
+		TTF_SetTextString(m_outlineText, m_text.c_str(), strlen(m_text.c_str()));
 	}
-	else
+}
+
+void Text::SetOutLineColor(Color p_color)
+{
+	if (TTF_SetTextColor(m_outlineText, p_color.r, p_color.g, p_color.b, p_color.a) == false)
 	{
-		m_isHasOutline = false;
+		SDL_Log("Text::SetColor/TTF_SetTextColor failed : %s", SDL_GetError());
+		return;
 	}
+}
+
+Color Text::GetOutLineColor() const
+{
+	Color color;
+	if (TTF_GetTextColor(m_outlineText, &color.r, &color.g, &color.b, &color.a) == false)
+	{
+		SDL_Log("Text::GetColor/TTF_GetTextColor m_outlineText failed : %s", SDL_GetError());
+		return { 0, 0, 0, 0 };
+	}
+	return color;
 }
 
 void Text::SetLineSpacing(int p_lineSpacing)

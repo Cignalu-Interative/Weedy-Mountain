@@ -46,10 +46,12 @@ private:
 	TypeText m_typeText; // Type de rendu du texte (Solid, Shaded, Blended)
 
 	TTF_Font* m_font = nullptr; // Police de caractères utilisée pour le texte
+	TTF_Font* m_outlineFont = nullptr; // Police de caractères utilisée pour le contour du texte
 
 	TTF_TextEngine* m_textEngine = nullptr; // Moteur de rendu de texte utilisé pour le rendu du texte
 
 	TTF_Text* m_dynamicText = nullptr; // Texte dynamique utilisé pour le rendu du texte
+	TTF_Text* m_outlineText = nullptr; // Texte outline utilisé pour le contour du dynamique texte
 
 	SDL_Texture* m_textTexture = nullptr; // Texture du texte
 
@@ -120,7 +122,9 @@ public:
 	void SetColor(Color p_color);
 	Color GetColor() const;
 
+	//ne fonctionne plus mais si besoin je peux le remettre
 	void SetBackgroundColor(Color p_color) { m_backgroundColor = p_color; }
+	//ne fonctionne plus mais si besoin je peux le remettre
 	Color GetBackgroundColor() const { return m_backgroundColor; }
 
 	void SetIsWrapped(bool p_wrapped) { m_isWrapped = p_wrapped; }
@@ -133,12 +137,12 @@ public:
 	TypeText GetTypeText() const { return m_typeText; }
 
 	void SetFontStyle(bool p_bold = false, bool p_italic = false, bool p_underline = false, bool p_strikethrough = false);
-	TTF_FontStyleFlags GetFontStyle() const;
+	FontStyle GetFontStyle() const;
 
-	void SetOutline(int p_outlineSize);
+	void SetOutlineSize(int p_outlineSize);
 
-	void SetOutLineColor(Color p_color) { m_outlineColor = p_color; }
-	Color GetOutLineColor() const { return m_outlineColor; }
+	void SetOutLineColor(Color p_color);
+	Color GetOutLineColor() const;
 
 	void SetLineSpacing(int p_lineSpacing);
 	int GetLineSpacing() const;

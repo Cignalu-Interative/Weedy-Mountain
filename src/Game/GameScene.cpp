@@ -105,10 +105,19 @@ void GameScene::OnInitialize()
 	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
 	j->ShowCollider(true);*/
 
+	CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	
-	CreateText("KAKA", { 500, 550 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
-	Debug::Get()->GetText("KAKA")->SetFontSize(55);
-	Debug::Get()->GetText("KAKA")->SetFontStyle();
+	Text* t = Debug::Get()->GetText("KAKA");
+	t->SetFont("Gameplay", 55);
+	t->SetText("KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU");
+	t->SetFontSize(60);
+	t->SetColor(ColorsNamed::Violet);
+	t->SetWrapWidth(600);
+	t->SetFontStyle(false, true);
+	t->SetOutlineSize(2);
+	t->SetOutLineColor(ColorsNamed::White);
+	t->SetLineSpacing(50);
+	t->HorizontalAlignText(HorizontalAlignment::Center);
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);

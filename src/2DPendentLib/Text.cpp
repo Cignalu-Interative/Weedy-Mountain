@@ -7,26 +7,8 @@
 #include "Utils.h"
 #include "FontManager.h"
 
-void Text::CreateTexture(Vector2i p_dimention)
+void Text::CreateText()
 {
-	/*if (m_textTexture != nullptr)
-	{
-		SDL_DestroyTexture(m_textTexture);
-		m_textTexture = nullptr;
-	}
-
-	m_textTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_STREAMING, p_dimention.GetX(), p_dimention.GetY());
-	if (m_textTexture == NULL)
-	{
-		SDL_Log("Lib/Text.cpp/CreateTexture/SDL_CreateTexture/SDL_CreateTexture non reussie : %s", SDL_GetError());
-		return;
-	}
-	if (SDL_SetTextureBlendMode(m_textTexture, SDL_BLENDMODE_BLEND) == false)
-	{
-		SDL_Log("Lib/Text.cpp/CreateTexture/SDL_SetTextureBlendMode/SDL_SetTextureBlendMode non reussie : %s", SDL_GetError());
-		return;
-	}*/
-
 	size_t lenText = strlen(m_text.c_str());
 
 	m_dynamicText = TTF_CreateText(m_textEngine, m_font, m_text.c_str(), lenText);
@@ -55,8 +37,6 @@ Text::Text(const std::string& p_idFont, int p_sizeFont)
 		SDL_Log("Lib/Text.cpp/Text/TTF_OpenFont/La font pour m_font n'a pas pu etre ouverte : %s", SDL_GetError());
 		return;
 	}
-	/*m_fontPath = FontManager::Get()->GetFont(p_idFont);
-	m_fontSize = p_sizeFont;*/
 
 	m_outlineFont = TTF_OpenFont(FontManager::Get()->GetFont(p_idFont).c_str(), p_sizeFont);
 	if (m_outlineFont == NULL)
@@ -88,14 +68,9 @@ Text::~Text()
 		TTF_CloseFont(m_outlineFont);
 		m_outlineFont = nullptr;
 	}
-	/*if (m_textTexture != nullptr)
-	{
-		SDL_DestroyTexture(m_textTexture);
-		m_textTexture = nullptr;
-	}*/
 }
 
-void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color, TypeText p_typeText, bool p_wrapped)
+void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_color)
 {
 	if (p_text == "")
 	{
@@ -106,17 +81,9 @@ void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_col
 		m_text = p_text;
 	}
 
-	/*m_typeText = p_typeText;
-
-	m_isWrapped = p_wrapped;*/
-
-
-	CreateTexture({1, 1});
+	CreateText();
 
 	SetColor(p_color);
-	//UpdateTexture();
-
-	SetOutlineSize(2);
 
 	SetPosition(p_position);
 
@@ -126,7 +93,7 @@ void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_col
 void Text::SetFont(const std::string& p_idFont, int p_sizeFont)
 {
 	TTF_Font* newFont = TTF_OpenFont(FontManager::Get()->GetFont(p_idFont).c_str(), p_sizeFont);
-	TTF_Font* newOutlineFont = TTF_OpenFont(FontManager::Get()->GetFont(p_idFont).c_str(), p_sizeFont);
+	TTF_Font* newOutlineFont = newFont;
 	if (!newFont || !newOutlineFont)
 	{
 		return;
@@ -155,8 +122,6 @@ void Text::SetFont(const std::string& p_idFont, int p_sizeFont)
 
 TTF_Font* Text::GetFont() const
 {
-	//return m_font;
-
 	TTF_Font* font = TTF_GetTextFont(m_dynamicText);
 	if (font == NULL)
 	{
@@ -183,14 +148,6 @@ void Text::SetText(const std::string& p_text)
 	{
 		m_text = " ";
 	}
-	/*if (m_textTexture == nullptr)
-	{
-		Initialize({ 0.0f, 0.0f }, p_text, { 255, 255, 255, 255 });
-	}
-	else
-	{
-		UpdateTexture();
-	}*/
 
 	size_t lenText = strlen(m_text.c_str());
 
@@ -218,21 +175,6 @@ void Text::SetFontSize(int p_size)
 
 	m_fontSize = p_size;
 
-	/*if (m_font != nullptr)
-	{
-		TTF_CloseFont(m_font);
-		m_font = nullptr;
-	}
-
-	m_font = TTF_OpenFont(m_fontPath.c_str(), m_fontSize);
-	if (m_font == nullptr)
-	{
-		SDL_Log("Text::SetSize/TTF_OpenFont failed : %s", SDL_GetError());
-		return;
-	}*/
-
-	//UpdateTexture();
-
 	if (TTF_SetFontSize(m_font, m_fontSize) == false)
 	{
 		SDL_Log("Text::SetFontSize/TTF_SetFontSize pour m_font failed : %s", SDL_GetError());
@@ -250,8 +192,6 @@ void Text::SetFontSize(int p_size)
 
 float Text::GetFontSize() const
 {
-	//return m_fontSize;
-
 	float size = TTF_GetFontSize(m_font);
 	if (size <= 0.0f)
 	{
@@ -274,37 +214,6 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		return;
 	}
 
-	/*SDL_Renderer* renderer = f_render->m_renderer;
-	if (m_textTexture == nullptr)
-	{
-		return;
-	}
-
-	Uint8 r, g, b, a;
-	if (SDL_GetTextureColorMod(m_textTexture, &r, &g, &b) == false)
-	{
-		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureColorMod/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
-	}
-	if (SDL_GetTextureAlphaMod(m_textTexture, &a) == false)
-	{
-		SDL_Log("Lib/Text.cpp/Draw/SDL_GetTextureAlphaMod/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
-	}
-
-	if (r != m_color.r || g != m_color.g || b != m_color.b || a != m_color.a)
-	{
-		if (SDL_SetTextureColorMod(m_textTexture, m_color.r, m_color.g, m_color.b) == false)
-		{
-			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureColorMod/cela na pas fonctionn� : %s", SDL_GetError());
-			return;
-		}
-		if (SDL_SetTextureAlphaMod(m_textTexture, m_color.a) == false)
-		{
-			SDL_Log("Lib/Text.cpp/Draw/SDL_SetTextureAlphaMod/cela na pas fonctionn� : %s", SDL_GetError());
-			return;
-		}
-	}*/
 	Vector2f screenPos;
 	Vector2f dimension;
 	if (m_isGUI == true)
@@ -333,28 +242,6 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		dimension.GetX(),
 		dimension.GetY() };
 
-	//float width = dimension.GetX();
-	//float height = dimension.GetY();
-	//Vector2f rotPoint = GetRotationPoint();           // ex: (0,0) ou (0.5,0.5)
-	//SDL_FPoint rotationCenter{
-	//	width * rotPoint.GetX(),                      // 0..width
-	//	height * rotPoint.GetY()                       // 0..height
-	//};
-
-	//SDL_FlipMode flip = SDL_FLIP_NONE;
-
-	//if (SDL_RenderTextureRotated(renderer, m_textTexture,
-	//	NULL,           // Frame du sprite sheet (ou NULL)
-	//	&m_textRect,          // Position/taille � l'�cran
-	//	GetAngle(),        // Angle Transformable (degr�s)
-	//	&rotationCenter,   // Centre rotation pr�-calcul�
-	//	flip) == false)       //  miroir (optionnel)
-	//{
-	//	SDL_Log("Lib/Sprite.cpp/Draw/SDL_RenderCopyExF/cela na pas fonctionn� : %s", SDL_GetError());
-	//	return;
-	//}
-
-	
 	if (m_isHasOutline)
 	{
 		TTF_DrawRendererText(m_outlineText, m_textRect.x, m_textRect.y);
@@ -363,12 +250,6 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 	float sizetext = m_outlineSize + m_outlineSize * 0.5f;
 
 	TTF_DrawRendererText(m_dynamicText, m_textRect.x + sizetext, m_textRect.y + sizetext);
-
-	/*if (SDL_RenderCopyF(renderer, m_textTexture, NULL, &m_textRect) < 0)
-	{
-		SDL_Log("Lib/Text.cpp/Draw/SDL_RenderCopyF/cela na pas fonctionn� : %s", SDL_GetError());
-		return;
-	}*/
 }
 
 void Text::UpdateTexture()
@@ -552,8 +433,6 @@ void Text::SetColor(Color p_color)
 
 Color Text::GetColor() const
 {
-	//return m_color;
-
 	Color color;
 	if (TTF_GetTextColor(m_dynamicText, &color.r, &color.g, &color.b, &color.a) == false)
 	{
@@ -570,8 +449,6 @@ void Text::SetWrapWidth(int p_wrapWidth)
 		SDL_Log("Lib/Text.cpp/SetWrapWidth/La largeur de retour � la ligne ne peut pas etre negative");
 		return;
 	}
-	/*m_wrapWidth = p_wrapWidth;
-	UpdateTexture();*/
 
 	if (TTF_SetTextWrapWidth(m_dynamicText, p_wrapWidth) == false)
 	{
@@ -591,8 +468,6 @@ void Text::SetWrapWidth(int p_wrapWidth)
 
 int Text::GetWrapWidth() const
 {
-	//return m_wrapWidth;
-
 	int wrapWidth;
 
 	if (TTF_GetTextWrapWidth(m_dynamicText, &wrapWidth) == false)
@@ -644,14 +519,10 @@ void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_str
 	SetPosition(m_positionWanted);
 
 	SetDimension(GetTextSize());
-
-	//UpdateTexture();
 }
 
 FontStyle Text::GetFontStyle() const
 {
-	//return (FontStyle)m_fontStyle;
-
 	TTF_FontStyleFlags style = TTF_GetFontStyle(m_font);
 	return (FontStyle)style;
 }
@@ -720,8 +591,6 @@ void Text::SetLineSpacing(int p_lineSpacing)
 
 int Text::GetLineSpacing() const
 {
-	//return m_lineSpacing;
-
 	int spacing = TTF_GetFontLineSkip(m_font);
 	return spacing;
 }

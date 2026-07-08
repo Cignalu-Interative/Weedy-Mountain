@@ -6,15 +6,6 @@
 #include "Geometry.h"
 #include "Drawable.h"
 
-enum TypeText
-{
-	Solid,
-	Shaded,
-	Blended,
-
-	MaxType
-};
-
 enum HorizontalAlignment
 {
 	Invalid = TTF_HORIZONTAL_ALIGN_INVALID,
@@ -40,10 +31,7 @@ class Text : public Geometry, public Drawable
 {
 private:
 
-	std::string m_fontPath; // Chemin vers le fichier de police utilisé pour le texte
 	std::string m_text; // Texte à afficher
-
-	TypeText m_typeText; // Type de rendu du texte (Solid, Shaded, Blended)
 
 	TTF_Font* m_font = nullptr; // Police de caractères utilisée pour le texte
 	TTF_Font* m_outlineFont = nullptr; // Police de caractères utilisée pour le contour du texte
@@ -52,8 +40,6 @@ private:
 
 	TTF_Text* m_dynamicText = nullptr; // Texte dynamique utilisé pour le rendu du texte
 	TTF_Text* m_outlineText = nullptr; // Texte outline utilisé pour le contour du dynamique texte
-
-	SDL_Texture* m_textTexture = nullptr; // Texture du texte
 
 	SDL_Renderer* m_renderer = nullptr; // Renderer utilisé pour dessiner le texte
 
@@ -66,7 +52,7 @@ private:
 
 	bool m_clampToScreen = false; // Si true, la geometry sera dessiné à la position la plus proche sur l'écran si sa position dépasse les limites de l'écran
 
-	void CreateTexture(Vector2i p_dimention);
+	void CreateText();
 
 	Vector2f m_positionWanted; //Position voulue pour le texte, indépendante de la position réelle du texte avec la taille du texte
 
@@ -74,7 +60,7 @@ private:
 
 	int m_wrapWidth = 0; // Largeur maximale du texte avant de faire un retour à la ligne automatique (en pixels)
 
-	Color m_backgroundColor = ColorsNamed::Transparent; // Couleur de fond du texte (par défaut transparent)
+	//Color m_backgroundColor = ColorsNamed::Transparent; // Couleur de fond du texte (par défaut transparent)
 
 	TTF_FontStyleFlags m_fontStyle = TTF_STYLE_NORMAL; // Style de police utilisé pour le texte (par défaut normal)
 
@@ -82,7 +68,7 @@ private:
 
 	int m_outlineSize = 0; // Taille du contour (outline) autour des caractères du texte (en pixels)
 
-	Color m_outlineColor = ColorsNamed::Red;
+	Color m_outlineColor = ColorsNamed::Black;
 
 	int m_lineSpacing = 0; // Espacement entre les lignes de texte (en pixels)
 
@@ -93,7 +79,7 @@ public:
 
 	void SetTextEngine(TTF_TextEngine* p_engine) { m_textEngine = p_engine; }
 
-	void Initialize(Vector2f p_position, const std::string p_text, Color p_color = ColorsNamed::White, TypeText p_typeText = Solid, bool p_wrapped = false);
+	void Initialize(Vector2f p_position, const std::string p_text, Color p_color = ColorsNamed::White);
 
 	void SetFont(const std::string& p_idFont, int p_sizeFont);
 	TTF_Font* GetFont() const;
@@ -123,9 +109,9 @@ public:
 	Color GetColor() const;
 
 	//ne fonctionne plus mais si besoin je peux le remettre
-	void SetBackgroundColor(Color p_color) { m_backgroundColor = p_color; }
+	//void SetBackgroundColor(Color p_color) { m_backgroundColor = p_color; }
 	//ne fonctionne plus mais si besoin je peux le remettre
-	Color GetBackgroundColor() const { return m_backgroundColor; }
+	//Color GetBackgroundColor() const { return m_backgroundColor; }
 
 	void SetIsWrapped(bool p_wrapped) { m_isWrapped = p_wrapped; }
 	bool GetIsWrapped() const { return m_isWrapped; }
@@ -133,8 +119,8 @@ public:
 	void SetWrapWidth(int p_wrapWidth);
 	int GetWrapWidth() const;
 
-	void SetTypeText(TypeText p_typeText) { m_typeText = p_typeText; }
-	TypeText GetTypeText() const { return m_typeText; }
+	//void SetTypeText(TypeText p_typeText) { m_typeText = p_typeText; }
+	//TypeText GetTypeText() const { return m_typeText; }
 
 	void SetFontStyle(bool p_bold = false, bool p_italic = false, bool p_underline = false, bool p_strikethrough = false);
 	FontStyle GetFontStyle() const;
@@ -151,9 +137,6 @@ public:
 	HorizontalAlignment GetHorizontalAlignText() const;
 
 	Vector2i GetTextSize() const;
-
-	
-
 };
 
 #include "Text.inl"

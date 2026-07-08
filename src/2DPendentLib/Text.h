@@ -88,7 +88,7 @@ private:
 
 public:
 
-	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 45);
+	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 28);
 	~Text();
 
 	void SetTextEngine(TTF_TextEngine* p_engine) { m_textEngine = p_engine; }

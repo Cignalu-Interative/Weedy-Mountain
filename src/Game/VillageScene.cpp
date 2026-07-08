@@ -11,6 +11,13 @@
 #include "GameData.h"
 
 #include "GameScene.h"
+#include "Ui/UiStats.h"
+#include "Ui/UiMoney.h"
+#include "Ui/UiCash.h"
+#include "Ui/UiDate.h"
+#include "Ui/UiTime.h"
+#include "Ui/UiJobs.h"
+#include "Ui/UiGatherer.h"
 
 void VillageScene::OnInitialize()
 {
@@ -34,8 +41,7 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
-	GameData::Get().GetPlayerData().PushPlayerData(m_player);
-
+	GameData::Get().PushPlayerData(m_player);
 }
 
 void VillageScene::OnEvent()
@@ -46,6 +52,9 @@ void VillageScene::OnEvent()
 	{
 		SceneManager::Get()->PushScene("demo");
 	}
+	if (im->IsKeyboardDown(K_M))
+		m_player->TakeDamage(5);
+
 }
 
 void VillageScene::OnUpdate()

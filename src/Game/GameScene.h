@@ -10,6 +10,12 @@ enum CollisionLayers : uint32_t
 	FARMTILE = 1 << 2,
 };
 
+class UiStats;
+class UiMoney;
+class UiCash;
+class UiTime;
+class UiDate;
+
 class GameScene : public Scene
 {
 private:
@@ -17,14 +23,21 @@ private:
 
 	Player* m_player2 = nullptr;
 
+
+	UiStats* e = nullptr;
+	UiMoney* f = nullptr;
+	UiCash * g = nullptr;
+	UiTime* h = nullptr;
+	UiDate* i = nullptr;
+
 protected:
 
 	void OnInitialize() override;
-	
+
 	void OnEvent() override;
 
 	void OnUpdate() override;
-	
+
 	void OnDestroy() override;
 
 	void OnSleep() override;

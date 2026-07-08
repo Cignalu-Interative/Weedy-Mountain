@@ -91,15 +91,16 @@ void GameScene::OnInitialize()
 	}
 
 	Vector2f uiStatsPos = {1050, 600};
-	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	//e->ShowCollider(true);
 
-	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
+
+	f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
 	//f->ShowCollider(true);
-	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	//f->ShowCollider(true);
-	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+	h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
+	i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
 	j->ShowCollider(true);*/
@@ -157,6 +158,9 @@ void GameScene::OnEvent()
 		SceneManager::Get()->PushScene("village");
 	}
 
+	if (im->IsKeyboardDown(K_M))
+		m_player->TakeDamage(5);
+
 }
 
 void GameScene::OnUpdate()
@@ -177,7 +181,24 @@ void GameScene::OnDestroy()
 
 void GameScene::OnSleep()
 {
-	GameData::Get().GetPlayerData().SavePlayerData(m_player);
+	//SetSleepUpdate(true); 
+	//SetSleepDraw(true);
+	SetSleepEvent(true);
+	GameData::Get().SavePlayerData(m_player);
+
+	for (Entity* e : GetEntities())
+	{
+		e->SetIsVisible(false);
+	}
+
+	e->SetIsVisible(true);
+	f->SetIsVisible(true);
+	g->SetIsVisible(true);
+	h->SetIsVisible(true);
+	i->SetIsVisible(true);
+
+	
+
 }
 
 void GameScene::OnWake()

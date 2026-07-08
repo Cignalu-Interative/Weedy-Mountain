@@ -16,15 +16,15 @@ void UiStats::OnInitialize()
 	m_uiLife = GetScene()->CreateEntity<UiLife>(lifePos,dim, "", Shape::Rectangle, true);
 	//m_uiLife->SetDrawLayer(drawLayer);
 
-	m_uiStamina = GetScene()->CreateEntity<UiStamina>(staminaPos,dim, "", Shape::Rectangle, true);
+	//m_uiStamina = GetScene()->CreateEntity<UiStamina>(staminaPos,dim, "", Shape::Rectangle, true);
 	//m_uiStamina->SetDrawLayer(drawLayer);
 
-	m_uiToxicity = GetScene()->CreateEntity<UiToxicity>(toxicityPos,dim, "", Shape::Rectangle, true);
+	//m_uiToxicity = GetScene()->CreateEntity<UiToxicity>(toxicityPos,dim, "", Shape::Rectangle, true);
 	//m_uiToxicity->SetDrawLayer(drawLayer);
 
 	m_uiLife->GetCollider()->SetIsTrigger(true);
-	m_uiStamina->GetCollider()->SetIsTrigger(true);
-	m_uiToxicity->GetCollider()->SetIsTrigger(true);
+	//m_uiStamina->GetCollider()->SetIsTrigger(true);
+	//m_uiToxicity->GetCollider()->SetIsTrigger(true);
 	GetCollider()->SetIsTrigger(true);
 }
 

@@ -42,5 +42,6 @@ public:
 
 	void Sleep();
 
-	PlayerData GetPlayerData() { return m_playerData; }
+	PlayerData& GetPlayerData() { return m_playerData; }
+
 };

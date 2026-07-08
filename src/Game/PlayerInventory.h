@@ -19,6 +19,8 @@ class PlayerInventory
 
 public:
 
+	PlayerInventory() = default;
+
 	PlayerInventory(Inventory* inv, Hotbar* hot);
 
 

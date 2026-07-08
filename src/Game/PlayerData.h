@@ -6,16 +6,15 @@
 
 struct PlayerData
 {
-	PlayerInventory* playerInventory;
+	PlayerInventory playerInventory;
 
 	PlayerStats playerStats;
 	std::vector<PlayerJob*> playerJobs;
 
 	void SavePlayerData(Player* p_player)
 	{
-		playerInventory = p_player->GetInventory();
+		playerInventory = *p_player->GetInventory();
 		
-
 		playerJobs = p_player->GetJobs();
 		playerStats = p_player->GetStats();
 
@@ -23,7 +22,7 @@ struct PlayerData
 
 	void PushPlayerData(Player* p_player)
 	{
-		*p_player->GetInventory() = *playerInventory;
+		*p_player->GetInventory() = playerInventory;
 
 		p_player->GetJobs() = playerJobs;
 		p_player->GetStats() = playerStats;

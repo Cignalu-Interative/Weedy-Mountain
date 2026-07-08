@@ -74,7 +74,7 @@ struct PlayerStats {
 	float m_playerSpeed = 50.f;
 
 	float m_maxHp = 100.f;
-	float m_Hp = m_maxHp;
+	float m_hp = m_maxHp;
 
 	float m_maxStamina = 100.f;
 	float m_stamina = m_maxStamina;
@@ -88,6 +88,7 @@ struct PlayerStats {
 
 	float m_drugsSellQuantity = 0.f;
 	float m_drugSellEfficency = 1.f; 
+
 };
 
 class Inventory;
@@ -162,6 +163,21 @@ public:
 
 	void LockInputs();
 	void UnlockInputs();
+
+	int GetLife() { return m_stats.m_hp; }
+	int GetMaxLife() { return m_stats.m_maxHp; }
+	void Heal(int p_amount);
+	void TakeDamage(int p_amount);
+
+	int GetStamina() { return m_stats.m_stamina; }
+	int GetMaxStamina() { return m_stats.m_maxStamina; }
+	void DecreaseStamina(int p_amount);
+	void AddStamina(int p_amount);
+
+	int GetToxicity() { return m_stats.m_toxicity; }
+	int GetMaxToxicity() { return m_stats.m_maxToxicity; }
+	void DecreaseToxicity(int p_amount);
+	void AddToxicity(int p_amount);
 
 	// temp en attendant d'avoir la hotbar et le current item en main
 	bool hasSpade = false;

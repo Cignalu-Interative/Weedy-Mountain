@@ -6,7 +6,7 @@
 void UiLife::OnInitialize()
 {
 	GameScene* gameScene = GetScene<GameScene>();
-	m_currentValue = gameScene->GetPlayer()->GetStats().m_Hp;
+	m_currentValue = gameScene->GetPlayer()->GetStats().m_hp;
 	m_maxValue = gameScene->GetPlayer()->GetStats().m_maxHp;
 
 	AddSprite("Heart", "Heart", { 32,32 }, 0, {}, true);
@@ -25,7 +25,7 @@ void UiLife::OnUpdate()
 {
 
 	GameScene* gameScene = GetScene<GameScene>();
-	int hp = gameScene->GetPlayer()->GetStats().m_Hp;
+	int hp = gameScene->GetPlayer()->GetStats().m_hp;
 
 	if (hp == gameScene->GetPlayer()->GetStats().m_maxHp)
 		SetIsVisible(false);

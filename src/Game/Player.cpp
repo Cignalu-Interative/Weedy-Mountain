@@ -490,6 +490,48 @@ void Player::UnlockInputs()
 	m_inputBlocker = false;
 }
 
+void Player::Heal(int p_amount)
+{
+	m_stats.m_hp += p_amount;
+	if (m_stats.m_hp > m_stats.m_maxHp)
+		m_stats.m_hp = m_stats.m_maxHp;
+}
+
+void Player::TakeDamage(int p_amount)
+{
+	m_stats.m_hp -= p_amount;
+	if (m_stats.m_hp < 0)
+		m_stats.m_hp = 0;
+}
+
+void Player::DecreaseStamina(int p_amount)
+{
+	m_stats.m_stamina -= p_amount;
+	if (m_stats.m_stamina < 0)
+		m_stats.m_stamina = 0;
+}
+
+void Player::AddStamina(int p_amount)
+{
+	m_stats.m_stamina += p_amount;
+	if (m_stats.m_stamina > m_stats.m_maxStamina)
+		m_stats.m_stamina = m_stats.m_maxStamina;
+}
+
+void Player::DecreaseToxicity(int p_amount)
+{
+	m_stats.m_toxicity -= p_amount;
+	if (m_stats.m_toxicity < 0)
+		m_stats.m_toxicity = 0;
+}
+
+void Player::AddToxicity(int p_amount)
+{
+	m_stats.m_toxicity += p_amount;
+	if (m_stats.m_toxicity > m_stats.m_maxToxicity)
+		m_stats.m_toxicity = m_stats.m_maxToxicity;
+}
+
 void Player::DecreaseMoney(int p_amount)
 {
 	m_money -= p_amount;

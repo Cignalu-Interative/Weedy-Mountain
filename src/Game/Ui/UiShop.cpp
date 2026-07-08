@@ -14,8 +14,8 @@ void UiShop::OnInitialize()
 	GameScene* gameScene = GetScene<GameScene>();
 	Scene* scene = GetScene();
 
-	m_playerInventory = gameScene->GetPlayer()->GetInventory()->GetInventory();
-	m_shopInventory = gameScene->GetPlayer2()->GetInventory()->GetInventory();
+	//m_playerInventory = gameScene->GetPlayer()->GetInventory()->GetInventory();
+	//m_shopInventory = gameScene->GetPlayer2()->GetInventory()->GetInventory();
 
 	Vector2f topRightPos = GetPosition({ 1,0 });
 	Vector2i dimension = GetDimension();

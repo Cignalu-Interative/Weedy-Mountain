@@ -2,7 +2,7 @@
 #include "2DPendentEngine/Entity.h"
 #include "CropDefinition.h"
 #include "StateMachine.h"
-
+#include "PlayerData.h"
 
 enum class PlayerState
 {

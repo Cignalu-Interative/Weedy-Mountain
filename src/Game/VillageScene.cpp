@@ -41,7 +41,7 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
-	GameData::Get().PushPlayerData(m_player);
+	//GameData::Get().PushPlayerData(m_player);
 }
 
 void VillageScene::OnEvent()

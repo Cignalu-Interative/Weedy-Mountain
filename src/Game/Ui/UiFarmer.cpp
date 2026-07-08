@@ -17,16 +17,16 @@ void UiFarmer::OnInitialize()
 	GetSprite("UiFarmerEmpty")->SetPosition(barPos);
 
 	Vector2f textPos = GetSprite("FarmerAsset")->GetPosition() + Vector2f(0, 80);
-	Debug::Get()->CreateText("FarmerLvL", textPos, std::to_string(m_player->GetJobByName(JobType::Farmer)->m_lvl), Color(255, 255, 255, 255), true);
+	Debug::Get()->CreateText("FarmerLvL", textPos, std::to_string(m_player->GetJobByName(JobType::Farmer).m_lvl), Color(255, 255, 255, 255), true);
 
 }
 
 void UiFarmer::OnUpdate()
 {
-	Debug::Get()->GetText("FarmerLvL")->SetText(std::to_string(m_player->GetJobByName(JobType::Farmer)->m_lvl));
+	Debug::Get()->GetText("FarmerLvL")->SetText(std::to_string(m_player->GetJobByName(JobType::Farmer).m_lvl));
 
-	m_currentValue = m_player->GetJobByName(JobType::Farmer)->m_exp;
-	m_maxValue = m_player->GetJobByName(JobType::Farmer)->m_expNeeded;
+	m_currentValue = m_player->GetJobByName(JobType::Farmer).m_exp;
+	m_maxValue = m_player->GetJobByName(JobType::Farmer).m_expNeeded;
 
 	Vector2i dim = GetSprite("UiFarmerEmpty")->GetDimension();
 	dim.GetX() *= m_currentValue / m_maxValue; // 0.f

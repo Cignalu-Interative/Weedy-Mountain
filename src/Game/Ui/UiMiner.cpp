@@ -18,16 +18,16 @@ void UiMiner::OnInitialize()
 	GetSprite("UiMinerEmpty")->SetPosition(barPos);
 
 	Vector2f textPos = GetSprite("MinerAsset")->GetPosition() + Vector2f(0, 80);
-	Debug::Get()->CreateText("MinerLvL", textPos, std::to_string(m_player->GetJobByName(JobType::Miner)->m_lvl), Color(255, 255, 255, 255), true);
+	Debug::Get()->CreateText("MinerLvL", textPos, std::to_string(m_player->GetJobByName(JobType::Miner).m_lvl), Color(255, 255, 255, 255), true);
 
 }
 
 void UiMiner::OnUpdate()
 {
-	Debug::Get()->GetText("MinerLvL")->SetText(std::to_string(m_player->GetJobByName(JobType::Miner)->m_lvl));
+	Debug::Get()->GetText("MinerLvL")->SetText(std::to_string(m_player->GetJobByName(JobType::Miner).m_lvl));
 
-	m_currentValue = m_player->GetJobByName(JobType::Miner)->m_exp;
-	m_maxValue = m_player->GetJobByName(JobType::Miner)->m_expNeeded;
+	m_currentValue = m_player->GetJobByName(JobType::Miner).m_exp;
+	m_maxValue = m_player->GetJobByName(JobType::Miner).m_expNeeded;
 
 	Vector2i dim = GetSprite("UiMinerEmpty")->GetDimension();
 	dim.GetX() *= m_currentValue / m_maxValue; // 0.f

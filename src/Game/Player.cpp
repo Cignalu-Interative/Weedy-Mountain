@@ -222,7 +222,7 @@ PlayerJob Player::GetJobByName(JobType p_type)
 		if (job.m_name == p_type)
 			return job ;
 	}
-	return;
+
 }
 
 void Player::UpdateJobs()

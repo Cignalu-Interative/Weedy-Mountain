@@ -138,19 +138,19 @@ void GameScene::OnEvent()
 	{
 		Application::Get()->SetIsAutoFPS(true);
 	}
-	if (im->IsKeyboardDown(K_K))
-	{
-		m_player->GetJobByName(JobType::Gatherer)->m_exp += 5;
-		m_player->GetJobByName(JobType::Miner)->m_exp += 5;
-		m_player->GetJobByName(JobType::Farmer)->m_exp += 5;
-	}
+	//if (im->IsKeyboardDown(K_K))
+	//{
+	//	m_player->GetJobByName(JobType::Gatherer)->m_exp += 5;
+	//	m_player->GetJobByName(JobType::Miner)->m_exp += 5;
+	//	m_player->GetJobByName(JobType::Farmer)->m_exp += 5;
+	//}
 
-	if (im->IsKeyboardDown(K_O))
-	{
-		m_player->GetJobByName(JobType::Gatherer)->m_exp -= 5;
-		m_player->GetJobByName(JobType::Miner)->m_exp -= 5;
-		m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
-	}
+	//if (im->IsKeyboardDown(K_O))
+	//{
+	//	m_player->GetJobByName(JobType::Gatherer)->m_exp -= 5;
+	//	m_player->GetJobByName(JobType::Miner)->m_exp -= 5;
+	//	m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
+	//}
 
 	if (im->IsKeyboardDown(K_R))
 	{
@@ -184,7 +184,7 @@ void GameScene::OnSleep()
 	//SetSleepUpdate(true); 
 	//SetSleepDraw(true);
 	SetSleepEvent(true);
-	GameData::Get().SavePlayerData(m_player);
+	//GameData::Get().SavePlayerData(m_player);
 
 	for (Entity* e : GetEntities())
 	{

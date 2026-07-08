@@ -88,7 +88,7 @@ private:
 
 public:
 
-	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 28);
+	Text(const std::string& p_idFont = "DefaultPolice", int p_sizeFont = 45);
 	~Text();
 
 	void SetTextEngine(TTF_TextEngine* p_engine) { m_textEngine = p_engine; }
@@ -102,7 +102,7 @@ public:
 	std::string GetText() const { return m_text; }
 
 	void SetFontSize(int p_size);
-	int GetFontSize() const;
+	float GetFontSize() const;
 
 	void SetTimeToUpdate(float p_timeToUpdate) { m_updateInterval = p_timeToUpdate; }
 	float GetTimeToUpdate() const { return m_updateInterval; }

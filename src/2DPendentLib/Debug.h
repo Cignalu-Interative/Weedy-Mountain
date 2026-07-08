@@ -93,7 +93,7 @@ public:
 
 	void SetRenderer(SDL_Renderer* p_renderer);
 
-	bool CreateTextEngineProperties();
+	void CreateTextEngineProperties();
 
 	SDL_Renderer* SDL_GetRenderer() const { return m_renderer; }
 

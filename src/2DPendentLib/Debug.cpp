@@ -68,18 +68,23 @@ void Debug::SetRenderer(SDL_Renderer* p_renderer)
 	m_renderer = p_renderer;
 }
 
-bool Debug::CreateTextEngineProperties()
+void Debug::CreateTextEngineProperties()
 {
 	if (m_renderer == nullptr)
 	{
 		SDL_Log("Debug::CreateTextEngineProperties: Renderer is null, cannot create text engine properties.");
-		return false;
+		return;
 	}
 
 	SDL_SetPointerProperty(m_textEnginePropertiesID, "SDL_ttf.renderer_text_engine.create.renderer", m_renderer);
 	SDL_SetNumberProperty(m_textEnginePropertiesID, "SDL_ttf.renderer_text_engine.create.atlas_texture_size", 2048);
 
 	m_textEngine = TTF_CreateRendererTextEngineWithProperties(m_textEnginePropertiesID);
+	if (m_textEngine == NULL)
+	{
+		SDL_Log("Debug::CreateTextEngineProperties: Failed to create text engine: %s", SDL_GetError());
+		return;
+	}
 }
 
 void Debug::SetDeltaTimeCallback(DeltaTimeCallback p_callback)

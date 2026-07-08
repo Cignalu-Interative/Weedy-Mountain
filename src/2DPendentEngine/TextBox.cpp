@@ -30,6 +30,7 @@ void TextBox::InitTextBox(const std::string& p_id, Color p_color, bool p_isGUI)
 
 	SDLEncapsulation::SetTextInputArea(m_window, m_BoxText, 0);
 	m_textToDraw->SetRenderer(Application::Get()->GetRender()->GetRenderer());
+	m_textToDraw->SetTextEngine(Debug::Get()->GetTextEngine());
 	m_textToDraw->Initialize(GetPosition({0.0f, 0.5f}), "", ColorsNamed::LightPink);
 	m_textToDraw->SetIsGUI(p_isGUI);
 }

@@ -48,6 +48,7 @@ void Application::Init()
 		m_isRunning = true;
 	}
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
+	Debug::Get()->CreateTextEngineProperties();
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;
 		});

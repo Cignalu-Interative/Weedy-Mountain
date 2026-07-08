@@ -36,12 +36,12 @@ void Camera::ZoomOut(float p_amount)
 	SetZoom(zoom);
 }
 
-void Camera::Follow()
+void Camera::Follow(float p_dt)
 {
     if (m_followedEntity == nullptr)
         return;
-
-    float dt = m_followedEntity->GetDeltaTime();
+   
+    float dt = p_dt;//m_followedEntity->GetDeltaTime();
     float factor = 1 - exp(-m_smoothSpeed * dt);
 
     float lerpX = std::lerp(GetPosition().GetX(), m_followedEntity->GetPosition().GetX(), factor);

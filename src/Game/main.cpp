@@ -5,6 +5,7 @@
 #include "2DPendentEngine/Aleatory.h"
 #include "Launcher.h"
 
+
 //Code d'entr�e
 int main(int argc, char* argv[])
 {

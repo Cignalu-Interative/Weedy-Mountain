@@ -48,7 +48,7 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	//ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
@@ -74,39 +74,38 @@ void GameScene::OnInitialize()
 
 	MapTiled* map = mm->GetCurrentMap();
 
-	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
+	/*std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();
-	Vector2i tileDim = map->GetTileDimension();
+	Vector2i tileDim = map->GetTileDimension();*/
 
-	for (const TileInfo& info : canGrowTiles)
-	{
-		Vector2f center = {
-			info.worldPos.GetX() + tileDim.GetX() / 2.f,
-			info.worldPos.GetY() + tileDim.GetY() / 2.f
-		};
-		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->GetCollider()->SetLayer(FARMTILE);
-		tile->GetCollider()->SetMask(NoNE);
-		//tile->ShowCollider(true);
-		FarmManager::Get()->RegisterTile(tile);
-	}
+	//for (const TileInfo& info : canGrowTiles)
+	//{
+	//	Vector2f center = {
+	//		info.worldPos.GetX() + tileDim.GetX() / 2.f,
+	//		info.worldPos.GetY() + tileDim.GetY() / 2.f
+	//	};
+	//	FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
+	//	tile->GetCollider()->SetLayer(FARMTILE);
+	//	tile->GetCollider()->SetMask(NoNE);
+	//	//tile->ShowCollider(true);
+	//	FarmManager::Get()->RegisterTile(tile);
+	//}
 
 	Vector2f uiStatsPos = {1050, 600};
-	UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
-	//e->ShowCollider(true);
+	//UiStats* e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	////e->ShowCollider(true);
 
-	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+	//UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
+	////f->ShowCollider(true);
+	//UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	////f->ShowCollider(true);
+	//UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
+	//UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
 	j->ShowCollider(true);*/
 
-	CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
-	
+	/*CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	Text* t = Debug::Get()->GetText("KAKA");
 	t->SetFont("Gameplay", 55);
 	t->SetText("KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU");
@@ -117,7 +116,7 @@ void GameScene::OnInitialize()
 	t->SetOutlineSize(2);
 	t->SetOutLineColor(ColorsNamed::White);
 	t->SetLineSpacing(50);
-	t->HorizontalAlignText(HorizontalAlignment::Center);
+	t->HorizontalAlignText(HorizontalAlignment::Center);*/
 
 	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
@@ -129,10 +128,10 @@ void GameScene::OnInitialize()
 	////a->ShowCollider(true);
 	//CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
-	EnviroSpawn::Get()->InitEnviroSpawn();
+	//EnviroSpawn::Get()->InitEnviroSpawn();
 
-	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::White, true);
-	m_textBox->GetCollider()->SetIsTrigger(true);
+	/*m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::White, true);
+	m_textBox->GetCollider()->SetIsTrigger(true);*/
 }
 
 
@@ -169,7 +168,7 @@ void GameScene::OnEvent()
 	}
 
 
-	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
+	/*if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
 	{
 		im->StartTextInput();
 	}
@@ -186,13 +185,13 @@ void GameScene::OnEvent()
 		m_textBox->SetText(im->GetfinalTextInput());
 	}
 	std::string t = im->GetfinalTextInput();
-	std::cerr << "TextInput : " << t << std::endl;
+	std::cerr << "TextInput : " << t << std::endl;*/
 }
 
 void GameScene::OnUpdate()
 {
 	//FarmManager::Get()->Update();
-	EnviroSpawn::Get()->Update();
+	//EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
 	//CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);

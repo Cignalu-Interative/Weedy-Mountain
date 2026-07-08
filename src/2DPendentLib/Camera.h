@@ -36,7 +36,7 @@ public:
 
 	void SetFollowedEntity(Entity* p_entity) { m_followedEntity = p_entity; }
 
-	void Follow();
+	void Follow(float p_dt);
 
 	//MONDE -> ECRAN
 	template<typename T>

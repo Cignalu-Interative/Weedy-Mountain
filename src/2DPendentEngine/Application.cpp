@@ -47,6 +47,8 @@ void Application::Init()
 	{
 		m_isRunning = true;
 	}
+	m_targetFPS = m_window.V_Sync();
+	m_targetDeltaTime = 1.0f / m_targetFPS;
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
 	Debug::Get()->CreateTextEngineProperties();
 	Debug::SetDeltaTimeCallback([this]() {
@@ -62,9 +64,13 @@ void Application::Init()
 	AssetManager::Get()->SetRenderer(m_render.GetRenderer());
 	MapTiledManager::Get()->SetRender(&m_render);
 	Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f), "FPS : " + std::to_string(GetCurrentFPS()), Color(0, 255, 0, 255), true);
-	m_timerFPS.SetCurrentTime();
+	//m_timerFPS.SetCurrentTime();
 	BatchRenderer2D::Get()->SetRenderer(m_render.GetRenderer());
 
+	m_oldTime = std::chrono::steady_clock::now();
+	m_deltaTimeInternal = 0.0f;
+	m_deltaTime = 0.0f;
+	m_totalTime = 0.0f;
 	std::cerr << "Application initialized successfully." << std::endl;
 }
 
@@ -72,9 +78,19 @@ void Application::Run()
 {
 	while (m_isRunning)
 	{
-		FPSDeltaTime();
+		UpdateDeltaTimeSystem();
 
-		CapFPS();
+		if (UpdateDeltaTimeGameplay() == false)
+		{
+			continue;
+		}
+
+		/*if (CapFPS() == false)
+		{
+			continue;
+		}*/
+
+		FPSDeltaTime();
 
 		UpdateFPSCounter();
 
@@ -124,7 +140,6 @@ void Application::FPSDeltaTime()
 	{
 		Debug::Get()->destroyText("AUTO_FPS");
 	}
-
 	if (m_autoFPS)
 	{
 		SetFPS(m_window.V_Sync());
@@ -235,6 +250,7 @@ void Application::FixedUpdate()
 	// 2. Synchroniser les colliders sur les positions actuelles des entités
 	CollisionManager::Get()->SyncAll();
 
+	
 	// 3. Détecter les collisions, résoudre (répulsion + impulsions), fire les callbacks
 	//    CollisionManager appelle PhysicsManager::Repulse et ResolveCollision en interne
 	Timer time;
@@ -310,6 +326,26 @@ void Application::Draw()
 	m_render.PresentRenderer();
 }
 
+void Application::UpdateDeltaTimeSystem()
+{
+	std::chrono::steady_clock::time_point newTime = std::chrono::steady_clock::now();
+	m_deltaTimeSystem = std::chrono::duration<float>(newTime - m_oldTime).count();
+	m_oldTime = newTime;
+}
+
+bool Application::UpdateDeltaTimeGameplay()
+{
+	m_deltaTimeInternal += m_deltaTimeSystem;
+	if (m_deltaTimeInternal <= m_targetDeltaTime)
+	{
+		return false;
+	}
+	m_deltaTime = m_deltaTimeInternal;
+	m_totalTime += m_deltaTime;
+	m_deltaTimeInternal = 0.0f;
+	return true;
+}
+
 void Application::SetFPS(int p_targetFPS)
 {
 	if (p_targetFPS <= 0)
@@ -320,17 +356,31 @@ void Application::SetFPS(int p_targetFPS)
 	m_targetDeltaTime = 1.0f / m_targetFPS;
 }
 
-void Application::CapFPS()
+bool Application::CapFPS()
 {
-	m_deltaTime = (float)m_timerFPS.GetElapsed();
-
-	float sleepTime = m_targetDeltaTime - m_deltaTime; // 1M ns (temps de sommeil pour atteindre le temps cible entre chaque frame)
-
-	if (sleepTime > 0.0f) // Si le temps de sommeil est sup�rieur � 1 ms, on dort pendant ce temps pour limiter le nombre de frame par seconde
+	if (m_deltaTime <= m_targetDeltaTime)
 	{
-		m_timerFPS.Sleep(sleepTime);  // Dort pendant tant de nanosecondes pour limiter le nombre de frame par seconde
-		m_deltaTime = m_targetDeltaTime;
+		return false;
 	}
+
+
+
+	return true;
+
+
+
+
+	//double elpasedTime = m_timerFPS.GetElapsed();
+	//m_deltaTime = static_cast<float>(elpasedTime);
+
+	//float sleepTime = m_targetDeltaTime - m_deltaTime; // 1M ns (temps de sommeil pour atteindre le temps cible entre chaque frame)
+
+	//if (sleepTime > 0.0f) // Si le temps de sommeil est sup�rieur � 1 ms, on dort pendant ce temps pour limiter le nombre de frame par seconde
+	//{
+	//	m_timerFPS.Sleep(sleepTime);  // Dort pendant tant de nanosecondes pour limiter le nombre de frame par seconde
+	//	m_deltaTime = m_targetDeltaTime;
+	//}
+	//std::cout << m_deltaTime << std::endl;
 }
 
 void Application::UpdateFPSCounter()
@@ -355,12 +405,15 @@ void Application::UpdateFPSCounter()
 
 void Application::IsEneableToUpdate()
 {
+
+	/*FixedUpdate(m_deltaTime);
+	m_camera->Follow(m_deltaTime);*/
 	m_accumulator += Utils::LimitMax(m_deltaTime, 0.05f);
 
 	while (m_accumulator >= m_FIX_UPDATE)
 	{
 		FixedUpdate();
-		m_camera->Follow();
+		m_camera->Follow(m_FIX_UPDATE);
 		m_accumulator -= m_FIX_UPDATE;
 	}
 

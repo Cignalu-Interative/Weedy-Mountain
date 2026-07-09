@@ -5,9 +5,9 @@
 
 void UiStamina::OnInitialize()
 {
-	GameScene* gameScene = GetScene<GameScene>();
-	m_currentValue = gameScene->GetPlayer()->GetStats().m_stamina;
-	m_maxValue = gameScene->GetPlayer()->GetStats().m_maxStamina;
+	
+	m_currentValue = GameData::Get().GetPlayerData().m_stats.m_stamina;
+	m_maxValue = GameData::Get().GetPlayerData().m_stats.m_maxStamina;
 
 	AddSprite("Energy", "Energy", { 32,32 }, 0, {}, true);
 	AddSprite("StaminaFull", "UiStaminaFull", GetDimension(), 0, {}, true);
@@ -23,13 +23,14 @@ void UiStamina::OnInitialize()
 
 void UiStamina::OnUpdate()
 {
-	GameScene* gameScene = GetScene<GameScene>();
-	int hp = gameScene->GetPlayer()->GetStats().m_stamina;
+	SetIsVisible(true);
+	
+	int stamina = GameData::Get().GetPlayerData().m_stats.m_stamina;
 
-	if (m_currentValue == hp)
+	if (m_currentValue == stamina)
 		return;
 
-	m_currentValue = hp;
+	m_currentValue = stamina;
 
 	Vector2i dim = GetDimension();
 	dim.GetY() *= m_currentValue / m_maxValue; // 0.f

@@ -19,6 +19,9 @@
 #include "Ui/UiJobs.h"
 #include "Ui/UiGatherer.h"
 
+#include "2DPendentLib/ObjectGroupTiled.h"
+#include "2DPendentLib/ObjectTiled.h"
+
 void VillageScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -26,7 +29,19 @@ void VillageScene::OnInitialize()
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Village");
 
-	m_player = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
+	ObjectGroupTiled* a = mm->GetCurrentMap()->GetObjectGroupByName("Object");
+	std::vector<ObjectTiled*> h = a->GetAllObjects();
+
+	for (ObjectTiled* o : h)
+	{
+		if (o->GetObjectName() == "PlayerSpawn")
+		{
+			m_spawnPoint = o->GetObjectPosition();
+			break;
+		}
+	}
+
+	m_player = CreateEntity<Player>(m_spawnPoint, { 16,32 }, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 14,14 });
 	m_player->GetCollider()->SetOffset({ 0,9 });
 	m_player->SetRigidBody(true);
@@ -41,7 +56,11 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
-	//GameData::Get().PushPlayerData(m_player);
+	
+	GetCamera()->SetFollowedEntity(m_player);
+	GetCamera()->SetPosition(m_spawnPoint);
+	Application::Get()->SetClampCameraToCurrentMap(true);
+
 }
 
 void VillageScene::OnEvent()
@@ -50,10 +69,12 @@ void VillageScene::OnEvent()
 
 	if (im->IsKeyboardDown(K_X))
 	{
-		SceneManager::Get()->PushScene("demo");
+		SceneManager::Get()->PushScene("game");
 	}
 	if (im->IsKeyboardDown(K_M))
 		m_player->TakeDamage(5);
+	if (im->IsKeyboardDown(K_U))
+		m_player->Heal(5);
 
 }
 
@@ -67,11 +88,12 @@ void VillageScene::OnDestroy()
 
 void VillageScene::OnSleep()
 {
-	
 }
 
 void VillageScene::OnWake()
 {
+	MapTiledManager* mm = MapTiledManager::Get();
+	mm->SetCurrentMap("Village");
 }
 
 void VillageScene::OnDraw()

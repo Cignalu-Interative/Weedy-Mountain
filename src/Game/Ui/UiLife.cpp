@@ -5,12 +5,9 @@
 
 void UiLife::OnInitialize()
 {
-	Player* player = dynamic_cast<Player*>(GetScene()->GetEntityByTag(1));
-	if (player == nullptr)
-		return;
 
-	m_currentValue = player->GetStats().m_hp;
-	m_maxValue = player->GetStats().m_maxHp;
+	m_currentValue = GameData::Get().GetPlayerData().m_stats.m_hp;
+	m_maxValue = GameData::Get().GetPlayerData().m_stats.m_maxHp;
 
 	AddSprite("Heart", "Heart", { 32,32 }, 0, {}, true);
 	AddSprite("LifeFull", "UiLifeFull", GetDimension(), 0, {}, true);
@@ -26,13 +23,10 @@ void UiLife::OnInitialize()
 	
 void UiLife::OnUpdate()
 {
-	Player* player = dynamic_cast<Player*>(GetScene()->GetEntityByTag(1));
-	if (player == nullptr)
-		return;
 
-	int hp = player->GetStats().m_hp;
+	int hp = GameData::Get().GetPlayerData().m_stats.m_hp;
 
-	if (hp == player->GetStats().m_maxHp)
+	if (hp == GameData::Get().GetPlayerData().m_stats.m_maxHp)
 		SetIsVisible(false);
 	else
 		SetIsVisible(true);

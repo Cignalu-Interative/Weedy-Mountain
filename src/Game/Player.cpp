@@ -16,20 +16,19 @@
 
 void Player::OnInitialize()
 {
-	m_playerData = GameData::Get().GetPlayerData();
-
+	//gm = GameData::Get();
 	
 	PlayerJob gatherer;
 	gatherer.m_name = JobType::Gatherer;
-	m_playerData.m_jobs.push_back(gatherer);
+	gm.GetPlayerData().m_jobs.push_back(gatherer);
 
 	PlayerJob farmer;
 	farmer.m_name = JobType::Farmer;
-	m_playerData.m_jobs.push_back(farmer);
+	gm.GetPlayerData().m_jobs.push_back(farmer);
 
 	PlayerJob miner;
 	miner.m_name = JobType::Miner;
-	m_playerData.m_jobs.push_back(miner);
+	gm.GetPlayerData().m_jobs.push_back(miner);
 
 	/*PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
@@ -46,20 +45,20 @@ void Player::OnInitialize()
 void Player::OnEvent()
 {
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
-		SetSpeed(m_playerData.m_stats.m_playerSpeed * 2);
+		SetSpeed(gm.GetPlayerData().m_stats.m_playerSpeed * 2);
 	}
-	else SetSpeed(m_playerData.m_stats.m_playerSpeed);
+	else SetSpeed(gm.GetPlayerData().m_stats.m_playerSpeed);
 
 	Vector2f direction = GetDirection();
-	float currentSpeed = InputManager::Get()->IsKeyboardHeld(K_LSHIFT) ? m_playerData.m_stats.m_playerSpeed * 2.f : m_playerData.m_stats.m_playerSpeed;
+	float currentSpeed = InputManager::Get()->IsKeyboardHeld(K_LSHIFT) ? gm.GetPlayerData().m_stats.m_playerSpeed * 2.f : gm.GetPlayerData().m_stats.m_playerSpeed;
 	SetSpeed(currentSpeed);
 
 	if (InputManager::Get()->IsKeyboardDown(K_TAB))
 	{
-		if (m_playerData.m_playerInventory.IsOpen())
-			m_playerData.m_playerInventory.Close();
+		if (gm.GetPlayerData().m_playerInventory.IsOpen())
+			gm.GetPlayerData().m_playerInventory.Close();
 		else 
-			m_playerData.m_playerInventory.Open();
+			gm.GetPlayerData().m_playerInventory.Open();
 	}
 
 	Vector2f dir = {0.f, 0.f};
@@ -217,7 +216,7 @@ void Player::OnDestroy()
 
 PlayerJob Player::GetJobByName(JobType p_type)
 {
-	for (PlayerJob job : m_playerData.m_jobs)
+	for (PlayerJob job : gm.GetPlayerData().m_jobs)
 	{
 		if (job.m_name == p_type)
 			return job ;
@@ -227,12 +226,12 @@ PlayerJob Player::GetJobByName(JobType p_type)
 
 void Player::UpdateJobs()
 {
-	for (int i = 0; i < m_playerData.m_jobs.size(); i++) {
-		m_playerData.m_jobs[i].levelUp();
-		switch (m_playerData.m_jobs[i].m_name)
+	for (int i = 0; i < gm.GetPlayerData().m_jobs.size(); i++) {
+		gm.GetPlayerData().m_jobs[i].levelUp();
+		switch (gm.GetPlayerData().m_jobs[i].m_name)
 		{
 		case JobType::Gatherer:
-			switch (m_playerData.m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::BandageL1);
 				break;
@@ -240,7 +239,7 @@ void Player::UpdateJobs()
 				UnlockRecipe(Recipes::EnergizingL1);
 				break;
 			case 4:
-				m_playerData.m_stats.m_harvestEffiency *= 1.067f;
+				gm.GetPlayerData().m_stats.m_harvestEffiency *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::BandageL2);
@@ -252,7 +251,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Farmer:
-			switch (m_playerData.m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::FertilizerL1);
 				break;
@@ -261,7 +260,7 @@ void Player::UpdateJobs()
 
 				break;
 			case 4:
-				m_playerData.m_stats.m_farmerSpeed *= 1.067f;
+				gm.GetPlayerData().m_stats.m_farmerSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::FertilizerL2);
@@ -274,7 +273,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Miner:
-			switch (m_playerData.m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::StoneTools);
 
@@ -284,7 +283,7 @@ void Player::UpdateJobs()
 
 				break;
 			case 4:
-				m_playerData.m_stats.m_miningSpeed *= 1.067f;
+				gm.GetPlayerData().m_stats.m_miningSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::GoldTools);
@@ -298,18 +297,18 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Dealer:
-			switch (m_playerData.m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
 			case 2:
-				m_playerData.m_stats.m_drugsSellQuantity += 15;
+				gm.GetPlayerData().m_stats.m_drugsSellQuantity += 15;
 				break;
 			case 3:
 				UnlockRecipe(Recipes::WeedSeed);
 				break;
 			case 4:
-				m_playerData.m_stats.m_drugSellEfficency *= 1.067f;
+				gm.GetPlayerData().m_stats.m_drugSellEfficency *= 1.067f;
 				break;
 			case 5:
-				m_playerData.m_stats.m_drugsSellQuantity += 40;
+				gm.GetPlayerData().m_stats.m_drugsSellQuantity += 40;
 				break;
 			case 6:
 				UnlockRecipe(Recipes::CannabisSeed);
@@ -318,7 +317,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Killer:
-			switch (m_playerData.m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::Knife);
 				break;
@@ -326,7 +325,7 @@ void Player::UpdateJobs()
 				UnlockRecipe(Recipes::Sword);
 				break;
 			case 4:
-				m_playerData.m_stats.m_playerSpeed *= 1.067f;
+				gm.GetPlayerData().m_stats.m_playerSpeed *= 1.067f;
 				break;
 			case 5:
 				UnlockRecipe(Recipes::Glock);
@@ -344,7 +343,7 @@ void Player::UnlockRecipe(Recipes _toUnlock)
 {
 	if (!IsRecipeUnlocked(_toUnlock))
 	{
-		m_playerData.m_unlockedRecipes.push_back(_toUnlock);
+		gm.GetPlayerData().m_unlockedRecipes.push_back(_toUnlock);
 		std::cout << "item unlocked" << std::endl;
 	}
 
@@ -468,9 +467,9 @@ void Player::SetupStateMachine()
 
 bool Player::IsRecipeUnlocked(Recipes _toUnlock)
 {
-	for (int i = 0; i < m_playerData.m_unlockedRecipes.size(); i++)
+	for (int i = 0; i < gm.GetPlayerData().m_unlockedRecipes.size(); i++)
 	{
-		if (m_playerData.m_unlockedRecipes[i] == _toUnlock)
+		if (gm.GetPlayerData().m_unlockedRecipes[i] == _toUnlock)
 		{
 			return true;
 		}
@@ -491,58 +490,58 @@ void Player::UnlockInputs()
 
 void Player::Heal(int p_amount)
 {
-	m_playerData.m_stats.m_hp += p_amount;
-	if (m_playerData.m_stats.m_hp > m_playerData.m_stats.m_maxHp)
-		m_playerData.m_stats.m_hp = m_playerData.m_stats.m_maxHp;
+	gm.GetPlayerData().m_stats.m_hp += p_amount;
+	if (gm.GetPlayerData().m_stats.m_hp > gm.GetPlayerData().m_stats.m_maxHp)
+		gm.GetPlayerData().m_stats.m_hp = gm.GetPlayerData().m_stats.m_maxHp;
 }
 
 void Player::TakeDamage(int p_amount)
 {
-	m_playerData.m_stats.m_hp -= p_amount;
-	if (m_playerData.m_stats.m_hp < 0)
-		m_playerData.m_stats.m_hp = 0;
+	gm.GetPlayerData().m_stats.m_hp -= p_amount;
+	if (gm.GetPlayerData().m_stats.m_hp < 0)
+		gm.GetPlayerData().m_stats.m_hp = 0;
 }
 
 void Player::DecreaseStamina(int p_amount)
 {
-	m_playerData.m_stats.m_stamina -= p_amount;
-	if (m_playerData.m_stats.m_stamina < 0)
-		m_playerData.m_stats.m_stamina = 0;
+	gm.GetPlayerData().m_stats.m_stamina -= p_amount;
+	if (gm.GetPlayerData().m_stats.m_stamina < 0)
+		gm.GetPlayerData().m_stats.m_stamina = 0;
 }
 
 void Player::AddStamina(int p_amount)
 {
-	m_playerData.m_stats.m_stamina += p_amount;
-	if (m_playerData.m_stats.m_stamina > m_playerData.m_stats.m_maxStamina)
-		m_playerData.m_stats.m_stamina = m_playerData.m_stats.m_maxStamina;
+	gm.GetPlayerData().m_stats.m_stamina += p_amount;
+	if (gm.GetPlayerData().m_stats.m_stamina > gm.GetPlayerData().m_stats.m_maxStamina)
+		gm.GetPlayerData().m_stats.m_stamina = gm.GetPlayerData().m_stats.m_maxStamina;
 }
 
 void Player::DecreaseToxicity(int p_amount)
 {
-	m_playerData.m_stats.m_toxicity -= p_amount;
-	if (m_playerData.m_stats.m_toxicity < 0)
-		m_playerData.m_stats.m_toxicity = 0;
+	gm.GetPlayerData().m_stats.m_toxicity -= p_amount;
+	if (gm.GetPlayerData().m_stats.m_toxicity < 0)
+		gm.GetPlayerData().m_stats.m_toxicity = 0;
 }
 
 void Player::AddToxicity(int p_amount)
 {
-	m_playerData.m_stats.m_toxicity += p_amount;
-	if (m_playerData.m_stats.m_toxicity > m_playerData.m_stats.m_maxToxicity)
-		m_playerData.m_stats.m_toxicity = m_playerData.m_stats.m_maxToxicity;
+	gm.GetPlayerData().m_stats.m_toxicity += p_amount;
+	if (gm.GetPlayerData().m_stats.m_toxicity > gm.GetPlayerData().m_stats.m_maxToxicity)
+		gm.GetPlayerData().m_stats.m_toxicity = gm.GetPlayerData().m_stats.m_maxToxicity;
 }
 
 void Player::DecreaseMoney(int p_amount)
 {
-	m_playerData.m_money -= p_amount;
-	if (m_playerData.m_money < 0)
-		m_playerData.m_money = 0;
+	gm.GetPlayerData().m_money -= p_amount;
+	if (gm.GetPlayerData().m_money < 0)
+		gm.GetPlayerData().m_money = 0;
 }
 
 void Player::DecreaseCash(int p_amount)
 {
-	m_playerData.m_cash -= p_amount;
-	if (m_playerData.m_cash < 0)
-		m_playerData.m_cash = 0;
+	gm.GetPlayerData().m_cash -= p_amount;
+	if (gm.GetPlayerData().m_cash < 0)
+		gm.GetPlayerData().m_cash = 0;
 }
 
 void Player::SetState(PlayerState p_state)

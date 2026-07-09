@@ -19,6 +19,8 @@ private:
 
 	float m_smoothSpeed = 1;
 
+	Entity* m_followedEntity = nullptr;
+
 public:
 
 	//Constructeur de Camera, il prend en paramètre la position et la dimension de la caméra
@@ -32,7 +34,9 @@ public:
 	void ZoomIn(float p_amount);
 	void ZoomOut(float p_amount);
 
-	void Follow(Entity* p_entity);
+	void SetFollowedEntity(Entity* p_entity) { m_followedEntity = p_entity; }
+
+	void Follow(float p_dt);
 
 	//MONDE -> ECRAN
 	template<typename T>

@@ -7,6 +7,9 @@ class VillageScene : public Scene
 {
 private :
 	Player* m_player = nullptr;
+
+	Vector2f m_spawnPoint;
+
 protected :
 
 	void OnInitialize() override;

@@ -127,7 +127,7 @@ void SceneManager::PushScene(const std::string& p_id)
 			sceneInStack->Sleep();
 		}
 	}
-	//scene->Wake();
+	scene->Wake();
 	scene->Initialize();
 }
 

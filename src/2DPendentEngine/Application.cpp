@@ -359,6 +359,7 @@ void Application::IsEneableToUpdate()
 	while (m_accumulator >= m_FIX_UPDATE)
 	{
 		FixedUpdate();
+		m_camera->Follow(m_FIX_UPDATE);
 		m_accumulator -= m_FIX_UPDATE;
 	}
 

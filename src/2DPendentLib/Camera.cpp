@@ -26,23 +26,26 @@ void Camera::SetZoom(float p_zoomFactor)
 
 void Camera::ZoomIn(float p_amount)
 {
-	float zoom =m_zoomFactor + Utils::Clamp(p_amount, m_minZoom, m_maxZoom);
-	SetZoom(zoom);
+    float zoom = m_zoomFactor + Utils::Clamp(p_amount, m_minZoom, m_maxZoom);
+    SetZoom(zoom);
 }
 
 void Camera::ZoomOut(float p_amount)
 {
-	float zoom = m_zoomFactor - Utils::Clamp(p_amount, m_minZoom, m_maxZoom);
-	SetZoom(zoom);
+    float zoom = m_zoomFactor - Utils::Clamp(p_amount, m_minZoom, m_maxZoom);
+    SetZoom(zoom);
 }
 
-void Camera::Follow(Entity* p_entity)
+void Camera::Follow(float p_dt)
 {
-    float dt = p_entity->GetDeltaTime();
+    if (m_followedEntity == nullptr)
+        return;
+
+    float dt = p_dt;//m_followedEntity->GetDeltaTime();
     float factor = 1 - exp(-m_smoothSpeed * dt);
 
-    float lerpX = std::lerp(GetPosition().GetX(), p_entity->GetPosition().GetX(), factor);
-    float lerpY = std::lerp(GetPosition().GetY(), p_entity->GetPosition().GetY(), factor);
+    float lerpX = std::lerp(GetPosition().GetX(), m_followedEntity->GetPosition().GetX(), factor);
+    float lerpY = std::lerp(GetPosition().GetY(), m_followedEntity->GetPosition().GetY(), factor);
 
     SetPosition({ lerpX,lerpY });
 }
@@ -65,7 +68,7 @@ void Camera::Draw(Render* f_render, Window* f_window, Camera* p_camera)
     {
         SDL_Log("Lib/Camera.cpp/Draw/SDL_SetRenderDrawColor/cela na pas fonctionné : %s", SDL_GetError());
         return;
-	}
+    }
     for (int i = 0; i < 4; i++)
     {
         Vector2f a = p_camera->WorldToScreen(corners[i]);

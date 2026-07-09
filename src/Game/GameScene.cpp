@@ -68,8 +68,9 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 	//
 	GetCamera()->SetZoom(5.f);
+	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
-	//Application::Get()->SetClampCameraToCurrentMap(true);
+	Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
 
@@ -165,7 +166,6 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
-	GetCamera()->Follow(m_player);
 	//FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
@@ -184,7 +184,6 @@ void GameScene::OnSleep()
 	//SetSleepUpdate(true); 
 	//SetSleepDraw(true);
 	SetSleepEvent(true);
-	//GameData::Get().SavePlayerData(m_player);
 
 	for (Entity* e : GetEntities())
 	{
@@ -203,9 +202,16 @@ void GameScene::OnSleep()
 
 void GameScene::OnWake()
 {
+	for (Entity* e : GetEntities())
+	{
+		e->SetIsVisible(true);
+	}
+	SetSleepEvent(false); 
+
+	MapTiledManager* mm = MapTiledManager::Get();
+	mm->SetCurrentMap("Farm");
 }
 
 void GameScene::OnDraw()
 {
-
 }

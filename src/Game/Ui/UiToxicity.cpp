@@ -5,9 +5,8 @@
 
 void UiToxicity::OnInitialize()
 {
-	GameScene* gameScene = GetScene<GameScene>();
-	m_currentValue = gameScene->GetPlayer()->GetStats().m_maxToxicity;
-	m_maxValue = gameScene->GetPlayer()->GetStats().m_maxToxicity;
+	m_currentValue = GameData::Get().GetPlayerData().m_stats.m_maxToxicity;
+	m_maxValue = GameData::Get().GetPlayerData().m_stats.m_maxToxicity;
 
 	AddSprite("Drugs", "Drugs", { 32,32 }, 0, {}, true);
 	AddSprite("UiToxicity", "UiToxicityFull", GetDimension(), 0, {}, true);
@@ -23,8 +22,7 @@ void UiToxicity::OnInitialize()
 
 void UiToxicity::OnUpdate()
 {
-	GameScene* gameScene = GetScene<GameScene>();
-	int toxicity = gameScene->GetPlayer()->GetStats().m_toxicity;
+	int toxicity = GameData::Get().GetPlayerData().m_stats.m_toxicity;
 
 	if (toxicity == 0)
 		SetIsVisible(false);

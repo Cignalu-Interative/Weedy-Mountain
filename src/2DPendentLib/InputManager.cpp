@@ -182,6 +182,12 @@ void InputManager::Update()
 		case SDL_EVENT_GAMEPAD_AXIS_MOTION:
 			int axis = m_event.gaxis.axis;
 			Sint16 rawValue = m_event.gaxis.value;
+
+			//constexpr float INV_32768 = 1.0f / 32768.0f;
+			//constexpr float INV_32767 = 1.0f / 32767.0f;
+
+			//float normalized = rawValue * ((rawValue < 0) ? INV_32768 : INV_32767);
+
 			float normalized = (rawValue < 0) ? (rawValue / 32768.0f) : (rawValue / 32767.0f);
 
 			if (std::fabs(normalized) < AXIS_DEAD_ZONE)

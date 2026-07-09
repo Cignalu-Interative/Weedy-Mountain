@@ -19,6 +19,10 @@ protected:
 
 	bool m_isVisible = true; // Si false, la geometry ne sera pas dessiné	
 
+	int m_drawLayer = 1;
+
+	int m_type = -1; // Type de geometry 0 = Point, 1 = Line, 2 = Rectangle, 3 = FillRectangle, 4 = Circle, 5 = FillCircle, 6 = Text
+
 public:
 
 	//Constructeur de géometry par defaut
@@ -42,5 +46,11 @@ public:
 	
 	void SetIsVisible(bool p_isVisible) { m_isVisible = p_isVisible; }
 	bool GetIsVisible() const { return m_isVisible; }
+
+	void SetDrawLayer(int p_drawLayer) { m_drawLayer = p_drawLayer; }
+	int GetDrawLayer() const { return m_drawLayer; }
+
+	void SetType(int p_type) { m_type = p_type; }
+	int GetType() const { return m_type; }
 
 };

@@ -149,7 +149,6 @@ void Application::FPSDeltaTime()
 	{
 		SetFPS(m_FPSUserWant);
 	}
-
 }
 
 void Application::HandleInput()
@@ -164,7 +163,6 @@ void Application::HandleInput()
 	SceneManager::Get()->EventScenesInStack();
 
 	//SceneManager::Get()->GetCurrentScene()->OnEvent();
-
 
 	for (auto it = m_entities.begin(); it != m_entities.end(); )
 	{
@@ -189,7 +187,6 @@ void Application::Update()
 	{
 		return;
 	}*/
-
 
 	if (SceneManager::Get()->IsSceneInStack() == false)
 	{

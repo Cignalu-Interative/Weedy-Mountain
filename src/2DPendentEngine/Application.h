@@ -40,11 +40,9 @@ private:
 
 	Camera* m_camera; //Camera du jeu, utilisée pour gérer la vue du jeu et les déplacements de la caméra
 	
-	///
 	std::chrono::steady_clock::time_point m_oldTime; 
 
 	float m_deltaTimeSystem = 0.0f;
-
 
 	//m_deltaTimeMs membre de la classe Application, utilisé pour stocker le temps écoulé entre deux frames en milliseconds
 	float m_deltaTimeInternal = 0.0f;
@@ -53,13 +51,9 @@ private:
 	float m_targetDeltaTime = 1.0f / m_targetFPS; // 1 seconde divisée par le nombre de frames par seconde pour obtenir le temps cible entre chaque frame
 
 	int m_targetFPS = 64; // 64 par défaut Pour éviter la division par 0 avant d'etre calculer pas la fonction V_Sync
-
-
-
-
-	// FPS counter
+	// FPS counter par seconde, utilisé pour calculer le nombre de frames par seconde actuel
 	int m_frameCount = 0;
-	// FPS actuel calculé
+	// FPS actuel calculé du frame counter
 	float m_currentFPS = 0.0f;
 	//Défini le temps entre chaque mise à jour du compteur de FPS, en secondes (par exemple, 1.0f pour mettre à jour le compteur de FPS toutes les secondes)
 	float m_timeToUpdateFPS = 1.0f;
@@ -71,14 +65,10 @@ private:
 
 	int m_FPSUserWant = 0;
 
-
-	///////
-
 	//m_isRunning membre de la classe Application, utilisé pour savoir si le jeu est en cours d'exécution ou s'il doit se fermer
 	bool m_isRunning = false;
 	bool m_autoFPS = true; // Si true, le jeu ajustera automatiquement le nombre de frames par seconde par rapport au fps trouvé grace à la fonction V_Sync
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
-
 
 	bool m_cameraIsClamp = false;
 

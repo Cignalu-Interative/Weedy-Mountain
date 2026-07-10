@@ -15,6 +15,7 @@ class TextBox : public Button
 private:
 
 	Text* m_textToDraw = nullptr;
+	Rectangle* m_rectangle = nullptr;
 
 	Window* m_window = nullptr;
 	void SetWindow(Window* p_window) { m_window = p_window; }

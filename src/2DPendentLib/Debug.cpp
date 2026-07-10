@@ -128,6 +128,7 @@ Point* Debug::CreatePoint(std::string p_id, Vector2f p_position, Color p_color, 
 	m_points[std::move(p_id)] = m_pointsVector.size();
 	m_pointsVector.push_back(point);
 
+	SortGeometriesByDrawLayer();
 	return point;
 }
 Line* Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -156,6 +157,7 @@ Line* Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Colo
 	m_lines[std::move(p_id)] = m_linesVector.size();
 	m_linesVector.push_back(line);
 
+	SortGeometriesByDrawLayer();
 	return line;
 }
 Rectangle* Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_dim, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -185,6 +187,7 @@ Rectangle* Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_d
 	m_rects[std::move(p_id)] = m_rectsVector.size();
 	m_rectsVector.push_back(rect);
 
+	SortGeometriesByDrawLayer();
 	return rect;
 }
 Rectangle* Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -215,6 +218,7 @@ Rectangle* Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i
 	m_fillRects[std::move(p_id)] = m_fillRectsVector.size();
 	m_fillRectsVector.push_back(rect);
 
+	SortGeometriesByDrawLayer();
 	return rect;
 }
 Circle* Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -244,6 +248,7 @@ Circle* Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_di
 	m_circles[std::move(p_id)] = m_circlesVector.size();
 	m_circlesVector.push_back(circle);
 
+	SortGeometriesByDrawLayer();
 	return circle;
 }
 Circle* Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -274,6 +279,7 @@ Circle* Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i 
 	m_fillCircles[std::move(p_id)] = m_fillCirclesVector.size();
 	m_fillCirclesVector.push_back(circle);
 
+	SortGeometriesByDrawLayer();
 	return circle;
 }
 Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -305,6 +311,7 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 	m_texts[std::move(p_id)] = m_textsVector.size();
 	m_textsVector.push_back(text);
 
+	SortGeometriesByDrawLayer();
 	return text;
 }
 
@@ -888,24 +895,40 @@ void Debug::SetTextDrawLayer(const std::string& p_id, int p_layer)
 
 void Debug::SortGeometriesByDrawLayer()
 {
-	std::vector<Geometry*> allGeometries;
-	for (auto point : m_pointsVector) allGeometries.push_back(point);
-	for (auto line : m_linesVector) allGeometries.push_back(line);
-	for (auto rect : m_rectsVector) allGeometries.push_back(rect);
-	for (auto fillRect : m_fillRectsVector) allGeometries.push_back(fillRect);
-	for (auto circle : m_circlesVector) allGeometries.push_back(circle);
-	for (auto fillCircle : m_fillCirclesVector) allGeometries.push_back(fillCircle);
-	for (auto text : m_textsVector) allGeometries.push_back(text);
+	m_geometries.clear();
 
-	std::sort(allGeometries.begin(), allGeometries.end(), [](Geometry* a, Geometry* b) {
-		return a->GetDrawLayer() < b->GetDrawLayer();
-		});
-
-	for (Geometry* n : allGeometries)
+	for (auto point : m_pointsVector)
 	{
-		m_geometries.push_back(n);
+		m_geometries.push_back(point);
+	}
+	for (auto line : m_linesVector)
+	{
+		m_geometries.push_back(line);
+	}
+	for (auto rect : m_rectsVector)
+	{
+		m_geometries.push_back(rect);
+	}
+	for (auto fillRect : m_fillRectsVector)
+	{
+		m_geometries.push_back(fillRect);
+	}
+	for (auto circle : m_circlesVector)
+	{
+		m_geometries.push_back(circle);
+	}
+	for (auto fillCircle : m_fillCirclesVector)
+	{
+		m_geometries.push_back(fillCircle);
+	}
+	for (auto text : m_textsVector)
+	{
+		m_geometries.push_back(text);
 	}
 
+	std::sort(m_geometries.begin(), m_geometries.end(), [](Geometry* a, Geometry* b) {
+		return a->GetDrawLayer() < b->GetDrawLayer();
+		});
 }
 
 void Debug::Draw(Render* f_render, Window* f_window, Camera* p_camera)

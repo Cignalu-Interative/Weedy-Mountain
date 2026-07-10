@@ -130,7 +130,7 @@ void GameScene::OnInitialize()
 
 	//EnviroSpawn::Get()->InitEnviroSpawn();
 
-	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::White, true);
+	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::DarkBlue, true);
 	m_textBox->GetCollider()->SetIsTrigger(true);
 }
 
@@ -168,7 +168,7 @@ void GameScene::OnEvent()
 	}
 
 
-	/*if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
+	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
 	{
 		im->StartTextInput();
 	}
@@ -185,7 +185,7 @@ void GameScene::OnEvent()
 		m_textBox->SetText(im->GetfinalTextInput());
 	}
 	std::string t = im->GetfinalTextInput();
-	std::cerr << "TextInput : " << t << std::endl;*/
+	std::cerr << "TextInput : " << t << std::endl;
 }
 
 void GameScene::OnUpdate()

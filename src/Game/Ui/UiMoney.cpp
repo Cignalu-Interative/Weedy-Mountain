@@ -4,6 +4,7 @@
 #include "SpriteContainer.h"
 
 
+
 void UiMoney::OnInitialize()
 {
 	AddSprite("UiMoney", "UiMoney", { 32,32 }, 0, {}, true);
@@ -11,12 +12,13 @@ void UiMoney::OnInitialize()
 
 	Vector2f spriteRightPos = GetSprite()->GetPosition({ 1,0.5f });
 	Vector2f textPos = { spriteRightPos.GetX() + 20, spriteRightPos.GetY() };
-	GetScene()->CreateText("Money", textPos, std::to_string((int)m_currentValue),ColorsNamed::White, true);
+	Debug::Get()->CreateText("Money", textPos, std::to_string((int)m_currentValue), ColorsNamed::White, true);
 	
 	GetCollider()->SetIsTrigger(true);
 }
 
 void UiMoney::OnUpdate()
 {
-	GetScene()->GetGeometry<Text>("Money")->SetText(std::to_string(GetScene<GameScene>()->GetPlayer()->GetMoney()));
+	
+	Debug::Get()->GetText("Money")->SetText(std::to_string(m_gameData.GetPlayerData().m_money));
 }

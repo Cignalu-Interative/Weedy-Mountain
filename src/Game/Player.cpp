@@ -16,8 +16,7 @@
 
 void Player::OnInitialize()
 {
-	//gm = GameData::Get();
-	
+
 	PlayerJob gatherer;
 	gatherer.m_name = JobType::Gatherer;
 	gm.GetPlayerData().m_jobs.push_back(gatherer);

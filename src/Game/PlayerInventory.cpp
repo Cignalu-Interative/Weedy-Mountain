@@ -5,6 +5,7 @@
 #include "InventorySlot.h"
 #include "ItemDataBase.h"
 #include "2DPendentLib/InputManager.h"
+#include "SpriteContainer.h"
 
 #include <iostream>
 
@@ -12,6 +13,9 @@ PlayerInventory::PlayerInventory(Inventory* inv, Hotbar* hot)
 {
 	m_inventory = inv;
 	m_hotbar = hot;
+
+	m_inventory->SetIsGUI(true);
+	m_hotbar->SetIsGUI(true);
 }
 
 

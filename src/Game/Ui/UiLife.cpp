@@ -19,6 +19,12 @@ void UiLife::OnInitialize()
 	SyncSprites();
 
 	GetSprite("Heart")->SetPosition(GetSprite("LifeEmpty")->GetPosition({ 0.5f,0 }), { 0.5f,1 });
+
+	Vector2i dim = GetDimension();
+	dim.GetY() *= m_currentValue / m_maxValue; // 0.f
+
+	GetSprite("LifeFull")->SetDimension(dim);
+	GetSprite("LifeFull")->SetPosition(GetPosition({ 0,1 }), { 0,1 });
 }
 	
 void UiLife::OnUpdate()

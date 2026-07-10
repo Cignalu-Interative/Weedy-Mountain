@@ -108,7 +108,7 @@ void EnviroSpawn::UpdateFreeFarmTiles()
 
 void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 {
-	/*Scene* gs = SceneManager::Get()->GetScene("game");
+	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
 	if (_tile < 0) {
 		_tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
@@ -210,7 +210,7 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 		m_freeFarmTiles[_tile]->SetCanGrow(false);
 	}
 
-	UpdateFreeFarmTiles();*/
+	UpdateFreeFarmTiles();
 }
 
 void EnviroSpawn::Update() {

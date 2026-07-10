@@ -10,12 +10,12 @@ void UiCash::OnInitialize()
 
 	Vector2f spriteRightPos = GetSprite()->GetPosition({ 1,0.5f });
 	Vector2f textPos = { spriteRightPos.GetX() + 20, spriteRightPos.GetY() };
-	GetScene()->CreateText("UiCash", textPos, std::to_string((int)m_currentValue), ColorsNamed::White, true);
+	Debug::Get()->CreateText("UiCashText", textPos, std::to_string((int)m_currentValue), ColorsNamed::White, true);
 
 	GetCollider()->SetIsTrigger(true);
 }
 
 void UiCash::OnUpdate()
 {
-	GetScene()->GetGeometry<Text>("UiCash")->SetText(std::to_string(GetScene<GameScene>()->GetPlayer()->GetCash()));
+	Debug::Get()->GetText("UiCashText")->SetText(std::to_string(m_gameData.GetPlayerData().m_cash));
 }

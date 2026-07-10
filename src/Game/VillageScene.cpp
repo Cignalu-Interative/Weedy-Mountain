@@ -30,9 +30,9 @@ void VillageScene::OnInitialize()
 	mm->SetCurrentMap("Village");
 
 	ObjectGroupTiled* a = mm->GetCurrentMap()->GetObjectGroupByName("Object");
-	std::vector<ObjectTiled*> h = a->GetAllObjects();
+	std::vector<ObjectTiled*> m = a->GetAllObjects();
 
-	for (ObjectTiled* o : h)
+	for (ObjectTiled* o : m)
 	{
 		if (o->GetObjectName() == "PlayerSpawn")
 		{
@@ -40,6 +40,8 @@ void VillageScene::OnInitialize()
 			break;
 		}
 	}
+
+	GetCamera()->SetPosition(m_spawnPoint);
 
 	m_player = CreateEntity<Player>(m_spawnPoint, { 16,32 }, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 14,14 });
@@ -58,8 +60,19 @@ void VillageScene::OnInitialize()
 
 	
 	GetCamera()->SetFollowedEntity(m_player);
-	GetCamera()->SetPosition(m_spawnPoint);
 	Application::Get()->SetClampCameraToCurrentMap(true);
+
+	Vector2f uiStatsPos = { 1050, 600 };
+	UiStats* lifeUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	//e->ShowCollider(true);
+
+
+	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
+	//f->ShowCollider(true);
+	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	//f->ShowCollider(true);
+	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 }
 
@@ -88,12 +101,20 @@ void VillageScene::OnDestroy()
 
 void VillageScene::OnSleep()
 {
+	SetSleepDraw(true);
+	SetSleepEvent(true);
 }
 
 void VillageScene::OnWake()
 {
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->SetCurrentMap("Village");
+
+	m_player->SetPosition(m_spawnPoint);
+	GetCamera()->SetPosition(m_player->GetPosition());
+	GetCamera()->SetFollowedEntity(m_player);
+	SetSleepDraw(false);
+	SetSleepEvent(false);
 }
 
 void VillageScene::OnDraw()

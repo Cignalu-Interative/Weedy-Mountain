@@ -23,12 +23,7 @@ private:
 
 	Player* m_player2 = nullptr;
 
-
-	UiStats* e = nullptr;
-	UiMoney* f = nullptr;
-	UiCash * g = nullptr;
-	UiTime* h = nullptr;
-	UiDate* i = nullptr;
+	Vector2f m_spawnPoint;
 
 protected:
 

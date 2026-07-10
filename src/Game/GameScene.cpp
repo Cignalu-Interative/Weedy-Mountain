@@ -36,6 +36,9 @@
 #include "Ui/UiGatherer.h"
 #include "TextBox.h"
 
+#include "2DPendentLib/ObjectGroupTiled.h"
+#include "2DPendentLib/ObjectTiled.h"
+
 
 void GameScene::OnInitialize()
 {
@@ -43,6 +46,18 @@ void GameScene::OnInitialize()
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Farm");
+
+	ObjectGroupTiled* layer = mm->GetCurrentMap()->GetObjectGroupByName("Object");
+	std::vector<ObjectTiled*> object = layer->GetAllObjects();
+
+	for (ObjectTiled* o : object)
+	{
+		if (o->GetObjectName() == "Player Spawn")
+		{
+			m_spawnPoint = o->GetObjectPosition();
+			break;
+		}
+	}
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
@@ -52,7 +67,9 @@ void GameScene::OnInitialize()
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
-	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
+	GetCamera()->SetPosition(m_spawnPoint);
+
+	m_player = CreateEntity<Player>(m_spawnPoint, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 14,14 });
 	m_player->GetCollider()->SetOffset({ 0,9 });
 	m_player->SetRigidBody(true);
@@ -92,16 +109,16 @@ void GameScene::OnInitialize()
 	}
 
 	Vector2f uiStatsPos = {1050, 600};
-	e = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	UiStats* lifeUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	//e->ShowCollider(true);
 
 
-	f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
+	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
 	//f->ShowCollider(true);
-	g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	//f->ShowCollider(true);
-	h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
 	j->ShowCollider(true);*/
@@ -170,9 +187,6 @@ void GameScene::OnUpdate()
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
-	//CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
-	//Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
-	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 
 void GameScene::OnDestroy()
@@ -182,19 +196,19 @@ void GameScene::OnDestroy()
 void GameScene::OnSleep()
 {
 	//SetSleepUpdate(true); 
-	//SetSleepDraw(true);
+	SetSleepDraw(true);
 	SetSleepEvent(true);
 
-	for (Entity* e : GetEntities())
-	{
-		e->SetIsVisible(false);
-	}
+	//for (Entity* e : GetEntities())
+	//{
+	//	e->SetIsVisible(false);
+	//}
 
-	e->SetIsVisible(true);
-	f->SetIsVisible(true);
-	g->SetIsVisible(true);
-	h->SetIsVisible(true);
-	i->SetIsVisible(true);
+	//e->SetIsVisible(true);
+	//f->SetIsVisible(true);
+	//g->SetIsVisible(true);
+	//h->SetIsVisible(true);
+	//i->SetIsVisible(true);
 
 	
 
@@ -202,11 +216,13 @@ void GameScene::OnSleep()
 
 void GameScene::OnWake()
 {
-	for (Entity* e : GetEntities())
-	{
-		e->SetIsVisible(true);
-	}
-	SetSleepEvent(false); 
+	SetSleepDraw(false);
+	SetSleepEvent(false);
+	GetCamera()->SetPosition(m_player->GetPosition());
+	GetCamera()->SetFollowedEntity(m_player);
+
+	//m_player->SetPosition(m_spawnPoint);
+	//GetCamera()->SetPosition(m_spawnPoint);
 
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->SetCurrentMap("Farm");

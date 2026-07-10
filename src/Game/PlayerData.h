@@ -1,5 +1,7 @@
 #pragma once
 #include "PlayerInventory.h"
+#include "Inventory.h"
+#include "Hotbar.h"
 
 
 enum class JobType
@@ -80,11 +82,11 @@ struct PlayerStats {
 struct PlayerData
 {
 	PlayerStats m_stats;
-	std::vector<PlayerJob> m_jobs;
-
 	PlayerInventory m_playerInventory;
 
+	std::vector<PlayerJob> m_jobs;
 	std::vector<Recipes> m_unlockedRecipes;
+
 
 	int m_money = 200;
 	int m_cash = 0;

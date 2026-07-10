@@ -26,6 +26,7 @@ void GameData::Initialize()
 void GameData::Update()
 {
 	m_timeSpent += m_timer.GetElapsed() * m_timeScale;
+	//m_playerData.m_playerInventory.OnUpdate();
 }
 
 

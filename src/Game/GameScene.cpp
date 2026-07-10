@@ -132,6 +132,7 @@ void GameScene::OnInitialize()
 
 	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 200, 50 }, ColorsNamed::DarkBlue, true);
 	m_textBox->GetCollider()->SetIsTrigger(true);
+	m_textBox->SetBackgroundFilled(true);
 }
 
 

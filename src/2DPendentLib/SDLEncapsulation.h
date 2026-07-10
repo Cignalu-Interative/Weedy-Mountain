@@ -1,7 +1,9 @@
 #pragma once
 #include "SDL3/SDL.h"
+#include "2DPendentLib/Vector2.h"
 
 class Window;
+class Text;
 
 namespace SDLEncapsulation
 {
@@ -11,6 +13,7 @@ namespace SDLEncapsulation
 	};
 
 	void SetTextInputArea(Window* p_window, S_Rect* p_rect, int p_cursor);
+
 
 
 

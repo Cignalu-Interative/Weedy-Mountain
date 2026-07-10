@@ -621,3 +621,18 @@ Vector2i Text::GetTextSize() const
 	}
 	return { width, height };
 }
+
+void Text::CutTextBySize(Vector2i p_maxSize)
+{
+	Vector2i textSize = GetTextSize();
+	while (textSize.GetX() > p_maxSize.GetX() || textSize.GetY() > p_maxSize.GetY())
+	{
+		if (m_text.empty())
+		{
+			break;
+		}
+		m_text.pop_back();
+		SetText(m_text);
+		textSize = GetTextSize();
+	}
+}

@@ -137,6 +137,8 @@ public:
 	HorizontalAlignment GetHorizontalAlignText() const;
 
 	Vector2i GetTextSize() const;
+
+	void CutTextBySize(Vector2i p_maxSize);
 };
 
 #include "Text.inl"

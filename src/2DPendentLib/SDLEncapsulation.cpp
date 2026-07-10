@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SDLEncapsulation.h"
 #include "Window.h"
+#include "Text.h"
 
 namespace SDLEncapsulation
 {

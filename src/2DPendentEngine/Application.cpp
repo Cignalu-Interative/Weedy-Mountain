@@ -397,16 +397,21 @@ void Application::UpdateFPSCounter()
 
 void Application::IsEneableToUpdate()
 {
-
 	/*FixedUpdate(m_deltaTime);
 	m_camera->Follow(m_deltaTime);*/
-	m_accumulator += Utils::LimitMax(m_deltaTime, 0.05f);
+	m_accumulator += Utils::LimitMax(m_deltaTime, MAX_FRAME_TIME);
 
-	while (m_accumulator >= m_FIX_UPDATE)
+	int steps = 0;
+	while (m_accumulator >= m_FIX_UPDATE && steps < MAX_STEPS_PER_FRAME)
 	{
 		FixedUpdate();
 		m_camera->Follow(m_FIX_UPDATE);
 		m_accumulator -= m_FIX_UPDATE;
+		++steps;
 	}
 
+	/*if (steps == MAX_STEPS_PER_FRAME)
+	{
+		m_accumulator = 0.0;
+	}*/
 }

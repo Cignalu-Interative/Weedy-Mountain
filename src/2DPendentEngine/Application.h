@@ -61,7 +61,9 @@ private:
 	float m_timeLastUpdateFPS = 0.0f;
 	double m_accumulator = 0.0f; // Accumulateur de temps pour gérer les mises à jour fixes du jeu
 
-	const float m_FIX_UPDATE = 1.0f / 60.0f; // Temps fixe entre chaque mise à jour du jeu, en secondes (par exemple, 1/60 pour une mise à jour à 60 FPS)
+	static constexpr float m_FIX_UPDATE = 1.0f / 120.0f; // Temps fixe entre chaque mise à jour du jeu, en secondes (par exemple, 1/60 pour une mise à jour à 60 FPS)
+	static constexpr float MAX_FRAME_TIME = 1.0f / 10.0f; // Temps maximum entre deux frames pour éviter les problèmes de physique lors de la mise à jour du jeu
+	static constexpr int MAX_STEPS_PER_FRAME = 5; // Nombre maximum de mises à jour fixes du jeu par frame pour éviter les problèmes de physique lors de la mise à jour du jeu
 
 	int m_FPSUserWant = 0;
 

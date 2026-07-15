@@ -130,7 +130,7 @@ void GameScene::OnInitialize()
 
 	//EnviroSpawn::Get()->InitEnviroSpawn();
 
-	m_textBox = CreateTextBox("TextBox", { 350, 200 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
+	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 	m_textBox->GetCollider()->SetIsTrigger(true);
 	m_textBox->SetBackgroundFilled(true);
 }

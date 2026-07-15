@@ -21,7 +21,19 @@ Render::Render()
 #ifdef NDEBUG
 	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN, false);
 #endif
+#ifdef _DEBUG
+	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN, true);
 
+	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN, false);
+
+	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN, true);
+
+	SDL_SetStringProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING, NULL);
+
+	SDL_SetNumberProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN, SDL_TRUE);
+	SDL_SetNumberProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN, SDL_TRUE);
+	SDL_SetNumberProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN, SDL_FALSE);
+#endif
 
 	
 	SetBackgroundColor(ColorsNamed::Black);
@@ -49,16 +61,16 @@ Render::~Render()
 
 bool Render::CreateRenderer(Window& f_window)
 {
-	/*m_gpuDevice = SDL_CreateGPUDeviceWithProperties(m_propertiesGPU_ID);
+	m_gpuDevice = SDL_CreateGPUDeviceWithProperties(m_propertiesGPU_ID);
 
 	if (m_gpuDevice == NULL)
 	{
 		SDL_Log("Lib/SDLShader.cpp/InitializeGPUDevice/SDL_CreateGPUDeviceWithProperties failed: %s", SDL_GetError());
 		return false;
-	}*/
+	}
 
-	m_renderer = SDL_CreateRenderer(f_window.m_window, NULL);
-	//m_renderer = SDL_CreateRendererWithProperties(m_propertiesRendererID);
+	//m_renderer = SDL_CreateRenderer(f_window.m_window, NULL);
+	m_renderer = SDL_CreateRendererWithProperties(m_propertiesRendererID);
 	if (m_renderer == NULL)
 	{
 		SDL_Log("Lib/Render.cpp/CreateRenderer/SDL_CreateRenderer/SDL_CreateRenderer non reussie : %s", SDL_GetError());

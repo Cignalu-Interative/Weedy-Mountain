@@ -42,7 +42,7 @@ void GameScene::OnInitialize()
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
-	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
+	m_player = CreateEntity<Player>({150, 50}, { 16,32 }, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });
 	m_player->GetCollider()->SetOffset({ 0,8 });
 	m_player->SetRigidBody(true);
@@ -93,6 +93,12 @@ void GameScene::OnInitialize()
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
+
+
+	Entity* ent = CreateEntity<Entity>({ 0, 0 }, { 200, 200 }, "", Shape::Rectangle);
+	ent->SetTag(5);
+	ent->GetCollider()->SetIsTrigger(true);
+	ent->GetCollider()->SetShow(true);
 }
 
 

@@ -69,6 +69,14 @@ enum class Recipes
 	AutoWateringL2
 };
 
+enum class FishingState
+{
+	Idle,
+	Casting,
+	Waiting,
+	BiteWindow
+};
+
 struct PlayerStats {
 	float m_playerSpeed = 50.f;
 
@@ -110,6 +118,27 @@ private:
 	bool m_inputBlocker = false;
 
 	int m_money = 2000000;
+
+	// PECHE 
+	FishingState m_fishingState = FishingState::Idle;
+	Collider* m_fishingZoneCollider = nullptr;
+
+	Vector2f m_facingDirection = { 0.f, 1.f };
+
+	bool m_isMovingThisFrame = false;
+	bool m_fishingZoneTouchingWater = false;
+	bool m_castJustPerformed = false;
+
+	float m_fishingTimer = 0.f;
+	float m_fishingTimerTarget = 0.f;
+	float m_biteReactionTimer = 0.f;
+
+	static constexpr float FISHING_CAST_DISTANCE = 24.f;   
+	static constexpr float FISHING_BITE_WINDOW = 0.5f;
+
+	void StartFishing();
+	void UpdateFishing();
+	void RetractFishingRod();
 
 protected:
 

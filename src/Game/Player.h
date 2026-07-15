@@ -127,7 +127,8 @@ private:
 
 	bool m_isMovingThisFrame = false;
 	bool m_fishingZoneTouchingWater = false;
-	bool m_castJustPerformed = false;
+
+	float m_castSyncTimer = 0.f;
 
 	float m_fishingTimer = 0.f;
 	float m_fishingTimerTarget = 0.f;
@@ -135,6 +136,8 @@ private:
 
 	static constexpr float FISHING_CAST_DISTANCE = 24.f;   
 	static constexpr float FISHING_BITE_WINDOW = 0.5f;
+
+	static constexpr float FISHING_CAST_SYNC_DELAY = (1.f / 120.f) * 2.5f;
 
 	void StartFishing();
 	void UpdateFishing();

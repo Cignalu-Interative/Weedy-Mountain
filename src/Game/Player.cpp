@@ -204,7 +204,7 @@ void Player::StartFishing()
 	m_fishingZoneCollider->SetOffset({ m_facingDirection.GetX() * FISHING_CAST_DISTANCE, m_facingDirection.GetY() * FISHING_CAST_DISTANCE });
 
 	m_fishingZoneTouchingWater = false;
-	m_castJustPerformed = true;
+	m_castSyncTimer = 0.f;
 	m_fishingState = FishingState::Casting;
 }
 
@@ -216,7 +216,7 @@ void Player::RetractFishingRod()
 	GetScene()->RemoveGeometry("debug_fishing");
 
 	m_fishingZoneTouchingWater = false;
-	m_castJustPerformed = false;
+	m_castSyncTimer = 0.f;
 	m_fishingState = FishingState::Idle;
 }
 
@@ -231,11 +231,10 @@ void Player::UpdateFishing()
 
 	case FishingState::Casting:
 	{
-		if (m_castJustPerformed)
-		{
-			m_castJustPerformed = false;
+		m_castSyncTimer += dt;
+
+		if (m_castSyncTimer < FISHING_CAST_SYNC_DELAY)
 			break;
-		}
 
 		if (m_fishingZoneTouchingWater)
 		{
@@ -246,7 +245,7 @@ void Player::UpdateFishing()
 		else
 		{
 			std::cout << "[Fishing] l'hamecon n'est pas dans l'eau, cane range !" << std::endl;
-			//RetractFishingRod();
+			RetractFishingRod();
 		}
 		break;
 	}

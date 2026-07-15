@@ -46,6 +46,11 @@ void TextBox::SetTextInBox(const std::string& p_text)
 
 void TextBox::OnDraw(Render* f_render, Window* f_window)
 {
+	if(m_isVisible = false)
+	{
+		return;
+	}
+
 	m_textToDraw->SetPosition(GetPosition({ 0.0f, 0.5f }) + m_textOffset, {0.0f, 0.5f});
 	//if (m_textToDraw->GetText().empty == true)
 	//{

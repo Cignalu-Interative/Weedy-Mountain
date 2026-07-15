@@ -24,5 +24,11 @@ private:
 	};
 
 	std::vector<Tile> m_mapTiles;
+
+public:
+
+	void Initialize();
+
+	std::vector<Tile> GetMapTiles() { return m_mapTiles; }
 };
 

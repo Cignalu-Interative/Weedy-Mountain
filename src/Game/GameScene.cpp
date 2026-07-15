@@ -67,6 +67,7 @@ void GameScene::OnInitialize()
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();
 	Vector2i tileDim = map->GetTileDimension();
+	
 
 	for (const TileInfo& info : canGrowTiles)
 	{

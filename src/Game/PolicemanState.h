@@ -4,14 +4,32 @@
 
 class PolicemanIdleState : public StateBase<Policeman>
 {
+private:
+
+	float m_cooldown = 0.f;
+
+public:
+
 	void Start(Policeman* p_policeman) {
 		p_policeman->SetAnimationByName("Idle");
 		std::cout << "Idle" << std::endl;
+
+		m_cooldown = 3.f;
+		p_policeman->SetIdleCooldownEnded(false);
 	};
 
-	void Update(Policeman* p_player, float dt) {};
-	void End(Policeman* p_player) {};
-	bool CanTransitionFrom(Policeman* p_player, int currentState)
+	void Update(Policeman* p_policeman, float dt) 
+	{
+		m_cooldown -= p_policeman->GetDeltaTime();
+
+		if (m_cooldown <= 0.f)
+		{
+			p_policeman->SetIdleCooldownEnded(true);
+		}
+	};
+
+	void End(Policeman* p_policeman) {};
+	bool CanTransitionFrom(Policeman* p_policeman, int currentState)
 	{
 		switch (currentState)
 		{
@@ -53,7 +71,7 @@ class PolicemanPatrolState : public StateBase<Policeman>
 		switch (currentState)
 		{
 		case (int)PolicemanState::IDLE:
-			return true;
+			return false;
 			break;
 		case (int)PolicemanState::CHASE:
 			return true;

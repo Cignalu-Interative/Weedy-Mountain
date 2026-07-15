@@ -18,7 +18,7 @@ private:
 	bool m_isDetectedPlayer = false;
 	bool m_isLoosingPlayer = false;
 
-	bool m_isIdleTimerEnded = false;
+	bool m_isIdleCooldownEnded = false;
 
 	bool m_isCollidingWithPlayer = false;
 
@@ -37,10 +37,10 @@ public:
 
 	void SetupStateMachine();
 
-	void SetIdleCooldownEnded(bool p_value) { m_isIdleTimerEnded = p_value; }
+	void SetIdleCooldownEnded(bool p_value) { m_isIdleCooldownEnded = p_value; }
 
 	bool IsDetectedPlayer() { return m_isDetectedPlayer; }
-	bool IsIdleTimerEnded() { return m_isIdleTimerEnded; }
+	bool IsIdleCooldownEnded() { return m_isIdleCooldownEnded; }
 	bool IsLoosingPlayer() { return m_isLoosingPlayer; }
 	bool IsCollidingWithPlayer() { return m_isCollidingWithPlayer; }
 

@@ -8,7 +8,7 @@ class HasIdleCooldownEnded : public Condition<Policeman>
 {
 	bool TestBool(Policeman* p_policeman) override
 	{
-		
+		return p_policeman->IsIdleCooldownEnded();
 	}
 };
 

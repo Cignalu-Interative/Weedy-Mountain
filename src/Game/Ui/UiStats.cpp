@@ -3,8 +3,7 @@
 
 void UiStats::OnInitialize()
 {
-	int zoom = GetScene()->GetCamera()->GetZoom();
-	Vector2i dim = {8 *zoom,32 * zoom};
+	Vector2i dim = {8 * 4,32 * 4};
 	Vector2i dimension = GetDimension();
 	
 	Vector2f lifePos = { GetPosition({0.5f,0}).GetX() - dimension.GetX() * 0.25f,GetPosition().GetY() };

@@ -86,7 +86,8 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 
 	if (_other->GetID() == "default" && ToDestroy() == false) {
 		std::cout << "Item Collected" << std::endl;
-		static_cast<Player*>(GetScene()->GetEntityByTag(1))->GetInventory().AddItem(m_ItemInfo.GetID(), m_ItemInfo.GetAmount(), false);
+		//static_cast<Player*>(GetScene()->GetEntityByTag(1))->GetInventory().AddItem(m_ItemInfo.GetID(), m_ItemInfo.GetAmount(), false);
+		GameData::Get().GetPlayerData().m_playerInventory->AddItem(m_ItemInfo.GetID(), m_ItemInfo.GetAmount(), false);
 		Destroy();
 	}
 }

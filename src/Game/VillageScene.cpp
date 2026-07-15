@@ -9,6 +9,7 @@
 
 #include "Player.h"
 #include "GameData.h"
+#include "PNJ.h"
 
 #include "GameScene.h"
 #include "Ui/UiStats.h"
@@ -18,6 +19,7 @@
 #include "Ui/UiTime.h"
 #include "Ui/UiJobs.h"
 #include "Ui/UiGatherer.h"
+#include "Ui/UiShop.h"
 
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
@@ -58,21 +60,19 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
-	
+	m_shopPNJ = CreateEntity<PNJ>({ 550,270 }, { 8,32 }, "player", Shape::Rectangle);
+	Inventory* shopInventory = CreateEntity<Inventory>({}, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	shopInventory->SetVisible(false);
+
+	m_shop = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_shop->GetSprite()->SetDimension(m_shop->GetDimension());
+	m_shop->SyncSprites();
+	m_shop->SetShopInventory(shopInventory);
+	m_shop->SetVisible(false);
+
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
-	Vector2f uiStatsPos = { 1050, 600 };
-	UiStats* lifeUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
-	//e->ShowCollider(true);
-
-
-	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 }
 
@@ -89,10 +89,18 @@ void VillageScene::OnEvent()
 	if (im->IsKeyboardDown(K_U))
 		m_player->Heal(5);
 
+	if (InputManager::Get()->IsKeyboardDown(K_E) && m_shopPNJ->IsInPlayerZone())
+	{
+		m_shopPNJ->Talk("Bonjour, bienvenue dans la boutique");
+		m_player->LockInputs();
+		m_shop->SetVisible(true);
+	}
 }
 
 void VillageScene::OnUpdate()
 {
+	
+
 }
 
 void VillageScene::OnDestroy()
@@ -109,6 +117,7 @@ void VillageScene::OnWake()
 {
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->SetCurrentMap("Village");
+
 
 	m_player->SetPosition(m_spawnPoint);
 	GetCamera()->SetPosition(m_player->GetPosition());

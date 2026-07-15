@@ -212,6 +212,12 @@ Vector2i Scene::GetWindowSize() const
 	return m_application->m_window.GetWindowSize();
 }
 
+Vector2f Scene::GetWindowCenter() const
+{
+	return (Vector2f)m_application->m_window.GetWindowSize()/2;
+}
+
+
 float Scene::GetDeltaTime() const
 {
 	return m_application->m_deltaTime;

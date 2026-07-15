@@ -16,6 +16,10 @@
 
 void Player::OnInitialize()
 {
+	
+	
+
+	//gm.SetInventory(PlayerInventory(inv, hot));
 
 	PlayerJob gatherer;
 	gatherer.m_name = JobType::Gatherer;
@@ -43,6 +47,10 @@ void Player::OnInitialize()
 
 void Player::OnEvent()
 {
+	if (m_isVisible == false)
+		return;
+
+
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
 		SetSpeed(gm.GetPlayerData().m_stats.m_playerSpeed * 2);
 	}
@@ -52,13 +60,10 @@ void Player::OnEvent()
 	float currentSpeed = InputManager::Get()->IsKeyboardHeld(K_LSHIFT) ? gm.GetPlayerData().m_stats.m_playerSpeed * 2.f : gm.GetPlayerData().m_stats.m_playerSpeed;
 	SetSpeed(currentSpeed);
 
-	if (InputManager::Get()->IsKeyboardDown(K_TAB))
+	/*if (InputManager::Get()->IsKeyboardDown(K_TAB))
 	{
-		if (gm.GetPlayerData().m_playerInventory.IsOpen())
-			gm.GetPlayerData().m_playerInventory.Close();
-		else 
-			gm.GetPlayerData().m_playerInventory.Open();
-	}
+		LockInputs();
+	}*/
 
 	Vector2f dir = {0.f, 0.f};
 	Collider* boxCollider = GetCollider("actionBox");
@@ -188,7 +193,6 @@ void Player::OnUpdate()
 {
 	m_stateMachine.Update(this, GetDeltaTime());
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
-
 	//std::cout << GetPosition().GetX() << "   " << GetPosition().GetY() << std::endl;
 	UpdateJobs();
 	MoveKinematic();

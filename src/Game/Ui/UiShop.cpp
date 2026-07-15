@@ -11,11 +11,9 @@
 
 void UiShop::OnInitialize()
 {
-	GameScene* gameScene = GetScene<GameScene>();
 	Scene* scene = GetScene();
 
-	//m_playerInventory = gameScene->GetPlayer()->GetInventory()->GetInventory();
-	//m_shopInventory = gameScene->GetPlayer2()->GetInventory()->GetInventory();
+	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory->GetInventory();
 
 	Vector2f topRightPos = GetPosition({ 1,0 });
 	Vector2i dimension = GetDimension();
@@ -64,7 +62,7 @@ void UiShop::OnInitialize()
 
 	Vector2f topLeftPos = GetPosition({ 0,0 });
 	float BoffsetX = dimension.GetX() / 6.f;
-	float BoffsetY = dimension.GetY() / 3.f;
+	float BoffsetY = dimension.GetY() / 3.5f;
 	float BShopOffestX = dimension.GetX() / 2.9f;
 	Vector2f offsetPlayerInventory = topLeftPos + Vector2f{ BoffsetX, BoffsetY };
 	Vector2f offsetShopInventory = topLeftPos + Vector2f{ BShopOffestX, BoffsetY };
@@ -101,6 +99,7 @@ void UiShop::OnInitialize()
 	//m_minusButton->ShowCollider(true);
 	m_minusButton->GetCollider()->SetIsTrigger(true);
 
+	SetDrawLayer(GetDrawLayer() - 1);
 	GetCollider()->SetIsTrigger(true);
 }
 
@@ -147,7 +146,7 @@ void UiShop::PlaceInventory(Inventory* p_inventory)
 
 	Vector2f pos = GetPosition({ 0,0.5f });
 
-	float offsetY = pos.GetY() + 150;
+	float offsetY = pos.GetY() + 110;
 	p_inventory->SetPosition({ pos.GetX() * 1.25f,offsetY }, { 0,1 });
 	p_inventory->SetVisible(true);
 }
@@ -160,14 +159,12 @@ void UiShop::Buy()
 	std::string id = m_slot->GetStack().GetID();
 	int amount = m_slot->GetStack().GetAmount();
 
-	if (m_playerInventory->CanAdd(id, amount) && GetScene<GameScene>()->GetPlayer()->GetMoney() >= m_totalPrices)
+	if (m_playerInventory->CanAdd(id, amount) && GameData::Get().GetPlayerData().m_money >= m_totalPrices)
 	{
 		m_playerInventory->AddItem(id, amount, false);
-		GetScene<GameScene>()->GetPlayer()->DecreaseMoney(m_totalPrices);
+		GameData::Get().GetPlayerData().m_money -= m_totalPrices;//GetScene<GameScene>()->GetPlayer()->DecreaseMoney(m_totalPrices);
 		m_slot->Clear();
 	}
-	else
-		std::cout << "Not enough space in inventory" << std::endl;
 
 }
 
@@ -181,16 +178,12 @@ void UiShop::Sell()
 
 	if (m_playerInventory->HasAmountOfItem(id, amount))
 	{
-		GameScene* scene = GetScene<GameScene>();
-		if (scene == nullptr)
-			return;
-		scene->GetPlayer()->AddMoney(m_totalPrices);
+		
+		GameData::Get().GetPlayerData().m_money += m_totalPrices;
 		m_playerInventory->RemoveItem(id, amount, false);
 		m_slot->Clear();
 
 	}
-	else
-		std::cout << "Not enough item in inventory" << std::endl;
 
 	std::vector<InventorySlot*> slots = m_playerInventory->GetSlots();
 
@@ -221,7 +214,7 @@ void UiShop::SellAll()
 	int amount = m_playerInventory->CountItem(id);
 	m_playerInventory->RemoveItem(id, amount, false);
 	int price = amount * ItemDataBase::Get()->GetItem(id)->GetSellPrice();
-	GetScene<GameScene>()->GetPlayer()->AddMoney(price);
+	GameData::Get().GetPlayerData().m_money += price;
 	m_slot->Clear();
 }
 

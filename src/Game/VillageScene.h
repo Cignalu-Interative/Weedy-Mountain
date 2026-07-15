@@ -3,11 +3,14 @@
 
 
 class Player;
+class PNJ;
+class UiShop;
 class VillageScene : public Scene
 {
 private :
 	Player* m_player = nullptr;
-
+	PNJ* m_shopPNJ = nullptr;
+	UiShop* m_shop = nullptr;
 	Vector2f m_spawnPoint;
 
 protected :

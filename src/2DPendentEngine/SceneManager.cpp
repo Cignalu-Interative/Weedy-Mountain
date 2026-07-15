@@ -120,7 +120,7 @@ void SceneManager::PushScene(const std::string& p_id)
 	{
 		for (Scene* sceneInStack : m_scenesInStackVector)
 		{
-			if (sceneInStack == scene)
+			if (sceneInStack == scene || sceneInStack == m_persistentScene)
 			{
 				continue;
 			}

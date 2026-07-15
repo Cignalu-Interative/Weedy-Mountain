@@ -13,7 +13,7 @@ class Entity;
 class SceneManager
 {
 private:
-
+	Scene* m_persistentScene = nullptr;
 	//std::map pour stocker les scènes, indexées par un identifiant unique (string)
 	std::unordered_map<std::string, size_t> m_scenes;
 	//vector pour stocker les pointeurs vers les scènes, utilisé pour itérer plus rapidement lors de la mise à jour et de la destruction des scènes
@@ -33,7 +33,7 @@ private:
 public:
 
 	friend class Application;
-
+	
 	//Constructeur par défaut de SceneManager
 	SceneManager();
 	//Destructeur de SceneManager, il est responsable de la destruction de toutes les scènes stockées dans m_scenes pour éviter les fuites de mémoire
@@ -45,6 +45,8 @@ public:
 	//Fonction template pour ajouter une scène de type T à m_scenes, où T doit être une classe qui hérite de Scene
 	template<typename T>
 	void AddScene(const std::string& p_id);
+
+	void SetPersistentScene(Scene* p_scene) { m_persistentScene = p_scene; }
 
 	//Fonction pour supprimer une scène de m_scenes en utilisant son identifiant unique (string)
 	void RemoveScene(const std::string& p_id);

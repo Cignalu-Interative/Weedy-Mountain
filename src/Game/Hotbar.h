@@ -19,6 +19,8 @@ public:
 
 	void OnInitialize() override;
 	void OnUpdate() override;
+	void SetPosition(Vector2f p_newPos);
+	void SetScene(Scene* p_newScene);
 
 	bool CanAdd(const std::string& ID, int amount);
 	bool CanRemove(const std::string& ID, int amount);

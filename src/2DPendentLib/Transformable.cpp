@@ -72,6 +72,11 @@ void Transformable::Resize(Vector2i p_newDimension)
 	//m_dimension.SetY(std::max(1, newHeight));
 }
 
+void Transformable::ResizeStretched(Vector2i p_newDimension)
+{
+	m_dimension = p_newDimension;
+}
+
 void Transformable::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
 {
 	if(m_dimension.GetX() <= 0 || m_dimension.GetY() <= 0)

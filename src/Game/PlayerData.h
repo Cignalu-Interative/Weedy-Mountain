@@ -82,7 +82,7 @@ struct PlayerStats {
 struct PlayerData
 {
 	PlayerStats m_stats;
-	PlayerInventory m_playerInventory;
+	PlayerInventory* m_playerInventory;
 
 	std::vector<PlayerJob> m_jobs;
 	std::vector<Recipes> m_unlockedRecipes;

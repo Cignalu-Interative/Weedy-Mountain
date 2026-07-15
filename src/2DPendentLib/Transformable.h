@@ -40,6 +40,8 @@ public:
 	void SetDimension(Vector2i p_dimension); 
 	//Resize une nouvelle dimention en Vector2
 	void Resize(Vector2i p_newDimension); 
+
+	void ResizeStretched(Vector2i p_newDimension);
 	//Obtenir la dimention en Vector2
 	Vector2i GetDimension() const { return m_dimension; }
 

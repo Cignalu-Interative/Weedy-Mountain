@@ -17,6 +17,8 @@ class PlayerInventory
 
 	InventorySlot* m_selectedSlot = nullptr;
 
+	bool m_isInitialized = false;
+
 public:
 
 	PlayerInventory() = default;
@@ -30,7 +32,7 @@ public:
 	void Toggle();
 
 	bool IsOpen();
-
+	bool IsInitialized() { return m_isInitialized; }
 
 
 	bool CanAdd(const std::string& ID, int amount);

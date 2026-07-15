@@ -42,6 +42,7 @@ T* Scene::GetGeometry(const std::string& p_id)
 	std::cerr << "Engine/Scene.inl/GetGeometry/Geometry non trouver par rapport a l'id" << std::endl;
 	return nullptr;
 }
+
 template<typename T>
 T* Scene::CreateButton(Vector2f p_position, Vector2i p_dimention, const std::string& p_spritePath, const std::string& p_textID, const std::string& p_text, bool p_isGUI)
 {

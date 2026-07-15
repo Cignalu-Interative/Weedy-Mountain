@@ -69,7 +69,7 @@ void GameScene::OnInitialize()
 
 	GetCamera()->SetPosition(m_spawnPoint);
 
-	m_player = CreateEntity<Player>(m_spawnPoint, {16,32}, "player", Shape::Rectangle);
+	m_player = CreateEntity<Player>(m_spawnPoint, { 16,32 }, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 14,14 });
 	m_player->GetCollider()->SetOffset({ 0,9 });
 	m_player->SetRigidBody(true);
@@ -108,17 +108,6 @@ void GameScene::OnInitialize()
 		FarmManager::Get()->RegisterTile(tile);
 	}
 
-	Vector2f uiStatsPos = {1050, 600};
-	UiStats* lifeUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
-	//e->ShowCollider(true);
-
-
-	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
 	j->ShowCollider(true);*/
@@ -134,7 +123,6 @@ void GameScene::OnInitialize()
 	//CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
-
 }
 
 
@@ -179,11 +167,14 @@ void GameScene::OnEvent()
 	if (im->IsKeyboardDown(K_M))
 		m_player->TakeDamage(5);
 
+	if (im->IsKeyboardDown(K_O))
+		GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
+
 }
 
 void GameScene::OnUpdate()
 {
-	//FarmManager::Get()->Update();
+	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
@@ -198,7 +189,8 @@ void GameScene::OnSleep()
 	//SetSleepUpdate(true); 
 	SetSleepDraw(true);
 	SetSleepEvent(true);
-
+	m_player->SetIsVisible(false);
+	
 	//for (Entity* e : GetEntities())
 	//{
 	//	e->SetIsVisible(false);
@@ -218,8 +210,10 @@ void GameScene::OnWake()
 {
 	SetSleepDraw(false);
 	SetSleepEvent(false);
+	m_player->SetIsVisible(true);
 	GetCamera()->SetPosition(m_player->GetPosition());
 	GetCamera()->SetFollowedEntity(m_player);
+
 
 	//m_player->SetPosition(m_spawnPoint);
 	//GetCamera()->SetPosition(m_spawnPoint);

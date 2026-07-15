@@ -32,10 +32,10 @@ void UiLife::OnUpdate()
 
 	int hp = GameData::Get().GetPlayerData().m_stats.m_hp;
 
-	if (hp == GameData::Get().GetPlayerData().m_stats.m_maxHp)
+	/*if (hp == GameData::Get().GetPlayerData().m_stats.m_maxHp)
 		SetIsVisible(false);
 	else
-		SetIsVisible(true);
+		SetIsVisible(true);*/
 
 	if (m_currentValue == hp)
 		return;

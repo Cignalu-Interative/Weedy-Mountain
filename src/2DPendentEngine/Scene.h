@@ -23,6 +23,7 @@ class Scene : public Drawable
 {
 private:
 
+	int m_layer = 0;
 	//Pointeur vers l'application
 	Application* m_application = nullptr;
 
@@ -83,7 +84,8 @@ protected:
 	virtual void OnDraw() = 0;
 
 public:
-
+	//int GetLayer() { return m_layer; }
+	//void SetLayer(int p_layer) { m_layer = p_layer; }
 	//Fonction template pour créer une entité de type T
 	template<typename T>
 	T* CreateEntity(Vector2f p_position, Vector2i p_dimension, const std::string& p_path, Shape p_shape, bool p_isGUI = false, bool p_animation = false, const std::string& p_jsonAnimation = "");
@@ -102,6 +104,8 @@ public:
 	int GetWindowHeight() const; 
 
 	Vector2i GetWindowSize() const;
+
+	Vector2f GetWindowCenter() const;
 
 	//Fonction pour obtenir le temps écoulé entre deux frames en nanosecondes
 	float GetDeltaTime() const; 

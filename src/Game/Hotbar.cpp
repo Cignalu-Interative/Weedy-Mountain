@@ -12,11 +12,9 @@ Hotbar::Hotbar(int slotcount, int invSlotCount)
 	m_invSlotCount = invSlotCount;
 }
 
-
-
 void Hotbar::OnInitialize()
 {
-	SetDrawLayer(100);
+	SetDrawLayer(INT_MAX - 1);
 
 	const float spacing = 60.f;
 
@@ -36,15 +34,13 @@ void Hotbar::OnInitialize()
 
 		slot->InitText("slot_" + std::to_string(i + m_invSlotCount) + "_amount_text", "");
 
-		slot->SetDrawLayer(101);
+		slot->SetDrawLayer(INT_MAX);
 		slot->GetCollider()->SetIsTrigger(true);
 		m_slots.push_back(slot);
 	}
 	GetCollider()->SetIsTrigger(true);
 
 }
-
-
 
 void Hotbar::OnUpdate()
 {
@@ -57,7 +53,38 @@ void Hotbar::OnUpdate()
 	}
 }
 
+void Hotbar::SetPosition(Vector2f p_newPos)
+{
+	Entity::SetPosition(p_newPos);
+	
+	const float spacing = 60.f;
 
+	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
+	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
+
+	for (int i = 0; i < m_slotCount; i++)
+	{
+		int row = i / 10;
+		int col = i % 10;
+
+		Vector2f pos = { startX + col * spacing, startY + row * spacing };
+
+		m_slots[i]->SetPosition(pos);
+		m_slots[i]->SetTextOffset({ 18.0f, 22.0f });
+	}
+
+}
+
+void Hotbar::SetScene(Scene* p_newScene)
+{
+	m_scene = p_newScene;
+
+	for (InventorySlot* s : m_slots)
+	{
+		s->SetScene(p_newScene);
+	}
+
+}
 
 bool Hotbar::CanAdd(const std::string& ID, int amount)
 {

@@ -44,4 +44,5 @@ public:
 
 	PlayerData& GetPlayerData() { return m_playerData; }
 
+	void SetInventory(PlayerInventory* inv);
 };

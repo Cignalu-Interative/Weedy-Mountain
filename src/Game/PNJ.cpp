@@ -178,6 +178,7 @@ void PNJ::EndTalk()
 	m_isTalking = false;
 	m_isFinished = true;
 
+
 }
 
 void PNJ::UpdateDialog()

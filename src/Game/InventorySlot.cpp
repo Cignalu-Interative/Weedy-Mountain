@@ -31,6 +31,7 @@ void InventorySlot::SetStack(const ItemStack& stack)
 
 void InventorySlot::RefreshVisual()
 {
+   
     if (m_stack.IsEmpty())
     {
         SetSprite("item_texture", "");
@@ -45,6 +46,8 @@ void InventorySlot::RefreshVisual()
         if (m_isVisible)
         {
             SetSprite("item_texture", data->GetPath());
+            GetSprite("item_texture")->ResizeStretched(GetDimension());
+            SyncSprites();
             SetText(std::to_string(m_stack.GetAmount()));
             SetTextOffset({ 18.0f, 22.0f });
         }

@@ -17,7 +17,7 @@ Inventory::Inventory(int slotCount)
 void Inventory::OnInitialize()
 {
 	
-	SetDrawLayer(100);
+	SetDrawLayer(INT_MAX -1);
 
 	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
 	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
@@ -36,7 +36,7 @@ void Inventory::OnInitialize()
 
 		slot->InitText("slot_" + std::to_string(i) + "_amount_text", "");
 
-		slot->SetDrawLayer(101);
+		slot->SetDrawLayer(INT_MAX);
 
 		m_slots.push_back(slot);
 	}
@@ -218,6 +218,17 @@ void Inventory::SetVisible(bool visible)
 		slot->SetIsVisible(visible);
 		slot->RefreshVisual();
 	}
+}
+
+void Inventory::SetScene(Scene* p_newScene)
+{
+	m_scene = p_newScene;
+
+	for (InventorySlot* s : m_slots)
+	{
+		s->SetScene(p_newScene);
+	}
+
 }
 
 InventorySlot* Inventory::GetSlot(int index)

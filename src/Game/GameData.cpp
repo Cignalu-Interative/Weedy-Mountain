@@ -146,3 +146,14 @@ void GameData::Sleep()
 		m_timeSpent = (totalDay + 1) * secPerDay + sixAM;
 	}
 }
+
+void GameData::SetInventory(PlayerInventory* inv)
+{
+	if (inv == nullptr)
+		return;
+
+	if (m_playerData.m_playerInventory == inv)
+		return;
+
+	m_playerData.m_playerInventory = inv;
+}

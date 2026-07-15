@@ -24,6 +24,7 @@ class Hotbar;
 class Player : public Entity
 {
 private:
+
 	StateMachine<Player> m_stateMachine;
 
 	bool m_inputBlocker = false;
@@ -60,7 +61,7 @@ public:
 	void UnlockRecipe(Recipes _toUnlock);
 	void SetupStateMachine();
 
-	PlayerInventory GetInventory() { return gm.GetPlayerData().m_playerInventory; }
+	PlayerInventory* GetInventory() { return gm.GetPlayerData().m_playerInventory; }
 
 	int GetMoney() const { return gm.GetPlayerData().m_money; }
 	void AddMoney(int p_amount) { gm.GetPlayerData().m_money += p_amount; }

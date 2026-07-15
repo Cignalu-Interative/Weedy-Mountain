@@ -14,24 +14,28 @@ PlayerInventory::PlayerInventory(Inventory* inv, Hotbar* hot)
 	m_inventory = inv;
 	m_hotbar = hot;
 
+	m_isInitialized = true;
 	m_inventory->SetIsGUI(true);
 	m_hotbar->SetIsGUI(true);
+
+	Close();
+
 }
-
-
 
 void PlayerInventory::Open()
 {
+	Vector2f hotbarPos = { m_inventory->GetPosition().GetX(), m_inventory->GetPosition().GetY() + 150 };
 	m_isInventoryOpen = true;
 	m_inventory->SetVisible(true);;
-	m_hotbar->SetPosition({ 500, 700 });
+	m_hotbar->SetPosition(hotbarPos);
 }
 
 void PlayerInventory::Close()
 {
+	Vector2f hotbarPos = { m_inventory->GetPosition().GetX(), m_inventory->GetPosition().GetY() + 300 };
 	m_isInventoryOpen = false;
 	m_inventory->SetVisible(false);
-	m_hotbar->SetPosition({ 100, 100 });
+	m_hotbar->SetPosition(hotbarPos);
 }
 
 void PlayerInventory::Toggle()
@@ -46,8 +50,6 @@ bool PlayerInventory::IsOpen()
 {
 	return m_isInventoryOpen;
 }
-
-
 
 bool PlayerInventory::CanAdd(const std::string& ID, int amount)
 {
@@ -126,8 +128,6 @@ int PlayerInventory::RemoveItem(const std::string& ID, int amount, bool requireF
 	return amount - remaining;
 }
 
-
-
 int PlayerInventory::CountItem(const std::string& ID)
 {
 	return m_hotbar->CountItem(ID) + m_inventory->CountItem(ID);
@@ -159,8 +159,6 @@ bool PlayerInventory::IsEmpty()
 
 	return true;
 }
-
-
 
 Inventory* PlayerInventory::GetInventory()
 {
@@ -207,8 +205,6 @@ InventorySlot* PlayerInventory::GetHotbarSlot(int index)
 	return m_hotbar->GetSlot(index);
 }
 
-
-
 void PlayerInventory::Clear()
 {
 	for (InventorySlot* slot : m_hotbar->GetSlots())
@@ -217,8 +213,6 @@ void PlayerInventory::Clear()
 	for (InventorySlot* slot : m_inventory->GetSlots())
 		slot->Clear();
 }
-
-
 
 void PlayerInventory::OnUpdate()
 {
@@ -257,6 +251,7 @@ void PlayerInventory::OnUpdate()
 		Select(9);
 	if (input->IsKeyboardDown(K_TAB))
 		Toggle();
+
 
 	if (m_isInventoryOpen == false)
 		return;

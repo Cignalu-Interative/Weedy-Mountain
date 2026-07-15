@@ -24,10 +24,10 @@ void UiToxicity::OnUpdate()
 {
 	int toxicity = GameData::Get().GetPlayerData().m_stats.m_toxicity;
 
-	if (toxicity == 0)
+	/*if (toxicity == 0)
 		SetIsVisible(false);
 	else
-		SetIsVisible(true);
+		SetIsVisible(true);*/
 
 	if (m_currentValue == toxicity)
 		return;

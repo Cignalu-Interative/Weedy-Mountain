@@ -49,6 +49,8 @@ void Application::Init()
 	}
 	m_targetFPS = m_window.V_Sync();
 	m_targetDeltaTime = 1.0f / m_targetFPS;
+	
+	SDLShader::Get()->SetGPUDevice(m_render.GetGPUDevice());
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
 	Debug::Get()->CreateTextEngineProperties();
 	Debug::SetDeltaTimeCallback([this]() {
@@ -85,11 +87,6 @@ void Application::Run()
 			continue;
 		}
 
-		/*if (CapFPS() == false)
-		{
-			continue;
-		}*/
-
 		FPSDeltaTime();
 
 		UpdateFPSCounter();
@@ -99,8 +96,6 @@ void Application::Run()
 		Update();
 
 		Draw();
-
-		//SceneManager::Get()->ChangeCurrentScene();
 	}
 }
 

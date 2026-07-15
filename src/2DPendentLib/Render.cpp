@@ -4,11 +4,43 @@
 
 Render::Render()
 {
+	m_propertiesGPU_ID = SDL_CreateProperties();
+	if (m_propertiesGPU_ID == 0)
+	{
+		SDL_Log("Lib/Render.cpp/Render/SDL_CreateProperties failed: %s", SDL_GetError());
+		return;
+	}
+
+	m_propertiesRendererID = SDL_CreateProperties();
+	if (m_propertiesRendererID == 0)
+	{
+		SDL_Log("Lib/Render.cpp/Render/SDL_CreateProperties failed: %s", SDL_GetError());
+		return;
+	}
+
+#ifdef NDEBUG
+	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN, false);
+#endif
+
+
+	
 	SetBackgroundColor(ColorsNamed::Black);
 }
 
 Render::~Render()
 {
+	if (m_propertiesGPU_ID)
+	{
+		SDL_DestroyProperties(m_propertiesGPU_ID);
+	}
+	if (m_propertiesRendererID)
+	{
+		SDL_DestroyProperties(m_propertiesRendererID);
+	}
+	if (m_gpuDevice != NULL)
+	{
+		SDL_DestroyGPUDevice(m_gpuDevice);
+	}
 	if (m_renderer != NULL)
 	{
 		SDL_DestroyRenderer(m_renderer);
@@ -17,12 +49,22 @@ Render::~Render()
 
 bool Render::CreateRenderer(Window& f_window)
 {
+	/*m_gpuDevice = SDL_CreateGPUDeviceWithProperties(m_propertiesGPU_ID);
+
+	if (m_gpuDevice == NULL)
+	{
+		SDL_Log("Lib/SDLShader.cpp/InitializeGPUDevice/SDL_CreateGPUDeviceWithProperties failed: %s", SDL_GetError());
+		return false;
+	}*/
+
 	m_renderer = SDL_CreateRenderer(f_window.m_window, NULL);
+	//m_renderer = SDL_CreateRendererWithProperties(m_propertiesRendererID);
 	if (m_renderer == NULL)
 	{
 		SDL_Log("Lib/Render.cpp/CreateRenderer/SDL_CreateRenderer/SDL_CreateRenderer non reussie : %s", SDL_GetError());
 		return false;
 	}
+	std::cerr << "Renderer: " << SDL_GetRendererName(m_renderer) << std::endl;
 	return true;
 }
 

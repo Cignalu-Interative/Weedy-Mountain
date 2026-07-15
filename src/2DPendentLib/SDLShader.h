@@ -7,18 +7,21 @@ class SDLShader
 {
 private:
 
-	SDL_PropertiesID m_propertiesID = 0;
-
 	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utilis pour grer les shaders et les textures
 
 public:
 
 	static SDLShader* Get();
 
+	void SetGPUDevice(SDL_GPUDevice* p_gpuDevice) { m_gpuDevice = p_gpuDevice; }
+
 	SDLShader();
 	~SDLShader();
 
-	void InitializeGPUDevice(Window* p_window);
+	// Retourne le format de shader utilis par le GPU Device
+	// Sert pour savoir quel type de shader utiliser (GLSL, HLSL, etc.) en fonction de la plateforme et du GPU
+	// Retourne SDL_GPU_SHADERFORMAT_INVALID si le GPU Device n'est pas initialis
+	SDL_GPUShaderFormat GetShaderFormat() const;
 
 };
 

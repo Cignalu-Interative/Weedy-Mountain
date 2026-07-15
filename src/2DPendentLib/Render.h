@@ -8,12 +8,17 @@ class Render
 {
 private:
 
+	SDL_PropertiesID m_propertiesGPU_ID = 0;
+
+	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utilis pour grer les shaders et les textures
+
+
+	SDL_PropertiesID m_propertiesRendererID = 0;
+
 	//Pointeur qui stock le render
 	SDL_Renderer* m_renderer = nullptr;
 
 	Color m_backgroundColor;
-
-	//glm::vec4 m_OpenGLColor;
 
 public:
 
@@ -27,6 +32,9 @@ public:
 	void ClearRenderer(); 
 	//Affiche le render en cours
 	void PresentRenderer(); 
+
+	SDL_GPUDevice* GetGPUDevice() const { return m_gpuDevice; }
+
 	//Obtention du render
 	SDL_Renderer* GetRenderer() const { return m_renderer; }
 

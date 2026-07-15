@@ -38,15 +38,14 @@ void TextBox::InitTextBox(const std::string& p_id, Color p_color, bool p_isGUI)
 	m_textToDraw->SetWrapWidth(dimension.GetX() - m_textOffset.GetX());
 }
 
-void TextBox::SetText(const std::string& p_text)
+void TextBox::SetTextInBox(const std::string& p_text)
 {
 	m_textToDraw->SetText(p_text);
+	m_textToDraw->CutTextBySize(GetDimension() - (Vector2i)m_textOffset);
 }
 
 void TextBox::OnDraw(Render* f_render, Window* f_window)
 {
-	m_textToDraw->CutTextBySize(GetDimension() - (Vector2i)m_textOffset);
-	
 	m_textToDraw->SetPosition(GetPosition({ 0.0f, 0.5f }) + m_textOffset, {0.0f, 0.5f});
 	//if (m_textToDraw->GetText().empty == true)
 	//{

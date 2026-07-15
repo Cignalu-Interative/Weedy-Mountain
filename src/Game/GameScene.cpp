@@ -177,16 +177,17 @@ void GameScene::OnEvent()
 	{
 		im->StopTextInput();
 	}
-	if (im->IsTextInputActive() == true && im->IsKeyboardHeld(K_DELETE))
+	if (im->IsTextInputActive() == true && im->IsKeyboardDown(K_DELETE))
 	{
 		im->DeleteLastCharInFinalTextInput();
 	}
 	if (im->IsTextInputActive() == true)
 	{
-		m_textBox->SetText(im->GetfinalTextInput());
+		//m_textBox->SetText(im->GetfinalTextInput());
+		m_textBox->SetTextInBox(im->GetfinalTextInput());
 	}
 	std::string t = im->GetfinalTextInput();
-	std::cerr << "TextInput : " << t << std::endl;
+	//std::cerr << "TextInput : " << t << std::endl;
 }
 
 void GameScene::OnUpdate()

@@ -16,8 +16,7 @@ Inventory::Inventory(int slotCount)
 
 void Inventory::OnInitialize()
 {
-	
-	SetDrawLayer(INT_MAX -1);
+	SetDrawLayer(INT_MAX - 2);
 
 	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
 	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
@@ -36,12 +35,10 @@ void Inventory::OnInitialize()
 
 		slot->InitText("slot_" + std::to_string(i) + "_amount_text", "");
 
-		slot->SetDrawLayer(INT_MAX);
-
 		m_slots.push_back(slot);
 	}
 	GetCollider()->SetIsTrigger(true);
-	
+
 }
 
 bool Inventory::CanAdd(const std::string& ID, int amount)

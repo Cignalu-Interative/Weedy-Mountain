@@ -14,7 +14,7 @@ Hotbar::Hotbar(int slotcount, int invSlotCount)
 
 void Hotbar::OnInitialize()
 {
-	SetDrawLayer(INT_MAX - 1);
+	SetDrawLayer(INT_MAX - 2);
 
 	const float spacing = 60.f;
 
@@ -34,7 +34,6 @@ void Hotbar::OnInitialize()
 
 		slot->InitText("slot_" + std::to_string(i + m_invSlotCount) + "_amount_text", "");
 
-		slot->SetDrawLayer(INT_MAX);
 		slot->GetCollider()->SetIsTrigger(true);
 		m_slots.push_back(slot);
 	}

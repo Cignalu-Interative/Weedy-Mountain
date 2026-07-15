@@ -29,7 +29,6 @@ void UiShop::OnInitialize()
 	m_slot->SetSprite("item_texture", "");
 	m_slot->GetSprite()->SetDimension(m_slot->GetDimension());
 	m_slot->SyncSprites();
-
 	m_slot->InitText("slot", "");
 
 
@@ -40,25 +39,22 @@ void UiShop::OnInitialize()
 	m_sellButton->SetOnLeftClick([this] { Sell(); });
 	m_sellButton->SetOnHoverStay([this] { m_sellButton->SetSprite("buttonHover"); });
 	m_sellButton->SetOnHoverExit([this] { m_sellButton->SetSprite("button"); });
-	//m_sellButton->ShowCollider(true);
 	m_sellButton->GetCollider()->SetIsTrigger(true);
-	m_sellButton->SetVisible(false);
+	m_sellButton->SetIsVisible(false);
 	
 	m_sellAllButton = scene->CreateButton({ offsetButtonX, offsetButtonY + 55}, { 150,50 }, "button", "sellAllButton", "SELL ALL", true);
 	m_sellAllButton->SetOnHoverStay([this] { m_sellAllButton->SetSprite("buttonHover"); });
 	m_sellAllButton->SetOnHoverExit([this] { m_sellAllButton->SetSprite("button"); });
 	m_sellAllButton->SetOnLeftClick([this] { SellAll(); });
-	m_sellAllButton->SetVisible(false);
-
-
+	m_sellAllButton->SetIsVisible(false);
+	m_sellAllButton->GetCollider()->SetIsTrigger(true);
 
 	m_buyButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "button", "buyButton", "BUY", true);
 	m_buyButton->SetOnLeftClick([this] {Buy(); });
 	m_buyButton->SetOnHoverStay([this] { m_buyButton->SetSprite("buttonHover"); });
 	m_buyButton->SetOnHoverExit([this] { m_buyButton->SetSprite("button"); });
-	//m_buyButton->ShowCollider(true);
 	m_buyButton->GetCollider()->SetIsTrigger(true);
-	m_buyButton->SetVisible(false);
+	m_buyButton->SetIsVisible(false);
 
 	Vector2f topLeftPos = GetPosition({ 0,0 });
 	float BoffsetX = dimension.GetX() / 6.f;
@@ -68,12 +64,10 @@ void UiShop::OnInitialize()
 	Vector2f offsetShopInventory = topLeftPos + Vector2f{ BShopOffestX, BoffsetY };
 
 	m_choosePlayerInventory = scene->CreateButton({ offsetPlayerInventory }, { 150,50 }, "", "player", "Player Inventory");
-	//m_choosePlayerInventory->ShowCollider(true);
 	m_choosePlayerInventory->SetOnLeftClick([this] {ChoosePlayerInventoryButtonClicked(); });
 	m_choosePlayerInventory->GetCollider()->SetIsTrigger(true);
 
 	m_chooseShopInventory = scene->CreateButton({ offsetShopInventory }, { 150,50 }, "", "shop", "Shop Inventory");
-	//m_chooseVendorInventory->ShowCollider(true);
 	m_chooseShopInventory->SetOnLeftClick([this] {ChooseShopInventoryButtonClicked(); });
 	m_chooseShopInventory->GetCollider()->SetIsTrigger(true);
 
@@ -91,15 +85,13 @@ void UiShop::OnInitialize()
 
 	m_plusButton = scene->CreateButton(plusButtonOffset, { 50,50 }, "", "plusButton", "+");
 	m_plusButton->SetOnLeftClick([this] {PlusButton(); });
-	//m_plusButton->ShowCollider(true);
 	m_plusButton->GetCollider()->SetIsTrigger(true);
 
 	m_minusButton = scene->CreateButton(minusButtonOffset, { 50,50 }, "", "minusButton", "-");
 	m_minusButton->SetOnLeftClick([this] {MinusButton(); });
-	//m_minusButton->ShowCollider(true);
 	m_minusButton->GetCollider()->SetIsTrigger(true);
 
-	SetDrawLayer(GetDrawLayer() - 1);
+	SetDrawLayer(GetDrawLayer() - 20);
 	GetCollider()->SetIsTrigger(true);
 }
 
@@ -137,6 +129,7 @@ void UiShop::OnUpdate()
 	}
 	std::string itemName = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetName();
 	GetScene()->GetGeometry<Text>("itemName")->SetText(itemName);
+
 }
 
 void UiShop::PlaceInventory(Inventory* p_inventory)
@@ -178,11 +171,9 @@ void UiShop::Sell()
 
 	if (m_playerInventory->HasAmountOfItem(id, amount))
 	{
-		
 		GameData::Get().GetPlayerData().m_money += m_totalPrices;
 		m_playerInventory->RemoveItem(id, amount, false);
 		m_slot->Clear();
-
 	}
 
 	std::vector<InventorySlot*> slots = m_playerInventory->GetSlots();
@@ -195,14 +186,11 @@ void UiShop::Sell()
 		if (slots[i]->GetStack().GetID() == id)
 		{
 			ItemStack item = slots[i]->GetStack();
-			m_slot->SetText(std::to_string(item.GetAmount()));
 			m_slot->SetStack(item);
 			m_slotIndex = i;
 			return;
 		}
-
 	}
-
 }
 
 void UiShop::SellAll()
@@ -221,19 +209,20 @@ void UiShop::SellAll()
 void UiShop::ChoosePlayerInventoryButtonClicked()
 {
 	PlaceInventory(m_playerInventory);
-	m_sellButton->SetVisible(true);
-	m_sellAllButton->SetVisible(true);
-	m_buyButton->SetVisible(false);
+	m_sellButton->SetIsVisible(true);
+	m_sellAllButton->SetIsVisible(true);
+	m_buyButton->SetIsVisible(false);
+	m_shopInventory->SetVisible(false);
 	m_slot->Clear();
 }
 
 void UiShop::ChooseShopInventoryButtonClicked()
 {
 	PlaceInventory(m_shopInventory);
-	m_buyButton->SetVisible(true);
-	m_sellButton->SetVisible(false);
-	m_sellAllButton->SetVisible(false);
-	m_playerInventory->SetPosition({ -500,0 });//TO do setPos du player
+	m_buyButton->SetIsVisible(true);
+	m_sellButton->SetIsVisible(false);
+	m_sellAllButton->SetIsVisible(false);
+	m_playerInventory->SetVisible(false);
 	m_slot->Clear();
 }
 
@@ -292,15 +281,14 @@ void UiShop::SetVisible(bool p_isVisible)
 {
 	Entity::SetIsVisible(p_isVisible);
 
-	m_choosePlayerInventory->SetVisible(p_isVisible);
-	m_chooseShopInventory->SetVisible(p_isVisible);
-	m_plusButton->SetVisible(p_isVisible);
-	m_minusButton->SetVisible(p_isVisible);
-	m_sellButton->SetVisible(false);
-	m_sellAllButton->SetVisible(false);
-	m_buyButton->SetVisible(false);
-	m_slot->SetVisible(p_isVisible);
-
+	m_choosePlayerInventory->SetIsVisible(p_isVisible);
+	m_chooseShopInventory->SetIsVisible(p_isVisible);
+	m_plusButton->SetIsVisible(p_isVisible);
+	m_minusButton->SetIsVisible(p_isVisible);
+	m_sellButton->SetIsVisible(false);
+	m_sellAllButton->SetIsVisible(false);
+	m_buyButton->SetIsVisible(false);
+	m_slot->SetIsVisible(p_isVisible);
 	m_playerInventory->SetVisible(false);
 	m_shopInventory->SetVisible(false);
 

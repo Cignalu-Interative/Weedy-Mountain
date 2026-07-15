@@ -104,11 +104,15 @@ void Button::OnUpdate()
 	}
 
 	m_mouseWasIn = mouseIn;
+
+	//std::cout << "Button pos: " << GetPosition().GetX() << " " << GetPosition().GetY() << std::endl;
+	//std::cout << "Text pos: " << GetScene()->GetGeometry<Text>(m_textID)->GetPosition().GetX() << " " << GetScene()->GetGeometry<Text>(m_textID)->GetPosition().GetY() << std::endl;
 }
 
-void Button::SetVisible(bool p_isVisible)
+void Button::SetIsVisible(bool p_isVisible)
 {
-	SetIsVisible(p_isVisible);
+	Entity::SetIsVisible(p_isVisible);
 
 	GetScene()->GetGeometry<Text>(m_textID)->SetIsVisible(p_isVisible);
+
 }

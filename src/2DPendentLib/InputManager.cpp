@@ -529,6 +529,8 @@ void InputManager::StopTextInput()
 		SDL_Log("Lib/InputManager.cpp/SetStartTextInput/SDL_StopTextInput non reussie : %s", SDL_GetError());
 		return;
 	}
+	m_compositionTextInput.clear();
+	m_finalTextInput.clear();
 	std::cerr << "InputManager : SDL_StopTextInput" << std::endl;
 }
 

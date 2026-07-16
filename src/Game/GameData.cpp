@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "GameData.h"
+#include "RecipeDataBase.h"
 
 //Trucs qu'on peut changer si on veut changer la durée plus tard
 
@@ -143,4 +144,22 @@ void GameData::Sleep()
 	{
 		m_timeSpent = (totalDay + 1) * secPerDay + sixAM;
 	}
+}
+
+void GameData::UnlockRecipe(const std::string& recipeID)
+{
+	if (IsRecipeUnlocked(recipeID) || RecipeDataBase::Get()->GetRecipe(recipeID) != nullptr)
+		return;
+
+	m_unlockedRecipes.push_back(recipeID);
+}
+
+bool GameData::IsRecipeUnlocked(const std::string& recipeID)
+{
+	return std::find(m_unlockedRecipes.begin(), m_unlockedRecipes.end(), recipeID) != m_unlockedRecipes.end();
+}
+
+const std::vector<std::string>& GameData::GetUnlockedRecipes()
+{
+	return m_unlockedRecipes;
 }

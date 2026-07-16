@@ -13,6 +13,8 @@ private:
 
 	float m_timeScale = 1.0f;
 
+	std::vector<std::string> m_unlockedRecipes;
+
 	GameData() = default;
 
 
@@ -39,4 +41,9 @@ public:
 	void SetTimeScale(float newScale);
 
 	void Sleep();
+
+	void UnlockRecipe(const std::string& recipeID);
+	bool IsRecipeUnlocked(const std::string& recipeID);
+
+	const std::vector<std::string>& GetUnlockedRecipes();
 };

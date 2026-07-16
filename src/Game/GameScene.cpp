@@ -43,8 +43,8 @@ void GameScene::OnInitialize()
 	Application::Get()->SetIsAutoFPS(false);
 
 	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
-	m_player->GetCollider()->SetDimension({ 16,16 });
-	m_player->GetCollider()->SetOffset({ 0,8 });
+	m_player->GetCollider()->SetDimension({ 14,14 });
+	m_player->GetCollider()->SetOffset({ 0,9 });
 	m_player->SetRigidBody(true);
 	m_player->SetTag(1);
 	m_player->SetDrawLayer(2);
@@ -59,8 +59,8 @@ void GameScene::OnInitialize()
 	
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
-	Application::Get()->SetClampCameraToCurrentMap(true);
-	GetCamera()->SetFollowedEntity(m_player);
+	// Application::Get()->SetClampCameraToCurrentMap(true);
+	// GetCamera()->SetFollowedEntity(m_player);
 
 	MapTiled* map = mm->GetCurrentMap();
 
@@ -105,6 +105,7 @@ void GameScene::OnEvent()
 
 	if (im->IsKeyboardDown(K_E))
 		GetCamera()->SetZoom(1);
+
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{
 		Application::Get()->SetIsAutoFPS(false);

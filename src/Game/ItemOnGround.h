@@ -6,6 +6,9 @@ class ItemOnGround: public Entity
 {
 	ItemStack m_ItemInfo;
 	int m_myID;
+	float m_timer = 2.f;
+	float m_timeToDestroy = 300.f;
+
 protected:
 
 	void OnInitialize() override;

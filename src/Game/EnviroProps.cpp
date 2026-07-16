@@ -7,11 +7,12 @@
 #include "SpriteContainer.h"
 #include "ItemOnGround.h"
 #include "ItemDataBase.h"
+#include "FarmManager.h"
 
 
 void EnviroProps::OnInitialize()
 {
-	
+
 }
 
 void EnviroProps::OnEvent()
@@ -28,7 +29,7 @@ void EnviroProps::OnEvent()
 	Vector2f playerPos = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition();
 	int playerLayer = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetDrawLayer();
 
-	if (playerPos.GetX() > GetPosition().GetX() - 30 && playerPos.GetX() < GetPosition().GetX() + 30 && playerLayer < GetDrawLayer() && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
+	if (playerPos.GetX() > GetPosition().GetX() - 50 && playerPos.GetX() < GetPosition().GetX() + 50 && playerLayer < GetDrawLayer() && playerPos.GetY() > GetPosition().GetY() - GetSprite()->GetDimension().GetY()/2) {
 		if(Sprite* sprite = GetSprite("default"))sprite->SetOpacity(100);
 	}
 	else {
@@ -39,6 +40,7 @@ void EnviroProps::OnEvent()
 
 void EnviroProps::OnUpdate()
 {
+	SetPosition(m_stats.m_position->GetPosition());
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 }
 
@@ -67,6 +69,23 @@ void EnviroProps::OnDestroy()
 			CreateItem(i);
 		}
 	}
+
+	m_stats.m_position->SetCanGrow(true);
+
+	if (m_name == EnviroSpawnName::Stone) {
+		std::vector<FarmTile*> m_farmTiles = FarmManager::Get()->GetAllFarmTiles();
+		float radius = 23.f;
+		float radiusSqr = radius * radius;
+		for (int tile = 0; tile < m_farmTiles.size(); tile++) {
+
+			float dx = m_farmTiles[tile]->GetPosition().GetX() - m_stats.m_position->GetPosition().GetX();
+			float dy = m_farmTiles[tile]->GetPosition().GetY() - m_stats.m_position->GetPosition().GetY();
+
+			if ((dx * dx + dy * dy) <= radiusSqr) {
+				m_farmTiles[tile]->SetCanGrow(true);
+			}
+		}
+	}
 }
 
 void EnviroProps::CreateItem(int lootPos)
@@ -76,7 +95,7 @@ void EnviroProps::CreateItem(int lootPos)
 	float posY = GetPosition().GetY();
 	ItemOnGround* Loot;
 	std::string path = ItemDataBase::Get()->GetItem(m_loots[lootPos]->m_item.GetID())->GetPath();
-	Loot = sc->CreateEntity<ItemOnGround>({ Aleatory::GetFloat(posX,posX + 50),Aleatory::GetFloat(posY, posY + 50) }, { 16,16 }, path, Shape::Circle);
+	Loot = sc->CreateEntity<ItemOnGround>({ Aleatory::GetFloat(posX-25,posX + 25),Aleatory::GetFloat(posY - 10, posY + 10) }, { 16,16 }, path, Shape::Circle);
 	Loot->SetItem(m_loots[lootPos]->m_item);
 	Loot->SetTag(3);
 	Loot->GetCollider()->Resize({ 20,20 });

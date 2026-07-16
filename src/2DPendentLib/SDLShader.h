@@ -22,6 +22,5 @@ public:
 	// Sert pour savoir quel type de shader utiliser (GLSL, HLSL, etc.) en fonction de la plateforme et du GPU
 	// Retourne SDL_GPU_SHADERFORMAT_INVALID si le GPU Device n'est pas initialis
 	SDL_GPUShaderFormat GetShaderFormat() const;
-
 };
 

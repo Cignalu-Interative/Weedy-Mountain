@@ -1,0 +1,1 @@
+dxc.exe -T vs_6_0 -E main -Fo "Nom de sortie du shaders compilé".dxil "nom du shader à compilé".hlsl

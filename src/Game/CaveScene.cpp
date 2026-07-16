@@ -20,10 +20,6 @@
 
 void CaveScene::OnInitialize()
 {
-	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
-	MapTiledManager* mm = MapTiledManager::Get();
-	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Cave");
 }
 
 void CaveScene::OnEvent()
@@ -41,9 +37,11 @@ void CaveScene::OnDestroy()
 void CaveScene::OnSleep()
 {
 	SceneManager::Get()->GetScene("cave")->SetIsVisible(false);
+	SetSleepEvent(true);
 }
 
 void CaveScene::OnWake()
 {
 	SceneManager::Get()->GetScene("cave")->SetIsVisible(true);
+	MapTiledManager::Get()->SetCurrentMap("Cave");
 }

@@ -138,6 +138,8 @@ void GameScene::OnDestroy()
 void GameScene::OnSleep()
 {
 	SceneManager::Get()->GetScene("game")->SetIsVisible(false);
+	SetSleepEvent(true);
+	SetSleepEvent(true);
 }
 
 void GameScene::OnWake()

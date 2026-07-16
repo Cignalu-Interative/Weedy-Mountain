@@ -64,9 +64,9 @@ private:
 
 	bool m_isHasOutline = false; // Si true, le texte aura un contour (outline) autour des caractères
 
-	int m_outlineSize = 2; // Taille du contour (outline) autour des caractères du texte (en pixels)
+	int m_outlineSize = 0; // Taille du contour (outline) autour des caractères du texte (en pixels)
 
-	Color m_outlineColor = ColorsNamed::Red;
+	Color m_outlineColor = ColorsNamed::Transparent;
 
 public:
 

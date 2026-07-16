@@ -61,6 +61,7 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
+	
 	Inventory* shopInventory = CreateEntity<Inventory>({}, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	shopInventory->SetDrawLayer(INT_MAX - 4);
 	shopInventory->AddItem("ITEM_WOOD", 100, false);
@@ -75,7 +76,10 @@ void VillageScene::OnInitialize()
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
-
+	m_shopPNJ->SetOnFinishFunction([this] {
+		m_shop->SetVisible(true); 
+		m_player->LockInputs();}
+	);
 }
 
 void VillageScene::OnEvent()
@@ -93,9 +97,7 @@ void VillageScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_shopPNJ->IsInPlayerZone())
 	{
-		m_shopPNJ->Talk("Bonjour, bienvenue dans la boutique");
-		m_player->LockInputs();
-		m_shop->SetVisible(true);
+		m_shopPNJ->Talk("Bonjour, bienvenue dans la boutique! Que puis-je faire pour vous aujourd'hui ?");
 	}
 }
 

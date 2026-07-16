@@ -16,34 +16,27 @@ void PNJ::OnInitialize()
 	m_scene = GetScene();
 	m_scene->CreateFillRect("dialogBox", Vector2f(GetScene()->GetWindowWidth() / 2, GetScene()->GetWindowHeight() - 100), Vector2i(GetScene()->GetWindowWidth() / 1.9f, 100), Color(255, 255, 255, 255), true);
 	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
-	Vector2f dialogBoxPos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 0,0 });
+
+	m_dialogBoxPos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 0,0 });
+	m_dialogBoxDim = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetDimension();
 	m_pressSpacePos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 1,1 });
 
-	float m_rectX = dialogBoxPos.GetX();
-	float m_rectY = dialogBoxPos.GetY();
+	float m_rectX = m_dialogBoxPos.GetX();
+	float m_rectY = m_dialogBoxPos.GetY();
 
 	m_textX = m_rectX + 10;
 	m_textY = m_rectY + 10;
 
-	m_scene->CreateText("dialog1", Vector2f(m_textX, m_textY), "", Color(0, 0, 0, 255), true);
-	m_scene->GetGeometry<Text>("dialog1")->SetFontSize(19);
-	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(false);
+	m_scene->CreateText("dialog", Vector2f(m_textX, m_textY), "", ColorsNamed::Black, true);
+	m_scene->GetGeometry<Text>("dialog")->SetFontSize(24);
+	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("dialog")->SetIsWrapped(true);
+	m_scene->GetGeometry<Text>("dialog")->SetTypeText(Blended);
+	m_scene->GetGeometry<Text>("dialog")->SetWrapWidth( m_dialogBoxDim.GetX() * 2/3);
 
-	m_scene->CreateText("dialog2", Vector2f(m_textX, m_textY + 20), "", Color(0, 0, 0, 255), true);
-	m_scene->GetGeometry<Text>("dialog2")->SetFontSize(19);
-	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(false);
-	
-	m_scene->CreateText("dialog3", Vector2f(m_textX, m_textY + 40), "", Color(0, 0, 0, 255), true);
-	m_scene->GetGeometry<Text>("dialog3")->SetFontSize(19);
-	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(false);
-	
-	m_scene->CreateText("dialog4", Vector2f(m_textX, m_textY + 60), "", Color(0, 0, 0, 255), true);
-	m_scene->GetGeometry<Text>("dialog4")->SetFontSize(19);
-	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(false);
-	
-	m_scene->CreateText("pressSpace", Vector2f(m_pressSpacePos.GetX()- 10, m_pressSpacePos.GetY() - 10), "Press SPACE to continue", Color(0, 0, 0, 200), true);
+	m_scene->CreateText("pressSpace", Vector2f(m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY() - 10), "Press SPACE to continue", Color(0, 0, 0, 200), true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetFontSize(17);
-	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY()  }, {1,1});
+	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY() }, { 1,1 });
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 }
@@ -55,12 +48,9 @@ void PNJ::OnEvent()
 	}
 	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_index < m_initial.size())
 	{
-		for (int i = 0; i < m_lines.size(); i++)
-		{
-			m_scene->GetGeometry<Text>("dialog" + std::to_string(i + 1))->SetText(m_lines[i]);
-			m_scene->GetGeometry<Text>("dialog" + std::to_string(i + 1))->SetPosition(Vector2f(m_textX, m_textY + (i * 20)), { 0,0.5f });
-			m_isFinished = true;
-		}
+		m_scene->GetGeometry<Text>("dialog")->SetText(m_initial);
+		m_isFinished = true;
+
 		return;
 	}
 }
@@ -95,34 +85,23 @@ void PNJ::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side
 
 void PNJ::Talk(const std::string& p_say)
 {
-	m_scene->GetGeometry<Text>("dialog1")->SetText("");
-	m_scene->GetGeometry<Text>("dialog2")->SetText("");
-	m_scene->GetGeometry<Text>("dialog3")->SetText("");
-	m_scene->GetGeometry<Text>("dialog4")->SetText("");
+	m_scene->GetGeometry<Text>("dialog")->SetText("");
 
 
 	m_isTalking = true;
 	m_isFinished = false;
 
 	m_initial = p_say;
-	m_lines = SplitDialogue(m_initial, LENGHT);
-
 	m_index = 0;
 
 	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
 }
 
 void PNJ::Talk(int p_dialogID)
 {
-	m_scene->GetGeometry<Text>("dialog1")->SetText("");
-	m_scene->GetGeometry<Text>("dialog2")->SetText("");
-	m_scene->GetGeometry<Text>("dialog3")->SetText("");
-	m_scene->GetGeometry<Text>("dialog4")->SetText("");
+	m_scene->GetGeometry<Text>("dialog")->SetText("");
 
 	m_isTalking = true;
 	m_isFinished = false;
@@ -150,34 +129,26 @@ void PNJ::Talk(int p_dialogID)
 	}
 
 	m_initial = *DialogueManager::Get()->GetDialogueById(m_dialogPath, p_dialogID);
-	m_lines = SplitDialogue(m_initial, LENGHT);
 
 	m_index = 0;
 
 	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(true);
-	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(true);
+	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
 
 }
 
 void PNJ::EndTalk()
 {
-	
-	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
-	m_scene->GetGeometry<Text>("dialog1")->SetIsVisible(false);
-	m_scene->GetGeometry<Text>("dialog2")->SetIsVisible(false);
-	m_scene->GetGeometry<Text>("dialog3")->SetIsVisible(false);
-	m_scene->GetGeometry<Text>("dialog4")->SetIsVisible(false);
-	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
-	
+	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 	m_isTalking = false;
 	m_isFinished = true;
 
+	OnFinish();
 
 }
 
@@ -194,109 +165,17 @@ void PNJ::UpdateDialog()
 		return;
 	}
 
+	m_toSay += m_initial[m_index];
+
+	m_scene->GetGeometry<Text>("dialog")->SetText(m_toSay);
+	m_scene->GetGeometry<Text>("dialog")->SetPosition({ m_textX,m_textY, }, { 0,0 });
+
 	m_index++;
 
-	size_t displayedChars = m_index;
-	size_t accumulatedChars = 0;
+	
 
-	// Ligne 1
-	if (m_lines.size() > 0)
-	{
-		size_t charsForThisLine =
-			std::min(displayedChars, m_lines[0].size());
-
-		m_scene->GetGeometry<Text>("dialog1")
-			->SetText(m_lines[0].substr(0, charsForThisLine));
-
-		accumulatedChars += m_lines[0].size();
-	}
-
-	// Ligne 2
-	if (m_lines.size() > 1 && displayedChars > accumulatedChars)
-	{
-		size_t charsForThisLine =
-			std::min(displayedChars - accumulatedChars,
-				m_lines[1].size());
-
-		m_scene->GetGeometry<Text>("dialog2")
-			->SetText(m_lines[1].substr(0, charsForThisLine));
-
-		accumulatedChars += m_lines[1].size();
-	}
-
-	// Ligne 3
-	if (m_lines.size() > 2 && displayedChars > accumulatedChars)
-	{
-		size_t charsForThisLine =
-			std::min(displayedChars - accumulatedChars,
-				m_lines[2].size());
-
-		m_scene->GetGeometry<Text>("dialog3")
-			->SetText(m_lines[2].substr(0, charsForThisLine));
-
-		accumulatedChars += m_lines[2].size();
-	}
-
-	// Ligne 4
-	if (m_lines.size() > 3 && displayedChars > accumulatedChars)
-	{
-		size_t charsForThisLine =
-			std::min(displayedChars - accumulatedChars,
-				m_lines[3].size());
-
-		m_scene->GetGeometry<Text>("dialog4")
-			->SetText(m_lines[3].substr(0, charsForThisLine));
-	}
-
-	m_timer = m_interval;
-
-	m_scene->GetGeometry<Text>("dialog1")->SetPosition(
-		Vector2f(m_textX, m_textY),
-		{ 0, 0.5f });
-
-	m_scene->GetGeometry<Text>("dialog2")->SetPosition(
-		Vector2f(m_textX, m_textY + 20),
-		{ 0, 0.5f });
-
-	m_scene->GetGeometry<Text>("dialog3")->SetPosition(
-		Vector2f(m_textX, m_textY + 40),
-		{ 0, 0.5f });
-
-	m_scene->GetGeometry<Text>("dialog4")->SetPosition(
-		Vector2f(m_textX, m_textY + 60),
-		{ 0, 0.5f });
 }
 
-std::vector<std::string> PNJ::SplitDialogue(const std::string& text, size_t maxLength)
-{
-	std::vector<std::string> lines;
 
-	std::stringstream ss(text);
-	std::string word;
-
-	std::string currentLine;
-
-	while (ss >> word)
-	{
-		if (currentLine.empty())
-		{
-			currentLine = word;
-		}
-		else if (currentLine.size() + word.size() + 1 <= maxLength)
-		{
-			currentLine += " " + word;
-		}
-		else
-		{
-			lines.push_back(currentLine);
-			currentLine = word;
-		}
-	}
-
-	if (!currentLine.empty())
-		lines.push_back(currentLine);
-
-	return lines;
-}
 
 

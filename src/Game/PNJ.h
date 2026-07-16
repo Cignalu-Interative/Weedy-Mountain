@@ -9,6 +9,8 @@ private :
 	Button* m_button = nullptr;
 
 	Vector2f m_pressSpacePos = {};
+	Vector2i m_dialogBoxDim = {};
+	Vector2f m_dialogBoxPos = {};
 
 	bool m_isInPlayerZone = false;
 	bool m_isTalking = false;
@@ -20,14 +22,15 @@ private :
 	float m_textY;
 
 	int m_index = 0;
-	int m_laneIndex = 1;
 
-	std::vector<std::string> m_lines;
 	std::vector<Dialogue::Choice> m_choices;
 	std::vector<Button*> m_buttons;
 
 	std::string m_initial = "";
+	std::string m_toSay = "";
 	std::string m_dialogPath = "";
+
+	std::function<void()> m_onFinish; 
 public : 
 
 	void OnInitialize() override;
@@ -38,17 +41,18 @@ public :
 
 
 	void SetDialogPath(std::string p_path) { m_dialogPath = p_path; }
+	void SetOnFinishFunction(std::function<void()> p_onFinish) { m_onFinish = p_onFinish; }
 
 	void Talk(const std::string& p_say);
 	void Talk(int p_dialogueID);
 	void EndTalk();
+	void OnFinish() { m_onFinish(); }
 	void UpdateDialog();
 
 	bool IsTalking() { return m_isTalking; }
 	bool IsInPlayerZone() { return m_isInPlayerZone; }
 	bool IsFinished() { return m_isFinished; }
 
-	std::vector<std::string> SplitDialogue(const std::string& text, size_t maxLength);
 	std::vector<Dialogue::Choice> GetChoices() { return m_choices; }
 };
 

@@ -181,6 +181,10 @@ void GameScene::OnEvent()
 	{
 		im->DeleteLastCharInFinalTextInput();
 	}
+	if (im->IsTextInputActive() == true && im->IsKeyboardHeld(K_END))
+	{
+		im->DeleteLastCharInFinalTextInput();
+	}
 	if (im->IsTextInputActive() == true)
 	{
 		//m_textBox->SetText(im->GetfinalTextInput());

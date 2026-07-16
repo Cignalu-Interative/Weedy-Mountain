@@ -7,7 +7,7 @@ class SDLShader
 {
 private:
 
-	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utilis pour grer les shaders et les textures
+	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utile pour gérer les shaders et les textures
 
 public:
 

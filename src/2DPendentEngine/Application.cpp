@@ -51,6 +51,7 @@ void Application::Init()
 	m_targetDeltaTime = 1.0f / m_targetFPS;
 	
 	SDLShader::Get()->SetGPUDevice(m_render.GetGPUDevice());
+	std::cerr << SDLShader::Get()->GetShaderFormat() << std::endl;
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
 	Debug::Get()->CreateTextEngineProperties();
 	Debug::SetDeltaTimeCallback([this]() {

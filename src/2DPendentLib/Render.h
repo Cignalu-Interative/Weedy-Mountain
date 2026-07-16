@@ -26,6 +26,9 @@ public:
 
 	~Render(); //Destructeur du render
 
+	void CreatePropertiesGPU(); //Creation des properties du GPU
+	void CreatePropertiesRenderer(Window& f_window); //Creation des properties du render
+
 	//Creation d'un render sur la m_window
 	bool CreateRenderer(Window& f_window); 
 	//Clear le render en cours

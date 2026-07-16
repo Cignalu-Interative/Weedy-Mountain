@@ -10,32 +10,12 @@ Render::Render()
 		SDL_Log("Lib/Render.cpp/Render/SDL_CreateProperties failed: %s", SDL_GetError());
 		return;
 	}
-
 	m_propertiesRendererID = SDL_CreateProperties();
 	if (m_propertiesRendererID == 0)
 	{
 		SDL_Log("Lib/Render.cpp/Render/SDL_CreateProperties failed: %s", SDL_GetError());
 		return;
 	}
-
-#ifdef NDEBUG
-	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN, false);
-#endif
-#ifdef _DEBUG
-	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN, true);
-
-	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN, false);
-
-	SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN, true);
-
-	SDL_SetStringProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING, NULL);
-
-	SDL_SetNumberProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_SPIRV_BOOLEAN, SDL_TRUE);
-	SDL_SetNumberProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN, SDL_TRUE);
-	SDL_SetNumberProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_MSL_BOOLEAN, SDL_FALSE);
-#endif
-
-	
 	SetBackgroundColor(ColorsNamed::Black);
 }
 
@@ -49,26 +29,114 @@ Render::~Render()
 	{
 		SDL_DestroyProperties(m_propertiesRendererID);
 	}
+	if (m_renderer != NULL)
+	{
+		SDL_DestroyRenderer(m_renderer);
+	}
 	if (m_gpuDevice != NULL)
 	{
 		SDL_DestroyGPUDevice(m_gpuDevice);
 	}
-	if (m_renderer != NULL)
+}
+
+void Render::CreatePropertiesGPU()
+{
+#ifdef NDEBUG
+	if (SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN, false) == false)
 	{
-		SDL_DestroyRenderer(m_renderer);
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetBooleanProperty/SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN, false) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetBooleanProperty/SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN non reussie : %s", SDL_GetError());
+		return;
+	}
+#endif
+#ifdef _DEBUG
+	if (SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN, true) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetBooleanProperty/SDL_PROP_GPU_DEVICE_CREATE_DEBUGMODE_BOOLEAN non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN, true) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetBooleanProperty/SDL_PROP_GPU_DEVICE_CREATE_VERBOSE_BOOLEAN non reussie : %s", SDL_GetError());
+		return;
+	}
+#endif
+	if (SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN, false) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetBooleanProperty/SDL_PROP_GPU_DEVICE_CREATE_PREFERLOWPOWER_BOOLEAN non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetStringProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING, "direct3d12") == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetStringProperty/SDL_PROP_GPU_DEVICE_CREATE_NAME_STRING non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetBooleanProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN, true) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetBooleanProperty/SDL_PROP_GPU_DEVICE_CREATE_SHADERS_DXIL_BOOLEAN non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetNumberProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER, 619) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetNumberProperty/SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_VERSION_NUMBER non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetStringProperty(m_propertiesGPU_ID, SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING, "../../lib/DLL_D3D12/") == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesGPU/SDL_SetStringProperty/SDL_PROP_GPU_DEVICE_CREATE_D3D12_AGILITY_SDK_PATH_STRING non reussie : %s", SDL_GetError());
+		return;
+	}
+}
+
+void Render::CreatePropertiesRenderer(Window& f_window)
+{
+	if (SDL_SetStringProperty(m_propertiesRendererID, SDL_PROP_RENDERER_CREATE_NAME_STRING, "gpu") == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesRenderer/SDL_SetStringProperty/SDL_PROP_RENDERER_CREATE_NAME_STRING non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetPointerProperty(m_propertiesRendererID, SDL_PROP_RENDERER_CREATE_WINDOW_POINTER, f_window.GetWindow()) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesRenderer/SDL_SetPointerProperty/SDL_PROP_RENDERER_CREATE_WINDOW_POINTER non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetNumberProperty(m_propertiesRendererID, SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER, SDL_COLORSPACE_RGB_DEFAULT) == false) // ou SDL_COLORSPACE_SRGB_LINEAR
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesRenderer/SDL_SetNumberProperty/SDL_PROP_RENDERER_CREATE_OUTPUT_COLORSPACE_NUMBER non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetNumberProperty(m_propertiesRendererID, SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER, 0) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesRenderer/SDL_SetNumberProperty/SDL_PROP_RENDERER_CREATE_PRESENT_VSYNC_NUMBER non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetPointerProperty(m_propertiesRendererID, SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER, m_gpuDevice) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesRenderer/SDL_SetPointerProperty/SDL_PROP_RENDERER_CREATE_GPU_DEVICE_POINTER non reussie : %s", SDL_GetError());
+		return;
+	}
+	if (SDL_SetBooleanProperty(m_propertiesRendererID, SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN, true) == false)
+	{
+		SDL_Log("Lib/Render.cpp/CreatePropertiesRenderer/SDL_SetBooleanProperty/SDL_PROP_RENDERER_CREATE_GPU_SHADERS_DXIL_BOOLEAN non reussie : %s", SDL_GetError());
+		return;
 	}
 }
 
 bool Render::CreateRenderer(Window& f_window)
 {
+	CreatePropertiesGPU();
 	m_gpuDevice = SDL_CreateGPUDeviceWithProperties(m_propertiesGPU_ID);
-
 	if (m_gpuDevice == NULL)
 	{
 		SDL_Log("Lib/SDLShader.cpp/InitializeGPUDevice/SDL_CreateGPUDeviceWithProperties failed: %s", SDL_GetError());
 		return false;
 	}
 
+	CreatePropertiesRenderer(f_window);
 	//m_renderer = SDL_CreateRenderer(f_window.m_window, NULL);
 	m_renderer = SDL_CreateRendererWithProperties(m_propertiesRendererID);
 	if (m_renderer == NULL)

@@ -19,7 +19,14 @@ Sprite::~Sprite()
 
 void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Render* f_render)
 {
-    m_texture = AssetManager::Get()->GetTexture(p_id);
+    if (p_id.empty())
+    {
+        return;
+	}
+    else
+    {
+        m_texture = AssetManager::Get()->GetTexture(p_id);
+    }
     if (m_texture == nullptr)
     {
 		SDL_Log("Lib/Sprite.cpp/Initialise/AssetManager::Get()->GetTexture/cela na pas fonctionn� : %s", SDL_GetError());

@@ -2,6 +2,7 @@
 
 #include "ItemData.h"
 #include <unordered_map>
+#include <functional>
 
 class ItemDataBase
 {
@@ -14,7 +15,7 @@ public:
 
 	static ItemDataBase* Get();
 
-	bool LoadFromJSON(const std::string& filePath);
+	bool LoadFromJSON(const std::string& filePath, std::function<bool(const std::string&)> validateActionID = nullptr);
 
 	ItemData* GetItem(const std::string& ID);
 

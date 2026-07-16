@@ -17,15 +17,18 @@ private:
 
 	int m_maxStack = 64;
 
+	std::string m_useActionID;
+
 public:
 
-	ItemData(const std::string& ID, const std::string& path, const std::string& name, const std::string& description, int buyPrice, int sellPrice, int maxStack);
+	ItemData(const std::string& ID, const std::string& path, const std::string& name, const std::string& description, int buyPrice, int sellPrice, int maxStack, const std::string& useActionID = "");
 
-	std::string& GetID();
-	std::string& GetPath();
-	std::string& GetName();
-	std::string& GetDescription();
-	int GetBuyPrice();
-	int GetSellPrice();
-	int GetMaxStack();
+	const std::string& GetID() const;
+	const std::string& GetPath() const;
+	const std::string& GetName() const;
+	const std::string& GetDescription() const;
+	int GetBuyPrice() const;
+	int GetSellPrice() const;
+	int GetMaxStack() const;
+	const std::string& GetUseActionID() const;
 };

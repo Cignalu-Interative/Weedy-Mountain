@@ -16,7 +16,7 @@ private :
 	Inventory* m_shopInventory = nullptr;
 	//Inventory* m_playerInventory = nullptr;
 
-	PlayerInventory* m_playerInventorys = nullptr;
+	PlayerInventory* m_playerInventory = nullptr;
 
 	TextBox* m_textBox = nullptr;
 
@@ -67,7 +67,7 @@ public :
 
 	void SetShopInventory(Inventory* p_shopInventory) { m_shopInventory = p_shopInventory; }
 
-	void SetVisible(bool p_isVisible);
+	void SetIsVisible(bool p_isVisible);
 
 	//TO DO 
 	void Open();

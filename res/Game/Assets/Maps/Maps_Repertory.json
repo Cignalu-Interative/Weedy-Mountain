@@ -1,6 +1,9 @@
 {
   "maps": [
     {
+      "path": "../../res/Game/Assets/Maps/tmx/Cave.tmx"
+    },
+    {
       "path": "../../res/Game/Assets/Maps/tmx/Farm.tmx"
     },
     {

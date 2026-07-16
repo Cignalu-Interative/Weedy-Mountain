@@ -27,6 +27,8 @@
 #include "UiShop.h"
 #include "SpriteContainer.h"
 
+#include "2DPendentLib/ObjectGroupTiled.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -42,7 +44,7 @@ void GameScene::OnInitialize()
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
-	m_player = CreateEntity<Player>({150, 50}, { 16,32 }, "player", Shape::Rectangle);
+	m_player = CreateEntity<Player>({500, 150}, { 16,32 }, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });
 	m_player->GetCollider()->SetOffset({ 0,8 });
 	m_player->SetRigidBody(true);
@@ -63,6 +65,23 @@ void GameScene::OnInitialize()
 	GetCamera()->SetFollowedEntity(m_player);
 
 	MapTiled* map = mm->GetCurrentMap();
+
+	std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
+
+	for (ObjectTiled* obj : objectGroup)
+	{
+		Vector2f dim = obj->GetObjectDimension();
+		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
+	}
+
+	objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
+
+	for (ObjectTiled* obj : objectGroup)
+	{
+		Vector2f dim = obj->GetObjectDimension();
+		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
+		ent->SetTag(5);
+	}
 
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();
@@ -93,12 +112,6 @@ void GameScene::OnInitialize()
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
-
-
-	Entity* ent = CreateEntity<Entity>({ 0, 0 }, { 200, 200 }, "", Shape::Rectangle);
-	ent->SetTag(5);
-	ent->GetCollider()->SetIsTrigger(true);
-	ent->GetCollider()->SetShow(true);
 }
 
 

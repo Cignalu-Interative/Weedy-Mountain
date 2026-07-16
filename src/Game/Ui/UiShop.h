@@ -1,8 +1,11 @@
 #pragma once
 #include "Entity.h"
 
+#include "Hotbar.h"
 #include "Inventory.h"
+#include "PlayerInventory.h"
 
+class TextBox;
 class UiShop : public Entity
 {
 
@@ -12,6 +15,10 @@ private :
 
 	Inventory* m_shopInventory = nullptr;
 	Inventory* m_playerInventory = nullptr;
+
+	PlayerInventory* m_playerInventorys = nullptr;
+
+	TextBox* m_textBox = nullptr;
 
 	Button* m_sellButton = nullptr;
 	Button* m_sellAllButton = nullptr;
@@ -23,7 +30,7 @@ private :
 	Button* m_choosePlayerInventory = nullptr;
 	Button* m_chooseShopInventory = nullptr;
 
-	int m_slotIndex = 0;
+	int m_slotIndex = -1;
 
 	int m_amountOfItem = 0;
 	int m_totalPrices = 10;
@@ -60,5 +67,10 @@ public :
 	void SetShopInventory(Inventory* p_shopInventory) { m_shopInventory = p_shopInventory; }
 
 	void SetVisible(bool p_isVisible);
+
+	//TO DO 
+	void Open();
+
+	void Close();
 };
 

@@ -12,6 +12,8 @@ private:
 
 	int m_slotCount;
 
+	uint32_t m_myID;
+
 public:
 
 	Inventory(int slotCount = 30);

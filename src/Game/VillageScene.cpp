@@ -61,10 +61,9 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
-	Inventory* shopInventory = CreateEntity<Inventory>({}, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	Inventory* shopInventory = CreateEntity<Inventory>({ m_spawnPoint + Vector2f{200,0} }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	shopInventory->SetDrawLayer(INT_MAX - 4);
 	shopInventory->AddItem("ITEM_WOOD", 100, false);
-	shopInventory->SetVisible(false);
 
 	m_shop = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_shop->GetSprite()->SetDimension(m_shop->GetDimension());

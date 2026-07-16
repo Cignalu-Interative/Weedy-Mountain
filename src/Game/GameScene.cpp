@@ -202,8 +202,6 @@ void GameScene::OnSleep()
 	//h->SetIsVisible(true);
 	//i->SetIsVisible(true);
 
-	
-
 }
 
 void GameScene::OnWake()

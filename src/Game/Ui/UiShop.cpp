@@ -6,6 +6,7 @@
 #include "2DPendentLib/InputManager.h"
 #include "ItemDataBase.h"
 #include "SpriteContainer.h"
+#include "TextBox.h"
 
 #include "PlayerInventory.h"
 
@@ -14,6 +15,7 @@ void UiShop::OnInitialize()
 	Scene* scene = GetScene();
 
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory->GetInventory();
+	m_playerInventorys = GameData::Get().GetPlayerData().m_playerInventory;
 
 	Vector2f topRightPos = GetPosition({ 1,0 });
 	Vector2i dimension = GetDimension();
@@ -76,6 +78,7 @@ void UiShop::OnInitialize()
 	float offsetPriceY = halfRightPos.GetY() * 1.275f;
 	float offsetItemNameY = halfRightPos.GetY() * 0.86f;
 
+	//m_textBox = scene->CreateTextBox("itemAmount", { offset.GetX(),halfRightPos.GetY() }, { 50,25 }, ColorsNamed::White);
 	scene->CreateText("itemAmount", { offset.GetX(),halfRightPos.GetY() }, "Item : " + std::to_string(m_amountOfItem), ColorsNamed::White, true);
 	scene->CreateText("totalPrice", { offset.GetX(),offsetPriceY }, "Price : " + std::to_string(m_totalPrices), ColorsNamed::White, true);
 	scene->CreateText("itemName", { offset.GetX(), offsetItemNameY },"", ColorsNamed::White, true);
@@ -120,6 +123,7 @@ void UiShop::OnUpdate()
 
 	m_totalPrices = m_slot->GetStack().GetAmount() * price;
 
+	//m_textBox->SetText("Item : " + std::to_string(m_amountOfItem));
 	GetScene()->GetGeometry<Text>("itemAmount")->SetText("Item : " + std::to_string(m_amountOfItem));
 	GetScene()->GetGeometry<Text>("totalPrice")->SetText("Price : " + std::to_string(m_totalPrices));
 	if (m_slot->IsEmpty())
@@ -130,6 +134,8 @@ void UiShop::OnUpdate()
 	std::string itemName = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetName();
 	GetScene()->GetGeometry<Text>("itemName")->SetText(itemName);
 
+	//std::cout << "Slot :" << m_playerInventory->GetSlot(0)->GetIsVisible() << std::endl;
+	//std::cout << "Update Text :" <<GetScene()->GetGeometry<Text>(m_playerInventory->GetSlot(0)->GetTextID())->GetText() << std::endl;
 }
 
 void UiShop::PlaceInventory(Inventory* p_inventory)
@@ -142,6 +148,10 @@ void UiShop::PlaceInventory(Inventory* p_inventory)
 	float offsetY = pos.GetY() + 110;
 	p_inventory->SetPosition({ pos.GetX() * 1.25f,offsetY }, { 0,1 });
 	p_inventory->SetVisible(true);
+
+	if (p_inventory == m_playerInventory)
+		m_playerInventorys->GetHotbar()->SetPosition({pos.GetX() * 1.25f,offsetY + 110}, {0,1});
+	//std::cout << "Text :" << GetScene()->GetGeometry<Text>(m_playerInventory->GetSlot(0)->GetTextID())->GetText() << std::endl;
 }
 
 void UiShop::Buy()
@@ -208,7 +218,9 @@ void UiShop::SellAll()
 
 void UiShop::ChoosePlayerInventoryButtonClicked()
 {
-	PlaceInventory(m_playerInventory);
+	Inventory* playerInventory = m_playerInventorys->GetInventory();
+	PlaceInventory(playerInventory);
+	m_playerInventorys->GetHotbar()->SetIsVisible(true);
 	m_sellButton->SetIsVisible(true);
 	m_sellAllButton->SetIsVisible(true);
 	m_buyButton->SetIsVisible(false);
@@ -223,6 +235,7 @@ void UiShop::ChooseShopInventoryButtonClicked()
 	m_sellButton->SetIsVisible(false);
 	m_sellAllButton->SetIsVisible(false);
 	m_playerInventory->SetVisible(false);
+	m_playerInventorys->GetHotbar()->SetIsVisible(false);
 	m_slot->Clear();
 }
 
@@ -231,9 +244,12 @@ void UiShop::PlaceItemInInventoryToSlot()
 	Inventory* inventory = nullptr;
 
 	if (m_sellButton->GetIsVisible())
+	{
 		inventory = m_playerInventory;
+	}
 	else
 		inventory = m_shopInventory;
+
 	//Get item of slot in the inventory and place it in the slot
 	std::vector<InventorySlot*> slots = inventory->GetSlots();
 
@@ -247,6 +263,7 @@ void UiShop::PlaceItemInInventoryToSlot()
 			m_slotIndex = i;
 		}
 	}
+
 }
 
 void UiShop::PlusButton()
@@ -292,6 +309,7 @@ void UiShop::SetVisible(bool p_isVisible)
 	m_playerInventory->SetVisible(false);
 	m_shopInventory->SetVisible(false);
 
+	//m_textBox->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("itemAmount")->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("totalPrice")->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("itemName")->SetIsVisible(p_isVisible);

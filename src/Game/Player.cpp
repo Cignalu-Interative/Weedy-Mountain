@@ -16,8 +16,6 @@
 
 void Player::OnInitialize()
 {
-	
-	
 
 	//gm.SetInventory(PlayerInventory(inv, hot));
 

@@ -52,9 +52,9 @@ void Hotbar::OnUpdate()
 	}
 }
 
-void Hotbar::SetPosition(Vector2f p_newPos)
+void Hotbar::SetPosition(Vector2f p_newPos, Vector2f p_anchor)
 {
-	Entity::SetPosition(p_newPos);
+	Entity::SetPosition(p_newPos,p_anchor);
 	
 	const float spacing = 60.f;
 
@@ -82,7 +82,14 @@ void Hotbar::SetScene(Scene* p_newScene)
 	{
 		s->SetScene(p_newScene);
 	}
+}
 
+void Hotbar::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+
+	for (InventorySlot* slot : m_slots)
+		slot->SetIsVisible(p_isVisible);
 }
 
 bool Hotbar::CanAdd(const std::string& ID, int amount)

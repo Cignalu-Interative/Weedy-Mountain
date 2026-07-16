@@ -105,6 +105,10 @@ void GameScene::OnEvent()
 	if (im->IsKeyboardDown(K_E))
 		GetCamera()->SetZoom(1);
 
+	if (im->IsKeyboardDown(K_C)) {
+		SceneManager::Get()->PushScene("cave");
+	}
+
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{
 		Application::Get()->SetIsAutoFPS(false);
@@ -133,8 +137,10 @@ void GameScene::OnDestroy()
 
 void GameScene::OnSleep()
 {
+	SceneManager::Get()->GetScene("game")->SetIsVisible(false);
 }
 
 void GameScene::OnWake()
 {
+	SceneManager::Get()->GetScene("game")->SetIsVisible(true);
 }

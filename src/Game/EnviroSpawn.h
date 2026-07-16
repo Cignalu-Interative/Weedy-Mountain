@@ -10,6 +10,10 @@ enum class EnviroSpawnName
 	Rock,
 	Stone,
 
+	IronOre,
+	GoldOre,
+	DiamondOre,
+
 	Count
 };
 
@@ -27,13 +31,14 @@ class EnviroSpawn
 {
 	int m_maxTiles = 100;
 	int m_numOfEnviro = 0;
-	std::vector<EnviroInfo*> m_enviroList;
+	std::vector<EnviroInfo*> m_farmEnviroList;
+	std::vector<EnviroInfo*> m_caveEnviroList;
 	std::vector<FarmTile*> m_freeFarmTiles;
 
 	int m_lastDay = -1;
 protected:
 
-	void CreateEnviroProps(EnviroSpawnName _name, int _tile);
+	void CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _scene);
 
 	void SpawnEnviroProps();
 

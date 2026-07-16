@@ -37,7 +37,7 @@ public:
 			return true;
 			break;
 		case (int)PolicemanState::CHASE:
-			return false;
+			return true;
 			break;
 		}
 	};
@@ -62,8 +62,8 @@ class PolicemanPatrolState : public StateBase<Policeman>
 			p_policeman->SetAnimationByName("WalkDown");
 		else if (policemanDir.GetY() < 0)
 			p_policeman->SetAnimationByName("WalkUp");
-
 	};
+
 	void End(Policeman* p_policeman) {};
 
 	bool CanTransitionFrom(Policeman* p_policeman, int currentState)

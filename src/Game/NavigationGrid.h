@@ -13,18 +13,17 @@ enum class TileType
 	COUNT
 };
 
+struct Tile
+{
+	Vector2f pos;
+	Vector2i gridPos;
+	TileType type;
+	bool canBeCrossed;
+};
 
 class NavigationGrid
 {
 private:
-
-	struct Tile
-	{
-		Vector2f pos;
-		Vector2i gridPos;
-		TileType type;
-		bool canBeCrossed;
-	};
 
 	Vector2i m_gridDimension;
 
@@ -40,5 +39,8 @@ public:
 	void SetTileCrossedByType(TileType p_type, bool p_value);
 
 	Tile* GetTileByGridPos(Vector2i p_gridPos);
+
+	Vector2i GetGridDimension() { return m_gridDimension; }
+
 };
 

@@ -25,7 +25,7 @@ void NavigationGrid::Initialize()
 	}
 }
 
-NavigationGrid::Tile* NavigationGrid::InitializeTile(TileInfo p_infos)
+Tile* NavigationGrid::InitializeTile(TileInfo p_infos)
 {
 	Tile* tile = new Tile;
 
@@ -70,7 +70,7 @@ void NavigationGrid::SetTileCrossedByType(TileType p_type, bool p_value)
 	}
 }
 
-NavigationGrid::Tile* NavigationGrid::GetTileByGridPos(Vector2i p_gridPos)
+Tile* NavigationGrid::GetTileByGridPos(Vector2i p_gridPos)
 {
 	return m_mapTiles[p_gridPos.GetX() * m_gridDimension.GetY() + p_gridPos.GetY()];
 }

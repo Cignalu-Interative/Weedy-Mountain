@@ -2,16 +2,17 @@
 //#include "2DPendentLib/glm/glm.hpp"
 #include <SDL3/SDL.h>
 #include "Color.h"
+#include "Window.h"
 //Version 2.2.0
-class Window;
 class Render
 {
 private:
 
+	Window* m_window = nullptr; // Pointeur vers la window, utilis pour grer les shaders et les textures
+
 	SDL_PropertiesID m_propertiesGPU_ID = 0;
 
 	SDL_GPUDevice* m_gpuDevice = nullptr; // Pointeur vers le GPU Device, utilis pour grer les shaders et les textures
-
 
 	SDL_PropertiesID m_propertiesRendererID = 0;
 
@@ -48,6 +49,8 @@ public:
 	void RenderOpenGL(Window* f_window);*/
 
 	void SetBackgroundColor(Color p_color);
+
+	SDL_GPUTextureFormat GetTextureFormat() const { return SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, m_window->GetWindow()); }
 
 	//Liste des class amie avec la class Render
 	friend class Circle;

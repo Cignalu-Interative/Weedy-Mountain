@@ -1,0 +1,2 @@
+.\dxc.exe -T vs_6_0 -E main -Fo SDLShader.vs.dxil SDLShader.vs.hlsl
+.\dxc.exe -T ps_6_0 -E main -Fo SDLShader.ps.dxil SDLShader.ps.hlsl

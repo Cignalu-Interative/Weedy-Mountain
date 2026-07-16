@@ -1,6 +1,5 @@
 #include "pch.h"
 #include "Render.h"
-#include "Window.h"
 
 Render::Render()
 {
@@ -128,6 +127,8 @@ void Render::CreatePropertiesRenderer(Window& f_window)
 
 bool Render::CreateRenderer(Window& f_window)
 {
+	m_window = &f_window;
+
 	CreatePropertiesGPU();
 	m_gpuDevice = SDL_CreateGPUDeviceWithProperties(m_propertiesGPU_ID);
 	if (m_gpuDevice == NULL)
@@ -145,6 +146,7 @@ bool Render::CreateRenderer(Window& f_window)
 		return false;
 	}
 	std::cerr << "Renderer: " << SDL_GetRendererName(m_renderer) << std::endl;
+	std::cerr << "texture format: " << SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, f_window.GetWindow()) << std::endl;
 	return true;
 }
 

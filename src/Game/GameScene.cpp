@@ -37,6 +37,8 @@
 #include "TextBox.h"
 
 
+#include "2DPendentLib/SDLShader.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -133,6 +135,10 @@ void GameScene::OnInitialize()
 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 	m_textBox->GetCollider()->SetIsTrigger(true);
 	m_textBox->SetBackgroundFilled(true);
+
+	SDLShader* shader = SDLShader::Get();
+
+	shader->CreateShader("../../src/2DPendentLib/Shaders/SDLShader2.vs.dxil", "../../src/2DPendentLib/Shaders/SDLShader2.ps.dxil");
 }
 
 

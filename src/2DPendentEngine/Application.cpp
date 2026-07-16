@@ -51,6 +51,8 @@ void Application::Init()
 	m_targetDeltaTime = 1.0f / m_targetFPS;
 	
 	SDLShader::Get()->SetGPUDevice(m_render.GetGPUDevice());
+	SDLShader::Get()->SetTextureFormat(m_render.GetTextureFormat());
+	SDLShader::Get()->SetWindow(&m_window);
 	std::cerr << SDLShader::Get()->GetShaderFormat() << std::endl;
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
 	Debug::Get()->CreateTextEngineProperties();
@@ -289,32 +291,34 @@ void Application::Draw()
 {
 	m_render.ClearRenderer();
 
-	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
+	SDLShader::Get()->Draw();
 
-	//
+	//MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
-	SceneManager::Get()->DrawScenesInStack(&m_render, &m_window, m_camera);
+	////
 
-	/*std::vector<Entity*> entToDraw = m_entities;
+	//SceneManager::Get()->DrawScenesInStack(&m_render, &m_window, m_camera);
 
-	std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
-		{
-			return a->GetDrawLayer() < b->GetDrawLayer();
-		});
+	///*std::vector<Entity*> entToDraw = m_entities;
 
-	for (Entity* entity : entToDraw)
-	{
-		entity->Draw(&m_render, &m_window);
-	}*/
+	//std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
+	//	{
+	//		return a->GetDrawLayer() < b->GetDrawLayer();
+	//	});
 
-	//
+	//for (Entity* entity : entToDraw)
+	//{
+	//	entity->Draw(&m_render, &m_window);
+	//}*/
 
-	Debug::Get()->Draw(&m_render, &m_window, m_camera);
+	////
 
-	if (m_camera->GetIsShow())
-	{
-		m_camera->Draw(&m_render, &m_window, m_camera);
-	}
+	//Debug::Get()->Draw(&m_render, &m_window, m_camera);
+
+	//if (m_camera->GetIsShow())
+	//{
+	//	m_camera->Draw(&m_render, &m_window, m_camera);
+	//}
 
 	m_render.PresentRenderer();
 }

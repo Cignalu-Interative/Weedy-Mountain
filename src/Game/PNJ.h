@@ -46,7 +46,7 @@ public :
 	void Talk(const std::string& p_say);
 	void Talk(int p_dialogueID);
 	void EndTalk();
-	void OnFinish() { m_onFinish(); }
+	void OnFinish();
 	void UpdateDialog();
 
 	bool IsTalking() { return m_isTalking; }

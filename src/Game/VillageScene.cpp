@@ -61,6 +61,15 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
+	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,-100} }, { 8,32 }, "player", Shape::Rectangle);
+	m_shopPNJ->SetOnFinishFunction([this] {
+		m_shop->SetVisible(true);; }
+	);
+
+	m_PNJ->SetOnFinishFunction([this] {
+		m_player->UnlockInputs();
+		});
+
 	Inventory* shopInventory = CreateEntity<Inventory>({ m_spawnPoint + Vector2f{200,0} }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	shopInventory->SetDrawLayer(INT_MAX - 4);
 	shopInventory->AddItem("ITEM_WOOD", 100, false);
@@ -74,10 +83,7 @@ void VillageScene::OnInitialize()
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
-	m_shopPNJ->SetOnFinishFunction([this] {
-		m_shop->SetVisible(true); 
-		m_player->LockInputs();}
-	);
+	
 }
 
 void VillageScene::OnEvent()
@@ -88,6 +94,7 @@ void VillageScene::OnEvent()
 	{
 		SceneManager::Get()->PushScene("game");
 	}
+
 	if (im->IsKeyboardDown(K_M))
 		m_player->TakeDamage(5);
 	if (im->IsKeyboardDown(K_U))
@@ -95,7 +102,20 @@ void VillageScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_shopPNJ->IsInPlayerZone())
 	{
+		m_player->LockInputs();
 		m_shopPNJ->Talk("Bonjour, bienvenue dans la boutique! Que puis-je faire pour vous aujourd'hui ?");
+	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_E) && m_PNJ->IsInPlayerZone())
+	{
+		m_player->LockInputs();
+		m_PNJ->Talk("Salut ! Moi c'est Richard, ça fait maintenant un moment que j'habite ici et j'ai entendu dire que tu venais d'arriver dans le village, je voulais te souhaiter la bienvenue. Surtout si tu as besoin de quoi que ce soit n'hesite pas ! ");
+	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE) && m_shop->GetIsVisible())
+	{
+		m_shop->SetVisible(false);
+		m_player->UnlockInputs();
 	}
 }
 

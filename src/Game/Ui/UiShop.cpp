@@ -96,6 +96,7 @@ void UiShop::OnInitialize()
 
 	SetDrawLayer(GetDrawLayer() - 20);
 	GetCollider()->SetIsTrigger(true);
+
 }
 
 void UiShop::OnEvent()

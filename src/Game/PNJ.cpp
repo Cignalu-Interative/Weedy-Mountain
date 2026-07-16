@@ -28,11 +28,11 @@ void PNJ::OnInitialize()
 	m_textY = m_rectY + 10;
 
 	m_scene->CreateText("dialog", Vector2f(m_textX, m_textY), "", ColorsNamed::Black, true);
-	m_scene->GetGeometry<Text>("dialog")->SetFontSize(24);
+	m_scene->GetGeometry<Text>("dialog")->SetFontSize(22);
 	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(false);
 	m_scene->GetGeometry<Text>("dialog")->SetIsWrapped(true);
 	m_scene->GetGeometry<Text>("dialog")->SetTypeText(Blended);
-	m_scene->GetGeometry<Text>("dialog")->SetWrapWidth( m_dialogBoxDim.GetX() * 2/3);
+	m_scene->GetGeometry<Text>("dialog")->SetWrapWidth( m_dialogBoxDim.GetX() * 0.9);
 
 	m_scene->CreateText("pressSpace", Vector2f(m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY() - 10), "Press SPACE to continue", Color(0, 0, 0, 200), true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetFontSize(17);
@@ -43,7 +43,7 @@ void PNJ::OnInitialize()
 
 void PNJ::OnEvent()
 {
-	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_isInPlayerZone && m_isFinished) {
+	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_isInPlayerZone && m_isFinished && m_isTalking) {
 		EndTalk();
 	}
 	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_index < m_initial.size())
@@ -143,6 +143,9 @@ void PNJ::EndTalk()
 
 	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
 	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(false);
+	m_scene->GetGeometry<Text>("dialog")->SetText("");
+	m_initial = "";
+	m_toSay = "";
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 	m_isTalking = false;
@@ -150,6 +153,12 @@ void PNJ::EndTalk()
 
 	OnFinish();
 
+}
+
+void PNJ::OnFinish()
+{
+	if (m_onFinish)
+		m_onFinish();
 }
 
 void PNJ::UpdateDialog()

@@ -10,6 +10,7 @@ class VillageScene : public Scene
 private :
 	Player* m_player = nullptr;
 	PNJ* m_shopPNJ = nullptr;
+	PNJ* m_PNJ = nullptr;
 	UiShop* m_shop = nullptr;
 	Vector2f m_spawnPoint;
 

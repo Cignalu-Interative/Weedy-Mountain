@@ -1,12 +1,14 @@
 #pragma once
 #include "2DPendentLib/Utils.h"
+#include "2DPendentEngine/MapTiledManager.h"
+#include "2DPendentLib/LayerTiled.h"
 
 enum class TileType
 {
 	GRASS,
 	WATER,
 	PATH,
-
+	STRUCTURE,
 
 	COUNT
 };
@@ -19,16 +21,24 @@ private:
 	struct Tile
 	{
 		Vector2f pos;
+		Vector2i gridPos;
 		TileType type;
 		bool canBeCrossed;
 	};
 
-	std::vector<Tile> m_mapTiles;
+	Vector2i m_gridDimension;
+
+	std::vector<Tile*> m_mapTiles;
 
 public:
 
 	void Initialize();
+	Tile* InitializeTile(TileInfo p_infos);
 
-	std::vector<Tile> GetMapTiles() { return m_mapTiles; }
+	std::vector<Tile*> GetMapTiles() { return m_mapTiles; }
+
+	void SetTileCrossedByType(TileType p_type, bool p_value);
+
+	Tile* GetTileByGridPos(Vector2i p_gridPos);
 };
 

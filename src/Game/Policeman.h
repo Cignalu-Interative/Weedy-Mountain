@@ -1,6 +1,7 @@
 #pragma once
 #include "PNJ.h"
 #include "StateMachine.h"
+#include "NavigationGrid.h"
 
 enum class PolicemanState
 {
@@ -22,8 +23,9 @@ private:
 
 	bool m_isCollidingWithPlayer = false;
 
-	StateMachine m_stateMachine;
+	StateMachine<Policeman> m_stateMachine;
 	
+	NavigationGrid m_navigationGrid;
 
 protected:
 
@@ -43,6 +45,9 @@ public:
 	bool IsIdleCooldownEnded() { return m_isIdleCooldownEnded; }
 	bool IsLoosingPlayer() { return m_isLoosingPlayer; }
 	bool IsCollidingWithPlayer() { return m_isCollidingWithPlayer; }
+
+	void StartChase();
+	void StartPatrol();
 
 };
 

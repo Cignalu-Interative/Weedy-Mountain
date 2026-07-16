@@ -7,6 +7,7 @@
 void Policeman::OnInitialize()
 {
 	AddCollider("detection", { 80, 80 }, Shape::Circle, { 0.f, 0.f }, true);
+	m_navigationGrid.Initialize();
 }
 
 void Policeman::OnUpdate()
@@ -66,6 +67,16 @@ void Policeman::SetupStateMachine()
 
 		transition->AddCondition(new HasLoosePlayer);
 	}
+}
+
+void Policeman::StartChase()
+{
+	m_navigationGrid.SetTileCrossedByType(TileType::GRASS, true);
+}
+
+void Policeman::StartPatrol()
+{
+	m_navigationGrid.SetTileCrossedByType(TileType::GRASS, false);
 }
 
 

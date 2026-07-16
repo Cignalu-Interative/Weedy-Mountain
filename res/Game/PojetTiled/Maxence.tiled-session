@@ -5,11 +5,11 @@
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
         "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx": {
-            "scale": 0.40671874999999996,
+            "scale": 0.75,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 601.1525163273146,
-                "y": 640.4917402996542
+                "x": 578,
+                "y": 608
             }
         },
         "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx": {
@@ -40,6 +40,36 @@
             "scaleInDock": 1
         },
         "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Bridges.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Buildings.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/RockSlope.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Set 1.0.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Set 1.1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Tileset_Road.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Village.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/farm objects free.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/props.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx": {
             "scaleInDock": 1
         }
     },

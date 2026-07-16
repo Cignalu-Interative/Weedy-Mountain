@@ -14,7 +14,7 @@ private :
 	InventorySlot* m_slot = nullptr;
 
 	Inventory* m_shopInventory = nullptr;
-	Inventory* m_playerInventory = nullptr;
+	//Inventory* m_playerInventory = nullptr;
 
 	PlayerInventory* m_playerInventorys = nullptr;
 
@@ -31,6 +31,7 @@ private :
 	Button* m_chooseShopInventory = nullptr;
 
 	int m_slotIndex = -1;
+	InventorySlot* m_selectedSlot = nullptr;
 
 	int m_amountOfItem = 0;
 	int m_totalPrices = 10;

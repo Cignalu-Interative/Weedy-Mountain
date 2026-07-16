@@ -55,6 +55,8 @@ public:
 	InventorySlot* GetInventorySlot(int index);
 	InventorySlot* GetHotbarSlot(int index);
 
+	std::vector<InventorySlot*> GetAllSlots();
+
 	void Clear();
 
 	void OnUpdate();

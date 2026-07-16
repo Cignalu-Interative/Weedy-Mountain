@@ -113,6 +113,9 @@ void Button::SetIsVisible(bool p_isVisible)
 {
 	Entity::SetIsVisible(p_isVisible);
 
+	if (GetScene()->GetGeometry<Text>(m_textID) == nullptr)
+		return;
+
 	GetScene()->GetGeometry<Text>(m_textID)->SetIsVisible(p_isVisible);
 
 }

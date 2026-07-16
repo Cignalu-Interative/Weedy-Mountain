@@ -26,7 +26,6 @@ public:
 	PlayerInventory(Inventory* inv, Hotbar* hot);
 
 
-
 	void Open();
 	void Close();
 	void Toggle();
@@ -34,13 +33,10 @@ public:
 	bool IsOpen();
 	bool IsInitialized() { return m_isInitialized; }
 
-
 	bool CanAdd(const std::string& ID, int amount);
 	bool CanRemove(const std::string& ID, int amount);
 	int AddItem(const std::string& ID, int amount, bool requireFull);
 	int RemoveItem(const std::string& ID, int amount, bool requireFull);
-
-
 
 	int CountItem(const std::string& ID);
 
@@ -48,8 +44,6 @@ public:
 	bool HasItems(const std::string& ID, int amount);
 
 	bool IsEmpty();
-
-
 
 	Inventory* GetInventory();
 	Hotbar* GetHotbar();
@@ -61,11 +55,7 @@ public:
 	InventorySlot* GetInventorySlot(int index);
 	InventorySlot* GetHotbarSlot(int index);
 
-
-
 	void Clear();
-
-
 
 	void OnUpdate();
 

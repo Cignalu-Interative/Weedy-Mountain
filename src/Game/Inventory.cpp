@@ -9,13 +9,17 @@ const int columns = 10;
 
 const float spacing = 60.f;
 
+static uint32_t id = 0;
+
 Inventory::Inventory(int slotCount)
 {
+	m_myID = id++;
 	m_slotCount = slotCount;
 }
 
 void Inventory::OnInitialize()
 {
+
 	SetDrawLayer(INT_MAX - 2);
 
 	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
@@ -33,7 +37,7 @@ void Inventory::OnInitialize()
 
 		slot->AddSprite("item_texture", "", { 54, 54 }, 1, { 0.0f, 0.0f }, true);
 
-		slot->InitText("slot_" + std::to_string(i) + "_amount_text", "");
+		slot->InitText(std::to_string(m_myID) + "_slot_" + std::to_string(i) + "_amount_text", "");
 
 		m_slots.push_back(slot);
 	}
@@ -244,7 +248,7 @@ int Inventory::GetSlotCount()
 	return (int)m_slots.size();
 }
 
-void Inventory::SetPosition(const Vector2f& p_position, Vector2f p_anchor)
+void Inventory::SetPosition(Vector2f p_position, Vector2f p_anchor)
 {
 	Entity::SetPosition(p_position, p_anchor);
 	

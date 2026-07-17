@@ -59,6 +59,10 @@ private:
 
 	bool m_isSpacializationEnabled = true; // Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
 
+	bool m_isPlaying = false; // Bool pour savoir si le son est en cours de lecture ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+	bool m_isPaused = false; // Bool pour savoir si le son est en pause ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+	bool m_isStopped = true; // Bool pour savoir si le son est arrêté ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+
 public:
 
 	//Constructeur par défaut de Sound
@@ -76,9 +80,14 @@ public:
 	//Arrêter le son
 	void Stop();
 	//Mettre en pause le son
-	void Pause() const;
+	void Pause();
 	//Reprendre la lecture du son
-	void Resume() const;
+	void Resume();
+
+	bool IsPlaying() const;
+	bool IsPaused() const;
+	bool IsStopped() const;
+	bool IsFinished() const;
 
 	//Obtenir le format de l'audio
 	AudioFormat GetAudioFormat() const { return m_audioFormat; }

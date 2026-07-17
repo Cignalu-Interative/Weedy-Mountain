@@ -54,6 +54,7 @@ void Application::Init()
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;
 		});
+	SoundManager::Get()->SetMixer(m_window.GetMixer());
 	InputManager::Get()->SetWindow(&m_window);
 	InputManager::Get()->SetQuitCallback([this]()
 		{ m_isRunning = false; });

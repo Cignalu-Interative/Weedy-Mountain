@@ -1,5 +1,4 @@
-crée des zones de text
-faire unscript python pour rendre la session du projet tiled responsive
+faire un get pour connaitre la durée d'un sound
 remplacer les divisions de flottant par une multiplication de son inverse
 puis shader
 voir pour opti le draw de text box en appelant le draw d'entity Entity::Draw() puis ajouter les code particulier

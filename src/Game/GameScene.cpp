@@ -39,11 +39,14 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
-#include "2DPendentLib/ObjectGroupTiled.h"
+#include "SoundManager.h"
+
+#include "Aleatory.h"
 
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+	SoundManager::Get()->AddSound("../../res/Game/Assets/Sounds/Sounds_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Farm");
@@ -163,6 +166,8 @@ void GameScene::OnInitialize()
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
 // 	m_textBox->SetBackgroundFilled(true);
+
+	//Application::Get()->GetWindow()->SetWindowAlwaysOnTop(true);
 }
 
 
@@ -241,6 +246,67 @@ void GameScene::OnUpdate()
 	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
 	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
+
+	SoundManager* sm = SoundManager::Get();
+
+	switch (gm.GetMonth())
+	{
+	case 1:
+	{
+		sm->GetSound("L_hiver (Jour) - OST from Weedy Mountain v1")->Stop();
+
+		if (gm.GetHour() > 20 || gm.GetHour() < 6)
+		{
+			Sound* sound = sm->GetSound("L_Automne (Nuit) - OST from Weedy Mountain v1");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				sm->GetSound("L_Automne (Jour) - OST from Weedy Mountain v1")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->Play();
+			}
+		}
+		else
+		{
+			Sound* sound = sm->GetSound("L_Automne (Jour) - OST from Weedy Mountain v1");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				sm->GetSound("L_Automne (Nuit) - OST from Weedy Mountain v1")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->Play();
+			}
+		}
+		break;
+	}
+	case 2:
+	{
+
+		break;
+	}
+	case 3:
+	{
+		
+		break;
+	}
+	case 4:
+	{
+
+		break;
+	}
+	}
 }
 
 void GameScene::OnDestroy()

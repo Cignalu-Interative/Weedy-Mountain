@@ -291,11 +291,17 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 			return;
 		}
 	}
+	m_isPlaying = true;
+	m_isPaused = false;
+	m_isStopped = false;
 }
 
 void Sound::Stop()
 {
-
+	if (m_isStopped)
+	{
+		return;
+	}
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
 		Sint64 MsInFrame = MIX_TrackMSToFrames(m_pisteMusique, m_fadeOutMs);
@@ -328,10 +334,17 @@ void Sound::Stop()
 			}
 		}
 	}
+	m_isPlaying = false;
+	m_isPaused = false;
+	m_isStopped = true;
 }
 
-void Sound::Pause() const
+void Sound::Pause()
 {
+	if (m_isPaused)
+	{
+		return;
+	}
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
 		if (MIX_PauseTrack(m_pisteMusique) == false)
@@ -351,10 +364,17 @@ void Sound::Pause() const
 			}
 		}
 	}
+	m_isPlaying = false;
+	m_isPaused = true;
+	m_isStopped = false;
 }
 
-void Sound::Resume() const
+void Sound::Resume()
 {
+	if (m_isPlaying)
+	{
+		return;
+	}
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
 		if (MIX_ResumeTrack(m_pisteMusique) == false)
@@ -373,6 +393,40 @@ void Sound::Resume() const
 				return;
 			}
 		}
+	}
+	m_isPlaying = true;
+	m_isPaused = false;
+	m_isStopped = false;
+}
+
+bool Sound::IsPlaying() const
+{
+	return m_isPlaying;
+}
+bool Sound::IsPaused() const
+{
+	return m_isPaused;
+}
+bool Sound::IsStopped() const
+{
+	return m_isStopped;
+}
+bool Sound::IsFinished() const
+{
+	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
+	{
+		return MIX_TrackPlaying(m_pisteMusique) == false;
+	}
+	else if (m_audioFormat == AudioFormat::WAV)
+	{
+		for (MIX_Track* piste : m_pistesSFX)
+		{
+			if (MIX_TrackPlaying(piste))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }
 

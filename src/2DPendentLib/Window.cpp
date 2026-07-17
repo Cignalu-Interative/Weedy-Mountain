@@ -155,12 +155,20 @@ void Window::BoolFullScreen()
 
 void Window::SetWindowSize(Vector2i p_dimention)
 {
-	SDL_SetWindowSize(m_window, p_dimention.GetX(), p_dimention.GetY());
+	if (SDL_SetWindowSize(m_window, p_dimention.GetX(), p_dimention.GetY()) == false)
+	{
+		SDL_Log("Lib/Window.cpp/SetWindowSize/SDL_SetWindowSize/SDL_SetWindowSize non reussie : %s", SDL_GetError());
+		return;
+	}
 }
 
 Vector2i Window::GetWindowSize()
 {
-	SDL_GetWindowSize(m_window, &m_windowDimension.GetX(), &m_windowDimension.GetY());
+	if (SDL_GetWindowSize(m_window, &m_windowDimension.GetX(), &m_windowDimension.GetY()) == false)
+	{
+		SDL_Log("Lib/Window.cpp/GetWindowSize/SDL_GetWindowSize/SDL_GetWindowSize non reussie : %s", SDL_GetError());
+		return { 0, 0 };
+	}
 	Vector2i dimention = { m_windowDimension.GetX(), m_windowDimension.GetY() };
 	return dimention;
 }
@@ -169,4 +177,51 @@ Vector2i Window::GetHalfWindowSize()
 {
 	Vector2i halfSizewindow = GetWindowSize() / 2;
 	return halfSizewindow;
+}
+
+void Window::SetWindowAlwaysOnTop(bool p_alwaysOnTop)
+{
+	if (SDL_SetWindowAlwaysOnTop(m_window, p_alwaysOnTop) == false)
+	{
+		SDL_Log("Lib/Window.cpp/SetWindowAlwaysOnTop/SDL_SetWindowAlwaysOnTop/SDL_SetWindowAlwaysOnTop non reussie : %s", SDL_GetError());
+		return;
+	}
+}
+
+void Window::SetWindowOpacity(float p_opacity)
+{
+	 float oppacity = Utils::Clamp(p_opacity, 0.0f, 1.0f);
+	if (SDL_SetWindowOpacity(m_window, oppacity) == false)
+	{
+		SDL_Log("Lib/Window.cpp/SetWindowOpacity/SDL_SetWindowOpacity/SDL_SetWindowOpacity non reussie : %s", SDL_GetError());
+		return;
+	}
+}
+
+void Window::SetFlashWindow(int p_flash)
+{
+	switch (p_flash)
+	{
+	case 0:
+		if (SDL_FlashWindow(m_window, SDL_FLASH_CANCEL) == false)
+		{
+			SDL_Log("Lib/Window.cpp/SetFlashWindow/SDL_FlashWindow/SDL_FlashWindow non reussie : %s", SDL_GetError());
+			return;
+		}
+		break;
+	case 1:
+		if (SDL_FlashWindow(m_window, SDL_FLASH_BRIEFLY) == false)
+		{
+			SDL_Log("Lib/Window.cpp/SetFlashWindow/SDL_FlashWindow/SDL_FlashWindow non reussie : %s", SDL_GetError());
+			return;
+		}
+		break;
+	case 2:
+		if (SDL_FlashWindow(m_window, SDL_FLASH_UNTIL_FOCUSED) == false)
+		{
+			SDL_Log("Lib/Window.cpp/SetFlashWindow/SDL_FlashWindow/SDL_FlashWindow non reussie : %s", SDL_GetError());
+			return;
+		}
+		break;
+	}
 }

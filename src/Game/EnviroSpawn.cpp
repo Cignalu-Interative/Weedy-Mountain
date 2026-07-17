@@ -14,35 +14,54 @@ EnviroSpawn* EnviroSpawn::Get() {
 void EnviroSpawn::InitEnviroSpawn()
 {
 	for (int i = 0; i < (int)EnviroSpawnName::Count; i++) {
-		EnviroInfo* Enviro = new EnviroInfo;
+		EnviroInfo* enviro = new EnviroInfo;
 		switch (i) {
 		case 0:
-			Enviro->m_name = EnviroSpawnName::Tree;
-			Enviro->m_stats = { 1,3 };
+			enviro->m_name = EnviroSpawnName::Tree;
+			enviro->m_stats = { 1,3 };
 			break;
 		case 1:
-			Enviro->m_name = EnviroSpawnName::Shrub;
-			Enviro->m_stats = { 2,4 };
+			enviro->m_name = EnviroSpawnName::Shrub;
+			enviro->m_stats = { 2,4 };
 			break;
 		case 2:
-			Enviro->m_name = EnviroSpawnName::Grass;
-			Enviro->m_stats = { 3,5 };
+			enviro->m_name = EnviroSpawnName::Grass;
+			enviro->m_stats = { 3,5 };
 			break;
 		case 3:
-			Enviro->m_name = EnviroSpawnName::Rock;
-			Enviro->m_stats = { 0,0 };
+			enviro->m_name = EnviroSpawnName::Rock;
+			enviro->m_stats = { 3,6 };
 			break;
 		case 4:
-			Enviro->m_name = EnviroSpawnName::Stone;
-			Enviro->m_stats = {0,0 };
+			enviro->m_name = EnviroSpawnName::Stone;
+			enviro->m_stats = { 0,0 };
+			break;
+		case 5:
+			enviro->m_name = EnviroSpawnName::IronOre;
+			enviro->m_stats = { 2,5 };
+			break;
+		case 6:
+			enviro->m_name = EnviroSpawnName::GoldOre;
+			enviro->m_stats = { 1,4 };
+			break;
+		case 7:
+			enviro->m_name = EnviroSpawnName::DiamondOre;
+			enviro->m_stats = { 0,3 };
 			break;
 		default:
 			break;
 		}
 
-		m_enviroList.push_back(Enviro);
+		if (i < 5) {
+			m_farmEnviroList.push_back(enviro);
+		}
+		if (i >= 3) {
+			m_caveEnviroList.push_back(enviro);
+		}
 	}
 
+
+	m_farmEnviroList[3]->m_stats = { 0,0 };
 	UpdateFreeFarmTiles();
 
 	NewGameEnviroSpawn();
@@ -54,12 +73,18 @@ void EnviroSpawn::SpawnEnviroProps()
 		return;
 	}
 
-	for (int i = 0; i < m_enviroList.size(); i++) {
 
-		int spawnCount = Aleatory::GetInt(m_enviroList[i]->m_stats.m_minSpawn, m_enviroList[i]->m_stats.m_maxSpawn);
-
+	for (int i = 0; i < m_farmEnviroList.size(); i++) {
+		int spawnCount = Aleatory::GetInt(m_farmEnviroList[i]->m_stats.m_minSpawn, m_farmEnviroList[i]->m_stats.m_maxSpawn);
 		for (int j = 0; j < spawnCount; j++) {
-			CreateEnviroProps(m_enviroList[i]->m_name, -1);
+			CreateEnviroProps(m_farmEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("game"));
+		}
+	}
+
+	for (int i = 0; i < m_caveEnviroList.size(); i++) {
+		int spawnCount = Aleatory::GetInt(m_caveEnviroList[i]->m_stats.m_minSpawn, m_caveEnviroList[i]->m_stats.m_maxSpawn);
+		for (int j = 0; j < spawnCount; j++) {
+			CreateEnviroProps(m_caveEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("cave"));
 		}
 	}
 }
@@ -88,8 +113,9 @@ void EnviroSpawn::NewGameEnviroSpawn()
 		while (m_freeFarmTiles[tile]->GetPosition().GetX() >= 500) {
 			tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
 		}
-		CreateEnviroProps((EnviroSpawnName)Aleatory::GetInt(0, (int)EnviroSpawnName::Count - 1), tile);
+		CreateEnviroProps(m_farmEnviroList[Aleatory::GetInt(0, m_farmEnviroList.size() - 1)]->m_name, tile, SceneManager::Get()->GetScene("game"));
 	}
+
 }
 
 void EnviroSpawn::UpdateFreeFarmTiles()
@@ -106,9 +132,8 @@ void EnviroSpawn::UpdateFreeFarmTiles()
 	}
 }
 
-void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
+void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _scene)
 {
-	Scene* gs = SceneManager::Get()->GetScene("game");
 	EnviroProps* Props;
 	if (_tile < 0) {
 		_tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
@@ -116,7 +141,7 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 	if (m_freeFarmTiles[_tile]->CanGrow() == false) {
 		return;
 	}
-	Props = gs->CreateEntity<EnviroProps>(m_freeFarmTiles[_tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
+	Props = _scene->CreateEntity<EnviroProps>(m_freeFarmTiles[_tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);
@@ -127,7 +152,7 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:
-		Props->AddSprite("default", "Oak_Tree", {128, 128}, 0,{0, -28});
+		Props->AddSprite("default", "Oak_Tree", { 128, 128 }, 0, { 0, -28 });
 		Props->GetCollider()->Resize({ 16,16 });
 		break;
 	case EnviroSpawnName::Shrub:
@@ -144,7 +169,7 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 		Props->GetCollider()->Resize({ 16,16 });
 		break;
 	case EnviroSpawnName::Stone:
-		Props->AddSprite("default", "Stone", { 32, 32 }, 0, {0,-8});
+		Props->AddSprite("default", "Stone", { 32, 32 }, 0, { 0,-8 });
 		Props->GetCollider()->Resize({ 32,16 });
 		break;
 
@@ -171,7 +196,7 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile)
 				if (m_freeFarmTiles[pos]->GetPosition().GetX() >= 500) continue;
 				posCheck = 0;
 				for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
-					
+
 					float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - m_freeFarmTiles[pos]->GetPosition().GetX();
 					float dy = m_freeFarmTiles[tile]->GetPosition().GetY() - m_freeFarmTiles[pos]->GetPosition().GetY();
 
@@ -221,7 +246,7 @@ void EnviroSpawn::Update() {
 	if (m_lastDay != -1) {
 		SpawnEnviroProps();
 	}
-	
+
 
 	m_lastDay = curentDay;
 }

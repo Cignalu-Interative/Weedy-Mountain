@@ -220,7 +220,7 @@ void Application::Update()
 		m_entities.push_back(*it);
 	}
 	m_entityToAdd.clear();
-
+	
 	if (m_cameraIsClamp)
 		ClampCameraToCurrentMap();
 }

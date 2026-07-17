@@ -9,11 +9,11 @@ class Camera : public Transformable, public Drawable
 {
 private:
 
-	float m_maxZoom = 5.0f; // Zoom maximum autorisé
-	float m_minZoom = 0.2f; // Zoom minimum autorisé
-	float m_zoomFactor = 1.0f; //Facteur de zoom de la caméra, par défaut à 1.0f (pas de zoom)
+	float m_maxZoom = 5.0f; // Zoom maximum autorisï¿½
+	float m_minZoom = 0.2f; // Zoom minimum autorisï¿½
+	float m_zoomFactor = 1.0f; //Facteur de zoom de la camï¿½ra, par dï¿½faut ï¿½ 1.0f (pas de zoom)
 
-	Color m_color = ColorsNamed::DarkTurquoise; // Couleur de la caméra pour le debug
+	Color m_color = ColorsNamed::DarkTurquoise; // Couleur de la camï¿½ra pour le debug
 
 	bool m_isShow = false;
 
@@ -23,12 +23,12 @@ private:
 
 public:
 
-	//Constructeur de Camera, il prend en paramètre la position et la dimension de la caméra
+	//Constructeur de Camera, il prend en paramï¿½tre la position et la dimension de la camï¿½ra
 	Camera(Vector2i p_dimension, Vector2f p_position = Vector2f(0.0f, 0.0f), Vector2f p_anchor = Vector2f(0.0f, 0.0f), float p_zoomFactor = 1.0f);
 	//Destructeur de Camera
 	~Camera() = default;
 
-	// Set le zoom de la caméra, plus le facteur est grand, plus la caméra est zoomée (ex: 2.0f = zoom x2, 0.5f = zoom x0.5)
+	// Set le zoom de la camï¿½ra, plus le facteur est grand, plus la camï¿½ra est zoomï¿½e (ex: 2.0f = zoom x2, 0.5f = zoom x0.5)
 	void SetZoom(float p_zoomFactor);
 	float GetZoom() const { return m_zoomFactor; }
 	void ZoomIn(float p_amount);
@@ -51,6 +51,9 @@ public:
 
 	void SetSmoothSpeed(float p_smoothSpeed) { m_smoothSpeed = p_smoothSpeed; }
 	float GetSmoothSpeed() const { return m_smoothSpeed; }
+
+	void SetFollowedEntity(Entity* p_entity) { m_followedEntity = p_entity; }
+	void Follow();
 
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 };

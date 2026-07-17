@@ -18,7 +18,7 @@ void EnviroProps::OnInitialize()
 void EnviroProps::OnEvent()
 {
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_isInPlayerZone){
-		// ajouter la verification de l'outils et de sa rareté
+		// ajouter la verification de l'outils et de sa raretï¿½
 		m_stats.m_hitToDestroy--;
 	}
 
@@ -70,11 +70,9 @@ void EnviroProps::OnDestroy()
 		}
 	}
 
-	if (m_stats.m_position == NULL)
-		return;
-	else 
+	if (m_stats.m_position != NULL) {
 		m_stats.m_position->SetCanGrow(true);
-
+	}
 
 	if (m_name == EnviroSpawnName::Stone) {
 		std::vector<FarmTile*> m_farmTiles = FarmManager::Get()->GetAllFarmTiles();

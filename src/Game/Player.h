@@ -16,6 +16,14 @@ enum class PlayerState
 	COUNT
 };
 
+enum class FishingState
+{
+	Idle,
+	Casting,
+	Waiting,
+	BiteWindow
+};
+
 class Inventory;
 class PlayerInventory;
 class Hotbar;

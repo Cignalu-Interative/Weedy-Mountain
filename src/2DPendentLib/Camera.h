@@ -52,9 +52,6 @@ public:
 	void SetSmoothSpeed(float p_smoothSpeed) { m_smoothSpeed = p_smoothSpeed; }
 	float GetSmoothSpeed() const { return m_smoothSpeed; }
 
-	void SetFollowedEntity(Entity* p_entity) { m_followedEntity = p_entity; }
-	void Follow();
-
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 };
 

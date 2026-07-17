@@ -29,7 +29,7 @@ void ItemOnGround::OnUpdate()
 		m_timer -= GetDeltaTime();
 	}
 
-	MoveKinematic();
+	else MoveKinematic();
 
 	m_timeToDestroy -= GetDeltaTime();
 	if (m_timeToDestroy <= 0) {

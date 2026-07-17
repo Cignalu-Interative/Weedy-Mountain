@@ -31,16 +31,11 @@ void VillageScene::OnInitialize()
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Village");
 
-	ObjectGroupTiled* a = mm->GetCurrentMap()->GetObjectGroupByName("Object");
-	std::vector<ObjectTiled*> m = a->GetAllObjects();
+	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn"); 
 
-	for (ObjectTiled* o : m)
+	for (ObjectTiled* o : a)
 	{
-		if (o->GetObjectName() == "PlayerSpawn")
-		{
-			m_spawnPoint = o->GetObjectPosition();
-			break;
-		}
+		m_spawnPoint = o->GetObjectPosition();
 	}
 
 	GetCamera()->SetPosition(m_spawnPoint);

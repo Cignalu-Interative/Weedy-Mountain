@@ -48,23 +48,18 @@ void GameScene::OnInitialize()
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Farm");
 
-	ObjectGroupTiled* layer = mm->GetCurrentMap()->GetObjectGroupByName("Object");
-	std::vector<ObjectTiled*> object = layer->GetAllObjects();
+	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
 
-	for (ObjectTiled* o : object)
+	for (ObjectTiled* o : a)
 	{
-		if (o->GetObjectName() == "Player Spawn")
-		{
-			m_spawnPoint = o->GetObjectPosition();
-			break;
-		}
+		m_spawnPoint = o->GetObjectPosition();
 	}
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	//ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 

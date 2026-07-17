@@ -3,72 +3,88 @@
         "buyPrice": 3,
         "description": "Simple piece of Wood",
         "id": 1,
-        "imagePath": "E:\\GitHubRepos\\res\\Game\\Assets\\Textures\\Item_Wood.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Wood.png",
         "maxStack": 64,
         "name": "Wood",
-        "sellPrice": 2
+        "recipes": [],
+        "sellPrice": 2,
+        "useActionID": ""
     },
     {
         "buyPrice": 7,
         "description": "fiber regrett",
         "id": 2,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Fiber.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Fiber.png",
         "maxStack": 64,
         "name": "Fiber",
-        "sellPrice": 1
+        "recipes": [],
+        "sellPrice": 1,
+        "useActionID": ""
     },
     {
         "buyPrice": 18,
         "description": "KAYOUUUU",
         "id": 3,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Rock.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Rock.png",
         "maxStack": 64,
         "name": "Rock",
-        "sellPrice": 2
+        "recipes": [],
+        "sellPrice": 2,
+        "useActionID": ""
     },
     {
         "buyPrice": 3,
         "description": "Oeuf de poule... Surement...",
         "id": 4,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Egg.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Egg.png",
         "maxStack": 64,
         "name": "Egg",
-        "sellPrice": 1
+        "recipes": [],
+        "sellPrice": 1,
+        "useActionID": ""
     },
     {
         "buyPrice": 3,
         "description": "Elle te regarde avec ses yeux...",
         "id": 5,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Potatoe.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Potatoe.png",
         "maxStack": 64,
         "name": "Potatoe",
-        "sellPrice": 1
+        "recipes": [],
+        "sellPrice": 1,
+        "useActionID": ""
     },
     {
         "buyPrice": 3,
         "description": "Quasiment necessaire contre les zombies\n",
         "id": 6,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\SunFlower.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\SunFlower.png",
         "maxStack": 64,
         "name": "Sun Flower",
-        "sellPrice": 1
+        "recipes": [],
+        "sellPrice": 1,
+        "useActionID": ""
     },
     {
         "buyPrice": 30,
         "description": "T'as vu de l'eau quelque part ???",
         "id": 7,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\FishingRod.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\FishingRod.png",
         "maxStack": 1,
         "name": "Fishing Rod",
-        "sellPrice": 5
+        "recipes": [],
+        "sellPrice": 5,
+        "useActionID": ""
     },
     {
         "buyPrice": 30,
         "description": "J'ai pas d'idee de connerie a mettre ici :/",
         "id": 8,
-        "imagePath": "C:\\Users\\kylia\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Helmet.png",
+        "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Helmet.png",
         "maxStack": 1,
         "name": "Helmet",
-        "sellPrice": 5
+        "recipes": [],
+        "sellPrice": 5,
+        "useActionID": ""
     }
 ]

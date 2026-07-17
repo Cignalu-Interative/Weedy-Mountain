@@ -81,12 +81,12 @@ void EnviroSpawn::SpawnEnviroProps()
 		}
 	}
 
-	for (int i = 0; i < m_caveEnviroList.size(); i++) {
-		int spawnCount = Aleatory::GetInt(m_caveEnviroList[i]->m_stats.m_minSpawn, m_caveEnviroList[i]->m_stats.m_maxSpawn);
-		for (int j = 0; j < spawnCount; j++) {
-			CreateEnviroProps(m_caveEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("cave"));
-		}
-	}
+	//for (int i = 0; i < m_caveEnviroList.size(); i++) {
+	//	int spawnCount = Aleatory::GetInt(m_caveEnviroList[i]->m_stats.m_minSpawn, m_caveEnviroList[i]->m_stats.m_maxSpawn);
+	//	for (int j = 0; j < spawnCount; j++) {
+	//		CreateEnviroProps(m_caveEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("cave"));
+	//	}
+	//}
 }
 
 int EnviroSpawn::GetEnviroDay()

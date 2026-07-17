@@ -84,10 +84,27 @@ struct PlayerData
 	PlayerStats m_stats;
 	PlayerInventory* m_playerInventory;
 
-	std::vector<PlayerJob> m_jobs;
+	std::vector<PlayerJob*> m_jobs;
 	std::vector<Recipes> m_unlockedRecipes;
 
-
+	void AddXpToJob(JobType p_type)
+	{
+		for (PlayerJob* job : m_jobs)
+		{
+			if (job->m_name == p_type)
+				job->m_exp += 5;
+				
+		}
+	}
+	PlayerJob* GetJobByName(JobType p_type)
+	{
+		for (PlayerJob* job : m_jobs)
+		{
+			if (job->m_name == p_type)
+				return job;
+		}
+	}
+	
 	int m_money = 200000;
 	int m_cash = 0;
 

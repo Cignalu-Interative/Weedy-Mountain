@@ -48,6 +48,8 @@ void PNJ::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_index < m_initial.size())
 	{
 		m_scene->GetGeometry<Text>("dialog")->SetText(m_initial);
+		m_scene->GetGeometry<Text>("dialog")->SetPosition({ m_textX,m_textY, }, { 0,0 });
+
 		m_isFinished = true;
 
 		return;
@@ -84,6 +86,9 @@ void PNJ::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side
 
 void PNJ::Talk(const std::string& p_say)
 {
+	if (m_isTalking)
+		return;
+
 	m_scene->GetGeometry<Text>("dialog")->SetText("");
 
 
@@ -100,6 +105,9 @@ void PNJ::Talk(const std::string& p_say)
 
 void PNJ::Talk(int p_dialogID)
 {
+	if (m_isTalking)
+		return;
+
 	m_scene->GetGeometry<Text>("dialog")->SetText("");
 
 	m_isTalking = true;

@@ -20,12 +20,24 @@ void HUDScene::OnInitialize()
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
+	PlayerJob* gatherer = new PlayerJob();
+	gatherer->m_name = JobType::Gatherer;
+	GameData::Get().GetPlayerData().m_jobs.push_back(gatherer);
+
+	PlayerJob* farmer = new PlayerJob();
+	farmer->m_name = JobType::Farmer;
+	GameData::Get().GetPlayerData().m_jobs.push_back(farmer);
+
+	PlayerJob* miner = new PlayerJob();
+	miner->m_name = JobType::Miner;
+	GameData::Get().GetPlayerData().m_jobs.push_back(miner);
+
 	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
-
+	m_jobsUi = CreateEntity<UiJobs>(GetWindowCenter(), { 1000, 600 }, "", Shape::Rectangle, true);
 
 	Inventory* inv = CreateEntity<Inventory>(GetWindowCenter(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle);
 	inv->GetSprite()->ResizeStretched(inv->GetDimension());
@@ -35,6 +47,7 @@ void HUDScene::OnInitialize()
 	Hotbar* hot = CreateEntity<Hotbar>(hotbarPos, { 636, 96 }, "Hotbar", Shape::Rectangle);
 
 	m_playerInventory = new PlayerInventory(inv, hot);
+	m_jobsUi->SetIsVisible(false);
 
 	GameData::Get().SetInventory(m_playerInventory);
 	SceneManager::Get()->SetPersistentScene(this);
@@ -42,7 +55,11 @@ void HUDScene::OnInitialize()
 
 void HUDScene::OnEvent()
 {
+	if (InputManager::Get()->IsKeyboardDown(K_J))
+		m_jobsUi->Toggle();
 
+	if (InputManager::Get()->IsKeyboardHeld(K_KP_PLUS))
+		GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer);
 }
 
 void HUDScene::OnUpdate()

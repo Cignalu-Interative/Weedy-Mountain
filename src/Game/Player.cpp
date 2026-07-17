@@ -21,17 +21,7 @@ void Player::OnInitialize()
 
 	//gm.SetInventory(PlayerInventory(inv, hot));
 
-	PlayerJob gatherer;
-	gatherer.m_name = JobType::Gatherer;
-	gm.GetPlayerData().m_jobs.push_back(gatherer);
-
-	PlayerJob farmer;
-	farmer.m_name = JobType::Farmer;
-	gm.GetPlayerData().m_jobs.push_back(farmer);
-
-	PlayerJob miner;
-	miner.m_name = JobType::Miner;
-	gm.GetPlayerData().m_jobs.push_back(miner);
+	
 
 	/*PlayerJob* killer = new PlayerJob();
 	killer->m_name = JobType::Killer;
@@ -334,11 +324,11 @@ void Player::OnDestroy()
 
 }
 
-PlayerJob Player::GetJobByName(JobType p_type)
+PlayerJob* Player::GetJobByName(JobType p_type)
 {
-	for (PlayerJob job : gm.GetPlayerData().m_jobs)
+	for (PlayerJob* job : gm.GetPlayerData().m_jobs)
 	{
-		if (job.m_name == p_type)
+		if (job->m_name == p_type)
 			return job ;
 	}
 
@@ -347,11 +337,11 @@ PlayerJob Player::GetJobByName(JobType p_type)
 void Player::UpdateJobs()
 {
 	for (int i = 0; i < gm.GetPlayerData().m_jobs.size(); i++) {
-		gm.GetPlayerData().m_jobs[i].levelUp();
-		switch (gm.GetPlayerData().m_jobs[i].m_name)
+		gm.GetPlayerData().m_jobs[i]->levelUp();
+		switch (gm.GetPlayerData().m_jobs[i]->m_name)
 		{
 		case JobType::Gatherer:
-			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::BandageL1);
 				break;
@@ -371,7 +361,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Farmer:
-			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::FertilizerL1);
 				break;
@@ -393,7 +383,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Miner:
-			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::StoneTools);
 
@@ -417,7 +407,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Dealer:
-			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
 				gm.GetPlayerData().m_stats.m_drugsSellQuantity += 15;
 				break;
@@ -437,7 +427,7 @@ void Player::UpdateJobs()
 			break;
 
 		case JobType::Killer:
-			switch (gm.GetPlayerData().m_jobs[i].m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
 				UnlockRecipe(Recipes::Knife);
 				break;

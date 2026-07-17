@@ -10,8 +10,7 @@
 
 void UiJobs::OnInitialize()
 {
-
-	GetCollider()->SetIsTrigger(true);
+	RemoveCollider("default");
 	Vector2i dim = GetDimension() / 8;
 	Vector2i dimension = GetDimension();
 
@@ -24,6 +23,10 @@ void UiJobs::OnInitialize()
 	m_farmerUi = GetScene()->CreateEntity<UiFarmer>(farmerPos, dim, "", Shape::Rectangle, true);
 	m_minerUi = GetScene()->CreateEntity<UiMiner>(minerPos, dim, "", Shape::Rectangle, true);
 
+	m_gathererUi->RemoveCollider("default");
+	m_farmerUi->RemoveCollider("default");
+	m_minerUi->RemoveCollider("default");
+
 	AddSprite("background", "InventoryWeedyMountain", GetDimension(), 0, {},true);
 	GetSprite("background")->SetDimension(GetDimension());
 	GetSprite("background")->SetPosition(GetPosition());
@@ -34,17 +37,36 @@ void UiJobs::OnInitialize()
 
 }
 
-void UiJobs::SetIsVisible(bool p_isVisible)
+void UiJobs::Toggle()
 {
-	Entity::SetIsVisible(p_isVisible);
+	bool visible = GetIsVisible();
+	Entity::SetIsVisible(!visible);
 
-	m_gathererUi->SetIsVisible(p_isVisible);
-	m_farmerUi->SetIsVisible(p_isVisible);
-	m_minerUi->SetIsVisible(p_isVisible);
+	m_gathererUi->SetIsVisible(!visible);
+	m_farmerUi->SetIsVisible(!visible);
+	m_minerUi->SetIsVisible(!visible);
 
-	Debug::Get()->GetText("metier")->SetIsVisible(p_isVisible);
-	Debug::Get()->GetText("FarmerLvL")->SetIsVisible(p_isVisible);
-	Debug::Get()->GetText("MinerLvL")->SetIsVisible(p_isVisible);
-	Debug::Get()->GetText("GathererLvL")->SetIsVisible(p_isVisible);
+	Debug::Get()->GetText("metier")->SetIsVisible(!visible);
+	Debug::Get()->GetText("FarmerLvL")->SetIsVisible(!visible);
+	Debug::Get()->GetText("MinerLvL")->SetIsVisible(!visible);
+	Debug::Get()->GetText("GathererLvL")->SetIsVisible(!visible);
+
+	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(visible);
+
+}
+
+void UiJobs::SetIsVisible(bool p_visible)
+{
+	Entity::SetIsVisible(p_visible);
+
+	m_gathererUi->SetIsVisible(p_visible);
+	m_farmerUi->SetIsVisible(p_visible);
+	m_minerUi->SetIsVisible(p_visible);
+
+	Debug::Get()->GetText("metier")->SetIsVisible(p_visible);
+	Debug::Get()->GetText("FarmerLvL")->SetIsVisible(p_visible);
+	Debug::Get()->GetText("MinerLvL")->SetIsVisible(p_visible);
+	Debug::Get()->GetText("GathererLvL")->SetIsVisible(p_visible);
+
 
 }

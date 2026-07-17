@@ -79,6 +79,7 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetGravityEnabled(false);
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
+	
 	//
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
@@ -121,19 +122,6 @@ void GameScene::OnInitialize()
 		FarmManager::Get()->RegisterTile(tile);
 	}
 
-
-	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);*/
-	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
-
-	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);*/
-
 	// CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	// Text* t = Debug::Get()->GetText("KAKA");
 	// t->SetFont("Gameplay", 55);
@@ -147,18 +135,8 @@ void GameScene::OnInitialize()
 	// t->SetLineSpacing(50);
 	// t->HorizontalAlignText(HorizontalAlignment::Center);
 
-	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
-	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
-	//m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
-
-	//UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	//a->GetSprite()->SetDimension(a->GetDimension());
-	//a->SyncSprites();
-	////a->ShowCollider(true);
-	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
-	//EnviroSpawn::Get()->InitEnviroSpawn();
 
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
@@ -234,12 +212,11 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
+
 	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
-	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
-	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 
@@ -252,6 +229,7 @@ void GameScene::OnSleep()
 	//SetSleepUpdate(true); 
 	SetSleepDraw(true);
 	SetSleepEvent(true);
+	SetSleepUpdate(true);
 	m_player->SetIsVisible(false);
 	
 	//for (Entity* e : GetEntities())

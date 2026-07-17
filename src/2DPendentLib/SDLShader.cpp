@@ -29,6 +29,7 @@ SDL_GPUShaderFormat SDLShader::GetShaderFormat() const
 	return shaderFormat;
 }
 
+
 void SDLShader::CreateShader(const std::string& p_vs, const std::string& p_ps)
 {
 	{
@@ -45,6 +46,11 @@ void SDLShader::CreateShader(const std::string& p_vs, const std::string& p_ps)
 		m_shaderVsCreateInfo.code = (const Uint8*)dataVs;
 		m_shaderVsCreateInfo.code_size = sizeVs;
 		m_shaderVsCreateInfo.entrypoint = "main";
+
+		m_shaderVsCreateInfo.num_samplers = 0;
+		m_shaderVsCreateInfo.num_storage_textures = 0;
+		m_shaderVsCreateInfo.num_storage_buffers = 0;
+		m_shaderVsCreateInfo.num_uniform_buffers = 0;
 
 		m_ShadersVs = SDL_CreateGPUShader(m_gpuDevice, &m_shaderVsCreateInfo);
 		if (m_ShadersVs == NULL)
@@ -71,6 +77,11 @@ void SDLShader::CreateShader(const std::string& p_vs, const std::string& p_ps)
 		m_shaderPsCreateInfo.code_size = sizePs;
 		m_shaderPsCreateInfo.entrypoint = "main";
 
+		m_shaderPsCreateInfo.num_samplers = 1;
+		m_shaderPsCreateInfo.num_storage_textures = 0;
+		m_shaderPsCreateInfo.num_storage_buffers = 0;
+		m_shaderPsCreateInfo.num_uniform_buffers = 0;
+
 		m_ShadersPs = SDL_CreateGPUShader(m_gpuDevice, &m_shaderPsCreateInfo);
 		if (m_ShadersPs == NULL)
 		{
@@ -93,27 +104,25 @@ void SDLShader::CreatePipeline()
 	pipelineInfo.vertex_shader = m_ShadersVs;
 	pipelineInfo.fragment_shader = m_ShadersPs;
 
-	SDL_GPUColorTargetDescription colorTarget = {};
-	colorTarget.format = m_textureFormat;
-	colorTarget.blend_state.enable_blend = false;
-
-	pipelineInfo.target_info.color_target_descriptions = &colorTarget;
-	pipelineInfo.target_info.num_color_targets = 1;
-
 	pipelineInfo.primitive_type = SDL_GPU_PRIMITIVETYPE_TRIANGLELIST;
 
 	pipelineInfo.rasterizer_state.fill_mode = SDL_GPU_FILLMODE_FILL;
 	pipelineInfo.rasterizer_state.cull_mode = SDL_GPU_CULLMODE_NONE;
 
-	pipelineInfo.vertex_input_state.num_vertex_buffers = 0;
-	pipelineInfo.vertex_input_state.num_vertex_attributes = 0;
+	SDL_GPUColorTargetDescription colorTarget = {};
+	colorTarget.format = m_textureFormat;
 
-	m_pipeline = SDL_CreateGPUGraphicsPipeline(m_gpuDevice, &pipelineInfo);
+	pipelineInfo.target_info.color_target_descriptions = &colorTarget;
+	pipelineInfo.target_info.num_color_targets = 1;
 
-	if (m_pipeline == NULL)
+	m_pipeline = SDL_CreateGPUGraphicsPipeline(
+		m_gpuDevice,
+		&pipelineInfo
+	);
+
+	if (!m_pipeline)
 	{
-		SDL_Log("Lib/SDLShader.cpp/CreatePipeline failed: %s", SDL_GetError());
-		return;
+		SDL_Log("Pipeline Error : %s", SDL_GetError());
 	}
 }
 
@@ -132,27 +141,75 @@ void SDLShader::GetWindowTexture()
 	if (SDL_AcquireGPUSwapchainTexture(m_commandBuffer, m_window->GetWindow(), &m_swapchainTexture, nullptr, nullptr) == false)
 	{
 		SDL_Log("Impossible d'acquérir la texture de l'écran : %s", SDL_GetError());
-		SDL_SubmitGPUCommandBuffer(m_commandBuffer);
+		if (SDL_SubmitGPUCommandBuffer(m_commandBuffer) == false)
+		{
+			SDL_Log("Lib/SDLShader.cpp/GetWindowTexture/SDL_SubmitGPUCommandBuffer failed: %s", SDL_GetError());
+			return;
+		}
 		return;
 	}
 }
 
-void SDLShader::Draw()
+void SDLShader::Draw(SDL_Texture* p_displayTexture)
 {
-	SDL_GPUColorTargetInfo colorTargetInfo = {};
-	colorTargetInfo.texture = m_swapchainTexture;
-	colorTargetInfo.clear_color = { 0.1f, 0.1f, 0.1f, 1.0f }; // Gris foncé
-	colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR;          // Vide l'écran avant de dessiner
-	colorTargetInfo.store_op = SDL_GPU_STOREOP_STORE;        // Enregistre ce qu'on va dessiner
+	SDL_PropertiesID props = SDL_GetTextureProperties(p_displayTexture);
+	SDL_GPUTexture* rawGpuTexture = (SDL_GPUTexture*)SDL_GetPointerProperty(props, SDL_PROP_TEXTURE_GPU_TEXTURE_POINTER, nullptr);
 
-	SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(m_commandBuffer, &colorTargetInfo, 1, nullptr);
+	// ==========================================
+	// PHASE 3 : RENDU GPU 3D
+	// ==========================================
+	SDL_GPUCommandBuffer* cmdBuffer = SDL_AcquireGPUCommandBuffer(m_gpuDevice);
+	SDL_GPUTexture* swapchainTexture;
 
-	// 1. On applique notre PSO (Shaders + configurations)
-	SDL_BindGPUGraphicsPipeline(renderPass, m_pipeline);
+	if (SDL_AcquireGPUSwapchainTexture(cmdBuffer, m_window->GetWindow(), &swapchainTexture, nullptr, nullptr))
+	{
+		SDL_GPUColorTargetInfo colorTargetInfo = {};
+		colorTargetInfo.texture = swapchainTexture;
+		colorTargetInfo.clear_color = { 0.1f, 0.1f, 0.1f, 1.0f }; // Le fond gris de ton écran
+		colorTargetInfo.load_op = SDL_GPU_LOADOP_CLEAR;
+		colorTargetInfo.store_op = SDL_GPU_STOREOP_STORE;
 
-	// 2. On dessine ! (3 sommets, 1 instance, premier sommet à 0, première instance à 0)
-	SDL_DrawGPUPrimitives(renderPass, 3, 1, 0, 0);
+		SDL_GPURenderPass* renderPass = SDL_BeginGPURenderPass(cmdBuffer, &colorTargetInfo, 1, nullptr);
 
-	SDL_EndGPURenderPass(renderPass);
-	//SDL_SubmitGPUCommandBuffer(m_commandBuffer); // Soumission à la carte graphique !
+		// 1. On active ton shader
+		SDL_BindGPUGraphicsPipeline(renderPass, SDLShader::Get()->m_pipeline);
+
+		// 2. On attache la texture extraite + le sampler
+		SDL_GPUTextureSamplerBinding textureBinding = {};
+		textureBinding.texture = rawGpuTexture; // La texture de géométrie !
+		textureBinding.sampler = m_sampler;
+
+		// (0 correspond au register(t0) / register(s0) du HLSL)
+		SDL_BindGPUFragmentSamplers(renderPass, 0, &textureBinding, 1);
+
+		// 3. On dessine notre grand triangle qui couvrira l'écran
+
+		if(m_pipeline == nullptr)
+		{
+			SDL_Log("Lib/SDLShader.cpp/Draw/m_pipeline is nullptr");
+			return;
+		}
+		SDL_DrawGPUPrimitives(renderPass, 3, 1, 0, 0);
+
+		SDL_EndGPURenderPass(renderPass);
+	}
+
+	SDL_SubmitGPUCommandBuffer(cmdBuffer);
+}
+
+void SDLShader::CreateSampler()
+{
+	m_samplerCreateInfo = {};
+	m_samplerCreateInfo.min_filter = SDL_GPU_FILTER_LINEAR;
+	m_samplerCreateInfo.mag_filter = SDL_GPU_FILTER_LINEAR;
+	m_samplerCreateInfo.mipmap_mode = SDL_GPU_SAMPLERMIPMAPMODE_LINEAR;
+	m_samplerCreateInfo.address_mode_u = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+	m_samplerCreateInfo.address_mode_v = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+	m_samplerCreateInfo.address_mode_w = SDL_GPU_SAMPLERADDRESSMODE_CLAMP_TO_EDGE;
+	m_sampler = SDL_CreateGPUSampler(m_gpuDevice, &m_samplerCreateInfo);
+	if (m_sampler == NULL)
+	{
+		SDL_Log("Lib/SDLShader.cpp/CreateSampler failed: %s", SDL_GetError());
+		return;
+	}
 }

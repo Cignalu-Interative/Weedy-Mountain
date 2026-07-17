@@ -289,38 +289,38 @@ void Application::ClampCameraToCurrentMap()
 
 void Application::Draw()
 {
+	m_render.SetRenderTarget();
+
 	m_render.ClearRenderer();
 
-	SDLShader::Get()->Draw();
+	MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
 
-	//MapTiledManager::Get()->DrawCurrentMap(&m_render, &m_window, m_camera);
+	SceneManager::Get()->DrawScenesInStack(&m_render, &m_window, m_camera);
 
-	////
+	std::vector<Entity*> entToDraw = m_entities;
 
-	//SceneManager::Get()->DrawScenesInStack(&m_render, &m_window, m_camera);
+	std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
+		{
+			return a->GetDrawLayer() < b->GetDrawLayer();
+		});
 
-	///*std::vector<Entity*> entToDraw = m_entities;
+	for (Entity* entity : entToDraw)
+	{
+		entity->Draw(&m_render, &m_window);
+	}
 
-	//std::sort(entToDraw.begin(), entToDraw.end(), [](const Entity* a, const Entity* b)
-	//	{
-	//		return a->GetDrawLayer() < b->GetDrawLayer();
-	//	});
+	Debug::Get()->Draw(&m_render, &m_window, m_camera);
 
-	//for (Entity* entity : entToDraw)
-	//{
-	//	entity->Draw(&m_render, &m_window);
-	//}*/
+	if (m_camera->GetIsShow())
+	{
+		m_camera->Draw(&m_render, &m_window, m_camera);
+	}
 
-	////
+	m_render.FlushRender();
 
-	//Debug::Get()->Draw(&m_render, &m_window, m_camera);
+	SDLShader::Get()->Draw(m_render.GetDisplayTexture());
 
-	//if (m_camera->GetIsShow())
-	//{
-	//	m_camera->Draw(&m_render, &m_window, m_camera);
-	//}
-
-	m_render.PresentRenderer();
+	//m_render.PresentRenderer();
 }
 
 void Application::UpdateDeltaTimeSystem()

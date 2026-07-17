@@ -21,6 +21,8 @@ private:
 
 	Color m_backgroundColor;
 
+	SDL_Texture* m_displayTexture = nullptr; // Pointeur vers la texture de l'écran, utilis pour grer les shaders et les textures
+
 public:
 
 	Render();
@@ -51,6 +53,12 @@ public:
 	void SetBackgroundColor(Color p_color);
 
 	SDL_GPUTextureFormat GetTextureFormat() const { return SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, m_window->GetWindow()); }
+
+	SDL_Texture* GetDisplayTexture() const { return m_displayTexture; }
+
+	void SetRenderTarget();
+
+	void FlushRender();
 
 	//Liste des class amie avec la class Render
 	friend class Circle;

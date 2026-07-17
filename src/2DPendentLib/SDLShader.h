@@ -14,18 +14,22 @@ private:
 	SDL_GPUShader* m_ShadersVs = nullptr;
 	SDL_GPUShader* m_ShadersPs = nullptr;
 
-	SDL_GPUShaderCreateInfo m_shaderVsCreateInfo;
-	SDL_GPUShaderCreateInfo m_shaderPsCreateInfo;
+	SDL_GPUShaderCreateInfo m_shaderVsCreateInfo = {};
+	SDL_GPUShaderCreateInfo m_shaderPsCreateInfo = {};
 
 	SDL_GPUGraphicsPipeline* m_pipeline = nullptr;
 
-	SDL_GPUTextureFormat m_textureFormat;
+	SDL_GPUTextureFormat m_textureFormat = {};
 
-	SDL_GPUCommandBuffer* m_commandBuffer;
+	SDL_GPUCommandBuffer* m_commandBuffer = nullptr;
 
-	SDL_GPUTexture* m_swapchainTexture;
+	SDL_GPUTexture* m_swapchainTexture = nullptr;
 
 	Window* m_window = nullptr; // Pointeur vers la window, utilis pour grer les shaders et les textures
+
+	SDL_GPUSamplerCreateInfo m_samplerCreateInfo = {};
+
+	SDL_GPUSampler* m_sampler = nullptr;
 
 public:
 
@@ -50,8 +54,8 @@ public:
 
 	void GetWindowTexture();
 
-	void Draw();
+	void Draw(SDL_Texture* p_displayTexture);
 
-
+	void CreateSampler();
 };
 

@@ -136,7 +136,6 @@ bool Render::CreateRenderer(Window& f_window)
 		SDL_Log("Lib/SDLShader.cpp/InitializeGPUDevice/SDL_CreateGPUDeviceWithProperties failed: %s", SDL_GetError());
 		return false;
 	}
-
 	CreatePropertiesRenderer(f_window);
 	//m_renderer = SDL_CreateRenderer(f_window.m_window, NULL);
 	m_renderer = SDL_CreateRendererWithProperties(m_propertiesRendererID);
@@ -145,6 +144,9 @@ bool Render::CreateRenderer(Window& f_window)
 		SDL_Log("Lib/Render.cpp/CreateRenderer/SDL_CreateRenderer/SDL_CreateRenderer non reussie : %s", SDL_GetError());
 		return false;
 	}
+
+	m_displayTexture = SDL_CreateTexture(m_renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, f_window.GetWindowSize().GetX(), f_window.GetWindowSize().GetY());
+
 	std::cerr << "Renderer: " << SDL_GetRendererName(m_renderer) << std::endl;
 	std::cerr << "texture format: " << SDL_GetGPUSwapchainTextureFormat(m_gpuDevice, f_window.GetWindow()) << std::endl;
 	return true;
@@ -194,4 +196,22 @@ void Render::SetBackgroundColor(Color p_backgroundColor)
 		m_backgroundColor.b / 255.f,
 		m_backgroundColor.a / 255.f
 	);*/
+}
+
+void Render::SetRenderTarget()
+{
+	if (SDL_SetRenderTarget(m_renderer, m_displayTexture) == false)
+	{
+		SDL_Log("Lib/Render.cpp/SetRenderTarget/SDL_SetRenderTarget non reussie : %s", SDL_GetError());
+		return;
+	}
+}
+
+void Render::FlushRender()
+{
+	if (SDL_FlushRenderer(m_renderer) == false)
+	{
+		SDL_Log("Lib/Render.cpp/FlushRender/SDL_FlushRenderer non reussie : %s", SDL_GetError());
+		return;
+	}
 }

@@ -170,3 +170,14 @@ Vector2i Window::GetHalfWindowSize()
 	Vector2i halfSizewindow = GetWindowSize() / 2;
 	return halfSizewindow;
 }
+
+void Window::SetWindowOpacity(float p_opacity)
+{
+	p_opacity = Utils::Clamp(p_opacity, 0.0f, 1.0f);
+	SDL_SetWindowOpacity(m_window, p_opacity);
+}
+
+float Window::GetWindowOpacity() const
+{
+	return SDL_GetWindowOpacity(m_window);
+}

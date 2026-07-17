@@ -138,7 +138,7 @@ void GameScene::OnInitialize()
 
 	SDLShader* shader = SDLShader::Get();
 
-	shader->CreateShader("../../src/2DPendentLib/Shaders/SDLShader2.vs.dxil", "../../src/2DPendentLib/Shaders/SDLShader2.ps.dxil");
+	shader->CreateShader("../../src/2DPendentLib/Shaders/SDLShader3.vs.dxil", "../../src/2DPendentLib/Shaders/SDLShader3.ps.dxil");
 }
 
 

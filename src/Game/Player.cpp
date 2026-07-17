@@ -14,6 +14,8 @@
 #include "PlayerState.h"
 #include "PlayerConditions.h"
 
+#include "Aleatory.h"
+
 void Player::OnInitialize()
 {
 
@@ -38,6 +40,7 @@ void Player::OnInitialize()
 	dealer->m_name = JobType::Dealer;
 	m_jobs.push_back(dealer);*/
 
+	m_fishingZoneCollider = AddCollider("fishingZone", { 8, 8 }, Shape::Rectangle, { 0.f, 0.f }, true);
 
 	SetupStateMachine();
 
@@ -76,22 +79,29 @@ void Player::OnEvent()
 		{
 			dir.SetY(dir.GetY() - 1.f);
 			boxCollider->SetOffset({ 0, -8 });
+			m_facingDirection = { 0.f, -1.f };
 		}
 		if (InputManager::Get()->IsKeyboardHeld(K_S)) 
 		{
 			dir.SetY(dir.GetY() + 1.f);
 			boxCollider->SetOffset({ 0, 24 });
+			m_facingDirection = { 0.f, 1.f };
 		}
 		if (InputManager::Get()->IsKeyboardHeld(K_Q)) 
 		{
 			dir.SetX(dir.GetX() - 1.f);
 			boxCollider->SetOffset({ -16, 8 });
+			m_facingDirection = { -1.f, 0.f };
 		}
 		if (InputManager::Get()->IsKeyboardHeld(K_D))
 		{
 			dir.SetX(dir.GetX() + 1.f);
 			boxCollider->SetOffset({ 16, 8 });
+			m_facingDirection = { 1.f, 0.f };
 		}
+
+		SetDirection(dir);
+
 		//input souris
 		if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
 			//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
@@ -109,11 +119,15 @@ void Player::OnEvent()
 		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
 			HandleFarmAction();
 
-
-
+		// TEMP - PECHE
+		if (InputManager::Get()->IsKeyboardDown(K_F))
+			StartFishing();
 	}
 
 	float len = std::sqrtf(dir.GetX() * dir.GetX() + dir.GetY() * dir.GetY());
+
+	m_isMovingThisFrame = (len > 0.f);
+
 	if (len > 0.f)
 		dir = { dir.GetX() / len, dir.GetY() / len };
 
@@ -130,10 +144,6 @@ void Player::OnEvent()
 		m_selectedCrop = CropCatalog::Wheat();
 	if (InputManager::Get()->IsKeyboardDown(K_2))
 		m_selectedCrop = CropCatalog::Carrot();
-
-	// Action farm 
-	/*if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
-		HandleFarmAction();*/
 }
 
 // TEMP - AGRI
@@ -187,6 +197,111 @@ void Player::HandleFarmAction()
 	}
 }
 
+void Player::StartFishing()
+{
+	if (m_fishingState != FishingState::Idle)
+		return;
+
+	if (m_fishingZoneCollider == nullptr)
+		return;
+
+	m_fishingZoneCollider->SetOffset({ m_facingDirection.GetX() * FISHING_CAST_DISTANCE, m_facingDirection.GetY() * FISHING_CAST_DISTANCE });
+
+	m_fishingZoneTouchingWater = false;
+	m_castSyncTimer = 0.f;
+	m_fishingState = FishingState::Casting;
+}
+
+void Player::RetractFishingRod()
+{
+	if (m_fishingZoneCollider != nullptr)
+		m_fishingZoneCollider->SetOffset({ 0.f, 0.f });
+
+	GetScene()->RemoveGeometry("debug_fishing");
+
+	m_fishingZoneTouchingWater = false;
+	m_castSyncTimer = 0.f;
+	m_fishingState = FishingState::Idle;
+}
+
+void Player::UpdateFishing()
+{
+	float dt = GetDeltaTime();
+
+	switch (m_fishingState)
+	{
+	case FishingState::Idle:
+		break;
+
+	case FishingState::Casting:
+	{
+		m_castSyncTimer += dt;
+
+		if (m_castSyncTimer < FISHING_CAST_SYNC_DELAY)
+			break;
+
+		if (m_fishingZoneTouchingWater)
+		{
+			m_fishingState = FishingState::Waiting;
+			m_fishingTimer = 0.f;
+			m_fishingTimerTarget = Aleatory::GetFloat(2.f, 5.f);
+		}
+		else
+		{
+			std::cout << "[Fishing] l'hamecon n'est pas dans l'eau, cane range !" << std::endl;
+			RetractFishingRod();
+		}
+		break;
+	}
+
+	case FishingState::Waiting:
+	{
+		if (m_isMovingThisFrame)
+		{
+			std::cout << "[Fishing] mouvement detecter, cane range !" << std::endl;
+			RetractFishingRod();
+			break;
+		}
+
+		m_fishingTimer += dt;
+		if (m_fishingTimer >= m_fishingTimerTarget)
+		{
+			Vector2f zonePos = m_fishingZoneCollider->GetPosition({ 0.5f, 0.5f });
+			GetScene()->CreateFillRect("debug_fishing", zonePos, { 16, 16 }, Color(255, 0, 0, 255));
+
+			m_biteReactionTimer = 0.f;
+			m_fishingState = FishingState::BiteWindow;
+		}
+		break;
+	}
+
+	case FishingState::BiteWindow:
+	{
+		if (m_isMovingThisFrame)
+		{
+			std::cout << "[Fishing] mouvement detecter, cane range !" << std::endl;
+			RetractFishingRod();
+			break;
+		}
+
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		{
+			std::cout << "[Fishing] poisson attrape !" << std::endl;
+			RetractFishingRod();
+			break;
+		}
+
+		m_biteReactionTimer += dt;
+		if (m_biteReactionTimer >= FISHING_BITE_WINDOW)
+		{
+			std::cout << "[Fishing] trop lent !" << std::endl;
+			RetractFishingRod();
+		}
+		break;
+	}
+	}
+}
+
 void Player::OnUpdate()
 {
 	m_stateMachine.Update(this, GetDeltaTime());
@@ -194,15 +309,19 @@ void Player::OnUpdate()
 	//std::cout << GetPosition().GetX() << "   " << GetPosition().GetY() << std::endl;
 	UpdateJobs();
 	MoveKinematic();
+	UpdateFishing();
 }
 
 void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _side)
 {
+	if (_self->GetID() == "fishingZone" && _other->GetOwner()->GetTag() == 5)
+		m_fishingZoneTouchingWater = true;
 }
 
 void Player::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	
+	if (_self->GetID() == "fishingZone" && _other->GetOwner()->GetTag() == 5)
+		m_fishingZoneTouchingWater = true;
 }
 
 void Player::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)

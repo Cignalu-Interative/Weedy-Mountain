@@ -89,3 +89,16 @@ std::vector<ObjectTiled*> ObjectGroupTiled::GetObjectTiledByType(const std::stri
     }
     return objectG;
 }
+
+std::vector<ObjectTiled*> ObjectGroupTiled::GetObjectTiledByName(const std::string& p_name)
+{
+    std::vector<ObjectTiled*> objectG;
+    for (ObjectTiled* objectGroupe : m_objects)
+    {
+        if (objectGroupe->m_ObjectName == p_name)
+        {
+            objectG.push_back(objectGroupe);
+        }
+    }
+	return objectG;
+}

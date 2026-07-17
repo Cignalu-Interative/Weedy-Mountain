@@ -39,6 +39,7 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
+#include "2DPendentLib/ObjectGroupTiled.h"
 
 void GameScene::OnInitialize()
 {
@@ -90,6 +91,23 @@ void GameScene::OnInitialize()
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
 	MapTiled* map = mm->GetCurrentMap();
+
+	std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
+
+	for (ObjectTiled* obj : objectGroup)
+	{
+		Vector2f dim = obj->GetObjectDimension();
+		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
+	}
+
+	objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
+
+	for (ObjectTiled* obj : objectGroup)
+	{
+		Vector2f dim = obj->GetObjectDimension();
+		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
+		ent->SetTag(5);
+	}
 
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();

@@ -63,6 +63,7 @@ public:
 	std::vector<ObjectTiled*> GetAllObjects() { return m_objects; }
 	std::vector<PropertyTiled*> GetAllProperties() { return m_properties; }
 	std::vector<ObjectTiled*> GetObjectTiledByType(const std::string& p_type);
+	std::vector<ObjectTiled*> GetObjectTiledByName(const std::string& p_name);
 
 };
 

@@ -269,6 +269,8 @@ void GameScene::OnSleep()
 
 void GameScene::OnWake()
 {
+	GameData::Get().SetCurrentScene(CurrentScene::FARM);
+
 	SetSleepDraw(false);
 	SetSleepEvent(false);
 	m_player->SetIsVisible(true);

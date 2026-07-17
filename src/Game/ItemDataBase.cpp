@@ -31,17 +31,17 @@ ItemDataBase* ItemDataBase::Get()
 	return &instance;
 }
 
-bool ItemDataBase::LoadFromJSON(const std::string& filePath)
+bool ItemDataBase::LoadFromJSON(const std::string& filePath, std::function<bool(const std::string&)> validateActionID)
 {
     std::ifstream file(filePath);
-    if (!file.is_open())
+    if (file.is_open() == false)
         return false;
 
     json root;
     try { root = json::parse(file); }
     catch (...) { return false; }
 
-    if (!root.is_array())
+    if (root.is_array() == false)
         return false;
 
     m_items.clear();
@@ -54,6 +54,8 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath)
         int buyPrice = obj.value("buyPrice", 0);
         int sellPrice = obj.value("sellPrice", 0);
         int maxStack = obj.value("maxStack", 64);
+        std::string useActionID = obj.value("useActionID", "");
+        int internalID = obj.value("id", -1);
 
         if (name.empty()) 
             continue;
@@ -61,7 +63,18 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath)
         std::string id = MakeItemID(name);
         std::string stem = ExtractStemFromPath(rawPath);
 
+        if (useActionID.empty() == false && validateActionID != nullptr)
+        {
+            if (validateActionID(useActionID) == false)
+            {
+                std::cerr << "[ItemDataBase] Warning: item \"" << name << "\" reference une action inconnue \"" << useActionID << "\"" << std::endl;
+            }
+        }
+
         m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack });
+
+        if (internalID >= 0)
+            m_internalIdToStringId[internalID] = id;
     }
 
     return true;
@@ -70,12 +83,26 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath)
 ItemData* ItemDataBase::GetItem(const std::string& ID)
 {
     auto it = m_items.find(ID);
+
     if (it != m_items.end())
         return &it->second;
+
     return nullptr;
 }
 
 const std::unordered_map<std::string, ItemData>& ItemDataBase::GetAll() const
 {
     return m_items;
+}
+
+const std::string& ItemDataBase::ResolveInternalID(int internalID) const
+{
+    static const std::string empty;
+
+    auto it = m_internalIdToStringId.find(internalID);
+
+    if (it != m_internalIdToStringId.end())
+        return it->second;
+
+    return empty;
 }

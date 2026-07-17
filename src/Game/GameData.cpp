@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "GameData.h"
+#include "RecipeDataBase.h"
 
-//Trucs qu'on peut changer si on veut changer la durée plus tard
+//Trucs qu'on peut changer si on veut changer la durï¿½e plus tard
 
 constexpr float IRL_SECONDS_PER_GAME_HOUR = 40.0;
 
@@ -156,4 +157,21 @@ void GameData::SetInventory(PlayerInventory* inv)
 		return;
 
 	m_playerData.m_playerInventory = inv;
+}
+void GameData::UnlockRecipe(const std::string& recipeID)
+{
+	if (IsRecipeUnlocked(recipeID) || RecipeDataBase::Get()->GetRecipe(recipeID) != nullptr)
+		return;
+
+	m_unlockedRecipes.push_back(recipeID);
+}
+
+bool GameData::IsRecipeUnlocked(const std::string& recipeID)
+{
+	return std::find(m_unlockedRecipes.begin(), m_unlockedRecipes.end(), recipeID) != m_unlockedRecipes.end();
+}
+
+const std::vector<std::string>& GameData::GetUnlockedRecipes()
+{
+	return m_unlockedRecipes;
 }

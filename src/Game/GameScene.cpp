@@ -252,6 +252,7 @@ void GameScene::OnSleep()
 	//SetSleepUpdate(true); 
 	SetSleepDraw(true);
 	SetSleepEvent(true);
+	SetSleepUpdate(true);
 	m_player->SetIsVisible(false);
 	
 	//for (Entity* e : GetEntities())
@@ -271,6 +272,7 @@ void GameScene::OnWake()
 {
 	SetSleepDraw(false);
 	SetSleepEvent(false);
+	SetSleepUpdate(false);
 	m_player->SetIsVisible(true);
 	GetCamera()->SetPosition(m_player->GetPosition());
 	GetCamera()->SetFollowedEntity(m_player);

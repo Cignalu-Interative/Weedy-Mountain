@@ -14,6 +14,8 @@ void UiShop::OnInitialize()
 {
 	Scene* scene = GetScene();
 
+	RemoveCollider("default");
+
 	//m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory->GetInventory();
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 
@@ -32,7 +34,7 @@ void UiShop::OnInitialize()
 	m_slot->GetSprite()->SetDimension(m_slot->GetDimension());
 	m_slot->SyncSprites();
 	m_slot->InitText("slot", "");
-
+	m_slot->GetCollider()->SetMask(0);
 
 	float offsetButtonX = GetPosition({ 1,1 }).GetX() - offsetX;
 	float offsetButtonY = GetPosition({ 1,1 }).GetY() - offsetY * 0.85f;
@@ -43,6 +45,7 @@ void UiShop::OnInitialize()
 	m_sellButton->SetOnHoverExit([this] { m_sellButton->SetSprite("button"); });
 	m_sellButton->GetCollider()->SetIsTrigger(true);
 	m_sellButton->SetIsVisible(false);
+	m_sellButton->GetCollider()->SetMask(0);
 	
 	m_sellAllButton = scene->CreateButton({ offsetButtonX, offsetButtonY + 55}, { 150,50 }, "button", "sellAllButton", "SELL ALL", true);
 	m_sellAllButton->SetOnHoverStay([this] { m_sellAllButton->SetSprite("buttonHover"); });
@@ -50,6 +53,7 @@ void UiShop::OnInitialize()
 	m_sellAllButton->SetOnLeftClick([this] { SellAll(); });
 	m_sellAllButton->SetIsVisible(false);
 	m_sellAllButton->GetCollider()->SetIsTrigger(true);
+	m_sellAllButton->GetCollider()->SetMask(0);
 
 	m_buyButton = scene->CreateButton({ offsetButtonX, offsetButtonY }, { 150,50 }, "button", "buyButton", "BUY", true);
 	m_buyButton->SetOnLeftClick([this] {Buy(); });
@@ -57,6 +61,7 @@ void UiShop::OnInitialize()
 	m_buyButton->SetOnHoverExit([this] { m_buyButton->SetSprite("button"); });
 	m_buyButton->GetCollider()->SetIsTrigger(true);
 	m_buyButton->SetIsVisible(false);
+	m_buyButton->GetCollider()->SetMask(0);
 
 	Vector2f topLeftPos = GetPosition({ 0,0 });
 	float BoffsetX = dimension.GetX() / 6.f;
@@ -68,10 +73,12 @@ void UiShop::OnInitialize()
 	m_choosePlayerInventory = scene->CreateButton({ offsetPlayerInventory }, { 150,50 }, "", "player", "Player Inventory");
 	m_choosePlayerInventory->SetOnLeftClick([this] {ChoosePlayerInventoryButtonClicked(); });
 	m_choosePlayerInventory->GetCollider()->SetIsTrigger(true);
+	m_choosePlayerInventory->GetCollider()->SetMask(0);
 
 	m_chooseShopInventory = scene->CreateButton({ offsetShopInventory }, { 150,50 }, "", "shop", "Shop Inventory");
 	m_chooseShopInventory->SetOnLeftClick([this] {ChooseShopInventoryButtonClicked(); });
 	m_chooseShopInventory->GetCollider()->SetIsTrigger(true);
+	m_chooseShopInventory->GetCollider()->SetMask(0);
 
 	Vector2f halfRightPos = GetPosition({ 1,0.5f });
 	float offsetPriceX = GetPosition().GetX();
@@ -89,13 +96,14 @@ void UiShop::OnInitialize()
 	m_plusButton = scene->CreateButton(plusButtonOffset, { 50,50 }, "", "plusButton", "+");
 	m_plusButton->SetOnLeftClick([this] {PlusButton(); });
 	m_plusButton->GetCollider()->SetIsTrigger(true);
+	m_plusButton->GetCollider()->SetMask(0);
 
 	m_minusButton = scene->CreateButton(minusButtonOffset, { 50,50 }, "", "minusButton", "-");
 	m_minusButton->SetOnLeftClick([this] {MinusButton(); });
 	m_minusButton->GetCollider()->SetIsTrigger(true);
+	m_minusButton->GetCollider()->SetMask(0);
 
 	SetDrawLayer(GetDrawLayer() - 20);
-	GetCollider()->SetIsTrigger(true);
 
 }
 

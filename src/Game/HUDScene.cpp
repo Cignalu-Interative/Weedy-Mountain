@@ -26,10 +26,17 @@ void HUDScene::OnInitialize()
 	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
+	statsUi->RemoveCollider("default");
+	moneyUi->RemoveCollider("default");
+	cashUi->RemoveCollider("default");
+	timeUi->RemoveCollider("default");
+	dateUi->RemoveCollider("default");
+
 
 	Inventory* inv = CreateEntity<Inventory>(GetWindowCenter(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle);
 	inv->GetSprite()->ResizeStretched(inv->GetDimension());
 	inv->SyncSprites();
+	inv->RemoveCollider("default");
 
 	Vector2f hotbarPos = { inv->GetPosition().GetX(), inv->GetPosition().GetY() + 300 };
 	Hotbar* hot = CreateEntity<Hotbar>(hotbarPos, { 636, 96 }, "Hotbar", Shape::Rectangle);

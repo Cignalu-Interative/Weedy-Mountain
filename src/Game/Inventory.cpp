@@ -34,6 +34,8 @@ void Inventory::OnInitialize()
 
 		InventorySlot* slot = GetScene()->CreateButton<InventorySlot>(pos, { 54,54 }, "InventorySlot", "slot_" + std::to_string(i) + "_background", "", true);
 		slot->GetCollider()->SetIsTrigger(true);
+		slot->GetCollider()->SetLayer(0);
+		slot->GetCollider()->SetMask(0);
 
 		slot->AddSprite("item_texture", "", { 54, 54 }, 1, { 0.0f, 0.0f }, true);
 

@@ -31,7 +31,7 @@ void VillageScene::OnInitialize()
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Village");
 
-	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn"); 
+	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("PlayerSpawn"); 
 
 	for (ObjectTiled* o : a)
 	{
@@ -68,6 +68,7 @@ void VillageScene::OnInitialize()
 	Inventory* shopInventory = CreateEntity<Inventory>({ m_spawnPoint + Vector2f{200,0} }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	shopInventory->SetDrawLayer(INT_MAX - 4);
 	shopInventory->AddItem("ITEM_WOOD", 100, false);
+	shopInventory->RemoveCollider("default");
 
 	m_shop = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_shop->GetSprite()->SetDimension(m_shop->GetDimension());

@@ -1,8 +1,47 @@
 {
-    "activeFile": "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx",
+    "activeFile": "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx",
     "expandedProjectPaths": [
     ],
+    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
     "fileStates": {
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx": {
+            "scale": 3,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 1125.1666666666665,
+                "y": 262.3333333333333
+            }
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Buildings.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Tileset_Road.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Village.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/farm objects free.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/props.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx": {
+            "scaleInDock": 1
+        },
         "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx": {
             "dynamicWrapping": false,
             "scaleInDock": 0.75,
@@ -81,39 +120,27 @@
             }
         }
     },
-    "last.imagePath": "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Textures/Environment/Tilesets/Rocks",
+    "last.imagePath": "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Textures/Environment/Tilesets/Rocks",
     "map.fixedSize": false,
     "map.lastUsedFormat": "tmx",
     "openFiles": [
-        "Village.tmx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/farm objects free.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/props.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Tileset_Road.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/tileset.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Village.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Path_spring.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Buildings.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx"
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx"
     ],
-    "project": "Weedy Mountain.tiled-project",
+    "project": "Weedy-Mountain.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx",
         "Village.tmx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/farm objects free.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/props.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Tileset_Road.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/tileset.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Village.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Path_spring.tsx",
-        "C:/Users/alexi/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Buildings.tsx"
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/farm objects free.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/props.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Tileset_Road.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/tileset.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Village.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx",
+        "C:/Users/aberny/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Path_spring.tsx"
     ],
     "resizeMap.removeObjects": false,
     "tileset.lastUsedFormat": "tsx",

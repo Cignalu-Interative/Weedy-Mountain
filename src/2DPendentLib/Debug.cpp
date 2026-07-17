@@ -40,6 +40,8 @@ Debug::Debug()
 	m_autoCirclesCache.reserve(32);
 	m_autoFillCirclesCache.reserve(32);
 	m_autoTextsCache.reserve(32);
+
+	m_textEnginePropertiesID = SDL_CreateProperties();
 }
 
 Debug::~Debug()
@@ -51,6 +53,38 @@ Debug::~Debug()
 	m_circles.clear();
 	m_fillCircles.clear();
 	m_texts.clear();
+	if (m_textEnginePropertiesID)
+	{
+		SDL_DestroyProperties(m_textEnginePropertiesID);
+	}
+	if (m_textEngine)
+	{
+		TTF_DestroyRendererTextEngine(m_textEngine);
+	}
+}
+
+void Debug::SetRenderer(SDL_Renderer* p_renderer)
+{
+	m_renderer = p_renderer;
+}
+
+void Debug::CreateTextEngineProperties()
+{
+	if (m_renderer == nullptr)
+	{
+		SDL_Log("Debug::CreateTextEngineProperties: Renderer is null, cannot create text engine properties.");
+		return;
+	}
+
+	SDL_SetPointerProperty(m_textEnginePropertiesID, "SDL_ttf.renderer_text_engine.create.renderer", m_renderer);
+	SDL_SetNumberProperty(m_textEnginePropertiesID, "SDL_ttf.renderer_text_engine.create.atlas_texture_size", 2048);
+
+	m_textEngine = TTF_CreateRendererTextEngineWithProperties(m_textEnginePropertiesID);
+	if (m_textEngine == NULL)
+	{
+		SDL_Log("Debug::CreateTextEngineProperties: Failed to create text engine: %s", SDL_GetError());
+		return;
+	}
 }
 
 void Debug::SetDeltaTimeCallback(DeltaTimeCallback p_callback)
@@ -82,6 +116,7 @@ Point* Debug::CreatePoint(std::string p_id, Vector2f p_position, Color p_color, 
 	}
 
 	Point* point = new Point(p_position, p_color);
+	point->SetType((int)Type::Point);
 	point->SetIsGUI(p_isGUI);
 	point->SetIsClamp(p_clampToScreen);
 
@@ -93,6 +128,7 @@ Point* Debug::CreatePoint(std::string p_id, Vector2f p_position, Color p_color, 
 	m_points[std::move(p_id)] = m_pointsVector.size();
 	m_pointsVector.push_back(point);
 
+	SortGeometriesByDrawLayer();
 	return point;
 }
 Line* Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -110,6 +146,7 @@ Line* Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Colo
 	}
 
 	Line* line = new Line(p_start, p_end, p_color);
+	line->SetType((int)Type::Line);
 	line->SetIsGUI(p_isGUI);
 	line->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
@@ -120,6 +157,7 @@ Line* Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Colo
 	m_lines[std::move(p_id)] = m_linesVector.size();
 	m_linesVector.push_back(line);
 
+	SortGeometriesByDrawLayer();
 	return line;
 }
 Rectangle* Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_dim, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -138,6 +176,7 @@ Rectangle* Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_d
 
 	Rectangle* rect = new Rectangle;
 	rect->Initialize(p_position, p_dim, p_color);
+	rect->SetType((int)Type::Rect);
 	rect->SetIsGUI(p_isGUI);
 	rect->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
@@ -148,6 +187,7 @@ Rectangle* Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_d
 	m_rects[std::move(p_id)] = m_rectsVector.size();
 	m_rectsVector.push_back(rect);
 
+	SortGeometriesByDrawLayer();
 	return rect;
 }
 Rectangle* Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -166,6 +206,7 @@ Rectangle* Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i
 
 	Rectangle* rect = new Rectangle;
 	rect->Initialize(p_position, p_dimension, p_color);
+	rect->SetType((int)Type::FillRect);
 	rect->SetFilled(true);
 	rect->SetIsGUI(p_isGUI);
 	rect->SetIsClamp(p_clampToScreen);
@@ -177,6 +218,7 @@ Rectangle* Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i
 	m_fillRects[std::move(p_id)] = m_fillRectsVector.size();
 	m_fillRectsVector.push_back(rect);
 
+	SortGeometriesByDrawLayer();
 	return rect;
 }
 Circle* Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -195,6 +237,7 @@ Circle* Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_di
 
 	Circle* circle = new Circle;
 	circle->Initialize(p_position, p_dimension, p_color);
+	circle->SetType((int)Type::Circle);
 	circle->SetIsGUI(p_isGUI);
 	circle->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
@@ -205,6 +248,7 @@ Circle* Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_di
 	m_circles[std::move(p_id)] = m_circlesVector.size();
 	m_circlesVector.push_back(circle);
 
+	SortGeometriesByDrawLayer();
 	return circle;
 }
 Circle* Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -223,6 +267,7 @@ Circle* Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i 
 
 	Circle* circle = new Circle;
 	circle->Initialize(p_position, p_dimension, p_color);
+	circle->SetType((int)Type::FillCircle);
 	circle->SetFilled(true);
 	circle->SetIsGUI(p_isGUI);
 	circle->SetIsClamp(p_clampToScreen);
@@ -234,6 +279,7 @@ Circle* Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i 
 	m_fillCircles[std::move(p_id)] = m_fillCirclesVector.size();
 	m_fillCirclesVector.push_back(circle);
 
+	SortGeometriesByDrawLayer();
 	return circle;
 }
 Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI, bool p_clampToScreen)
@@ -252,7 +298,9 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 
 	Text* text = new Text();
 	text->SetRenderer(m_renderer);
+	text->SetTextEngine(m_textEngine);
 	text->Initialize(p_position, p_text, p_color);
+	text->SetType((int)Type::Text);
 	text->SetIsGUI(p_isGUI);
 	text->SetIsClamp(p_clampToScreen);
 	if (p_id.empty())
@@ -263,6 +311,7 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 	m_texts[std::move(p_id)] = m_textsVector.size();
 	m_textsVector.push_back(text);
 
+	SortGeometriesByDrawLayer();
 	return text;
 }
 
@@ -774,18 +823,157 @@ std::vector<Text*>& Debug::GetAllTexts()
 	return m_textsVector;
 }
 
-void Debug::Draw(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::SetPointDrawLayer(const std::string& p_id, int p_layer)
 {
-	DrawPoint(f_render, f_window, p_camera);
-	DrawLine(f_render, f_window, p_camera);
-	DrawRect(f_render, f_window, p_camera);
-	DrawFillRect(f_render, f_window, p_camera);
-	DrawCircle(f_render, f_window, p_camera);
-	DrawFillCircle(f_render, f_window, p_camera);
-	DrawText(f_render, f_window, p_camera);
+	Point* point = GetPoint(p_id);
+	if (point)
+	{
+		point->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
 }
 
-void Debug::DrawPoint(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::SetLineDrawLayer(const std::string& p_id, int p_layer)
+{
+	Line* line = GetLine(p_id);
+	if (line)
+	{
+		line->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
+}
+
+void Debug::SetRectDrawLayer(const std::string& p_id, int p_layer)
+{
+	Rectangle* rect = GetRect(p_id);
+	if (rect)
+	{
+		rect->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
+}
+
+void Debug::SetFillRectDrawLayer(const std::string& p_id, int p_layer)
+{
+	Rectangle* fillRect = GetFillRect(p_id);
+	if (fillRect)
+	{
+		fillRect->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
+}
+
+void Debug::SetCircleDrawLayer(const std::string& p_id, int p_layer)
+{
+	Circle* circle = GetCircle(p_id);
+	if (circle)
+	{
+		circle->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
+}
+
+void Debug::SetFillCircleDrawLayer(const std::string& p_id, int p_layer)
+{
+	Circle* fillCircle = GetFillCircle(p_id);
+	if (fillCircle)
+	{
+		fillCircle->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
+}
+
+void Debug::SetTextDrawLayer(const std::string& p_id, int p_layer)
+{
+	Text* text = GetText(p_id);
+	if (text)
+	{
+		text->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
+}
+
+void Debug::SortGeometriesByDrawLayer()
+{
+	m_geometries.clear();
+
+	for (auto point : m_pointsVector)
+	{
+		m_geometries.push_back(point);
+	}
+	for (auto line : m_linesVector)
+	{
+		m_geometries.push_back(line);
+	}
+	for (auto rect : m_rectsVector)
+	{
+		m_geometries.push_back(rect);
+	}
+	for (auto fillRect : m_fillRectsVector)
+	{
+		m_geometries.push_back(fillRect);
+	}
+	for (auto circle : m_circlesVector)
+	{
+		m_geometries.push_back(circle);
+	}
+	for (auto fillCircle : m_fillCirclesVector)
+	{
+		m_geometries.push_back(fillCircle);
+	}
+	for (auto text : m_textsVector)
+	{
+		m_geometries.push_back(text);
+	}
+
+	std::sort(m_geometries.begin(), m_geometries.end(), [](Geometry* a, Geometry* b) {
+		return a->GetDrawLayer() < b->GetDrawLayer();
+		});
+}
+
+void Debug::Draw(Render* f_render, Window* f_window, Camera* p_camera)
+{
+	for (auto& g : m_geometries)
+	{
+		if (g->GetType() == 0)
+		{
+			DrawPoint(dynamic_cast<Point*>(g), f_render, f_window, p_camera);
+		}
+		if (g->GetType() == 1)
+		{
+			DrawLine(dynamic_cast<Line*>(g), f_render, f_window, p_camera);
+		}
+		if (g->GetType() == 2)
+		{
+			DrawRect(dynamic_cast<Rectangle*>(g), f_render, f_window, p_camera);
+		}
+		if (g->GetType() == 3)
+		{
+			DrawFillRect(dynamic_cast<Rectangle*>(g), f_render, f_window, p_camera);
+		}
+		if (g->GetType() == 4)
+		{
+			DrawCircle(dynamic_cast<Circle*>(g), f_render, f_window, p_camera);
+		}
+		if (g->GetType() == 5)
+		{
+			DrawFillCircle(dynamic_cast<Circle*>(g), f_render, f_window, p_camera);
+		}
+		if (g->GetType() == 6)
+		{
+			DrawText(dynamic_cast<Text*>(g), f_render, f_window, p_camera);
+		}
+	}
+	/*DrawPoints(f_render, f_window, p_camera);
+	DrawLines(f_render, f_window, p_camera);
+	DrawRects(f_render, f_window, p_camera);
+	DrawFillRects(f_render, f_window, p_camera);
+	DrawCircles(f_render, f_window, p_camera);
+	DrawFillCircles(f_render, f_window, p_camera);
+	DrawTexts(f_render, f_window, p_camera);*/
+}
+
+void Debug::DrawPoints(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
 	int windowH = f_window->GetWindowSize().GetY();
@@ -816,7 +1004,7 @@ void Debug::DrawPoint(Render* f_render, Window* f_window, Camera* p_camera)
 	}
 }
 
-void Debug::DrawLine(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::DrawLines(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
 	int windowH = f_window->GetWindowSize().GetY();
@@ -866,7 +1054,7 @@ void Debug::DrawLine(Render* f_render, Window* f_window, Camera* p_camera)
 	}
 }
 
-void Debug::DrawRect(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::DrawRects(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
 	int windowH = f_window->GetWindowSize().GetY();
@@ -898,7 +1086,7 @@ void Debug::DrawRect(Render* f_render, Window* f_window, Camera* p_camera)
 	}
 }
 
-void Debug::DrawFillRect(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::DrawFillRects(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
 	int windowH = f_window->GetWindowSize().GetY();
@@ -930,7 +1118,7 @@ void Debug::DrawFillRect(Render* f_render, Window* f_window, Camera* p_camera)
 	}
 }
 
-void Debug::DrawCircle(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::DrawCircles(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
 	int windowH = f_window->GetWindowSize().GetY();
@@ -961,7 +1149,7 @@ void Debug::DrawCircle(Render* f_render, Window* f_window, Camera* p_camera)
 	}
 }
 
-void Debug::DrawFillCircle(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::DrawFillCircles(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
 	int windowH = f_window->GetWindowSize().GetY();
@@ -992,7 +1180,7 @@ void Debug::DrawFillCircle(Render* f_render, Window* f_window, Camera* p_camera)
 	}
 }
 
-void Debug::DrawText(Render* f_render, Window* f_window, Camera* p_camera)
+void Debug::DrawTexts(Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
 	int windowH = f_window->GetWindowSize().GetY();
@@ -1023,3 +1211,233 @@ void Debug::DrawText(Render* f_render, Window* f_window, Camera* p_camera)
 		text->Draw(f_render, f_window, p_camera);
 	}
 }
+
+void Debug::DrawPoint(Point* p_point, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	
+	if (p_point->GetIsClamp() == true)
+	{
+		Vector2f pointPos = p_point->GetPosition();
+		if (pointPos.GetX() < 0)
+		{
+			p_point->SetPosition({ static_cast<float>(0 + m_margin), p_point->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (pointPos.GetX() > windowW)
+		{
+			p_point->SetPosition({ static_cast<float>(windowW - m_margin), p_point->GetPosition().GetY() }, { 1, 0.5f });
+		}
+
+		if (pointPos.GetY() < 0)
+		{
+			p_point->SetPosition({ p_point->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (pointPos.GetY() > windowH)
+		{
+			p_point->SetPosition({ p_point->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_point->Draw(f_render, f_window, p_camera);
+	
+}
+
+void Debug::DrawLine(Line* p_line, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	
+	if (p_line->GetIsClamp() == true)
+	{
+		Vector2f lineStartPos = p_line->GetPosition();
+		Vector2f lineEndPos = p_line->GetEndPosition();
+		if (lineStartPos.GetX() < 0)
+		{
+			p_line->SetPosition({ static_cast<float>(0 + m_margin), p_line->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (lineStartPos.GetX() > windowW)
+		{
+			p_line->SetPosition({ static_cast<float>(windowW - m_margin), p_line->GetPosition().GetY() }, { 1, 0.5f });
+		}
+
+		if (lineStartPos.GetY() < 0)
+		{
+			p_line->SetPosition({ p_line->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (lineStartPos.GetY() > windowH)
+		{
+			p_line->SetPosition({ p_line->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+
+		if (lineEndPos.GetX() < 0)
+		{
+			p_line->SetEndPosition({ static_cast<float>(0 + m_margin), p_line->GetEndPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (lineEndPos.GetX() > windowW)
+		{
+			p_line->SetEndPosition({ static_cast<float>(windowW - m_margin), p_line->GetEndPosition().GetY() }, { 1, 0.5f });
+		}
+
+		if (lineEndPos.GetY() < 0)
+		{
+			p_line->SetEndPosition({ p_line->GetEndPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (lineEndPos.GetY() > windowH)
+		{
+			p_line->SetEndPosition({ p_line->GetEndPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_line->Draw(f_render, f_window, p_camera);
+	
+}
+
+void Debug::DrawRect(Rectangle* p_rect, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	
+	if (p_rect->GetIsClamp() == true)
+	{
+		int width = p_rect->GetDimension().GetX();
+		int height = p_rect->GetDimension().GetY();
+
+		if (p_rect->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+		{
+			p_rect->SetPosition({ static_cast<float>(0 + m_margin), p_rect->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (p_rect->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+		{
+			p_rect->SetPosition({ static_cast<float>(windowW - m_margin), p_rect->GetPosition().GetY() }, { 1, 0.5f });
+		}
+		if (p_rect->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+		{
+			p_rect->SetPosition({ p_rect->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (p_rect->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+		{
+			p_rect->SetPosition({ p_rect->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_rect->Draw(f_render, f_window, p_camera);
+	
+}
+
+void Debug::DrawFillRect(Rectangle* p_rect, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	
+	if (p_rect->GetIsClamp() == true)
+	{
+		int width = p_rect->GetDimension().GetX();
+		int height = p_rect->GetDimension().GetY();
+
+		if (p_rect->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+		{
+			p_rect->SetPosition({ static_cast<float>(0 + m_margin), p_rect->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (p_rect->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+		{
+			p_rect->SetPosition({ static_cast<float>(windowW - m_margin), p_rect->GetPosition().GetY() }, { 1, 0.5f });
+		}
+		if (p_rect->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+		{
+			p_rect->SetPosition({ p_rect->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (p_rect->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+		{
+			p_rect->SetPosition({ p_rect->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_rect->Draw(f_render, f_window, p_camera);
+}
+
+void Debug::DrawCircle(Circle* p_circle, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	
+	int width = p_circle->GetDimension().GetX();
+	int height = p_circle->GetDimension().GetY();
+	if (p_circle->GetIsClamp() == true)
+	{
+		if (p_circle->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+		{
+			p_circle->SetPosition({ static_cast<float>(0 + m_margin), p_circle->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (p_circle->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+		{
+			p_circle->SetPosition({ static_cast<float>(windowW - m_margin), p_circle->GetPosition().GetY() }, { 1, 0.5f });
+		}
+		if (p_circle->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+		{
+			p_circle->SetPosition({ p_circle->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (p_circle->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+		{
+			p_circle->SetPosition({ p_circle->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_circle->Draw(f_render, f_window, p_camera);
+}
+
+void Debug::DrawFillCircle(Circle* p_circle, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	
+	int width = p_circle->GetDimension().GetX();
+	int height = p_circle->GetDimension().GetY();
+	if (p_circle->GetIsClamp() == true)
+	{
+		if (p_circle->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+		{
+			p_circle->SetPosition({ static_cast<float>(0 + m_margin), p_circle->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (p_circle->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+		{
+			p_circle->SetPosition({ static_cast<float>(windowW - m_margin), p_circle->GetPosition().GetY() }, { 1, 0.5f });
+		}
+		if (p_circle->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+		{
+			p_circle->SetPosition({ p_circle->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (p_circle->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+		{
+			p_circle->SetPosition({ p_circle->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_circle->Draw(f_render, f_window, p_camera);
+}
+
+void Debug::DrawText(Text* p_text, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	
+	if (p_text->GetIsClamp() == true)
+	{
+		int width = p_text->GetDimension().GetX();
+		int height = p_text->GetDimension().GetY();
+
+		if (p_text->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+		{
+			p_text->SetPosition({ static_cast<float>(0 + m_margin), p_text->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (p_text->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+		{
+			p_text->SetPosition({ static_cast<float>(windowW - m_margin), p_text->GetPosition().GetY() }, { 1, 0.5f });
+		}
+		if (p_text->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+		{
+			p_text->SetPosition({ p_text->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (p_text->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+		{
+			p_text->SetPosition({ p_text->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_text->Draw(f_render, f_window, p_camera);
+}
+
+

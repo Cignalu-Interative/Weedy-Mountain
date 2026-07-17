@@ -39,31 +39,38 @@ private:
 	Timer m_timerUpdate; // Timer pour gérer le temps écoulé depuis la dernière mise à jour du jeu
 
 	Camera* m_camera; //Camera du jeu, utilisée pour gérer la vue du jeu et les déplacements de la caméra
+	
+	std::chrono::steady_clock::time_point m_oldTime; 
+
+	float m_deltaTimeSystem = 0.0f;
 
 	//m_deltaTimeMs membre de la classe Application, utilisé pour stocker le temps écoulé entre deux frames en milliseconds
+	float m_deltaTimeInternal = 0.0f;
 	float m_deltaTime = 0.0f;
+	float m_totalTime = 0.0f; // Temps total écoulé depuis le début du jeu en secondes
 	float m_targetDeltaTime = 1.0f / m_targetFPS; // 1 seconde divisée par le nombre de frames par seconde pour obtenir le temps cible entre chaque frame
 
 	int m_targetFPS = 64; // 64 par défaut Pour éviter la division par 0 avant d'etre calculer pas la fonction V_Sync
-	// FPS counter
+	// FPS counter par seconde, utilisé pour calculer le nombre de frames par seconde actuel
 	int m_frameCount = 0;
-
-	// FPS actuel calculé en utilisant un lissage exponentiel pour éviter les fluctuations brusques
+	// FPS actuel calculé du frame counter
 	float m_currentFPS = 0.0f;
 	//Défini le temps entre chaque mise à jour du compteur de FPS, en secondes (par exemple, 1.0f pour mettre à jour le compteur de FPS toutes les secondes)
 	float m_timeToUpdateFPS = 1.0f;
 	//Timer pour gérer le temps écoulé depuis la dernière mise à jour du compteur de FPS
 	float m_timeLastUpdateFPS = 0.0f;
-	float m_accumulator = 0.0f; // Accumulateur de temps pour gérer les mises à jour fixes du jeu
+	double m_accumulator = 0.0f; // Accumulateur de temps pour gérer les mises à jour fixes du jeu
 
-	const float m_FIX_UPDATE = 1.0f / 60.0f; // Temps fixe entre chaque mise à jour du jeu, en secondes (par exemple, 1/60 pour une mise à jour à 60 FPS)
+	static constexpr float m_FIX_UPDATE = 0.0083333f; // Temps fixe entre chaque mise à jour du jeu, en secondes 1/120 = 0.0083333 secondes (120 mises à jour par seconde)
+	static constexpr float MAX_FRAME_TIME = 0.1f; // Temps maximum entre deux frames pour éviter les problèmes de physique lors de la mise à jour du jeu 1/10 = 0.1 secondes (10 mises à jour par seconde)
+	static constexpr int MAX_STEPS_PER_FRAME = 5; // Nombre maximum de mises à jour fixes du jeu par frame pour éviter les problèmes de physique lors de la mise à jour du jeu
+
+	int m_FPSUserWant = 0;
 
 	//m_isRunning membre de la classe Application, utilisé pour savoir si le jeu est en cours d'exécution ou s'il doit se fermer
 	bool m_isRunning = false;
 	bool m_autoFPS = true; // Si true, le jeu ajustera automatiquement le nombre de frames par seconde par rapport au fps trouvé grace à la fonction V_Sync
 	bool m_drawFPS = true; //Bool pour savoir si le compteur de FPS doit être dessiné à l'écran, utile pour le debug
-
-	int m_FPSUserWant = 0;
 
 	bool m_cameraIsClamp = false;
 
@@ -99,10 +106,13 @@ public:
 
 	void SetFPSUserWanted(int p_fps) { m_FPSUserWant = p_fps; };
 
+	void UpdateDeltaTimeSystem();
+	bool UpdateDeltaTimeGameplay();
+
 	//Fonction pour définir le nombre de frames par seconde cible
 	void SetFPS(int p_targetFPS); 
 	//Fonction pour limiter les fps en fonction du nombre de frames par seconde cible et du temps écoulé entre deux frames
-	void CapFPS(); 
+	bool CapFPS(); 
 	//Fonction pour mettre à jour le compteur de FPS en utilisant un lissage exponentiel pour éviter les fluctuations brusques
 	// (doit être appelé à chaque frame avec le temps écoulé depuis la dernière frame en nanosecondes)
 	void UpdateFPSCounter();

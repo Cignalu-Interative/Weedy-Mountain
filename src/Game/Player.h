@@ -16,8 +16,6 @@ enum class PlayerState
 	COUNT
 };
 
-
-
 class Inventory;
 class PlayerInventory;
 class Hotbar;

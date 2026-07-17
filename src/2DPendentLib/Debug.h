@@ -77,6 +77,12 @@ private:
 	mutable std::vector<Circle*> m_autoFillCirclesCache;
 	mutable std::vector<Text*> m_autoTextsCache;
 
+	TTF_TextEngine* m_textEngine = nullptr; // Moteur de rendu de texte pour les textes de debug
+
+	SDL_PropertiesID m_textEnginePropertiesID = 0; // ID des propriétés du moteur de rendu de texte pour les textes de debug
+
+	std::vector<Geometry*> m_geometries; // Vector pour stocker tous les éléments de debug à dessiner, utilisé pour itérer plus rapidement lors du dessin
+
 public:
 
 	// Singleton de Debug
@@ -87,9 +93,13 @@ public:
 	// Destructeur de Debug
 	~Debug();
 
-	void SetRenderer(SDL_Renderer* p_renderer) { m_renderer = p_renderer; }
+	void SetRenderer(SDL_Renderer* p_renderer);
+
+	void CreateTextEngineProperties();
 
 	SDL_Renderer* SDL_GetRenderer() const { return m_renderer; }
+
+	TTF_TextEngine* GetTextEngine() const { return m_textEngine; }
 
 	using DeltaTimeCallback = std::function<float()>;
 
@@ -216,23 +226,43 @@ public:
 	std::vector<Circle*>& GetAllFillCircles();
 	std::vector<Text*>& GetAllTexts();
 
+	void SetPointDrawLayer(const std::string& p_id, int p_layer);
+	void SetLineDrawLayer(const std::string& p_id, int p_layer);
+	void SetRectDrawLayer(const std::string& p_id, int p_layer);
+	void SetFillRectDrawLayer(const std::string& p_id, int p_layer);
+	void SetCircleDrawLayer(const std::string& p_id, int p_layer);
+	void SetFillCircleDrawLayer(const std::string& p_id, int p_layer);
+	void SetTextDrawLayer(const std::string& p_id, int p_layer);
+
+	void SortGeometriesByDrawLayer();
+
 	// Fonction pour dessiner les éléments de debug à l'écran
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 
 	// Fonctions pour dessiner les différents types d'éléments de debug
-	void DrawPoint(Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawPoints(Render* f_render, Window* f_window, Camera* p_camera);
 	// Fonction pour dessiner les lignes de debug
-	void DrawLine(Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawLines(Render* f_render, Window* f_window, Camera* p_camera);
 	// Fonction pour dessiner les rectangles de debug
-	void DrawRect(Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawRects(Render* f_render, Window* f_window, Camera* p_camera);
 	// Fonction pour dessiner les rectangles remplis de debug
-	void DrawFillRect(Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawFillRects(Render* f_render, Window* f_window, Camera* p_camera);
 	// Fonction pour dessiner les cercles de debug
-	void DrawCircle(Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawCircles(Render* f_render, Window* f_window, Camera* p_camera);
 	// Fonction pour dessiner les cercles remplis de debug
-	void DrawFillCircle(Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawFillCircles(Render* f_render, Window* f_window, Camera* p_camera);
 	// Fonction pour dessiner les textes de debug
-	void DrawText(Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawTexts(Render* f_render, Window* f_window, Camera* p_camera);
+
+
+	void DrawPoint(Point* p_point, Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawLine(Line* p_line, Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawRect(Rectangle* p_rect, Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawFillRect(Rectangle* p_rect, Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawCircle(Circle* p_circle, Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawFillCircle(Circle* p_circle, Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawText(Text* p_text, Render* f_render, Window* f_window, Camera* p_camera);
+	
 
 private:
 

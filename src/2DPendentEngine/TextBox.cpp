@@ -6,7 +6,7 @@
 TextBox::TextBox()
 {
 	m_textToDraw = new Text();
-
+	m_rectangle = new Rectangle();
 }
 
 TextBox::~TextBox()
@@ -19,7 +19,8 @@ void TextBox::InitTextBox(const std::string& p_id, Color p_color, bool p_isGUI)
 {
 	Vector2f position = GetPosition();
 	Vector2i dimension = GetDimension();
-	Debug::Get()->CreateRect(p_id, position, dimension, p_color, p_isGUI, false);
+	m_rectangle->Initialize(position, dimension, p_color);
+	m_rectangle->SetIsGUI(GetIsGUI());
 
 	m_BoxText = new SDLEncapsulation::S_Rect();
 
@@ -30,13 +31,17 @@ void TextBox::InitTextBox(const std::string& p_id, Color p_color, bool p_isGUI)
 
 	SDLEncapsulation::SetTextInputArea(m_window, m_BoxText, 0);
 	m_textToDraw->SetRenderer(Application::Get()->GetRender()->GetRenderer());
+	m_textToDraw->SetTextEngine(Debug::Get()->GetTextEngine());
 	m_textToDraw->Initialize(GetPosition({0.0f, 0.5f}), "", ColorsNamed::LightPink);
+	m_textToDraw->SetIsGUI(GetIsGUI());
 	m_textToDraw->SetIsGUI(p_isGUI);
+	m_textToDraw->SetWrapWidth(dimension.GetX() - m_textOffset.GetX());
 }
 
-void TextBox::SetText(const std::string& p_text)
+void TextBox::SetTextInBox(const std::string& p_text)
 {
 	m_textToDraw->SetText(p_text);
+	m_textToDraw->CutTextBySize(GetDimension() - (Vector2i)m_textOffset);
 }
 
 void TextBox::OnDraw(Render* f_render, Window* f_window)
@@ -57,5 +62,6 @@ void TextBox::OnDraw(Render* f_render, Window* f_window)
 	//{
 	//	/*m_textToDraw->SetColor(ColorsNamed::Red);*/
 	//}
+	m_rectangle->Draw(f_render, f_window, Application::Get()->GetCamera());
 	m_textToDraw->Draw(f_render, f_window, Application::Get()->GetCamera());
 }

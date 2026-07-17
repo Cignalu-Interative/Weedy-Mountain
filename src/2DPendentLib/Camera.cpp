@@ -40,7 +40,6 @@ void Camera::Follow(float p_dt)
 {
     if (m_followedEntity == nullptr)
         return;
-
     float dt = p_dt;//m_followedEntity->GetDeltaTime();
     float factor = 1 - exp(-m_smoothSpeed * dt);
 

@@ -458,6 +458,7 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 				}; // le srcRect est la zone de la texture du tileset à copier pour dessiner la tile
 
                 Vector2i postile = p_camera->WorldToScreen<int>({ posTileX, posTileY });
+
                 SDL_FRect dstRect = {
                     postile.GetX(),    // pos X à l'écran
                     postile.GetY(),    // pos Y à l'écran

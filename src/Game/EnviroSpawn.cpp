@@ -108,7 +108,7 @@ int EnviroSpawn::GetEnviroDay()
 
 void EnviroSpawn::NewGameEnviroSpawn()
 {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 150; i++) {
 		int tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
 		while (m_freeFarmTiles[tile]->GetPosition().GetX() >= 500) {
 			tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);

@@ -28,7 +28,6 @@ void ItemOnGround::OnUpdate()
 	if (m_timer > 0) {
 		m_timer -= GetDeltaTime();
 	}
-
 	else MoveKinematic();
 
 	m_timeToDestroy -= GetDeltaTime();
@@ -79,8 +78,10 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		if (text) {
 			text->SetPosition(this->GetPosition({1,1}));
 		}
-		SetResetDirection(false);
-		SetSpeed(15);
+		if (GetResetDirection() == true) {
+			SetResetDirection(false);
+			SetSpeed(15);
+		}
 	}
 
 

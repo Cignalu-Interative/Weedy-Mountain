@@ -70,9 +70,10 @@ void EnviroProps::OnDestroy()
 		}
 	}
 
-	if (m_stats.m_position != NULL) {
-		m_stats.m_position->SetCanGrow(true);
+	if (m_stats.m_position == NULL) {
+		return;
 	}
+	else m_stats.m_position->SetCanGrow(true);
 
 	if (m_name == EnviroSpawnName::Stone) {
 		std::vector<FarmTile*> m_farmTiles = FarmManager::Get()->GetAllFarmTiles();

@@ -14,9 +14,9 @@ private :
 	InventorySlot* m_slot = nullptr;
 
 	Inventory* m_shopInventory = nullptr;
-	Inventory* m_playerInventory = nullptr;
+	//Inventory* m_playerInventory = nullptr;
 
-	PlayerInventory* m_playerInventorys = nullptr;
+	PlayerInventory* m_playerInventory = nullptr;
 
 	TextBox* m_textBox = nullptr;
 
@@ -31,6 +31,7 @@ private :
 	Button* m_chooseShopInventory = nullptr;
 
 	int m_slotIndex = -1;
+	InventorySlot* m_selectedSlot = nullptr;
 
 	int m_amountOfItem = 0;
 	int m_totalPrices = 10;
@@ -66,7 +67,7 @@ public :
 
 	void SetShopInventory(Inventory* p_shopInventory) { m_shopInventory = p_shopInventory; }
 
-	void SetVisible(bool p_isVisible);
+	void SetIsVisible(bool p_isVisible);
 
 	//TO DO 
 	void Open();

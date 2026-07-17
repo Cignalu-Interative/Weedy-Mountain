@@ -88,7 +88,7 @@ struct PlayerData
 	std::vector<Recipes> m_unlockedRecipes;
 
 
-	int m_money = 200;
+	int m_money = 200000;
 	int m_cash = 0;
 
 };

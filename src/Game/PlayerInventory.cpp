@@ -205,6 +205,20 @@ InventorySlot* PlayerInventory::GetHotbarSlot(int index)
 	return m_hotbar->GetSlot(index);
 }
 
+std::vector<InventorySlot*> PlayerInventory::GetAllSlots()
+{
+	std::vector<InventorySlot*> allSlots;
+
+	std::vector<InventorySlot*>& hotbarSlots = m_hotbar->GetSlots();
+	std::vector<InventorySlot*>& inventorySlots = m_inventory->GetSlots();
+
+	allSlots = inventorySlots;
+
+	allSlots.insert(allSlots.end(), hotbarSlots.begin(), hotbarSlots.end());
+
+	return allSlots;
+}
+
 void PlayerInventory::Clear()
 {
 	for (InventorySlot* slot : m_hotbar->GetSlots())

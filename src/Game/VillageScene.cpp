@@ -63,7 +63,7 @@ void VillageScene::OnInitialize()
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
 	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,-100} }, { 8,32 }, "player", Shape::Rectangle);
 	m_shopPNJ->SetOnFinishFunction([this] {
-		m_shop->SetVisible(true);; }
+		/*m_shop->SetIsVisible(true)*/m_shop->Open(); }
 	);
 
 	m_PNJ->SetOnFinishFunction([this] {
@@ -78,7 +78,7 @@ void VillageScene::OnInitialize()
 	m_shop->GetSprite()->SetDimension(m_shop->GetDimension());
 	m_shop->SyncSprites();
 	m_shop->SetShopInventory(shopInventory);
-	m_shop->SetVisible(false);
+	m_shop->SetIsVisible(false);
 
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
@@ -114,7 +114,8 @@ void VillageScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE) && m_shop->GetIsVisible())
 	{
-		m_shop->SetVisible(false);
+		//m_shop->SetIsVisible(false);
+		m_shop->Close();
 		m_player->UnlockInputs();
 	}
 }

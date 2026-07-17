@@ -12,7 +12,7 @@
 
 #include "GameData.h"
 #include "PlayerInventory.h"
-
+#include "2DPendentLib/InputManager.h"
 
 void HUDScene::OnInitialize()
 {
@@ -48,6 +48,7 @@ void HUDScene::OnEvent()
 void HUDScene::OnUpdate()
 {
 	m_playerInventory->OnUpdate();
+
 }
 
 void HUDScene::OnDestroy()

@@ -14,8 +14,8 @@ void UiShop::OnInitialize()
 {
 	Scene* scene = GetScene();
 
-	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory->GetInventory();
-	m_playerInventorys = GameData::Get().GetPlayerData().m_playerInventory;
+	//m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory->GetInventory();
+	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 
 	Vector2f topRightPos = GetPosition({ 1,0 });
 	Vector2i dimension = GetDimension();
@@ -108,7 +108,7 @@ void UiShop::OnEvent()
 		m_slot->Clear();
 
 	if (InputManager::Get()->IsKeyboardDown(K_N))
-		SetVisible(!GetIsVisible());
+		SetIsVisible(!GetIsVisible());
 }
 
 void UiShop::OnUpdate()
@@ -140,7 +140,7 @@ void UiShop::OnUpdate()
 }
 
 void UiShop::PlaceInventory(Inventory* p_inventory)
-{
+{ 
 	if (p_inventory == nullptr)
 		return;
 
@@ -150,9 +150,11 @@ void UiShop::PlaceInventory(Inventory* p_inventory)
 	p_inventory->SetPosition({ pos.GetX() * 1.25f,offsetY }, { 0,1 });
 	p_inventory->SetVisible(true);
 
-	if (p_inventory == m_playerInventory)
-		m_playerInventorys->GetHotbar()->SetPosition({pos.GetX() * 1.25f,offsetY + 110}, {0,1});
-	//std::cout << "Text :" << GetScene()->GetGeometry<Text>(m_playerInventory->GetSlot(0)->GetTextID())->GetText() << std::endl;
+	if (p_inventory == m_playerInventory->GetInventory())
+	{
+		m_playerInventory->GetHotbar()->SetPosition({ pos.GetX() * 1.25f,offsetY + 110 }, { 0,1 });
+		m_playerInventory->GetHotbar()->SetIsVisible(true);
+	}
 }
 
 void UiShop::Buy()
@@ -180,25 +182,24 @@ void UiShop::Sell()
 	std::string id = m_slot->GetStack().GetID();
 	int amount = m_slot->GetStack().GetAmount();
 
-	if (m_playerInventory->HasAmountOfItem(id, amount))
+	if(m_playerInventory->HasItems(id,amount))
 	{
 		GameData::Get().GetPlayerData().m_money += m_totalPrices;
 		m_playerInventory->RemoveItem(id, amount, false);
 		m_slot->Clear();
 	}
 
-	std::vector<InventorySlot*> slots = m_playerInventory->GetSlots();
-
+	std::vector<InventorySlot*> slots = m_playerInventory->GetAllSlots();
 	for (int i = 0; i < slots.size(); i++)
 	{
-		if (i == m_slotIndex)
+		if (slots[i] == m_selectedSlot)
 			continue;
 
 		if (slots[i]->GetStack().GetID() == id)
 		{
 			ItemStack item = slots[i]->GetStack();
 			m_slot->SetStack(item);
-			m_slotIndex = i;
+			m_selectedSlot = slots[i];
 			return;
 		}
 	}
@@ -219,9 +220,8 @@ void UiShop::SellAll()
 
 void UiShop::ChoosePlayerInventoryButtonClicked()
 {
-	Inventory* playerInventory = m_playerInventorys->GetInventory();
+	Inventory* playerInventory = m_playerInventory->GetInventory();
 	PlaceInventory(playerInventory);
-	m_playerInventorys->GetHotbar()->SetIsVisible(true);
 	m_sellButton->SetIsVisible(true);
 	m_sellAllButton->SetIsVisible(true);
 	m_buyButton->SetIsVisible(false);
@@ -235,8 +235,8 @@ void UiShop::ChooseShopInventoryButtonClicked()
 	m_buyButton->SetIsVisible(true);
 	m_sellButton->SetIsVisible(false);
 	m_sellAllButton->SetIsVisible(false);
-	m_playerInventory->SetVisible(false);
-	m_playerInventorys->GetHotbar()->SetIsVisible(false);
+	m_playerInventory->GetInventory()->SetVisible(false);
+	m_playerInventory->GetHotbar()->SetIsVisible(false);
 	m_slot->Clear();
 }
 
@@ -246,7 +246,20 @@ void UiShop::PlaceItemInInventoryToSlot()
 
 	if (m_sellButton->GetIsVisible())
 	{
-		inventory = m_playerInventory;
+		inventory = m_playerInventory->GetInventory();
+
+		std::vector<InventorySlot*> slots = m_playerInventory->GetHotbar()->GetSlots();
+		for (int i = 0; i < slots.size(); i++)
+		{
+			if (slots[i]->IsMouseIn() && slots[i]->IsEmpty() == false)
+			{
+				ItemStack item = slots[i]->GetStack();
+				m_slot->SetText(std::to_string(item.GetAmount()));
+				m_slot->SetStack(item);
+				//m_slotIndex = i;
+				m_selectedSlot = slots[i];
+			}
+		}
 	}
 	else
 		inventory = m_shopInventory;
@@ -261,7 +274,8 @@ void UiShop::PlaceItemInInventoryToSlot()
 			ItemStack item = slots[i]->GetStack();
 			m_slot->SetText(std::to_string(item.GetAmount()));
 			m_slot->SetStack(item);
-			m_slotIndex = i;
+			//m_slotIndex = i;
+			m_selectedSlot = slots[i];
 		}
 	}
 
@@ -272,11 +286,11 @@ void UiShop::PlusButton()
 	if (m_slot->IsEmpty())
 		return;
 
-	if (m_amountOfItem == m_playerInventory->GetSlot(m_slotIndex)->GetStack().GetAmount() && m_sellButton->GetIsVisible())
+	if(m_amountOfItem >= m_playerInventory->CountItem(m_slot->GetStack().GetID()) && m_sellButton->GetIsVisible())
 		return;
 
 	int amount = m_slot->GetStack().GetAmount();
-	m_slot->GetStack().SetAmount(amount + 100);
+	m_slot->GetStack().SetAmount(amount + 1);
 	m_slot->SetText(std::to_string(m_slot->GetStack().GetAmount()));
 }
 
@@ -295,7 +309,7 @@ void UiShop::MinusButton()
 	m_slot->SetText(std::to_string(m_slot->GetStack().GetAmount()));
 }
 
-void UiShop::SetVisible(bool p_isVisible)
+void UiShop::SetIsVisible(bool p_isVisible)
 {
 	Entity::SetIsVisible(p_isVisible);
 
@@ -307,11 +321,30 @@ void UiShop::SetVisible(bool p_isVisible)
 	m_sellAllButton->SetIsVisible(false);
 	m_buyButton->SetIsVisible(false);
 	m_slot->SetIsVisible(p_isVisible);
-	m_playerInventory->SetVisible(false);
+	m_playerInventory->GetInventory()->SetVisible(false);
 	m_shopInventory->SetVisible(false);
 
 	//m_textBox->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("itemAmount")->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("totalPrice")->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("itemName")->SetIsVisible(p_isVisible);
+}
+
+void UiShop::Open()
+{
+	SetIsVisible(true);
+	m_playerInventory->GetHotbar()->SetIsVisible(false);
+	ChoosePlayerInventoryButtonClicked();
+}
+
+void UiShop::Close()
+{
+	Vector2f hotbarPos = GetScene()->GetWindowCenter() + Vector2f{0, 300};
+	SetIsVisible(false);
+	m_slot->Clear();
+
+	m_playerInventory->GetHotbar()->SetIsVisible(true);
+	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
+
+	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
 }

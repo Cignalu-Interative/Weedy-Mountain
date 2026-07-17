@@ -89,7 +89,10 @@ void Hotbar::SetIsVisible(bool p_isVisible)
 	Entity::SetIsVisible(p_isVisible);
 
 	for (InventorySlot* slot : m_slots)
+	{
 		slot->SetIsVisible(p_isVisible);
+		slot->RefreshVisual();
+	}
 }
 
 bool Hotbar::CanAdd(const std::string& ID, int amount)
@@ -196,6 +199,7 @@ int Hotbar::AddItem(const std::string& ID, int amount, bool requireFull)
 
 		if (remaining <= 0)
 			return amount;
+
 	}
 
 	return amount - remaining;

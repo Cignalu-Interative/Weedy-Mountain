@@ -14,7 +14,6 @@ enum class JobType
 	Count
 };
 
-
 struct PlayerJob
 {
 	JobType m_name;
@@ -87,23 +86,17 @@ struct PlayerData
 	std::vector<PlayerJob*> m_jobs;
 	std::vector<Recipes> m_unlockedRecipes;
 
-	void AddXpToJob(JobType p_type)
-	{
-		for (PlayerJob* job : m_jobs)
-		{
-			if (job->m_name == p_type)
-				job->m_exp += 5;
-				
-		}
-	}
-	PlayerJob* GetJobByName(JobType p_type)
-	{
-		for (PlayerJob* job : m_jobs)
-		{
-			if (job->m_name == p_type)
-				return job;
-		}
-	}
+	void Heal(int p_amount);
+	void TakeDamage(int p_amount);
+	void AddStamina(int p_amount);
+	void DecreaseStamina(int p_amount);
+	void AddToxicity(int p_amount);
+	void DecreaseToxicity(int p_amount);
+	void DecreaseMoney(int p_amount);
+	void DecreaseCash(int p_amount);
+	void AddXpToJob(JobType p_type, float p_amount);
+
+	PlayerJob* GetJobByName(JobType p_type);
 	
 	int m_money = 200000;
 	int m_cash = 0;

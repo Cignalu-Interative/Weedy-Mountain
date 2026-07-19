@@ -326,12 +326,7 @@ void Player::OnDestroy()
 
 PlayerJob* Player::GetJobByName(JobType p_type)
 {
-	for (PlayerJob* job : gm.GetPlayerData().m_jobs)
-	{
-		if (job->m_name == p_type)
-			return job ;
-	}
-
+	gm.GetPlayerData().GetJobByName(p_type);
 }
 
 void Player::UpdateJobs()
@@ -341,7 +336,7 @@ void Player::UpdateJobs()
 		switch (gm.GetPlayerData().m_jobs[i]->m_name)
 		{
 		case JobType::Gatherer:
-			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
+			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) { 
 			case 2:
 				UnlockRecipe(Recipes::BandageL1);
 				break;
@@ -583,7 +578,6 @@ bool Player::IsRecipeUnlocked(Recipes _toUnlock)
 		{
 			return true;
 		}
-
 	}
 	return false;
 }
@@ -600,58 +594,42 @@ void Player::UnlockInputs()
 
 void Player::Heal(int p_amount)
 {
-	gm.GetPlayerData().m_stats.m_hp += p_amount;
-	if (gm.GetPlayerData().m_stats.m_hp > gm.GetPlayerData().m_stats.m_maxHp)
-		gm.GetPlayerData().m_stats.m_hp = gm.GetPlayerData().m_stats.m_maxHp;
+	gm.GetPlayerData().Heal(p_amount);
 }
 
 void Player::TakeDamage(int p_amount)
 {
-	gm.GetPlayerData().m_stats.m_hp -= p_amount;
-	if (gm.GetPlayerData().m_stats.m_hp < 0)
-		gm.GetPlayerData().m_stats.m_hp = 0;
+	gm.GetPlayerData().TakeDamage(p_amount);
 }
 
 void Player::DecreaseStamina(int p_amount)
 {
-	gm.GetPlayerData().m_stats.m_stamina -= p_amount;
-	if (gm.GetPlayerData().m_stats.m_stamina < 0)
-		gm.GetPlayerData().m_stats.m_stamina = 0;
+	gm.GetPlayerData().DecreaseStamina(p_amount);
 }
 
 void Player::AddStamina(int p_amount)
 {
-	gm.GetPlayerData().m_stats.m_stamina += p_amount;
-	if (gm.GetPlayerData().m_stats.m_stamina > gm.GetPlayerData().m_stats.m_maxStamina)
-		gm.GetPlayerData().m_stats.m_stamina = gm.GetPlayerData().m_stats.m_maxStamina;
+	gm.GetPlayerData().AddStamina(p_amount);
 }
 
 void Player::DecreaseToxicity(int p_amount)
 {
-	gm.GetPlayerData().m_stats.m_toxicity -= p_amount;
-	if (gm.GetPlayerData().m_stats.m_toxicity < 0)
-		gm.GetPlayerData().m_stats.m_toxicity = 0;
+	gm.GetPlayerData().DecreaseToxicity(p_amount);
 }
 
 void Player::AddToxicity(int p_amount)
 {
-	gm.GetPlayerData().m_stats.m_toxicity += p_amount;
-	if (gm.GetPlayerData().m_stats.m_toxicity > gm.GetPlayerData().m_stats.m_maxToxicity)
-		gm.GetPlayerData().m_stats.m_toxicity = gm.GetPlayerData().m_stats.m_maxToxicity;
+	gm.GetPlayerData().AddToxicity(p_amount);
 }
 
 void Player::DecreaseMoney(int p_amount)
 {
-	gm.GetPlayerData().m_money -= p_amount;
-	if (gm.GetPlayerData().m_money < 0)
-		gm.GetPlayerData().m_money = 0;
+	gm.GetPlayerData().DecreaseMoney(p_amount);
 }
 
 void Player::DecreaseCash(int p_amount)
 {
-	gm.GetPlayerData().m_cash -= p_amount;
-	if (gm.GetPlayerData().m_cash < 0)
-		gm.GetPlayerData().m_cash = 0;
+	gm.GetPlayerData().DecreaseCash(p_amount);
 }
 
 void Player::SetState(PlayerState p_state)

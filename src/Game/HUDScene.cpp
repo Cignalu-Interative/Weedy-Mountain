@@ -58,8 +58,8 @@ void HUDScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_J))
 		m_jobsUi->Toggle();
 
-	if (InputManager::Get()->IsKeyboardHeld(K_KP_PLUS))
-		GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer);
+	if (InputManager::Get()->IsKeyboardHeld(K_L))
+		GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer, 5.f);
 }
 
 void HUDScene::OnUpdate()

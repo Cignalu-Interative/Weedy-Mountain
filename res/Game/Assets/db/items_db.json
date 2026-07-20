@@ -83,7 +83,22 @@
         "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Helmet.png",
         "maxStack": 1,
         "name": "Helmet",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 2,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "test",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 5,
         "useActionID": ""
     }

@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GameData.h"
 #include "RecipeDataBase.h"
+#include "RecipesMenu.h"
 
 //Trucs qu'on peut changer si on veut changer la dur�e plus tard
 
@@ -30,14 +31,10 @@ void GameData::Update()
 	//m_playerData.m_playerInventory.OnUpdate();
 }
 
-
-
 float GameData::GetTimeSpent()
 {
 	return m_timeSpent;
 }
-
-
 
 int GameData::GetYear()
 {

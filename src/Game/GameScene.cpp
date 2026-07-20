@@ -39,27 +39,29 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
-#include "2DPendentLib/ObjectGroupTiled.h"
+#include "RecipeDataBase.h"
+#include "RecipeBlock.h"
 
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
-	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Farm");
+	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	//mm->SetCurrentMap("Farm");
 
-	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
+	//std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
 
-	for (ObjectTiled* o : a)
-	{
-		m_spawnPoint = o->GetObjectPosition();
-	}
+	//for (ObjectTiled* o : a)
+	//{
+	//	m_spawnPoint = o->GetObjectPosition();
+	//}
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
@@ -83,43 +85,43 @@ void GameScene::OnInitialize()
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
-	Application::Get()->SetClampCameraToCurrentMap(true);
+	//Application::Get()->SetClampCameraToCurrentMap(true);
 
-	MapTiled* map = mm->GetCurrentMap();
+	//MapTiled* map = mm->GetCurrentMap();
 
-	std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
+	//std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
 
-	for (ObjectTiled* obj : objectGroup)
-	{
-		Vector2f dim = obj->GetObjectDimension();
-		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
-	}
+	//for (ObjectTiled* obj : objectGroup)
+	//{
+	//	Vector2f dim = obj->GetObjectDimension();
+	//	Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
+	//}
 
-	objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
+	//objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
 
-	for (ObjectTiled* obj : objectGroup)
-	{
-		Vector2f dim = obj->GetObjectDimension();
-		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
-		ent->SetTag(5);
-	}
+	//for (ObjectTiled* obj : objectGroup)
+	//{
+	//	Vector2f dim = obj->GetObjectDimension();
+	//	Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
+	//	ent->SetTag(5);
+	//}
 
-	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
-	int size = canGrowTiles.size();
-	Vector2i tileDim = map->GetTileDimension();
+	//std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
+	//int size = canGrowTiles.size();
+	//Vector2i tileDim = map->GetTileDimension();
 
-	for (const TileInfo& info : canGrowTiles)
-	{
-		Vector2f center = {
-			info.worldPos.GetX() + tileDim.GetX() / 2.f,
-			info.worldPos.GetY() + tileDim.GetY() / 2.f
-		};
-		FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
-		tile->GetCollider()->SetLayer(FARMTILE);
-		tile->GetCollider()->SetMask(NoNE);
-		//tile->ShowCollider(true);
-		FarmManager::Get()->RegisterTile(tile);
-	}
+	//for (const TileInfo& info : canGrowTiles)
+	//{
+	//	Vector2f center = {
+	//		info.worldPos.GetX() + tileDim.GetX() / 2.f,
+	//		info.worldPos.GetY() + tileDim.GetY() / 2.f
+	//	};
+	//	FarmTile* tile = CreateEntity<FarmTile>(center, tileDim, "", Shape::Rectangle, false);
+	//	tile->GetCollider()->SetLayer(FARMTILE);
+	//	tile->GetCollider()->SetMask(NoNE);
+	//	//tile->ShowCollider(true);
+	//	FarmManager::Get()->RegisterTile(tile);
+	//}
 
 
 	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
@@ -131,38 +133,16 @@ void GameScene::OnInitialize()
 	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
-	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);*/
 
-	// CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
-	// Text* t = Debug::Get()->GetText("KAKA");
-	// t->SetFont("Gameplay", 55);
-	// t->SetText("KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU");
-	// t->SetFontSize(60);
-	// t->SetColor(ColorsNamed::Violet);
-	// t->SetWrapWidth(600);
-	// t->SetFontStyle(false, true);
-	// t->SetOutlineSize(2);
-	// t->SetOutLineColor(ColorsNamed::White);
-	// t->SetLineSpacing(50);
-	// t->HorizontalAlignText(HorizontalAlignment::Center);
-
-	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
-	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
-	//m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
-
-	//UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	//a->GetSprite()->SetDimension(a->GetDimension());
-	//a->SyncSprites();
-	////a->ShowCollider(true);
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
-	EnviroSpawn::Get()->InitEnviroSpawn();
+	//EnviroSpawn::Get()->InitEnviroSpawn();
 	//EnviroSpawn::Get()->InitEnviroSpawn();
 
-// 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
-// 	m_textBox->GetCollider()->SetIsTrigger(true);
-// 	m_textBox->SetBackgroundFilled(true);
+	RecipeBlock* j = CreateEntity<RecipeBlock>(GetWindowCenter(), { 400,150 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	j->GetSprite("default")->ResizeStretched(j->GetDimension());
+	j->Initialize("test");
+	j->ShowCollider(true);
 }
 
 

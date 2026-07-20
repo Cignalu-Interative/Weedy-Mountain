@@ -743,7 +743,7 @@ double Sound::GetSoundDurationRemaining() const
 	}
 	else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
 	{
-		Sint64 remainingFrames;
+		Sint64 remainingFrames = 0;
 		int count = 0;
 		for (MIX_Track* piste : m_pistesSFX)
 		{

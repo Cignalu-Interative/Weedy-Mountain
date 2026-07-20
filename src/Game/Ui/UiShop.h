@@ -68,8 +68,7 @@ public :
 	void SetShopInventory(Inventory* p_shopInventory) { m_shopInventory = p_shopInventory; }
 
 	void SetIsVisible(bool p_isVisible);
-
-	//TO DO 
+ 
 	void Open();
 
 	void Close();

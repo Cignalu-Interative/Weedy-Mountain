@@ -41,11 +41,15 @@
 
 #include "RecipeDataBase.h"
 #include "RecipeBlock.h"
+#include "RecipesUi.h"
 
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
+
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	//mm->SetCurrentMap("Farm");
 
@@ -60,8 +64,6 @@ void GameScene::OnInitialize()
 	gm.SetTimeScale(100);
 	gm.Initialize();
 
-	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
-	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
@@ -139,10 +141,13 @@ void GameScene::OnInitialize()
 	//EnviroSpawn::Get()->InitEnviroSpawn();
 	//EnviroSpawn::Get()->InitEnviroSpawn();
 
-	RecipeBlock* j = CreateEntity<RecipeBlock>(GetWindowCenter(), { 400,150 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	j->GetSprite("default")->ResizeStretched(j->GetDimension());
-	j->Initialize("test");
-	j->ShowCollider(true);
+	//RecipeBlock* j = CreateEntity<RecipeBlock>(GetWindowCenter(), { 400,150 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	//j->GetSprite("default")->ResizeStretched(j->GetDimension());
+	//j->Initialize("test");
+	//j->ShowCollider(true);
+
+	RecipesUi* k = CreateEntity<RecipesUi>(GetWindowCenter(), { 1000,600 }, "", Shape::Rectangle, true);
+	k->ShowCollider(true);
 }
 
 

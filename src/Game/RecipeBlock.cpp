@@ -4,7 +4,11 @@
 #include "ItemDataBase.h"
 #include "SpriteContainer.h"
 
-static uint32_t id = 1;
+static uint32_t id = 0;
+RecipeBlock::RecipeBlock()
+{
+	m_myID = id++;
+}
 
 void RecipeBlock::OnInitialize()
 {
@@ -28,27 +32,41 @@ void RecipeBlock::Initialize(std::string p_recipeName)
 	Vector2f spritePos = GetSprite("Recipe")->GetPosition();
 
 	Vector2f recipeNamePos = spritePos + Vector2f{ 75, -10 };
-	Debug::Get()->CreateText("RecipeName", recipeNamePos, recipeName, ColorsNamed::White, true);
+	Debug::Get()->CreateText("RecipeName" + std::to_string(m_myID), recipeNamePos, recipeName, ColorsNamed::White, true);
 
 	Vector2f recipeDescriptionPos = GetSprite("Recipe")->GetPosition({ 1,0.5f }) + Vector2f{ 10, 0};
-	Debug::Get()->CreateText("RecipeDescription", {}, recipeDescription, ColorsNamed::White, true);
-	Debug::Get()->GetText("RecipeDescription")->SetFontSize(20);
-	Debug::Get()->GetText("RecipeDescription")->SetPosition(recipeDescriptionPos, {});
+	Debug::Get()->CreateText("RecipeDescription" + std::to_string(m_myID), {}, recipeDescription, ColorsNamed::White, true);
+	Debug::Get()->GetText("RecipeDescription" + std::to_string(m_myID))->SetFontSize(20);
+	Debug::Get()->GetText("RecipeDescription" + std::to_string(m_myID))->SetPosition(recipeDescriptionPos, {});
 
-
-	std::vector<RecipeIngredientData> dataIngredient = recipe->GetRecipe(p_recipeName)->GetIngredients();
+	m_ingredients = recipe->GetRecipe(p_recipeName)->GetIngredients();
 
 	float ingredientOffsetX = 75;
-
-	for (RecipeIngredientData data : dataIngredient)
+	int number = 1;
+	for (RecipeIngredientData data : m_ingredients)
 	{
-		Vector2f itemSpritePos = Vector2f{ -(float)GetDimension().GetX() / 2, -(float)GetDimension().GetY() / 1.3f } + Vector2f{ ingredientOffsetX * id ,150 };
-		AddSprite(std::to_string(m_myID + id), item->GetItem(data.itemID)->GetPath(), { 50,50 }, 1, itemSpritePos, true);
-		
-		Vector2f spritePos = GetSprite(std::to_string(m_myID + id))->GetPosition();
-		Vector2f textQuantityPos = spritePos + Vector2f{ 20,10 };
+		Vector2f itemSpritePos = Vector2f{ -(float)GetDimension().GetX() / 2, -(float)GetDimension().GetY() / 1.3f } + Vector2f{ ingredientOffsetX * number,150 };
+		AddSprite(std::to_string(m_myID + number), item->GetItem(data.itemID)->GetPath(), { 50,50 }, 1, itemSpritePos, true);
 
-		Debug::Get()->CreateText(std::to_string(m_myID + id), textQuantityPos, std::to_string(data.quantity), ColorsNamed::White, true);
-		id++;
+		Vector2f spritePos = GetSprite(std::to_string(m_myID + number))->GetPosition();
+		Vector2f textQuantityPos = spritePos + Vector2f{ 25,10 };
+
+		Debug::Get()->CreateText(std::to_string(m_myID + number), textQuantityPos, std::to_string(data.quantity), ColorsNamed::White, true);
+		number++;
+	}
+}
+
+void RecipeBlock::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+	Debug::Get()->GetText("RecipeName" + std::to_string(m_myID))->SetIsVisible(p_isVisible);
+	Debug::Get()->GetText("RecipeDescription" + std::to_string(m_myID))->SetIsVisible(p_isVisible);
+
+	int number = 1;
+	for (RecipeIngredientData data : m_ingredients)
+	{
+		GetSprite(std::to_string(m_myID + number))->SetIsVisible(p_isVisible);
+		Debug::Get()->GetText(std::to_string(m_myID + number))->SetIsVisible(p_isVisible);
+		number++;
 	}
 }

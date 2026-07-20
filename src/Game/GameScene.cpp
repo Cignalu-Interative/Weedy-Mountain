@@ -269,6 +269,7 @@ void GameScene::OnUpdate()
 				sound->SetStartAtTime(Aleatory::GetInt(0, 30));
 				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 30));
 				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
 				sound->Play();
 			}
 		}
@@ -286,6 +287,7 @@ void GameScene::OnUpdate()
 				sound->SetStartAtTime(Aleatory::GetInt(0, 60));
 				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 60));
 				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
 				sound->Play();
 			}
 		}
@@ -303,7 +305,45 @@ void GameScene::OnUpdate()
 	}
 	case 4:
 	{
+		sm->GetSound("L_Automne (Jour) - OST from Weedy Mountain v1")->Stop();
+		sm->GetSound("L_Automne (Nuit) - OST from Weedy Mountain v1")->Stop();
 
+		if (gm.GetHour() > 20 || gm.GetHour() < 6)
+		{
+			/*Sound* sound = sm->GetSound("");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				sm->GetSound("L_hiver (Jour) - OST from Weedy Mountain v1")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
+				sound->Play();
+			}*/
+		}
+		else
+		{
+			Sound* sound = sm->GetSound("L_hiver (Jour) - OST from Weedy Mountain v1");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				//sm->GetSound("")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
+				sound->Play();
+			}
+		}
 		break;
 	}
 	}

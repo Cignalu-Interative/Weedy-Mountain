@@ -355,14 +355,20 @@ void Sound::Pause()
 	}
 	else if (m_audioFormat == AudioFormat::WAV)
 	{
-		for (MIX_Track* piste : m_pistesSFX)
+		if (MIX_PauseAllTracks(m_mixer) == false)
+		{
+			SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseAllTracks WAV failed: %s", SDL_GetError());
+			return;
+		}
+
+		/*for (MIX_Track* piste : m_pistesSFX)
 		{
 			if (MIX_PauseTrack(piste) == false)
 			{
 				SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
-		}
+		}*/
 	}
 	m_isPlaying = false;
 	m_isPaused = true;
@@ -385,14 +391,20 @@ void Sound::Resume()
 	}
 	else if (m_audioFormat == AudioFormat::WAV)
 	{
-		for (MIX_Track* piste : m_pistesSFX)
+		if (MIX_ResumeAllTracks(m_mixer) == false)
+		{
+			SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeAllTracks WAV failed: %s", SDL_GetError());
+			return;
+		}
+
+		/*for (MIX_Track* piste : m_pistesSFX)
 		{
 			if (MIX_ResumeTrack(piste) == false)
 			{
 				SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
-		}
+		}*/
 	}
 	m_isPlaying = true;
 	m_isPaused = false;

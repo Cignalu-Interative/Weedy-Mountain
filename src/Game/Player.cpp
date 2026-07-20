@@ -244,7 +244,7 @@ void Player::UpdateFishing()
 		{
 			m_fishingState = FishingState::Waiting;
 			m_fishingTimer = 0.f;
-			m_fishingTimerTarget = Aleatory::GetFloat(2.f, 5.f);
+			m_fishingTimerTarget = Aleatory::GetFloat(2.f, 10.f);
 		}
 		else
 		{
@@ -259,6 +259,12 @@ void Player::UpdateFishing()
 		if (m_isMovingThisFrame)
 		{
 			std::cout << "[Fishing] mouvement detecter, cane range !" << std::endl;
+			RetractFishingRod();
+			break;
+		}
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		{
+			std::cout << "[Fishing] cane retracte !" << std::endl;
 			RetractFishingRod();
 			break;
 		}

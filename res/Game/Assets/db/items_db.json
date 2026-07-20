@@ -86,5 +86,16 @@
         "recipes": [],
         "sellPrice": 5,
         "useActionID": ""
+    },
+    {
+        "buyPrice": 10,
+        "description": "bah cest de la weed quoi ",
+        "id": 9,
+        "imagePath": "C:\\Users\\alexi\\Documents\\GitHub\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Drugs.png",
+        "maxStack": 64,
+        "name": "WEED",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": ""
     }
 ]

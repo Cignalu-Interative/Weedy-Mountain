@@ -107,6 +107,18 @@ const std::unordered_map<std::string, RecipeData>& RecipeDataBase::GetAll() cons
     return m_recipes;
 }
 
+const std::vector<RecipeData*> RecipeDataBase::GetAllRecipes()
+{
+    std::vector<RecipeData*> result;
+
+    for (auto& pair : m_recipes)
+    {
+        result.push_back(&pair.second);
+    }
+
+    return result;
+}
+
 std::vector<RecipeData*> RecipeDataBase::GetRecipesForItem(const std::string& itemID)
 {
     std::vector<RecipeData*> result;

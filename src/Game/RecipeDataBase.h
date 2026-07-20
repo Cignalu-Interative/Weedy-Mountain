@@ -21,5 +21,7 @@ public:
 
     const std::unordered_map<std::string, RecipeData>& GetAll() const;
 
+    const std::vector<RecipeData*> GetAllRecipes();
+
     std::vector<RecipeData*> GetRecipesForItem(const std::string& itemID);
 };

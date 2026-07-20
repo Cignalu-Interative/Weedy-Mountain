@@ -56,7 +56,7 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
-	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,-100} }, { 8,32 }, "player", Shape::Rectangle);
+	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{350,100} }, { 8,32 }, "player", Shape::Rectangle);
 	m_shopPNJ->SetOnFinishFunction([this] {
 		/*m_shop->SetIsVisible(true)*/m_shop->Open(); }
 	);
@@ -89,6 +89,12 @@ void VillageScene::OnEvent()
 	{
 		SceneManager::Get()->PushScene("game");
 	}
+
+	if (im->IsKeyboardDown(K_A))
+		GetCamera()->SetZoom(5);
+
+	if (im->IsKeyboardDown(K_E) && (!m_shopPNJ->IsInPlayerZone() && !m_PNJ->IsInPlayerZone()))
+		GetCamera()->SetZoom(1);
 
 	if (im->IsKeyboardDown(K_M))
 		m_player->TakeDamage(5);

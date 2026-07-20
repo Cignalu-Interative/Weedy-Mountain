@@ -1,0 +1,36 @@
+rapporte carrote
+
+bool not started
+bool in progress 
+bool finished
+
+but -> int NB Carrote = 10
+int corrotte donné
+
+speak to png
+
+discussion donne carotte
+fonction add carotte to donné carrotte
+{
+if (carrotyte donné >= corrite voilu)
+{
+terminé
+}
+}
+
+
+casser des arbres
+
+bool not started
+bool in progress 
+bool finished
+
+but -> int 20 arbres
+int arbres cassé
+
+if (casse un arbre) -> add arbre cassé
+
+if (cassé >= demander)
+{
+finished
+}

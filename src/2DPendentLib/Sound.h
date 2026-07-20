@@ -134,6 +134,12 @@ public:
 
 	void SetSpacializationEnabled(bool p_enabled) { m_isSpacializationEnabled = p_enabled; }
 	bool IsSpacializationEnabled() const { return m_isSpacializationEnabled; }
+
+	// Obtenir la durée totale du son en secondes
+	double GetSoundDuration() const;
+
+	// Obtenir la durée restante du son en secondes
+	double GetSoundDurationRemaining() const;
 };
 
 #include "Sound.inl"

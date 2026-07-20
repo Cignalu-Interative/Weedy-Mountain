@@ -708,3 +708,51 @@ void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) 
 
 	p_outGain = m_relativeVolume * naturalAttenuation;
 }
+
+double Sound::GetSoundDuration() const
+{
+	Sint64 durationFrames = MIX_GetAudioDuration(m_audio);
+	Sint64 durationMS = MIX_AudioFramesToMS(m_audio, durationFrames);
+
+	return static_cast<double>(durationMS) / 1000.0; // Convertir en secondes
+
+	//if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
+	//{
+	//	Sint64 durationFrames = MIX_GetAudioDuration(m_audio);
+	//	Sint64 durationMS = MIX_AudioFramesToMS(m_audio, durationFrames);
+
+	//	return static_cast<double>(durationMS) / 1000.0; // Convertir en secondes
+	//}
+	//else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	//{
+	//	Sint64 durationFrames = MIX_GetAudioDuration(m_audio);
+	//	Sint64 durationMS = MIX_AudioFramesToMS(m_audio, durationFrames);
+
+	//	return static_cast<double>(durationMS) / 1000.0; // Convertir en secondes
+	//}
+}
+
+double Sound::GetSoundDurationRemaining() const
+{
+	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
+	{
+		Sint64 remainingFrames = MIX_GetTrackRemaining(m_pisteMusique);
+		Sint64 remainingMS = MIX_AudioFramesToMS(m_audio, remainingFrames);
+
+		return static_cast<double>(remainingMS) / 1000.0; // Convertir en secondes
+	}
+	else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	{
+		Sint64 remainingFrames;
+		int count = 0;
+		for (MIX_Track* piste : m_pistesSFX)
+		{
+			remainingFrames += MIX_GetTrackRemaining(piste);
+			count++;
+		}
+		Sint64 averageRemainingFrames = remainingFrames / count;
+		Sint64 remainingMS = MIX_AudioFramesToMS(m_audio, averageRemainingFrames);
+
+		return static_cast<double>(remainingMS) / 1000.0; // Convertir en secondes
+	}
+}

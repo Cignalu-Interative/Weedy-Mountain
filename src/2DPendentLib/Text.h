@@ -50,8 +50,6 @@ private:
 	float m_timeToUpdate = 0.0f; // Temps �coul� depuis la derni�re mise � jour de la texture du texte
 	float m_updateInterval = 0.5f; // Intervalle de temps entre les mises � jour de la texture du texte (en secondes)
 
-	bool m_clampToScreen = false; // Si true, la geometry sera dessin� � la position la plus proche sur l'�cran si sa position d�passe les limites de l'�cran
-
 	void CreateText();
 
 	Vector2f m_positionWanted; //Position voulue pour le texte, ind�pendante de la position r�elle du texte avec la taille du texte
@@ -95,9 +93,6 @@ public:
 
 	void SetRenderer(SDL_Renderer* p_renderer) { m_renderer = p_renderer; }
 	SDL_Renderer* GetRenderer() const { return m_renderer; }
-
-	void SetIsClamp(bool p_isClamp) { m_clampToScreen = p_isClamp; }
-	bool GetIsClamp() { return m_clampToScreen; }
 
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
 

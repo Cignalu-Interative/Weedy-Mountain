@@ -23,6 +23,8 @@ protected:
 
 	int m_type = -1; // Type de geometry 0 = Point, 1 = Line, 2 = Rectangle, 3 = FillRectangle, 4 = Circle, 5 = FillCircle, 6 = Text
 
+	bool m_clampToScreen = false;
+
 public:
 
 	//Constructeur de géometry par defaut
@@ -52,5 +54,8 @@ public:
 
 	void SetType(int p_type) { m_type = p_type; }
 	int GetType() const { return m_type; }
+
+	void SetIsClamp(bool p_isClamp) { m_clampToScreen = p_isClamp; }
+	bool GetIsClamp() { return m_clampToScreen; }
 
 };

@@ -21,6 +21,7 @@
 #include "Ui/UiJobs.h"
 #include "Ui/UiGatherer.h"
 #include "Ui/UiShop.h"
+#include "UiATM.h"
 #include "UiDealerShop.h"
 
 #include "2DPendentLib/ObjectGroupTiled.h"
@@ -103,6 +104,10 @@ void VillageScene::OnInitialize()
 	m_dealerShop->SyncSprites();
 	m_dealerShop->SetShopInventory(m_drugDealer->GetInventory());
 	m_dealerShop->SetIsVisible(false);
+
+
+
+	UiATM* atmUi = CreateEntity<UiATM>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "", Shape::Rectangle, true);
 
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);

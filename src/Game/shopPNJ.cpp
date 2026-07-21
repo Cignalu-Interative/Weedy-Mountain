@@ -13,7 +13,7 @@ void shopPNJ::OnInitialize()
 }
 void shopPNJ::OnUpdate()
 {
-
+	PNJ::OnUpdate();
 }
 
 

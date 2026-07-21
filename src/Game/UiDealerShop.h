@@ -36,6 +36,9 @@ private:
 	int m_amountOfItem = 0;
 	int m_totalPrices = 10;
 
+	bool m_isOpen = false; 
+	bool m_isRefilled = false;
+
 	void OnInitialize() override;
 
 	void OnEvent() override;
@@ -73,5 +76,9 @@ public:
 	void Open();
 
 	void Close();
+
+	bool IsOpen() { return m_isOpen;  }
+
+	void RefillShop(); 
 };
 

@@ -16,7 +16,6 @@ void UiDealerShop::OnInitialize()
 
 	RemoveCollider("default");
 
-	//m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory->GetInventory();
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 
 	Vector2f topRightPos = GetPosition({ 1,0 });
@@ -26,7 +25,6 @@ void UiDealerShop::OnInitialize()
 	Vector2f offset = topRightPos + Vector2f{ -offsetX, offsetY };
 
 	m_slot = scene->CreateEntity<InventorySlot>(offset, { 200,150 }, "", Shape::Rectangle, true);
-	//m_slot->ShowCollider(true);
 	m_slot->GetCollider()->SetIsTrigger(true);
 
 	m_slot->AddSprite("item_texture", "", m_slot->GetDimension(), 1, { 0.0f, 0.0f }, true);
@@ -85,7 +83,6 @@ void UiDealerShop::OnInitialize()
 	float offsetPriceY = halfRightPos.GetY() * 1.275f;
 	float offsetItemNameY = halfRightPos.GetY() * 0.86f;
 
-	//m_textBox = scene->CreateTextBox("itemAmount", { offset.GetX(),halfRightPos.GetY() }, { 50,25 }, ColorsNamed::White);
 	scene->CreateText("itemAmount", { offset.GetX(),halfRightPos.GetY() }, "Item : " + std::to_string(m_amountOfItem), ColorsNamed::White, true);
 	scene->CreateText("totalPrice", { offset.GetX(),offsetPriceY }, "Price : " + std::to_string(m_totalPrices), ColorsNamed::White, true);
 	scene->CreateText("itemName", { offset.GetX(), offsetItemNameY }, "", ColorsNamed::White, true);
@@ -117,10 +114,14 @@ void UiDealerShop::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_N))
 		SetIsVisible(!GetIsVisible());
+	
 }
 
 void UiDealerShop::OnUpdate()
 {
+	if (GameData::Get().GetHour() == 6 && GameData::Get().GetMinute() == 0)
+		RefillShop();
+
 	int price = 0;
 	m_amountOfItem = m_slot->GetStack().GetAmount();
 
@@ -132,7 +133,6 @@ void UiDealerShop::OnUpdate()
 
 	m_totalPrices = m_slot->GetStack().GetAmount() * price;
 
-	//m_textBox->SetText("Item : " + std::to_string(m_amountOfItem));
 	GetScene()->GetGeometry<Text>("itemAmount")->SetText("Item : " + std::to_string(m_amountOfItem));
 	GetScene()->GetGeometry<Text>("totalPrice")->SetText("Price : " + std::to_string(m_totalPrices));
 	if (m_slot->IsEmpty())
@@ -143,8 +143,7 @@ void UiDealerShop::OnUpdate()
 	std::string itemName = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetName();
 	GetScene()->GetGeometry<Text>("itemName")->SetText(itemName);
 
-	//std::cout << "Slot :" << m_playerInventory->GetSlot(0)->GetIsVisible() << std::endl;
-	//std::cout << "Update Text :" <<GetScene()->GetGeometry<Text>(m_playerInventory->GetSlot(0)->GetTextID())->GetText() << std::endl;
+
 }
 
 void UiDealerShop::PlaceInventory(Inventory* p_inventory)
@@ -176,8 +175,10 @@ void UiDealerShop::Buy()
 	if (m_playerInventory->CanAdd(id, amount) && GameData::Get().GetPlayerData().m_cash >= m_totalPrices)
 	{
 		m_playerInventory->AddItem(id, amount, false);
-		GameData::Get().GetPlayerData().m_cash -= m_totalPrices;//GetScene<GameScene>()->GetPlayer()->DecreaseMoney(m_totalPrices);
+		GameData::Get().GetPlayerData().m_cash -= m_totalPrices;
 		m_slot->Clear();
+
+		m_shopInventory->RemoveItem(id, amount, false);
 	}
 }
 
@@ -296,6 +297,9 @@ void UiDealerShop::PlusButton()
 	if (m_amountOfItem >= m_playerInventory->CountItem(m_slot->GetStack().GetID()) && m_sellButton->GetIsVisible())
 		return;
 
+	if (m_amountOfItem >= m_shopInventory->CountItem(m_slot->GetStack().GetID()) && m_buyButton->GetIsVisible())
+		return;
+
 	int amount = m_slot->GetStack().GetAmount();
 	m_slot->GetStack().SetAmount(amount + 1);
 	m_slot->SetText(std::to_string(m_slot->GetStack().GetAmount()));
@@ -339,6 +343,7 @@ void UiDealerShop::SetIsVisible(bool p_isVisible)
 
 void UiDealerShop::Open()
 {
+	m_isOpen = true;
 	SetIsVisible(true);
 	m_playerInventory->GetHotbar()->SetIsVisible(false);
 	ChoosePlayerInventoryButtonClicked();
@@ -346,6 +351,7 @@ void UiDealerShop::Open()
 
 void UiDealerShop::Close()
 {
+	m_isOpen = false;
 	Vector2f hotbarPos = GetScene()->GetWindowCenter() + Vector2f{ 0, 300 };
 	SetIsVisible(false);
 	m_slot->Clear();
@@ -354,4 +360,12 @@ void UiDealerShop::Close()
 	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
 
 	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
+}
+
+void UiDealerShop::RefillShop()
+{
+	int amount = Aleatory::GetInt(0, 64);
+	m_shopInventory->AddItem("ITEM_WEED", amount, false);
+
+	m_isRefilled = true;
 }

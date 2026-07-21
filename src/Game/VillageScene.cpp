@@ -63,9 +63,15 @@ void VillageScene::OnInitialize()
 
 	m_drugDealer->SetOnFinishFunction([this] {
 		if (GameData::Get().GetHour() < 18)
+		{
+			m_player->UnlockInputs();
 			return;
+		}
 		if (GameData::Get().GetHour() > 20)
+		{
+			m_player->UnlockInputs();
 			return;
+		}
 
 		m_dealerShop->Open();
 		}
@@ -127,7 +133,7 @@ void VillageScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_PNJ->IsInPlayerZone())
 	{
 		m_player->LockInputs();
-		m_PNJ->Talk("Salut ! Moi c'est Richard, ça fait maintenant un moment que j'habite ici et j'ai entendu dire que tu venais d'arriver dans le village, je voulais te souhaiter la bienvenue. Surtout si tu as besoin de quoi que ce soit n'hesite pas ! ");
+		m_PNJ->Talk("Salut ! Moi c'est Richard, ca fait maintenant un moment que j'habite ici et j'ai entendu dire que tu venais d'arriver dans le village, je voulais te souhaiter la bienvenue. Surtout si tu as besoin de quoi que ce soit n'hesite pas ! ");
 	}
 
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_drugDealer->IsInPlayerZone())
@@ -138,15 +144,18 @@ void VillageScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE) && m_shop->GetIsVisible())
 	{
-		//m_shop->SetIsVisible(false);
 		m_shop->Close();
+		m_player->UnlockInputs();
+	}
+	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE) && m_dealerShop->GetIsVisible())
+	{
+		m_dealerShop->Close();
 		m_player->UnlockInputs();
 	}
 }
 
 void VillageScene::OnUpdate()
 {
-	
 
 }
 

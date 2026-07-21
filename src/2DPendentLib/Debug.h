@@ -136,6 +136,8 @@ public:
 	//faire un create qui renvoie une addresse de text pour l'update
 	Text* CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 
+	Sprite* CreateSprite(std::string p_id, Vector2f p_position, Vector2i p_dimension, bool p_isGUI = false, bool p_clampToScreen = true);
+
 	// Fonctions pour détruire un point de debug grace à son identifiant unique
 	void destroyPoint(const std::string& p_id);
 	// Fonction pour détruire une ligne de debug grace à son identifiant unique
@@ -150,6 +152,8 @@ public:
 	void destroyFillCircle(const std::string& p_id);
 	// Fonction pour détruire un texte de debug grace à son identifiant unique
 	void destroyText(const std::string& p_id);
+
+	void destroySprite(const std::string& p_id);
 
 	void Destroy(const std::string& p_id);
 
@@ -168,6 +172,8 @@ public:
 	// Fonction pour effacer tous les textes de debug
 	void ClearTexts();
 
+	void ClearSprites();
+
 	void ClearAll();
 
 	// Fonctions pour obtenir les éléments de debug à dessiner grace à leur identifiant unique
@@ -184,6 +190,8 @@ public:
 	Circle* GetFillCircle(const std::string& p_id);
 	// Fonction pour obtenir un texte de debug grace à son identifiant unique
 	Text* GetText(const std::string& p_id);
+
+	Sprite* GetSprite(const std::string& p_id);
 
 	template<typename T>
 	T* GetGeometry(const std::string& p_id)
@@ -218,6 +226,10 @@ public:
 		if (geometry)
 			return geometry;
 
+		geometry = GetSprite(p_id);
+		if (geometry)
+			return geometry;
+
 		return nullptr;
 	}
 
@@ -228,6 +240,7 @@ public:
 	std::vector<Circle*> GetAllAutoCircles() const;
 	std::vector<Circle*> GetAllAutoFillCircles() const;
 	std::vector<Text*>& GetAllAutoTexts() const;
+	std::vector<Sprite*>& GetAllAutoSprites() const;
 
 	std::vector<Point*>& GetAllPoints();
 	std::vector<Line*>& GetAllLines();
@@ -237,6 +250,8 @@ public:
 	std::vector<Circle*>& GetAllFillCircles();
 	std::vector<Text*>& GetAllTexts();
 
+	std::vector<Sprite*>& GetAllSprites();
+
 	void SetPointDrawLayer(const std::string& p_id, int p_layer);
 	void SetLineDrawLayer(const std::string& p_id, int p_layer);
 	void SetRectDrawLayer(const std::string& p_id, int p_layer);
@@ -244,6 +259,7 @@ public:
 	void SetCircleDrawLayer(const std::string& p_id, int p_layer);
 	void SetFillCircleDrawLayer(const std::string& p_id, int p_layer);
 	void SetTextDrawLayer(const std::string& p_id, int p_layer);
+	void SetSpriteDrawLayer(const std::string& p_id, int p_layer);
 
 	void SortGeometriesByDrawLayer();
 
@@ -265,6 +281,8 @@ public:
 	// Fonction pour dessiner les textes de debug
 	void DrawTexts(Render* f_render, Window* f_window, Camera* p_camera);
 
+	void DrawSprites(Render* f_render, Window* f_window, Camera* p_camera);
+
 
 	void DrawPoint(Point* p_point, Render* f_render, Window* f_window, Camera* p_camera);
 	void DrawLine(Line* p_line, Render* f_render, Window* f_window, Camera* p_camera);
@@ -273,6 +291,7 @@ public:
 	void DrawCircle(Circle* p_circle, Render* f_render, Window* f_window, Camera* p_camera);
 	void DrawFillCircle(Circle* p_circle, Render* f_render, Window* f_window, Camera* p_camera);
 	void DrawText(Text* p_text, Render* f_render, Window* f_window, Camera* p_camera);
+	void DrawSprite(Sprite* p_sprite, Render* f_render, Window* f_window, Camera* p_camera);
 	
 
 private:

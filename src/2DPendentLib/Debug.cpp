@@ -315,6 +315,35 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 	return text;
 }
 
+Sprite* Debug::CreateSprite(std::string p_id, Vector2f p_position, Vector2i p_dimension, bool p_isGUI = false, bool p_clampToScreen = true)
+{
+	auto it = m_sprites.find(p_id);
+	if (it != m_sprites.end())
+	{
+		Sprite* sprite = m_spritesVector[it->second];
+		sprite->SetPosition(p_position);
+		sprite->SetIsGUI(p_isGUI);
+		sprite->SetIsClamp(p_clampToScreen);
+		return sprite;
+	}
+
+	Sprite* sprite = new Sprite;
+	sprite->SetType((int)Type::Sprite);
+	sprite->SetIsGUI(p_isGUI);
+	sprite->SetIsClamp(p_clampToScreen);
+
+	if (p_id.empty())
+	{
+		p_id = "sprite_auto_" + std::to_string(m_spriteCount++);
+	}
+	sprite->SetId(p_id);
+	m_sprites[std::move(p_id)] = m_spritesVector.size();
+	m_spritesVector.push_back(sprite);
+
+	SortGeometriesByDrawLayer();
+	return sprite;
+}
+
 void Debug::destroyPoint(const std::string& p_id)
 {
 	if (m_pointsVector.empty())
@@ -498,6 +527,33 @@ void Debug::destroyText(const std::string& p_id)
 	m_texts.erase(it);
 }
 
+void Debug::destroySprite(const std::string& p_id)
+{
+	if (m_spritesVector.empty())
+	{
+		return;
+	}
+	auto it = m_sprites.find(p_id);
+
+	if (it == m_sprites.end())
+	{
+		return;
+	}
+
+	size_t indexToDelete = it->second;
+	size_t lastIndex = m_spritesVector.size() - 1;
+
+	if (indexToDelete != lastIndex)
+	{
+		std::swap(m_spritesVector[indexToDelete], m_spritesVector[lastIndex]);
+		m_sprites[m_spritesVector[indexToDelete]->GetId()] = indexToDelete;
+	}
+	delete m_spritesVector[lastIndex];
+	m_spritesVector[lastIndex] = nullptr;
+	m_spritesVector.pop_back();
+	m_sprites.erase(it);
+}
+
 void Debug::Destroy(const std::string& p_id)
 {
 	destroyPoint(p_id);
@@ -507,6 +563,7 @@ void Debug::Destroy(const std::string& p_id)
 	destroyCircle(p_id);
 	destroyFillCircle(p_id);
 	destroyText(p_id);
+	destroySprite(p_id);
 }
 
 void Debug::ClearPoints()
@@ -573,6 +630,16 @@ void Debug::ClearTexts()
 	m_texts.clear();
 }
 
+void Debug::ClearSprites()
+{
+	for (auto& sprite : m_spritesVector)
+	{
+		delete sprite;
+	}
+	m_spritesVector.clear();
+	m_sprites.clear();
+}
+
 void Debug::ClearAll()
 {
 	ClearPoints();
@@ -582,6 +649,7 @@ void Debug::ClearAll()
 	ClearCircles();
 	ClearFillCircles();
 	ClearTexts();
+	ClearSprites();
 }
 
 Point* Debug::GetPoint(const std::string& p_id)
@@ -697,6 +765,17 @@ Text* Debug::GetText(const std::string& p_id)
 	return nullptr;
 }
 
+Sprite* Debug::GetSprite(const std::string& p_id)
+{
+	auto it = m_sprites.find(p_id);
+	if (it != m_sprites.end())
+	{
+		return m_spritesVector[it->second];
+	}
+
+	return nullptr;
+}
+
 std::vector<Point*> Debug::GetAllAutoPoints() const
 {
 	m_autoPointsCache.clear();
@@ -788,6 +867,19 @@ std::vector<Text*>& Debug::GetAllAutoTexts() const
 	return m_autoTextsCache;
 }
 
+std::vector<Sprite*>& Debug::GetAllAutoSprites() const
+{
+	m_autoSpritesCache.clear();
+	for (Sprite* sprite : m_spritesVector)
+	{
+		if (sprite->GetId().find("sprite_auto_") != std::string::npos)
+		{
+			m_autoSpritesCache.push_back(sprite);
+		}
+	}
+	return m_autoSpritesCache;
+}
+
 std::vector<Point*>& Debug::GetAllPoints()
 {
 	return m_pointsVector;
@@ -821,6 +913,11 @@ std::vector<Circle*>& Debug::GetAllFillCircles()
 std::vector<Text*>& Debug::GetAllTexts()
 {
 	return m_textsVector;
+}
+
+std::vector<Sprite*>& Debug::GetAllSprites()
+{
+	return m_spritesVector;
 }
 
 void Debug::SetPointDrawLayer(const std::string& p_id, int p_layer)
@@ -893,6 +990,16 @@ void Debug::SetTextDrawLayer(const std::string& p_id, int p_layer)
 	SortGeometriesByDrawLayer();
 }
 
+void Debug::SetSpriteDrawLayer(const std::string& p_id, int p_layer)
+{
+	Sprite* sprite = GetSprite(p_id);
+	if (sprite)
+	{
+		sprite->SetDrawLayer(p_layer);
+	}
+	SortGeometriesByDrawLayer();
+}
+
 void Debug::SortGeometriesByDrawLayer()
 {
 	m_geometries.clear();
@@ -924,6 +1031,10 @@ void Debug::SortGeometriesByDrawLayer()
 	for (auto text : m_textsVector)
 	{
 		m_geometries.push_back(text);
+	}
+	for (auto sprite : m_spritesVector)
+	{
+		m_geometries.push_back(sprite);
 	}
 
 	std::sort(m_geometries.begin(), m_geometries.end(), [](Geometry* a, Geometry* b) {
@@ -962,6 +1073,10 @@ void Debug::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		if (g->GetType() == 6)
 		{
 			DrawText(dynamic_cast<Text*>(g), f_render, f_window, p_camera);
+		}
+		if (g->GetType() == 7)
+		{
+			DrawSprite(dynamic_cast<Sprite*>(g), f_render, f_window, p_camera);
 		}
 	}
 	/*DrawPoints(f_render, f_window, p_camera);
@@ -1212,6 +1327,38 @@ void Debug::DrawTexts(Render* f_render, Window* f_window, Camera* p_camera)
 	}
 }
 
+void Debug::DrawSprites(Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+	for (auto& sprite : m_spritesVector)
+	{
+		if (sprite->GetIsClamp() == true)
+		{
+			int width = sprite->GetDimension().GetX();
+			int height = sprite->GetDimension().GetY();
+
+			if (sprite->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+			{
+				sprite->SetPosition({ static_cast<float>(0 + m_margin), sprite->GetPosition().GetY() }, { 0, 0.5f });
+			}
+			else if (sprite->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+			{
+				sprite->SetPosition({ static_cast<float>(windowW - m_margin), sprite->GetPosition().GetY() }, { 1, 0.5f });
+			}
+			if (sprite->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+			{
+				sprite->SetPosition({ sprite->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+			}
+			else if (sprite->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+			{
+				sprite->SetPosition({ sprite->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+			}
+		}
+		sprite->Draw(f_render, f_window, p_camera);
+	}
+}
+
 void Debug::DrawPoint(Point* p_point, Render* f_render, Window* f_window, Camera* p_camera)
 {
 	int windowW = f_window->GetWindowSize().GetX();
@@ -1438,6 +1585,35 @@ void Debug::DrawText(Text* p_text, Render* f_render, Window* f_window, Camera* p
 		}
 	}
 	p_text->Draw(f_render, f_window, p_camera);
+}
+void Debug::DrawSprite(Sprite* p_sprite, Render* f_render, Window* f_window, Camera* p_camera)
+{
+	int windowW = f_window->GetWindowSize().GetX();
+	int windowH = f_window->GetWindowSize().GetY();
+
+	if (p_sprite->GetIsClamp() == true)
+	{
+		int width = p_sprite->GetDimension().GetX();
+		int height = p_sprite->GetDimension().GetY();
+
+		if (p_sprite->GetPosition({ 0.0f, 0.5f }).GetX() < 0)
+		{
+			p_sprite->SetPosition({ static_cast<float>(0 + m_margin), p_sprite->GetPosition().GetY() }, { 0, 0.5f });
+		}
+		else if (p_sprite->GetPosition({ 1.0f, 0.5f }).GetX() > windowW)
+		{
+			p_sprite->SetPosition({ static_cast<float>(windowW - m_margin), p_sprite->GetPosition().GetY() }, { 1, 0.5f });
+		}
+		if (p_sprite->GetPosition({ 0.5f, 0.0f }).GetY() < 0)
+		{
+			p_sprite->SetPosition({ p_sprite->GetPosition().GetX(), static_cast<float>(0 + m_margin) }, { 0.5f, 0 });
+		}
+		else if (p_sprite->GetPosition({ 0.5f, 1.0f }).GetY() > windowH)
+		{
+			p_sprite->SetPosition({ p_sprite->GetPosition().GetX(), static_cast<float>(windowH - m_margin) }, { 0.5f, 1 });
+		}
+	}
+	p_sprite->Draw(f_render, f_window, p_camera);
 }
 
 

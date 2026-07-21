@@ -4,10 +4,10 @@
 #include <string>
 #include <chrono>
 #include "Vector2.h"
-#include "Transformable.h"
+#include "Geometry.h"
 #include "Drawable.h"
 
-class Sprite : public Transformable, public Drawable
+class Sprite : public Geometry, public Drawable
 {
 private:
 

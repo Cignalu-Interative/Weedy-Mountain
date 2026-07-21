@@ -51,6 +51,7 @@ void Application::Init()
 	m_targetFPS = m_window.V_Sync();
 	m_targetDeltaTime = 1.0f / m_targetFPS;
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
+	Debug::Get()->SetRender(&m_render);
 	Debug::Get()->CreateTextEngineProperties();
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;

@@ -17,6 +17,8 @@
 #include "Text.h"
 
 #include "Camera.h"
+
+#include "Sprite.h"
 //Version 6.0.0
 
 class Render;
@@ -31,6 +33,7 @@ enum class Type
 	Circle,
 	FillCircle,
 	Text,
+	Sprite,
 
 	COUNT
 };
@@ -41,6 +44,8 @@ private:
 
 	SDL_Renderer* m_renderer = nullptr; // Renderer utilisé pour dessiner les éléments de debug
 
+	Render* m_render = nullptr; // Pointeur vers le render utilisé pour dessiner les éléments de debug
+
 	int m_margin = 5; // Marge en pixels entre le texte de debug et les bords de l'écran
 
 	std::unordered_map<std::string, size_t> m_points; // Map pour stocker les points à dessiner, indexés par un identifiant unique
@@ -50,6 +55,7 @@ private:
 	std::unordered_map<std::string, size_t> m_circles; // Map pour stocker les cercles à dessiner, indexés par un identifiant unique
 	std::unordered_map<std::string, size_t> m_fillCircles; // Map pour stocker les cercles remplis à dessiner, indexés par un identifiant unique
 	std::unordered_map<std::string, size_t> m_texts; // Map pour stocker les textes à dessiner, indexés par un identifiant unique
+	std::unordered_map<std::string, size_t> m_sprites; // Map pour stocker les sprites à dessiner, indexés par un identifiant unique
 
 	std::vector<Point*> m_pointsVector; // Vector pour stocker les points à dessiner, utilisé pour itérer plus rapidement lors du dessin	
 	std::vector<Line*> m_linesVector; // Vector pour stocker les lignes à dessiner, utilisé pour itérer plus rapidement lors du dessin
@@ -58,6 +64,7 @@ private:
 	std::vector<Circle*> m_circlesVector; // Vector pour stocker les cercles à dessiner, utilisé pour itérer plus rapidement lors du dessin
 	std::vector<Circle*> m_fillCirclesVector; // Vector pour stocker les cercles remplis à dessiner, utilisé pour itérer plus rapidement lors du dessin
 	std::vector<Text*> m_textsVector; // Vector pour stocker les textes à dessiner, utilisé pour itérer plus rapidement lors du dessin
+	std::vector<Sprite*> m_spritesVector; // Vector pour stocker les sprites à dessiner, utilisé pour itérer plus rapidement lors du dessin
 
 	size_t m_pointCount = 0; // Compteur pour générer des identifiants uniques pour les points
 	size_t m_lineCount = 0; // Compteur pour générer des identifiants uniques pour les lignes
@@ -66,6 +73,7 @@ private:
 	size_t m_circleCount = 0; // Compteur pour générer des identifiants uniques pour les cercles
 	size_t m_fillCircleCount = 0; // Compteur pour générer des identifiants uniques pour les cercles remplis
 	size_t m_textCount = 0; // Compteur pour générer des identifiants uniques pour les textes
+	size_t m_spriteCount = 0; // Compteur pour générer des identifiants uniques pour les sprites
 
 	// mutable permet de modifier les éléments de debug même dans les fonctions const,
 	// ce qui est utile pour les fonctions Get qui retournent des pointeurs vers les éléments de debug
@@ -76,6 +84,7 @@ private:
 	mutable std::vector<Circle*> m_autoCirclesCache;
 	mutable std::vector<Circle*> m_autoFillCirclesCache;
 	mutable std::vector<Text*> m_autoTextsCache;
+	mutable std::vector<Sprite*> m_autoSpritesCache;
 
 	TTF_TextEngine* m_textEngine = nullptr; // Moteur de rendu de texte pour les textes de debug
 
@@ -94,6 +103,8 @@ public:
 	~Debug();
 
 	void SetRenderer(SDL_Renderer* p_renderer);
+
+	void SetRender(Render* p_render) { m_render = p_render; }
 
 	void CreateTextEngineProperties();
 

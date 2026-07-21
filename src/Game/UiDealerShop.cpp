@@ -367,5 +367,4 @@ void UiDealerShop::RefillShop()
 	int amount = Aleatory::GetInt(0, 64);
 	m_shopInventory->AddItem("ITEM_WEED", amount, false);
 
-	m_isRefilled = true;
 }

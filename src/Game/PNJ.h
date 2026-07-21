@@ -5,6 +5,8 @@
 class PNJ : public Entity
 {
 private : 
+
+	Entity* m_dialogBox = nullptr;
 	Scene* m_scene = nullptr;
 	Button* m_button = nullptr;
 

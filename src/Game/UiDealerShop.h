@@ -37,7 +37,7 @@ private:
 	int m_totalPrices = 10;
 
 	bool m_isOpen = false; 
-	bool m_isRefilled = false;
+
 
 	void OnInitialize() override;
 

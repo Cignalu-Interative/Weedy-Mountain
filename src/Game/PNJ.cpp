@@ -11,17 +11,25 @@
 void PNJ::OnInitialize()
 {
 	m_scene = GetScene();
-	m_scene->CreateFillRect("dialogBox", Vector2f(GetScene()->GetWindowWidth() / 2, GetScene()->GetWindowHeight() - 100), Vector2i(GetScene()->GetWindowWidth() / 1.9f, 100), Color(255, 255, 255, 255), true);
-	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
+	/*m_scene->CreateFillRect("dialogBox", Vector2f(GetScene()->GetWindowWidth() / 2, GetScene()->GetWindowHeight() - 100), Vector2i(GetScene()->GetWindowWidth() / 1.9f, 100), Color(255, 255, 255, 255), true);
+	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);*/
 
-	m_dialogBoxPos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 0,0 });
-	m_dialogBoxDim = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetDimension();
-	m_pressSpacePos = GetScene()->GetGeometry<Rectangle>("dialogBox")->GetPosition({ 1,1 });
+	m_dialogBox = m_scene->CreateEntity<Entity>(Vector2f(GetScene()->GetWindowWidth() / 2, GetScene()->GetWindowHeight() - 100), Vector2i(GetScene()->GetWindowWidth() / 1.9f, 100), "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_dialogBox->RemoveCollider("default");
+	m_dialogBox->GetSprite()->SetDimension(m_dialogBox->GetDimension());
+	m_dialogBox->SyncSprites();
+	m_dialogBox->SetIsVisible(false);
+	
+
+
+	m_dialogBoxPos = m_dialogBox->GetPosition({ 0,0 });
+	m_dialogBoxDim = m_dialogBox->GetDimension();
+	m_pressSpacePos = m_dialogBox->GetPosition({ 1,1 });
 
 	float m_rectX = m_dialogBoxPos.GetX();
 	float m_rectY = m_dialogBoxPos.GetY();
 
-	m_textX = m_rectX + 10;
+	m_textX = m_rectX + 20;
 	m_textY = m_rectY + 10;
 
 	m_maxTextHeight = m_dialogBoxDim.GetY() - 15.f;
@@ -32,9 +40,9 @@ void PNJ::OnInitialize()
 	m_scene->GetGeometry<Text>("dialog")->SetIsWrapped(true);
 	m_scene->GetGeometry<Text>("dialog")->SetWrapWidth( m_dialogBoxDim.GetX() * 0.9);
 
-	m_scene->CreateText("pressSpace", Vector2f(m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY() - 10), "Press SPACE to continue", Color(0, 0, 0, 200), true);
+	m_scene->CreateText("pressSpace", Vector2f(m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY() - 12), "Press SPACE to continue", Color(0, 0, 0, 200), true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetFontSize(17);
-	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY() }, { 1,1 });
+	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ m_pressSpacePos.GetX() - 15, m_pressSpacePos.GetY()- 12}, { 1,1 });
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 }
@@ -103,7 +111,7 @@ void PNJ::Talk(const std::string& p_say)
 	m_initial = p_say;
 	m_index = 0;
 
-	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
+	m_dialogBox->SetIsVisible(true);
 	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
 }
@@ -143,7 +151,7 @@ void PNJ::Talk(int p_dialogID)
 
 	m_index = 0;
 
-	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(true);
+	m_dialogBox->SetIsVisible(true);
 	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(true);
 
@@ -152,7 +160,7 @@ void PNJ::Talk(int p_dialogID)
 void PNJ::EndTalk()
 {
 
-	m_scene->GetGeometry<Rectangle>("dialogBox")->SetIsVisible(false);
+	m_dialogBox->SetIsVisible(false);
 	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(false);
 	m_scene->GetGeometry<Text>("dialog")->SetText("");
 	m_initial = "";

@@ -24,6 +24,8 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
+#include "2DPendentEngine/QuestManager.h"
+
 void VillageScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -61,8 +63,10 @@ void VillageScene::OnInitialize()
 		/*m_shop->SetIsVisible(true)*/m_shop->Open(); }
 	);
 
-	m_PNJ->SetOnFinishFunction([this] {
-		m_player->UnlockInputs();
+	m_PNJ->SetOnFinishFunction([this]
+		{
+			m_player->UnlockInputs();
+			QuestManager::Get()->AddQuest("Quest", { 2000.f, 180.f }, { 275, 50 }, m_player);
 		});
 
 	Inventory* shopInventory = CreateEntity<Inventory>({ m_spawnPoint + Vector2f{200,0} }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);

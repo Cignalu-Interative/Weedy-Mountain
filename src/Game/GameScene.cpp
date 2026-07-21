@@ -43,6 +43,8 @@
 
 #include "Aleatory.h"
 
+#include "2DPendentEngine/QuestManager.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -168,6 +170,10 @@ void GameScene::OnInitialize()
 // 	m_textBox->SetBackgroundFilled(true);
 
 	//Application::Get()->GetWindow()->SetWindowAlwaysOnTop(true);
+
+	QuestManager::Get()->AddQuest("Quest", { 2000.f, 180.f }, { 125, 80 }, m_player);
+	QuestManager::Get()->GetQuest("Quest")->AddRequirement("ITEM_WOOD", 10);
+	QuestManager::Get()->GetQuest("Quest")->AddRequirement("ITEM_ROCK", 20);
 }
 
 

@@ -12,6 +12,10 @@ private :
 	std::vector<RecipeBlock*> m_recipes;
 	
 	int m_endRecipeIndex;
+	RecipeBlock* m_lastRecipeBlockSelected = nullptr;
+	RecipeBlock* m_actualRecipeBlockSelected = nullptr;
+	void ChangeSelectedRecipe();
+	void OnUpdate() override;
 public :
 
 	void Initialize(std::vector<RecipeData*> p_recipeVector, int p_startIndex);
@@ -21,5 +25,9 @@ public :
 	std::vector<RecipeBlock*> GetRecipeBlock();
 
 	int GetEndRecipeIndex() { return m_endRecipeIndex; }
+
+	void ResetSelectedRecipe();
+
+	RecipeBlock* GetSelectedRecipe() { return m_actualRecipeBlockSelected; }
 };
 

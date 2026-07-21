@@ -172,3 +172,4 @@ const std::vector<std::string>& GameData::GetUnlockedRecipes()
 {
 	return m_unlockedRecipes;
 }
+

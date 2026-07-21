@@ -5,6 +5,30 @@
 #include "RecipeBlock.h"	
 #include "RecipeData.h"
 
+void RecipesMenu::ChangeSelectedRecipe()
+{
+	for (RecipeBlock* block : m_recipes)
+	{
+
+		if (block != m_actualRecipeBlockSelected)
+			block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
+	}
+}
+
+void RecipesMenu::ResetSelectedRecipe()
+{
+	for (RecipeBlock* block : m_recipes)
+	{
+		block->SetIsSelected(false);
+		block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
+	}
+}
+
+void RecipesMenu::OnUpdate()
+{
+	ChangeSelectedRecipe();
+}
+
 void RecipesMenu::Initialize(std::vector<RecipeData*> p_recipeVector, int p_startIndex)
 {
 	RemoveCollider("default");
@@ -19,7 +43,7 @@ void RecipesMenu::Initialize(std::vector<RecipeData*> p_recipeVector, int p_star
 
 	for (int i = p_startIndex ; i < p_recipeVector.size(); i++)
 	{
-		if (i == 0)
+		if (i == p_startIndex)
 			previousPosY += 100;
 		else
 			previousPosY += 150;
@@ -31,10 +55,13 @@ void RecipesMenu::Initialize(std::vector<RecipeData*> p_recipeVector, int p_star
 
 		RecipeBlock* recipeBlock = GetScene()->CreateEntity<RecipeBlock>({GetPosition().GetX(), previousPosY}, {GetDimension().GetX(),150}, "InventoryWeedyMountain", Shape::Rectangle, true);
 		recipeBlock->Initialize(p_recipeVector[i]->GetRecipeID());
-		previousPosY = recipeBlock->GetPosition().GetY();
-		//recipeBlock->SetPosition(GetPosition({}), {});
+		recipeBlock->SetOnLeftClick([this, recipeBlock] {
+			m_lastRecipeBlockSelected = m_actualRecipeBlockSelected;
+			m_actualRecipeBlockSelected = recipeBlock;
+			recipeBlock->GetSprite()->ChangeTexture("RecipeSelected");
+			});
 
-		Vector2f bottomPos = recipeBlock->GetPosition({ 0,1 });
+		previousPosY = recipeBlock->GetPosition().GetY();
 
 		m_recipes.push_back(recipeBlock);
 		m_endRecipeIndex = i;

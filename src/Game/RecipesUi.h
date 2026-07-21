@@ -15,18 +15,19 @@ private:
 
 	Button* m_craftButton = nullptr;
 	Button* m_nextMenuButton = nullptr;
-	Button* m_previousButton = nullptr;
+	Button* m_previousMenuButton = nullptr;
 
 	void OnInitialize() override;
-
-public :
-
-	void Open();
-	void Close();
 
 	void NextPageMenu();
 	void PreviousPageMenu();
 
+	void CraftItem();
+
 	void SortUnlockedRecipe(); // put unlocked recipes in top of menu
+public :
+
+	void Open();
+	void Close();
 };
 

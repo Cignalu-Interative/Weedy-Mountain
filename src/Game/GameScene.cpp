@@ -141,13 +141,6 @@ void GameScene::OnInitialize()
 	//EnviroSpawn::Get()->InitEnviroSpawn();
 	//EnviroSpawn::Get()->InitEnviroSpawn();
 
-	//RecipeBlock* j = CreateEntity<RecipeBlock>(GetWindowCenter(), { 400,150 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	//j->GetSprite("default")->ResizeStretched(j->GetDimension());
-	//j->Initialize("test");
-	//j->ShowCollider(true);
-
-	RecipesUi* k = CreateEntity<RecipesUi>(GetWindowCenter(), { 1000,600 }, "", Shape::Rectangle, true);
-	k->ShowCollider(true);
 }
 
 

@@ -20,10 +20,20 @@ void RecipeBlock::OnInitialize()
 
 void RecipeBlock::OnUpdate()
 {
-	if (GameData::Get().IsRecipeUnlocked(m_itemName))
-		RemoveSprite("LockedRecipe");
-}
+	Button::OnUpdate();
 
+	if (m_isUnlocked)
+		return;
+
+	bool unlocked = GameData::Get().IsRecipeUnlocked(m_recipeName);
+	if (unlocked)
+	{
+		m_isUnlocked = true;
+		RemoveSprite("LockedRecipe");
+	}
+	else
+		GetSprite()->ChangeTexture("LockedRecipe");
+}
 void RecipeBlock::Initialize(std::string p_recipeName)
 {
 	ItemDataBase* item = ItemDataBase::Get();
@@ -32,13 +42,15 @@ void RecipeBlock::Initialize(std::string p_recipeName)
 
 	ItemData* recipeData = item->GetItem(recipe->GetRecipe(p_recipeName)->GetResultItemID());
 
-	m_itemName = recipe->GetRecipe(p_recipeName)->GetResultItemID();
+	m_recipeName = p_recipeName;
+	m_resultItemName = recipe->GetRecipe(p_recipeName)->GetResultItemID();
 	m_amountItem = recipe->GetRecipe(p_recipeName)->GetResultQuantity();
 
 	std::string recipePathSprite = recipeData->GetPath();
 	std::string recipeName = recipeData->GetName();
 	std::string recipeDescription = recipeData->GetDescription();
 
+	AddSprite("LockedRecipe", "LockedRecipe", GetDimension(), 0, {}, true);
 	AddSprite("Recipe", recipePathSprite, { 50,50 }, 1, - (Vector2f)GetDimension()/2 + Vector2f{ 50, 40 }, true);
 
 	Vector2f spritePos = GetSprite("Recipe")->GetPosition();

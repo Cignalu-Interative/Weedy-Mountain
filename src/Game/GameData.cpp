@@ -157,7 +157,7 @@ void GameData::SetInventory(PlayerInventory* inv)
 }
 void GameData::UnlockRecipe(const std::string& recipeID)
 {
-	if (IsRecipeUnlocked(recipeID) || RecipeDataBase::Get()->GetRecipe(recipeID) != nullptr)
+	if (IsRecipeUnlocked(recipeID) || RecipeDataBase::Get()->GetRecipe(recipeID) == nullptr)
 		return;
 
 	m_unlockedRecipes.push_back(recipeID);

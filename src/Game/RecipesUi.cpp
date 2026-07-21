@@ -71,6 +71,7 @@ void RecipesUi::Close()
 	
 	Vector2f hotbarPos = GetScene()->GetWindowCenter() + Vector2f{ 0, 300 };
 	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
+	m_playerInventory->GetInventory()->SetVisible(false);
 
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
 	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
@@ -116,6 +117,9 @@ void RecipesUi::CraftItem()
 {	
 	RecipeBlock* selectedRecipe = m_menus[m_actualPageMenu]->GetSelectedRecipe();
 	if (selectedRecipe == nullptr)
+		return;
+
+	if (selectedRecipe->GetIsSelected() == false)
 		return;
 
 	bool canCraft = false;

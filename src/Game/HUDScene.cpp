@@ -56,6 +56,8 @@ void HUDScene::OnInitialize()
 	m_recipe->ShowCollider(true);
 	m_recipe->Close();
 
+
+	GameData::Get().UnlockRecipe("test");
 }
 
 void HUDScene::OnEvent()
@@ -64,12 +66,16 @@ void HUDScene::OnEvent()
 		m_recipe->Open();
 	if (InputManager::Get()->IsKeyboardDown(K_R))
 		m_recipe->Close();
+
+	if (InputManager::Get()->IsKeyboardDown(K_B))
+		GameData::Get().UnlockRecipe("test");
 }
 
 void HUDScene::OnUpdate()
 {
 	m_playerInventory->OnUpdate();
 
+	std::cout << "Recipes unlocked : " << GameData::Get().GetUnlockedRecipes()[0] << std::endl;
 }
 
 void HUDScene::OnDestroy()

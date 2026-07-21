@@ -9,15 +9,17 @@ private :
 
 	uint32_t m_myID = 0;
 
-	std::string m_itemName;
+	std::string m_recipeName;
+	std::string m_resultItemName;
 	int m_amountItem = 0;
 
 	std::vector<RecipeIngredientData> m_ingredients;
 
-	bool m_isSelected = false;
+	bool m_isUnlocked = false;
 
 	void OnInitialize() override;
 	void OnUpdate() override;
+
 public :
 	RecipeBlock();
 
@@ -25,11 +27,11 @@ public :
 	void SetIsVisible(bool p_isVisible);
 
 	std::vector<RecipeIngredientData> GetIngredients() { return m_ingredients; }
-	bool GetIsSelected() { return m_isSelected; }
-	void SetIsSelected(bool p_isSelected) { m_isSelected = p_isSelected; }
+	bool GetIsSelected() const { return m_isUnlocked; }
 
-	const std::string& GetItemName() { return m_itemName; }
-	int GetAmountItem() { return m_amountItem; }
+	const std::string& GetItemName() { return m_resultItemName; }
+	int GetAmountItem() const{ return m_amountItem; }
+	std::string GetRecipeName() const { return m_recipeName; }
 };
 
 

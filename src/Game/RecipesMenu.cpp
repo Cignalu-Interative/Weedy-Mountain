@@ -19,7 +19,6 @@ void RecipesMenu::ResetSelectedRecipe()
 {
 	for (RecipeBlock* block : m_recipes)
 	{
-		block->SetIsSelected(false);
 		block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
 	}
 }

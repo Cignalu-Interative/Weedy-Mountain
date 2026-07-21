@@ -51,5 +51,7 @@ public:
 	void SetFarmTile(FarmTile* position) { m_stats.m_position = position; }
 
 	FarmTile* GetFarmTile() { return m_stats.m_position; }
+
+	EnviroStats* GetStats() { return &m_stats; }
 };
 

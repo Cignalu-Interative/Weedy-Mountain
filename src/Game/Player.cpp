@@ -16,6 +16,8 @@
 
 #include "Aleatory.h"
 
+#include "EnviroProps.h"
+
 void Player::OnInitialize()
 {
 
@@ -322,12 +324,30 @@ void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _
 {
 	if (_self->GetID() == "fishingZone" && _other->GetOwner()->GetTag() == 5)
 		m_fishingZoneTouchingWater = true;
+
+	if (_other->GetOwner()->GetTag() == 2 && _self->GetID() == "actionBox") 
+	{
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		{
+			EnviroProps* props = (EnviroProps*)_other->GetOwner();
+			props->GetStats()->m_hitToDestroy--;
+		}
+	}
 }
 
 void Player::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
 	if (_self->GetID() == "fishingZone" && _other->GetOwner()->GetTag() == 5)
 		m_fishingZoneTouchingWater = true;
+
+	if (_other->GetOwner()->GetTag() == 2 && _self->GetID() == "actionBox") 
+	{
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		{
+			EnviroProps* props = (EnviroProps*)_other->GetOwner();
+			props->GetStats()->m_hitToDestroy--;
+		}
+	}
 }
 
 void Player::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)

@@ -17,15 +17,6 @@ void EnviroProps::OnInitialize()
 
 void EnviroProps::OnEvent()
 {
-	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_isInPlayerZone){
-		// ajouter la verification de l'outils et de sa raret�
-		m_stats.m_hitToDestroy--;
-	}
-
-	if (m_stats.m_hitToDestroy <= 0) {
-		Destroy();
-	}
-
 	Vector2f playerPos = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition();
 	int playerLayer = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetDrawLayer();
 
@@ -40,23 +31,20 @@ void EnviroProps::OnEvent()
 
 void EnviroProps::OnUpdate()
 {
+	if (m_stats.m_hitToDestroy <= 0) {
+		Destroy();
+	}
+
 	SetPosition(m_stats.m_position->GetPosition());
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 }
 
 void EnviroProps::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	if(_other->GetOwner()->GetTag() == 1 && _other->GetID() == "actionBox") {
-		m_isInPlayerZone = true;
-	}
-
 }
 
 void EnviroProps::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	if (_other->GetOwner()->GetTag() == 1 && _other->GetID() == "actionBox") {
-		m_isInPlayerZone = false;
-	}
 }
 
 void EnviroProps::OnDestroy()

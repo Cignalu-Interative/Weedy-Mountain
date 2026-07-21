@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include <variant>
+
+std::variant
 
 class ItemData
 {

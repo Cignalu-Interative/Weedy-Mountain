@@ -37,9 +37,7 @@
 #include "TextBox.h"
 
 #include "2DPendentLib/ObjectGroupTiled.h"
-#include "2DPendentLib/ObjectTiled.h"
-
-#include "2DPendentLib/ObjectGroupTiled.h"
+#include "2DPendentLib/ObjectTiled.h"	
 
 void GameScene::OnInitialize()
 {

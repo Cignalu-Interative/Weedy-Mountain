@@ -136,7 +136,7 @@ public:
 	//faire un create qui renvoie une addresse de text pour l'update
 	Text* CreateText(std::string p_id, Vector2f p_position, const std::string& p_text, Color p_color, bool p_isGUI = false, bool p_clampToScreen = true);
 
-	Sprite* CreateSprite(std::string p_id, Vector2f p_position, Vector2i p_dimension, bool p_isGUI = false, bool p_clampToScreen = true);
+	Sprite* CreateSprite(std::string p_id, const std::string& p_idTexture, Vector2f p_position, Vector2i p_dimension, bool p_isGUI = false, bool p_clampToScreen = true);
 
 	// Fonctions pour détruire un point de debug grace à son identifiant unique
 	void destroyPoint(const std::string& p_id);

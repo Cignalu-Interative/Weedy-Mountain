@@ -18,7 +18,6 @@ struct QuestRequirement
 
 	Sprite* s_sprite = nullptr;
 
-
 	void SetRequiredAmount(int p_amount) { s_requiredAmount = p_amount; }
 	void AddHarvestedAmount(int p_amount) { s_harvestedAmount += p_amount; }
 

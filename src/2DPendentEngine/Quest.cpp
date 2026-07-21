@@ -26,7 +26,8 @@ Quest::~Quest()
 void Quest::AddRequirement(const std::string& p_idTexture, int p_requiredAmount)
 {
 	QuestRequirement requirement;
-	requirement.s_sprite->Initialise(p_idTexture, m_circleQuest->GetPosition() * 0.80f, m_circleQuest->GetDimension() * 0.80f, Application::Get()->GetRender());
+	requirement.s_sprite = Debug::Get()->CreateSprite("questRequirement_" + p_idTexture, p_idTexture, m_circleQuest->GetPosition(), {32, 32}, true, true);
+	requirement.s_sprite->SetDrawLayer(300);
 	requirement.s_requiredAmount = p_requiredAmount;
 	m_requirements[m_requirements.size()] = requirement;
 }

@@ -3,6 +3,7 @@
 #include "Render.h"
 #include "Window.h"
 #include "Utils.h"
+#include "BatchRenderer2D.h"
 
 Debug* Debug::Get()
 {
@@ -315,28 +316,33 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 	return text;
 }
 
-Sprite* Debug::CreateSprite(std::string p_id, Vector2f p_position, Vector2i p_dimension, bool p_isGUI = false, bool p_clampToScreen = true)
+Sprite* Debug::CreateSprite(std::string p_id, const std::string& p_idTexture, Vector2f p_position, Vector2i p_dimension, bool p_isGUI, bool p_clampToScreen)
 {
 	auto it = m_sprites.find(p_id);
 	if (it != m_sprites.end())
 	{
 		Sprite* sprite = m_spritesVector[it->second];
+		sprite->ChangeTexture(p_idTexture);
+		sprite->SetId(p_id);
+		sprite->SetDimension(p_dimension);
 		sprite->SetPosition(p_position);
 		sprite->SetIsGUI(p_isGUI);
 		sprite->SetIsClamp(p_clampToScreen);
 		return sprite;
 	}
 
-	Sprite* sprite = new Sprite;
-	sprite->SetType((int)Type::Sprite);
-	sprite->SetIsGUI(p_isGUI);
-	sprite->SetIsClamp(p_clampToScreen);
-
 	if (p_id.empty())
 	{
 		p_id = "sprite_auto_" + std::to_string(m_spriteCount++);
 	}
+
+	Sprite* sprite = new Sprite;
+	sprite->Initialise(p_idTexture, p_position, p_dimension, m_render);
 	sprite->SetId(p_id);
+	sprite->SetType((int)Type::Sprite);
+	sprite->SetIsGUI(p_isGUI);
+	sprite->SetIsClamp(p_clampToScreen);
+
 	m_sprites[std::move(p_id)] = m_spritesVector.size();
 	m_spritesVector.push_back(sprite);
 
@@ -1614,6 +1620,19 @@ void Debug::DrawSprite(Sprite* p_sprite, Render* f_render, Window* f_window, Cam
 		}
 	}
 	p_sprite->Draw(f_render, f_window, p_camera);
+	const std::vector<Data>& batches = BatchRenderer2D::Get()->Flush();
+	for (const auto& batch : batches)
+	{
+		if (batch.s_vertices.empty())
+			continue; // sécurité : un slot recyclé mais pas réutilisé cette frame
+
+		if (SDL_RenderGeometry(f_render->GetRenderer(), batch.s_texture,
+			batch.s_vertices.data(), static_cast<int>(batch.s_vertices.size()),
+			batch.s_indices.data(), static_cast<int>(batch.s_indices.size())) == false)
+		{
+			SDL_Log("Lib/DrawSprite/SDLRenderGeometry/ pas reussi %s ", SDL_GetError());
+		}
+	}
 }
 
 

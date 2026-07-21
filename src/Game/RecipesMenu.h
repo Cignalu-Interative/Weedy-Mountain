@@ -16,6 +16,7 @@ private :
 	RecipeBlock* m_actualRecipeBlockSelected = nullptr;
 	void ChangeSelectedRecipe();
 	void OnUpdate() override;
+
 public :
 
 	void Initialize(std::vector<RecipeData*> p_recipeVector, int p_startIndex);

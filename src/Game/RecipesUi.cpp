@@ -7,6 +7,7 @@
 #include "ItemData.h"
 #include "ItemDataBase.h"
 #include "RecipeData.h"
+
 void RecipesUi::OnInitialize()
 {
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
@@ -119,7 +120,7 @@ void RecipesUi::CraftItem()
 	if (selectedRecipe == nullptr)
 		return;
 
-	if (selectedRecipe->GetIsSelected() == false)
+	if (selectedRecipe->GetIsUnlocked() == false)
 		return;
 
 	bool canCraft = false;
@@ -145,5 +146,45 @@ void RecipesUi::CraftItem()
 
 void RecipesUi::SortUnlockedRecipe()
 {
-	
-} 
+	std::vector <RecipeBlock*> unlockRecipes;
+	std::vector <RecipeBlock*> lockRecipes;
+
+	for (RecipesMenu* menu : m_menus)
+	{
+		for (RecipeBlock* block : menu->GetRecipeBlock())
+		{
+			if (block->GetIsUnlocked())
+				unlockRecipes.push_back(block);
+
+			lockRecipes.push_back(block);
+		}
+	}
+
+	int lastIndexRecipeBlock = 0;
+	for (int indexMenu = 0; indexMenu < m_menus.size(); indexMenu++)
+	{
+		std::vector<RecipeBlock*> recipeBlock = m_menus[indexMenu]->GetRecipeBlock();
+		//placer tt les index recipesBlocks unlocks
+		for (int indexUnlockRecipe = 0; indexUnlockRecipe < unlockRecipes.size(); indexUnlockRecipe++)
+		{
+			for (int i = 0; i < recipeBlock.size(); i++)
+			{
+				recipeBlock[i] = unlockRecipes[i];
+				lastIndexRecipeBlock = i;
+			}
+		}
+
+		//placer tt les index recipesBlocks locks 
+		for (int indexLockRecipe = 0; indexLockRecipe < lockRecipes.size(); indexLockRecipe++)
+		{
+			if (lastIndexRecipeBlock + 1 >= recipeBlock.size())
+				lastIndexRecipeBlock = 0;
+
+			for (int i = lastIndexRecipeBlock + 1; i < recipeBlock.size(); i++)
+			{
+				recipeBlock[i] = lockRecipes[i];
+			}
+		}
+	}
+
+}

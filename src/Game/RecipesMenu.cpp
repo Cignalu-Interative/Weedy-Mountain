@@ -28,6 +28,7 @@ void RecipesMenu::OnUpdate()
 	ChangeSelectedRecipe();
 }
 
+
 void RecipesMenu::Initialize(std::vector<RecipeData*> p_recipeVector, int p_startIndex)
 {
 	RemoveCollider("default");

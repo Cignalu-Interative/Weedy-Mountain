@@ -24,7 +24,9 @@ private:
 
 	void CraftItem();
 
+
 	void SortUnlockedRecipe(); // put unlocked recipes in top of menu
+
 public :
 
 	void Open();

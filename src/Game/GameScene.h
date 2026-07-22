@@ -21,8 +21,6 @@ class GameScene : public Scene
 private:
 	Player* m_player = nullptr;
 
-	Player* m_player2 = nullptr;
-
 	Vector2f m_spawnPoint;
 
 protected:
@@ -47,7 +45,5 @@ public:
 	~GameScene() = default;
 
 	Player* GetPlayer() { return m_player; }
-
-	Player* GetPlayer2() { return m_player2; }
 };
 

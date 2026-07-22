@@ -39,8 +39,6 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
-#include "2DPendentLib/ObjectGroupTiled.h"
-
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -202,6 +200,12 @@ void GameScene::OnEvent()
 	{
 		
 		SceneManager::Get()->PushScene("village");
+	}
+
+	if (im->IsKeyboardDown(K_C))
+	{
+
+		SceneManager::Get()->PushScene("cave");
 	}
 
 	if (im->IsKeyboardDown(K_M))

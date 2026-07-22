@@ -34,6 +34,8 @@ class EnviroSpawn
 	std::vector<EnviroInfo*> m_farmEnviroList;
 	std::vector<EnviroInfo*> m_caveEnviroList;
 	std::vector<FarmTile*> m_freeFarmTiles;
+	int m_farmDayCounter = 0;
+	int m_caveDayCounter = 0;
 
 	int m_lastDay = -1;
 protected:

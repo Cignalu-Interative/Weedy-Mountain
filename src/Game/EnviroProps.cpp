@@ -164,5 +164,38 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_loots.push_back(loot1);
 		break;
 	}
+	case EnviroSpawnName::IronOre:
+	{
+		m_name = p_name;
+		m_stats.m_hitToDestroy = 2;
+		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_toolType = { ToolType::Pickaxe };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWIRON",1)), 1,3 };
+		m_loots.push_back(loot1);
+		break;
+
+	}
+	case EnviroSpawnName::GoldOre:
+	{
+		m_name = p_name;
+		m_stats.m_hitToDestroy = 2;
+		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_toolType = { ToolType::Pickaxe };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWGOLD",1)), 1,3 };
+		m_loots.push_back(loot1);
+		break;
+	}
+	case EnviroSpawnName::DiamondOre:
+	{
+		m_name = p_name;
+		m_stats.m_hitToDestroy = 2;
+		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_toolType = { ToolType::Pickaxe };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_DIAMOND",1)), 1,3 };
+		m_loots.push_back(loot1);
+		break;
+	}
+	default:
+		break;
 	}
 }

@@ -60,8 +60,6 @@ void EnviroSpawn::InitEnviroSpawn()
 		}
 	}
 
-
-	m_farmEnviroList[3]->m_stats = { 0,0 };
 	UpdateFreeFarmTiles();
 
 	NewGameEnviroSpawn();
@@ -73,20 +71,34 @@ void EnviroSpawn::SpawnEnviroProps()
 		return;
 	}
 
+	switch (GameData::Get().GetCurrentScene()) {
+	case CurrentScene::FARM:
+		m_caveDayCounter++;
 
-	for (int i = 0; i < m_farmEnviroList.size(); i++) {
-		int spawnCount = Aleatory::GetInt(m_farmEnviroList[i]->m_stats.m_minSpawn, m_farmEnviroList[i]->m_stats.m_maxSpawn);
-		for (int j = 0; j < spawnCount; j++) {
-			CreateEnviroProps(m_farmEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("game"));
+		for (int i = 0; i < m_farmEnviroList.size(); i++) {
+			int spawnCount = Aleatory::GetInt(m_farmEnviroList[i]->m_stats.m_minSpawn, m_farmEnviroList[i]->m_stats.m_maxSpawn);
+			for (int j = 0; j < spawnCount; j++) {
+				CreateEnviroProps(m_farmEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("game"));
+			}
 		}
-	}
+		break;
+	case CurrentScene::CAVE:
+		m_farmDayCounter++;
 
-	//for (int i = 0; i < m_caveEnviroList.size(); i++) {
-	//	int spawnCount = Aleatory::GetInt(m_caveEnviroList[i]->m_stats.m_minSpawn, m_caveEnviroList[i]->m_stats.m_maxSpawn);
-	//	for (int j = 0; j < spawnCount; j++) {
-	//		CreateEnviroProps(m_caveEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("cave"));
-	//	}
-	//}
+		for (int i = 0; i < m_caveEnviroList.size(); i++) {
+			int spawnCount = Aleatory::GetInt(m_caveEnviroList[i]->m_stats.m_minSpawn, m_caveEnviroList[i]->m_stats.m_maxSpawn);
+			for (int j = 0; j < spawnCount; j++) {
+				CreateEnviroProps(m_caveEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("cave"));
+			}
+		}
+		break;
+	default:
+	
+		m_caveDayCounter++;
+		m_farmDayCounter++;
+		break;
+	
+	}
 }
 
 int EnviroSpawn::GetEnviroDay()
@@ -116,6 +128,7 @@ void EnviroSpawn::NewGameEnviroSpawn()
 		CreateEnviroProps(m_farmEnviroList[Aleatory::GetInt(0, m_farmEnviroList.size() - 1)]->m_name, tile, SceneManager::Get()->GetScene("game"));
 	}
 
+	m_farmEnviroList.erase(m_farmEnviroList.begin() + 3, m_farmEnviroList.end());
 }
 
 void EnviroSpawn::UpdateFreeFarmTiles()
@@ -172,7 +185,18 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _sc
 		Props->AddSprite("default", "Stone", { 32, 32 }, 0, { 0,-8 });
 		Props->GetCollider()->Resize({ 32,16 });
 		break;
-
+	case EnviroSpawnName::IronOre:
+		Props->AddSprite("default", "Iron_Ore", { 18, 18 }, 0);
+		Props->GetCollider()->Resize({ 16,16 });
+		break;
+	case EnviroSpawnName::GoldOre:
+		Props->AddSprite("default", "Gold_Ore", { 18, 18 }, 0);
+		Props->GetCollider()->Resize({ 16,16 });
+		break;
+	case EnviroSpawnName::DiamondOre:
+		Props->AddSprite("default", "Diamond_Ore", { 18, 18 }, 0);
+		Props->GetCollider()->Resize({ 16,16 });
+		break;
 	default:
 		break;
 	}
@@ -240,6 +264,34 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _sc
 
 void EnviroSpawn::Update() {
 	int curentDay = GetEnviroDay();
+
+
+	switch (GameData::Get().GetCurrentScene()) {
+	case CurrentScene::FARM:
+		while (m_farmDayCounter > 0) {
+			for (int i = 0; i < m_farmEnviroList.size(); i++) {
+				int spawnCount = Aleatory::GetInt(m_farmEnviroList[i]->m_stats.m_minSpawn, m_farmEnviroList[i]->m_stats.m_maxSpawn);
+				for (int j = 0; j < spawnCount; j++) {
+					CreateEnviroProps(m_farmEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("game"));
+				}
+			}
+			m_farmDayCounter--;
+		}
+		break;
+	case CurrentScene::CAVE:
+		while (m_caveDayCounter > 0) {
+			for (int i = 0; i < m_caveEnviroList.size(); i++) {
+				int spawnCount = Aleatory::GetInt(m_caveEnviroList[i]->m_stats.m_minSpawn, m_caveEnviroList[i]->m_stats.m_maxSpawn);
+				for (int j = 0; j < spawnCount; j++) {
+					CreateEnviroProps(m_caveEnviroList[i]->m_name, -1, SceneManager::Get()->GetScene("cave"));
+				}
+			}
+			m_caveDayCounter--;
+		}
+		break;
+	default:
+		break;
+	}
 
 	if (curentDay == m_lastDay) return;
 

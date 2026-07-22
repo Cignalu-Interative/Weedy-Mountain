@@ -16,4 +16,6 @@ struct SpriteContainer
 
     SpriteContainer(const SpriteContainer&) = delete;
     SpriteContainer& operator=(const SpriteContainer&) = delete;
+
+	void SetOffset(Vector2f p_offset) { m_offset = p_offset; }
 };

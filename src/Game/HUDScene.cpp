@@ -19,6 +19,7 @@
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+	QuestManager::Get()->SetScene(this);
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
@@ -40,7 +41,6 @@ void HUDScene::OnInitialize()
 
 	GameData::Get().SetInventory(m_playerInventory);
 	SceneManager::Get()->SetPersistentScene(this);
-	QuestManager::Get()->SetScene(this);
 }
 
 void HUDScene::OnEvent()

@@ -15,7 +15,8 @@ struct QuestRequirement
 	int s_requiredAmount = 0;
 	int s_harvestedAmount = 0;
 
-	Entity* s_icone = nullptr;
+	Text* s_requiredText = nullptr;
+	Text* s_harvestedText = nullptr;
 
 	void SetRequiredAmount(int p_amount) { s_requiredAmount = p_amount; }
 	void AddHarvestedAmount(int p_amount) { s_harvestedAmount += p_amount; }
@@ -52,16 +53,18 @@ private:
 
 	std::unordered_map<size_t, QuestRequirement> m_requirements;
 
-	Circle* m_circleQuest = nullptr;
+	Entity* m_zone = nullptr;
 	Text* m_textQuest = nullptr;
 
 	Vector2i m_dimSpriteRequirement = { 32, 32 };
 
 	Scene* m_scene = nullptr;
 
+	Entity* m_icone = nullptr;
+
 public:
 
-	Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
+	Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner, Scene* p_scene);
 	~Quest();
 
 	void SetName(const std::string& p_name) { m_name = p_name; }
@@ -79,7 +82,6 @@ public:
 
 	size_t GetRequirementsCount() const { return m_requirements.size(); }
 
-	Circle* GetQuestCircle() const { return m_circleQuest; }
 	Text* GetQuestText() const { return m_textQuest; }
 
 	void UpdateQuest();

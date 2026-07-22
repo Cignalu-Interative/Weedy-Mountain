@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ItemData.h"
+#include "ItemType.h"
 #include <unordered_map>
 #include <functional>
 

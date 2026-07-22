@@ -25,6 +25,49 @@ static std::string MakeItemID(const std::string& name)
     return id;
 }
 
+static ItemType ParseItemType(const std::string& s)
+{
+    if (s == "Weapon")
+        return ItemType::Weapon;
+
+    else if (s == "Tool")       
+        return ItemType::Tool;
+
+    else if (s == "Consumable") 
+        return ItemType::Consumable;
+
+    return ItemType::Default;
+}
+
+static ToolRarity ParseToolRarity(const std::string& s)
+{
+    if (s == "Wooden")
+        return ToolRarity::Wooden;
+
+    else if (s == "Stone")   
+        return ToolRarity::Stone;
+
+    else if (s == "Iron")   
+        return ToolRarity::Iron;
+
+    else if (s == "Gold")    
+        return ToolRarity::Gold;
+
+    else if (s == "Diamond") 
+        return ToolRarity::Diamond;
+
+    return ToolRarity::Wooden;
+}
+
+static ToolType ParseToolType(const std::string& s)
+{
+    if (s == "Hoe")         return ToolType::Hoe;
+    if (s == "Pickaxe")     return ToolType::Pickaxe;
+    if (s == "Spade")       return ToolType::Spade;
+    if (s == "WateringCan") return ToolType::WateringCan;
+    return ToolType::Axe;
+}
+
 ItemDataBase* ItemDataBase::Get()
 {
 	static ItemDataBase instance;
@@ -57,6 +100,13 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath, std::function<bool(
         std::string useActionID = obj.value("useActionID", "");
         int internalID = obj.value("id", -1);
 
+        ItemType itemType = ParseItemType(obj.value("itemType", "Default"));
+        int weaponDamage = obj.value("weaponDamage", 0);
+        ToolRarity toolRarity = ParseToolRarity(obj.value("toolRarity", "Wooden"));
+        ToolType toolType = ParseToolType(obj.value("toolType", "Axe"));
+        int consumableEnergyRestored = obj.value("consumableEnergyRestored", 0);
+        int consumableFatigueReduced = obj.value("consumableFatigueReduced", 0);
+
         if (name.empty()) 
             continue;
 
@@ -71,7 +121,7 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath, std::function<bool(
             }
         }
 
-        m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack });
+        m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack, useActionID, itemType, weaponDamage, toolRarity, toolType, consumableEnergyRestored, consumableFatigueReduced });
 
         if (internalID >= 0)
             m_internalIdToStringId[internalID] = id;

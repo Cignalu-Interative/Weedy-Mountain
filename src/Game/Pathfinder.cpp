@@ -6,32 +6,33 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 {
     std::vector<Tile*> path;
     std::vector<PathNode*> toExplore;
+    std::vector<PathNode*> toDelete;
 
-    Vector2i currentPos = p_start;
     float g = 0.f;
 
     PathNode* previousNode = new PathNode;
 
-    previousNode->s_gridPos = currentPos;
+    previousNode->s_gridPos = p_start;
 
     previousNode->s_g = g;
 
-    float dx = std::abs(currentPos.GetX() - p_goal.GetX());
-    float dy = std::abs(currentPos.GetY() - p_goal.GetY());
+    float dx = std::abs(p_start.GetX() - p_goal.GetX());
+    float dy = std::abs(p_start.GetY() - p_goal.GetY());
 
     previousNode->s_h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
 
     previousNode->s_f = previousNode->s_g + previousNode->s_h;
 
     previousNode->s_previousPathNode = nullptr;
-    std::vector<PathNode*> neighborsNode;
     std::vector<Vector2i> neighborPos;
 
+    std::vector<Vector2i> alreadyExplore;
+
     toExplore.push_back(previousNode);
+    toDelete.push_back(previousNode);
 
     while (toExplore.size() > 0)
     {
-
         int bestIndex = 0;
         float bestF = toExplore[0]->s_f;
 
@@ -45,6 +46,7 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
         }
 
         PathNode* currentNode = toExplore[bestIndex];
+        alreadyExplore.push_back(currentNode->s_gridPos);
 
         toExplore.erase(toExplore.begin() + bestIndex);
 
@@ -62,6 +64,11 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 
             std::reverse(path.begin(), path.end());
 
+            for (PathNode* deleted : toDelete)
+            {
+                delete deleted;
+            }
+
             return path;
         }
 
@@ -69,34 +76,53 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 
         for (Vector2i pos : neighborPos)
         {
-            if (p_navigationGrid.GetTileByGridPos(pos)->canBeCrossed)
+            if (p_navigationGrid.GetTileByGridPos(pos)->canBeCrossed &&
+                std::find(alreadyExplore.begin(), alreadyExplore.end(), pos) == alreadyExplore.end())
             {
                 g = StepCost(currentNode->s_gridPos, pos);
-
-                PathNode* pathNode = new PathNode;
-                pathNode->s_gridPos = pos;
-
-                pathNode->s_g = currentNode->s_g + g;
 
                 float dx = std::abs(pos.GetX() - p_goal.GetX());
                 float dy = std::abs(pos.GetY() - p_goal.GetY());
 
-                pathNode->s_h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
+                float h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
 
-                pathNode->s_f = pathNode->s_g + pathNode->s_h;
+                auto it = std::find_if(toExplore.begin(), toExplore.end(), [pos](PathNode* node) {return node->s_gridPos == pos; });
 
-                pathNode->s_previousPathNode = currentNode;
+                if (it == toExplore.end())
+                {
+                    PathNode* pathNode = new PathNode;
 
-                neighborsNode.push_back(pathNode);
+                    pathNode->s_gridPos = pos;
 
-                toExplore.push_back(pathNode);
+                    pathNode->s_g = currentNode->s_g + g;
+
+                    pathNode->s_h = h;
+
+                    pathNode->s_f = pathNode->s_g + pathNode->s_h;
+
+                    pathNode->s_previousPathNode = currentNode;
+
+                    toExplore.push_back(pathNode);
+                    toDelete.push_back(pathNode);
+                }
+                else
+                {
+                    if (currentNode->s_g + g < (*it)->s_g)
+                    {
+                        (*it)->s_g = currentNode->s_g + g;
+                        (*it)->s_h = h;
+                        (*it)->s_f = (*it)->s_g + (*it)->s_h;
+                        (*it)->s_previousPathNode = currentNode;
+                    }
+                }
             }
         }
-
-        neighborsNode.clear();
         neighborPos.clear();
+    }
 
-        currentPos = previousNode->s_gridPos;
+    for (PathNode* deleted : toDelete)
+    {
+        delete deleted;
     }
 
     return path;
@@ -110,7 +136,7 @@ std::vector<Vector2i> Pathfinder::GetNeighborPos(Vector2i p_gridDimension, Vecto
     {
         for (int j = p_startPos.GetY() - 1; j <= p_startPos.GetY() + 1; j++)
         {
-            if (i >= 0 && i <= p_gridDimension.GetX() && j >= 0 && j <= p_gridDimension.GetY())
+            if (i >= 0 && i < p_gridDimension.GetX() && j >= 0 && j < p_gridDimension.GetY())
             {
                 if (i == p_startPos.GetX() && j == p_startPos.GetY())
                     continue;

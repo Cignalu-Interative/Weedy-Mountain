@@ -9,6 +9,7 @@ enum class TileType
 	WATER,
 	PATH,
 	STRUCTURE,
+	UNKNOWN,
 
 	COUNT
 };
@@ -29,10 +30,11 @@ private:
 
 	std::vector<Tile*> m_mapTiles;
 
+	Tile* InitializeTile(TileInfo p_infos);
+
 public:
 
 	void Initialize();
-	Tile* InitializeTile(TileInfo p_infos);
 
 	std::vector<Tile*> GetMapTiles() { return m_mapTiles; }
 

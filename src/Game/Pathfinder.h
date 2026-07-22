@@ -14,10 +14,6 @@ struct PathNode
 
 class Pathfinder
 {
-private:
-
-	std::vector<PathNode*> m_pathNodes;
-
 public:
 
 	std::vector<Tile*> FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal);

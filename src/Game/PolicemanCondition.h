@@ -16,7 +16,7 @@ class HasDetectedPlayer : public Condition<Policeman>
 {
 	bool TestBool(Policeman* p_policeman) override
 	{
-		return p_policeman->IsDetectedPlayer();
+		return p_policeman->IsPlayerDetected();
 	}
 };
 
@@ -33,5 +33,13 @@ class HasLoosePlayer : public Condition<Policeman>
 	bool TestBool(Policeman* p_policeman) override
 	{
 		return p_policeman->IsLoosingPlayer();
+	}
+};
+
+class HasArrived : public Condition<Policeman>
+{
+	bool TestBool(Policeman* p_policeman) override
+	{
+		return p_policeman->IsArrived();
 	}
 };

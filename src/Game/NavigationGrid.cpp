@@ -55,6 +55,11 @@ Tile* NavigationGrid::InitializeTile(TileInfo p_infos)
 		tile->type = TileType::PATH;
 		tile->canBeCrossed = true;
 	}
+	else
+	{
+		tile->type = TileType::UNKNOWN;
+		tile->canBeCrossed = false;
+	}
 
 	return tile;
 }

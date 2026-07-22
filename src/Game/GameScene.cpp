@@ -94,6 +94,8 @@ void GameScene::OnInitialize()
 	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
+
+	m_navigationGrid->Initialize();
 }
 
 
@@ -126,6 +128,11 @@ void GameScene::OnUpdate()
 	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
 	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
+
+	if (NewDay() != -1)
+	{
+		m_navigationGrid->Initialize();
+	}
 }
 
 void GameScene::OnDestroy()
@@ -138,4 +145,21 @@ void GameScene::OnSleep()
 
 void GameScene::OnWake()
 {
+}
+
+int GameScene::NewDay()
+{
+	constexpr float IRL_SECONDS_PER_GAME_HOUR = 40.0f;
+	constexpr float HOURS_PER_DAY = 24.f;
+	constexpr float SIX_HOURS = 6.f * IRL_SECONDS_PER_GAME_HOUR;
+
+	float secPerDay = HOURS_PER_DAY * IRL_SECONDS_PER_GAME_HOUR;
+	float timeSpent = GameData::Get().GetTimeSpent();
+
+	float shifted = timeSpent - SIX_HOURS;
+
+	if (shifted < 0.f)
+		shifted = 0.f;
+
+	return static_cast<int>(shifted / secPerDay);
 }

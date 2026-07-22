@@ -17,6 +17,8 @@ private :
 
 	bool m_isUnlocked = false;
 
+	//Text* m_amountText = nullptr;
+
 	void OnInitialize() override;
 	void OnUpdate() override;
 
@@ -28,6 +30,7 @@ public :
 
 	std::vector<RecipeIngredientData> GetIngredients() { return m_ingredients; }
 	bool GetIsUnlocked() const { return m_isUnlocked; }
+	void SetIsUnlocked(bool p_isUnlocked) { m_isUnlocked = p_isUnlocked; }
 
 	const std::string& GetItemName() { return m_resultItemName; }
 	int GetAmountItem() const{ return m_amountItem; }

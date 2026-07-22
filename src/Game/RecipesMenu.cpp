@@ -23,9 +23,61 @@ void RecipesMenu::ResetSelectedRecipe()
 	}
 }
 
+void RecipesMenu::PlaceRecipeBlock()
+{
+	float previousPosY = GetPosition({ 0.5,0 }).GetY();
+	Vector2f bottomLeftPos = GetPosition({ 0,1 });
+	float posX = GetPosition().GetX();
+	for(int i = 0; i< m_recipes.size(); i++)
+	{
+		if(i == 0)
+			previousPosY += 100;
+		else
+			previousPosY += 150;
+
+		if (previousPosY > bottomLeftPos.GetY())
+		{
+			return;
+		}
+		m_recipes[i]->SetPosition({ posX, previousPosY });
+	}
+}
+
+int RecipesMenu::PlaceRecipeBlock(std::vector<RecipeBlock*> p_recipeVector, int p_startIndex)
+{
+	std::vector<RecipeBlock*> newRecipes;
+	Vector2f bottomLeftPos = GetPosition({ 0,1 });
+	float previousPosY = GetPosition({ 0.5,0 }).GetY();
+	int nextIndex = p_startIndex;
+
+	for(int  i = p_startIndex; i < p_recipeVector.size(); i++)
+	{
+		if (i == p_startIndex)
+			previousPosY += 100;
+		else
+			previousPosY += 150;
+		if (previousPosY > bottomLeftPos.GetY())
+		{
+			//return the next index to start from for the next menu
+			nextIndex = i;
+			break;
+		}
+		p_recipeVector[i]->SetPosition({ GetPosition().GetX(), previousPosY });
+		newRecipes.push_back(p_recipeVector[i]);
+	}
+	m_recipes.clear();
+	m_recipes = newRecipes;
+
+	if(nextIndex == p_recipeVector.size())
+		return -1;
+
+	return nextIndex;
+}
+
 void RecipesMenu::OnUpdate()
 {
 	ChangeSelectedRecipe();
+	
 }
 
 
@@ -34,8 +86,6 @@ void RecipesMenu::Initialize(std::vector<RecipeData*> p_recipeVector, int p_star
 	RemoveCollider("default");
 	ItemDataBase* item = ItemDataBase::Get();
 	RecipeDataBase* recipe = RecipeDataBase::Get();
-
-	Vector2f recipesMenuPos = GetPosition();
 
 	Vector2f bottomLeftPos = GetPosition({0,1});
 	float previousPosY =GetPosition({0.5,0}).GetY();
@@ -60,7 +110,6 @@ void RecipesMenu::Initialize(std::vector<RecipeData*> p_recipeVector, int p_star
 			m_actualRecipeBlockSelected = recipeBlock;
 			recipeBlock->GetSprite()->ChangeTexture("RecipeSelected");
 			});
-
 		previousPosY = recipeBlock->GetPosition().GetY();
 
 		m_recipes.push_back(recipeBlock);

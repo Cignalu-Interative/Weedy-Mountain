@@ -28,7 +28,11 @@ public :
 	int GetEndRecipeIndex() { return m_endRecipeIndex; }
 
 	void ResetSelectedRecipe();
-
 	RecipeBlock* GetSelectedRecipe() { return m_actualRecipeBlockSelected; }
+	void SetRecipeVector(std::vector<RecipeBlock*> p_recipeVector) { m_recipes.clear(); m_recipes = p_recipeVector; }
+
+	void PlaceRecipeBlock();
+
+	int PlaceRecipeBlock(std::vector<RecipeBlock*> p_recipeVector, int p_startIndex = 0);
 };
 

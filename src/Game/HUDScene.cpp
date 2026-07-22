@@ -57,7 +57,7 @@ void HUDScene::OnInitialize()
 	m_recipe->Close();
 
 
-	GameData::Get().UnlockRecipe("test");
+	//GameData::Get().UnlockRecipe("test");
 }
 
 void HUDScene::OnEvent()
@@ -68,14 +68,26 @@ void HUDScene::OnEvent()
 		m_recipe->Close();
 
 	if (InputManager::Get()->IsKeyboardDown(K_B))
+	{
 		GameData::Get().UnlockRecipe("test");
+	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_X))
+	{
+		GameData::Get().UnlockRecipe("ff");
+	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_C))
+	{
+		GameData::Get().UnlockRecipe("f");
+	}
 }
 
 void HUDScene::OnUpdate()
 {
 	m_playerInventory->OnUpdate();
 
-	std::cout << "Recipes unlocked : " << GameData::Get().GetUnlockedRecipes()[0] << std::endl;
+	//std::cout << "Recipes unlocked : " << GameData::Get().GetUnlockedRecipes()[0] << std::endl;
 }
 
 void HUDScene::OnDestroy()

@@ -45,6 +45,10 @@ void RecipesUi::OnInitialize()
 	m_craftButton->GetCollider()->SetIsTrigger(true);
 }
 
+void RecipesUi::OnUpdate()
+{
+	SortUnlockedRecipe();
+}
 void RecipesUi::Open()
 {
 	Vector2f pos = GetPosition({ 0,0.5f });
@@ -58,12 +62,15 @@ void RecipesUi::Open()
 	m_nextMenuButton->SetIsVisible(true);
 	m_previousMenuButton->SetIsVisible(true);
 	m_craftButton->SetIsVisible(true);
+	//m_actualPageMenu = 0;
+
+	//for(RecipesMenu* menu : m_menus)
+	//{
+	//	menu->SetIsVisible(false);
+	//	menu->ResetSelectedRecipe();	
+	//}
 
 	m_menus[m_actualPageMenu]->SetIsVisible(true);
-	for (RecipesMenu* menu : m_menus)
-	{
-		menu->ResetSelectedRecipe();
-	}
 }
 
 void RecipesUi::Close()
@@ -148,43 +155,42 @@ void RecipesUi::SortUnlockedRecipe()
 {
 	std::vector <RecipeBlock*> unlockRecipes;
 	std::vector <RecipeBlock*> lockRecipes;
+	std::vector <RecipeBlock*> sortedRecipes;
+	// Sort all recipes in all pages
 
+	//Sort unlocked and locked recipes in all pages
 	for (RecipesMenu* menu : m_menus)
 	{
-		for (RecipeBlock* block : menu->GetRecipeBlock())
+		std::vector <RecipeBlock*> blocks = menu->GetRecipeBlock();
+		for (RecipeBlock* block : blocks)
 		{
 			if (block->GetIsUnlocked())
 				unlockRecipes.push_back(block);
-
-			lockRecipes.push_back(block);
+			else
+				lockRecipes.push_back(block);
 		}
 	}
 
-	int lastIndexRecipeBlock = 0;
-	for (int indexMenu = 0; indexMenu < m_menus.size(); indexMenu++)
+	if(unlockRecipes.empty())
+		return;
+
+	sortedRecipes = unlockRecipes;
+	sortedRecipes.insert(sortedRecipes.end(), lockRecipes.begin(), lockRecipes.end());
+
+	int nextIndexToStart = 0;
+	for (RecipesMenu* menu : m_menus)
 	{
-		std::vector<RecipeBlock*> recipeBlock = m_menus[indexMenu]->GetRecipeBlock();
-		//placer tt les index recipesBlocks unlocks
-		for (int indexUnlockRecipe = 0; indexUnlockRecipe < unlockRecipes.size(); indexUnlockRecipe++)
-		{
-			for (int i = 0; i < recipeBlock.size(); i++)
-			{
-				recipeBlock[i] = unlockRecipes[i];
-				lastIndexRecipeBlock = i;
-			}
-		}
-
-		//placer tt les index recipesBlocks locks 
-		for (int indexLockRecipe = 0; indexLockRecipe < lockRecipes.size(); indexLockRecipe++)
-		{
-			if (lastIndexRecipeBlock + 1 >= recipeBlock.size())
-				lastIndexRecipeBlock = 0;
-
-			for (int i = lastIndexRecipeBlock + 1; i < recipeBlock.size(); i++)
-			{
-				recipeBlock[i] = lockRecipes[i];
-			}
-		}
+		nextIndexToStart = menu->PlaceRecipeBlock(sortedRecipes, nextIndexToStart);
 	}
 
+	unlockRecipes.clear();
+	lockRecipes.clear();
+	sortedRecipes.clear();
+
+	for (RecipesMenu* menu : m_menus)
+	{
+		menu->SetIsVisible(false);
+	}
+
+	m_menus[m_actualPageMenu]->SetIsVisible(true);
 }

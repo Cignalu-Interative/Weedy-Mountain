@@ -75,13 +75,9 @@ void RecipeBlock::Initialize(std::string p_recipeName)
 		Vector2f spritePos = GetSprite(std::to_string(m_myID + number))->GetPosition();
 		Vector2f textQuantityPos = spritePos + Vector2f{ 25,10 };
 
-		debug->CreateText(std::to_string(m_myID + number + GetPosition().GetY()), textQuantityPos, std::to_string(data.quantity), ColorsNamed::White, true);
+		debug->CreateText("Amount" + std::to_string(m_myID + number + m_amountItem), textQuantityPos, std::to_string(data.quantity), ColorsNamed::White, true);
 		number++;
 	}
-
-	// on left click -> recipe highlight
-	/*SetOnLeftClick([this] {
-		m_isSelected = true; GetSprite()->ChangeTexture("RecipeSelected"); });*/
 }
 
 void RecipeBlock::SetIsVisible(bool p_isVisible)
@@ -94,7 +90,8 @@ void RecipeBlock::SetIsVisible(bool p_isVisible)
 	for (RecipeIngredientData data : m_ingredients)
 	{
 		GetSprite(std::to_string(m_myID + number))->SetIsVisible(p_isVisible);
-		Debug::Get()->GetText(std::to_string(m_myID + number + GetPosition().GetY()))->SetIsVisible(p_isVisible);
+		Debug::Get()->GetText("Amount" + std::to_string(m_myID + number + m_amountItem))->SetIsVisible(p_isVisible);
+
 		number++;
 	}
 }

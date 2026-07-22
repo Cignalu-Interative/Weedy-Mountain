@@ -1,10 +1,21 @@
 #pragma once
 #include "Entity.h"
 
+class UiCash;
+class UiMoney; 
 class TextBox;
 class UiATM : public Entity
 {
 private : 
+	std::string m_atmAmountText = "0";
+
+	UiCash* m_cash = nullptr;
+	UiMoney* m_money = nullptr;
+
+	Text* m_title = nullptr; 
+	Text* m_atmAmount = nullptr;
+
+	Text* m_errorMsg = nullptr;
 
 	Text* m_cashAmount = nullptr; 
 	Text* m_bankAmount = nullptr;
@@ -23,7 +34,7 @@ private :
 	Vector2f m_retrievePos = {};
 	Vector2f m_amountPos = {};
 
-	int m_amount = 0;
+	int m_amount = 20;
 
 protected: 
 
@@ -31,9 +42,14 @@ protected:
 	void OnUpdate() override;
 	void OnEvent() override; 
 
+	void Retrieve(int p_amount);
+	void Deposit(int p_amount);
+
+	void StringToInt();
 public : 
 
-
+	void Open();
+	void Close();
 
 };
 

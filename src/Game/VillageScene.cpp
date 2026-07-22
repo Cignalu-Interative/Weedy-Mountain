@@ -107,7 +107,7 @@ void VillageScene::OnInitialize()
 
 
 
-	UiATM* atmUi = CreateEntity<UiATM>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "", Shape::Rectangle, true);
+	UiATM* atmUi = CreateEntity<UiATM>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);

@@ -85,8 +85,6 @@ struct PlayerData
 	PlayerInventory* m_playerInventory;
 
 	std::vector<PlayerJob> m_jobs;
-	std::vector<Recipes> m_unlockedRecipes;
-
 
 	int m_money = 200000;
 	int m_cash = 0;

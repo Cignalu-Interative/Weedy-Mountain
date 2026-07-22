@@ -8,7 +8,8 @@ class HasSpadeInHands : public Condition<Player>
 	{
 		// check if current item in hands is spade
 		
-		return p_player->hasSpade;
+		//return p_player->hasSpade;
+		return true;
 	}
 };
 
@@ -17,7 +18,8 @@ class HasPickaxeInHands : public Condition<Player>
     bool TestBool(Player* p_player) override
     {
         // check if current item in hands is pickaxe
-        return p_player->hasPickaxe;
+        //return p_player->hasPickaxe;
+		return true;
     }
 };
 
@@ -26,7 +28,8 @@ class HasWateringCanInHands : public Condition<Player>
 	bool TestBool(Player* p_player) override
 	{
 		// check if current item in hands is Watering Can
-		return p_player->hasWateringCan;
+		//return p_player->hasWateringCan;.
+		return true;
 	}
 };
 
@@ -82,6 +85,6 @@ class CanPlayerDig : public Condition<Player>
 {
 	bool TestBool(Player* p_player)
 	{
-		return p_player->IsUsingToolInHand() && p_player->hasSpade;
+		//return p_player->IsUsingToolInHand() && p_player->hasSpade;
 	}
 };

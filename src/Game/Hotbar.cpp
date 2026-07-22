@@ -328,9 +328,6 @@ ItemStack& Hotbar::GetSelectedStack()
 const std::string& Hotbar::GetSelectedItemID()
 {
 	auto& stack = GetSelectedStack();
-
-	if (stack.IsEmpty())
-		return "ITEM_NOTHING";
 	
 	return stack.GetID();
 }

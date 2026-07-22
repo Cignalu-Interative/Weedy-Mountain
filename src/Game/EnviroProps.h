@@ -1,14 +1,14 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
 #include "2DPendentEngine/Button.h"
-#include "Tool.h"
+#include "ItemType.h"
 #include "EnviroSpawn.h"
 #include "ItemStack.h"
 #include "FarmTile.h"
 
 struct EnviroStats {
 	int m_hitToDestroy = 1;
-	Rarity m_minToolsRarity = Rarity::Wooden;
+	ToolRarity m_minToolsRarity = ToolRarity::Wooden;
 	std::vector<ToolType> m_toolType;
 	FarmTile* m_position;
 };
@@ -53,5 +53,9 @@ public:
 	FarmTile* GetFarmTile() { return m_stats.m_position; }
 
 	EnviroStats* GetStats() { return &m_stats; }
+
+	bool CanBeHitBy(ToolType toolType, ToolRarity toolRarity);
+
+	bool TryHit(ToolType toolType, ToolRarity toolRarity);
 };
 

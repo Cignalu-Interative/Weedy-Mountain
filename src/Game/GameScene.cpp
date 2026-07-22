@@ -39,6 +39,8 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"	
 
+#include "ItemActions.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -58,6 +60,7 @@ void GameScene::OnInitialize()
 	gm.Initialize();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	RegisterAllItemActions();
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
@@ -161,6 +164,8 @@ void GameScene::OnInitialize()
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
 // 	m_textBox->SetBackgroundFilled(true);
+
+	GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_FISHING_ROD", 1, false);
 }
 
 

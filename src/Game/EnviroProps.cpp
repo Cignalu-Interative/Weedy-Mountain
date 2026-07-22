@@ -101,7 +101,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 4;
-		m_stats.m_minToolsRarity = Rarity::Stone;
+		m_stats.m_minToolsRarity = ToolRarity::Stone;
 		m_stats.m_toolType = { ToolType::Axe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_WOOD",1)), 3,4 };
 		EnviroLoots* loot2 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 1,2 };
@@ -113,7 +113,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 2;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Axe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_WOOD",1)), 1,2 };
 		EnviroLoots* Loot2 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 0,2 };
@@ -125,7 +125,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 1;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Hoe, ToolType::Spade };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 1,3 };
 		m_loots.push_back(loot1);
@@ -135,7 +135,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 2;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_ROCK",1)), 1,3 };
 		m_loots.push_back(loot1);
@@ -145,11 +145,41 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 4;
-		m_stats.m_minToolsRarity = Rarity::Iron;
+		m_stats.m_minToolsRarity = ToolRarity::Iron;
 		m_stats.m_toolType = { ToolType::Pickaxe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_ROCK",1)), 2,5 };
 		m_loots.push_back(loot1);
 		break;
 	}
 	}
+}
+
+bool EnviroProps::CanBeHitBy(ToolType toolType, ToolRarity toolRarity)
+{
+	bool typeMatches = false;
+	for (ToolType accepted : m_stats.m_toolType)
+	{
+		if (accepted == toolType)
+		{
+			typeMatches = true;
+			break;
+		}
+	}
+
+	if (typeMatches == false)
+		return false;
+
+	if (static_cast<int>(toolRarity) < static_cast<int>(m_stats.m_minToolsRarity))
+		return false;
+
+	return true;
+}
+
+bool EnviroProps::TryHit(ToolType toolType, ToolRarity toolRarity)
+{
+	if (CanBeHitBy(toolType, toolRarity) == false)
+		return false;
+
+	m_stats.m_hitToDestroy--;
+	return true;
 }

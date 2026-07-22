@@ -15,7 +15,7 @@ void ItemActionRegistry::Register(const std::string& actionID, ActionFn fn)
     m_actions[actionID] = std::move(fn);
 }
 
-bool ItemActionRegistry::Execute(const std::string& actionID, PlayerInventory& inventory, const std::string& itemID, int slotIndex)
+bool ItemActionRegistry::Execute(const std::string& actionID, Player& player, PlayerInventory& inventory, const std::string& itemID, int slotIndex)
 {
     if (actionID.empty())
         return false;
@@ -24,7 +24,7 @@ bool ItemActionRegistry::Execute(const std::string& actionID, PlayerInventory& i
     if (it == m_actions.end())
         return false;
 
-    it->second(inventory, itemID, slotIndex);
+    it->second(player, inventory, itemID, slotIndex);
     return true;
 }
 

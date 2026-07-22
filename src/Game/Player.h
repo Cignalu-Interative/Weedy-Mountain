@@ -36,9 +36,13 @@ private:
 	bool m_inputBlocker = false;
 	bool m_isUsingToolInHand = false;
 
-	// TEMP - AGRI
 	CropDefinition m_selectedCrop = CropCatalog::Wheat();
 	void HandleFarmAction();
+
+	void HandlePrimaryAction();
+	void HandleDefaultHarvestAction();
+
+	void TryHitEnviroProps(class EnviroProps* props);
 
 	GameData& gm = GameData::Get();
 	// PECHE 
@@ -61,7 +65,6 @@ private:
 
 	static constexpr float FISHING_CAST_SYNC_DELAY = (1.f / 120.f) * 2.5f;
 
-	void StartFishing();
 	void UpdateFishing();
 	void RetractFishingRod();
 
@@ -88,7 +91,6 @@ public:
 	PlayerJob GetJobByName(JobType p_name);
 
 	void UpdateJobs();
-	void UnlockRecipe(Recipes _toUnlock);
 	void SetupStateMachine();
 
 	PlayerInventory* GetInventory() { return gm.GetPlayerData().m_playerInventory; }
@@ -104,7 +106,6 @@ public:
 	void SetIsUsingToolInHand(bool p_isUsing) { m_isUsingToolInHand = p_isUsing; }
 	void SetState(PlayerState p_state);
 
-	bool IsRecipeUnlocked(Recipes _toUnlock);
 	bool IsUsingToolInHand() { return m_isUsingToolInHand; }
 
 	void LockInputs();
@@ -125,9 +126,9 @@ public:
 	void DecreaseToxicity(int p_amount);
 	void AddToxicity(int p_amount);
 
-	// temp en attendant d'avoir la hotbar et le current item en main
-	bool hasSpade = false;
-	bool hasPickaxe = false;
-	bool hasWateringCan = false;
+	void StartFishing();
+
+	Vector2f GetFacingDirection() { return m_facingDirection; }
+	Collider* GetActionBoxCollider() { return GetCollider("actionBox"); }
 };
 

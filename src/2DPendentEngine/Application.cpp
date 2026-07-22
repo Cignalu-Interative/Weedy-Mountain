@@ -13,7 +13,6 @@
 #include "DialogueManager.h"
 #include "PhysicsManager.h"
 #include "2DPendentLib/BatchRenderer2D.h"
-#include "2DPendentEngine/QuestManager.h"
 
 Application::Application()
 {
@@ -239,8 +238,6 @@ void Application::Update()
 	
 	if (m_cameraIsClamp)
 		ClampCameraToCurrentMap();
-
-	//QuestManager
 }
 
 void Application::FixedUpdate()

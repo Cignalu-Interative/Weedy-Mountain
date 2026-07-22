@@ -30,7 +30,7 @@ void QuestManager::AddQuest(const std::string& p_name, Vector2f p_position, Vect
 		}
 	}
 	Quest* p_quest = new Quest(p_name, p_position, p_dimension, p_owner);
-
+	p_quest->SetScene(m_scene);
 	m_quests[p_quest->GetName().c_str()] = m_questsVector.size();
 	m_questsVector.push_back(p_quest);
 }
@@ -99,12 +99,12 @@ void QuestManager::UpdateQuests()
 
 void QuestManager::DrawQuests()
 {
-	for (Quest* quest : m_questsVector)
+	/*for (Quest* quest : m_questsVector)
 	{
 		if (quest)
 		{
 			quest->Draw(Application::Get()->GetRender(), Application::Get()->GetWindow(), Application::Get()->GetCamera());
 		}
-	}
+	}*/
 }
 

@@ -14,6 +14,8 @@
 #include "PlayerInventory.h"
 #include "2DPendentLib/InputManager.h"
 
+#include "QuestManager.h"
+
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -38,6 +40,7 @@ void HUDScene::OnInitialize()
 
 	GameData::Get().SetInventory(m_playerInventory);
 	SceneManager::Get()->SetPersistentScene(this);
+	QuestManager::Get()->SetScene(this);
 }
 
 void HUDScene::OnEvent()
@@ -48,7 +51,7 @@ void HUDScene::OnEvent()
 void HUDScene::OnUpdate()
 {
 	m_playerInventory->OnUpdate();
-
+	QuestManager::Get()->UpdateQuests();
 }
 
 void HUDScene::OnDestroy()

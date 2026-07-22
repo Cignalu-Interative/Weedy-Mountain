@@ -43,7 +43,7 @@
 
 #include "Aleatory.h"
 
-#include "2DPendentEngine/QuestManager.h"
+#include "QuestManager.h"
 
 void GameScene::OnInitialize()
 {
@@ -173,7 +173,8 @@ void GameScene::OnInitialize()
 
 	QuestManager::Get()->AddQuest("Quest", { 2000.f, 180.f }, { 125, 80 }, m_player);
 	QuestManager::Get()->GetQuest("Quest")->AddRequirement("Item_Rock", 20);
-	QuestManager::Get()->GetQuest("Quest")->AddRequirement("Item_Wood", 10);
+	//QuestManager::Get()->GetQuest("Quest")->AddRequirement("Item_Wood", 10);
+	//QuestManager::Get()->GetQuest("Quest")->AddRequirement("Item_Fiber", 5);
 }
 
 

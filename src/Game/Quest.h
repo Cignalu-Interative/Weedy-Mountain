@@ -2,8 +2,7 @@
 #include <string>
 #include <vector>
 #include "2DPendentLib/Vector2.h"
-#include "StateMachine.h"
-#include "Entity.h"
+#include "2DPendentEngine/Entity.h"
 #include "2DPendentLib/Text.h"
 #include "2DPendentLib/Rectangle.h"
 #include "2DPendentLib/Circle.h"
@@ -16,7 +15,7 @@ struct QuestRequirement
 	int s_requiredAmount = 0;
 	int s_harvestedAmount = 0;
 
-	Sprite* s_sprite = nullptr;
+	Entity* s_icone = nullptr;
 
 	void SetRequiredAmount(int p_amount) { s_requiredAmount = p_amount; }
 	void AddHarvestedAmount(int p_amount) { s_harvestedAmount += p_amount; }
@@ -56,6 +55,10 @@ private:
 	Circle* m_circleQuest = nullptr;
 	Text* m_textQuest = nullptr;
 
+	Vector2i m_dimSpriteRequirement = { 32, 32 };
+
+	Scene* m_scene = nullptr;
+
 public:
 
 	Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
@@ -83,7 +86,12 @@ public:
 
 	void SetTextQuest();
 
+	void SetSpriteQuest();
+
 	void ResizeGrid();
 
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
+
+	void SetScene(Scene* p_scene) { m_scene = p_scene; }
+	Scene* GetScene() const { return m_scene; }
 };

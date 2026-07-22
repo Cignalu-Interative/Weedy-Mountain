@@ -24,7 +24,7 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
-#include "2DPendentEngine/QuestManager.h"
+#include "QuestManager.h"
 
 void VillageScene::OnInitialize()
 {

@@ -39,5 +39,7 @@ public:
 
 	void DrawQuests();
 
+	void CheckAddItem(const std::string& ID, int amount);
+
 };
 

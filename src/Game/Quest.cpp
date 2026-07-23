@@ -31,10 +31,21 @@ Quest::~Quest()
 
 }
 
-void Quest::AddRequirement(const std::string& p_idTexture, int p_requiredAmount)
+void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTexture, int p_requiredAmount)
 {
 	QuestRequirement requirement;
 	requirement.s_requiredAmount = p_requiredAmount;
+	requirement.SetCheckType(p_CheckType);
+	std::string NameItem = p_idTexture;
+	std::transform(NameItem.begin(), NameItem.end(), NameItem.begin(),
+		[](unsigned char c) { return std::toupper(c); }
+	);
+	requirement.SetItemData(ItemDataBase::Get()->GetItem(NameItem));
+	if (requirement.GetItemData() == nullptr)
+	{
+		std::cerr << "Quest::AddRequirement/ItemData for item '" << NameItem << "' not found." << std::endl;
+		return;
+	}
 	m_icone->AddSprite("requirementSprite_" + std::to_string(m_requirements.size()), p_idTexture, m_dimSpriteRequirement, 0, { 0,0 }, true);
 	requirement.s_harvestedText = Debug::Get()->CreateText("requirementTextHarvested_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement.s_harvestedAmount), ColorsNamed::Green, true, true);
 	requirement.s_requiredText = Debug::Get()->CreateText("requirementText_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement.s_requiredAmount), ColorsNamed::Red, true, true);

@@ -9,20 +9,41 @@
 #include "2DPendentLib/Sprite.h"
 #include "2DPendentLib/AssetManager.h"
 #include "2DPendentLib/Drawable.h"
+#include "ItemData.h"
+#include "ItemDataBase.h"
+
+enum class CheckQuest
+{
+	UNDEFINED,
+	AddItem,
+
+	Max
+
+};
 
 struct QuestRequirement
 {
+	CheckQuest s_checkType = CheckQuest::UNDEFINED;
+
+	ItemData* s_itemData = nullptr;
+
 	int s_requiredAmount = 0;
 	int s_harvestedAmount = 0;
 
 	Text* s_requiredText = nullptr;
 	Text* s_harvestedText = nullptr;
 
+	void SetCheckType(CheckQuest p_checkType) { s_checkType = p_checkType; }
+	CheckQuest GetCheckType() const { return s_checkType; }
+
 	void SetRequiredAmount(int p_amount) { s_requiredAmount = p_amount; }
 	void AddHarvestedAmount(int p_amount) { s_harvestedAmount += p_amount; }
 
 	int GetRequiredAmount() const { return s_requiredAmount; }
 	int GetHarvestedAmount() const { return s_harvestedAmount; }
+
+	void SetItemData(ItemData* p_itemData) { s_itemData = p_itemData; }
+	ItemData* GetItemData() const { return s_itemData; }
 };
 
 struct QuestReward
@@ -77,7 +98,7 @@ public:
 	void SetInProcess() { m_isNotStarted = false; m_isInProcess = true; m_isFinished = false; }
 	void SetFinished() { m_isNotStarted = false; m_isInProcess = false; m_isFinished = true; }
 
-	void AddRequirement(const std::string& p_idTexture, int p_requiredAmount);
+	void AddRequirement(CheckQuest p_CheckType, const std::string& p_idTexture, int p_requiredAmount);
 	QuestRequirement GetRequirement(size_t p_emplacement) const;
 
 	size_t GetRequirementsCount() const { return m_requirements.size(); }

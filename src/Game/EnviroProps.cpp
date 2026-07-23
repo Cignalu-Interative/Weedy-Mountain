@@ -40,7 +40,9 @@ void EnviroProps::OnEvent()
 
 void EnviroProps::OnUpdate()
 {
-	SetPosition(m_stats.m_position->GetPosition());
+	if (TileUtils::IsSet(m_stats.m_position)) {
+		SetPosition(TileUtils::GetPosition(m_stats.m_position));
+	}
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 }
 
@@ -49,7 +51,6 @@ void EnviroProps::OnCollisionStay(Collider* _self, Collider* _other, CollisionSi
 	if(_other->GetOwner()->GetTag() == 1 && _other->GetID() == "actionBox") {
 		m_isInPlayerZone = true;
 	}
-
 }
 
 void EnviroProps::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
@@ -70,20 +71,21 @@ void EnviroProps::OnDestroy()
 		}
 	}
 
-	if (m_stats.m_position == NULL) {
+	if (!TileUtils::IsSet(m_stats.m_position)) {
 		return;
 	}
-	else m_stats.m_position->SetCanGrow(true);
+	TileUtils::SetCanGrow(m_stats.m_position, true);
 
 	if (m_name == EnviroSpawnName::Stone) {
 		std::vector<FarmTile*> m_farmTiles = FarmManager::Get()->GetAllFarmTiles();
 		float radius = 23.f;
 		float radiusSqr = radius * radius;
+		Vector2f tilePos = TileUtils::GetPosition(m_stats.m_position);
+
 		for (int tile = 0; tile < m_farmTiles.size(); tile++) {
-
-			float dx = m_farmTiles[tile]->GetPosition().GetX() - m_stats.m_position->GetPosition().GetX();
-			float dy = m_farmTiles[tile]->GetPosition().GetY() - m_stats.m_position->GetPosition().GetY();
-
+			float dx = m_farmTiles[tile]->GetPosition().GetX() - tilePos.GetX();
+			float dy = m_farmTiles[tile]->GetPosition().GetY() - tilePos.GetY();
+			
 			if ((dx * dx + dy * dy) <= radiusSqr) {
 				m_farmTiles[tile]->SetCanGrow(true);
 			}

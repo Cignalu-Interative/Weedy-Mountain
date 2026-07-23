@@ -4,6 +4,11 @@
 #include "CollisionManager.h"
 #include "GameData.h"
 
+CaveManager* CaveManager::Get() {
+    static CaveManager instance;
+    return &instance;
+}
+
 void CaveManager::Initialize(MapTiled* p_map, const std::string& p_layerName)
 {
     if (!p_map)
@@ -11,7 +16,7 @@ void CaveManager::Initialize(MapTiled* p_map, const std::string& p_layerName)
 
     Clear();
 
-    auto canGrowTiles = p_map->GetAllTilesWithProperty("canGrow", p_layerName);
+    auto canGrowTiles = p_map->GetAllTilesWithProperty("CanGrow", p_layerName);
     Vector2i tileDim = p_map->GetTileDimension();
 
     for (const TileInfo& info : canGrowTiles)
@@ -29,6 +34,12 @@ void CaveManager::Initialize(MapTiled* p_map, const std::string& p_layerName)
     }
 
     std::cout << "[CaveManager] " << m_caveTiles.size() << " CaveTiles initialisées" << std::endl;
+}
+
+void CaveManager::RegisterTile(CaveTile* p_tile)
+{
+    if (p_tile)
+        m_caveTiles.push_back(p_tile);
 }
 
 void CaveManager::Clear() {

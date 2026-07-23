@@ -5,6 +5,8 @@
 #include "GameScene.h"
 #include "GameData.h"
 #include "FarmManager.h"
+#include "CaveManager.h"
+#include <variant>
 
 EnviroSpawn* EnviroSpawn::Get() {
 	static EnviroSpawn instance;
@@ -60,7 +62,7 @@ void EnviroSpawn::InitEnviroSpawn()
 		}
 	}
 
-	UpdateFreeFarmTiles();
+	UpdateFreeTiles();
 
 	NewGameEnviroSpawn();
 }
@@ -70,6 +72,8 @@ void EnviroSpawn::SpawnEnviroProps()
 	if (m_numOfEnviro >= m_maxTiles) {
 		return;
 	}
+
+	UpdateFreeTiles();
 
 	switch (GameData::Get().GetCurrentScene()) {
 	case CurrentScene::FARM:
@@ -93,7 +97,6 @@ void EnviroSpawn::SpawnEnviroProps()
 		}
 		break;
 	default:
-	
 		m_caveDayCounter++;
 		m_farmDayCounter++;
 		break;
@@ -120,10 +123,12 @@ int EnviroSpawn::GetEnviroDay()
 
 void EnviroSpawn::NewGameEnviroSpawn()
 {
+	UpdateFreeTiles();
+
 	for (int i = 0; i < 150; i++) {
-		int tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
-		while (m_freeFarmTiles[tile]->GetPosition().GetX() >= 500) {
-			tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
+		int tile = Aleatory::GetInt(0, m_freeTiles.size() - 1);
+		while (TileUtils::GetPosition(m_freeTiles[tile]).GetX() >= 500) {
+			tile = Aleatory::GetInt(0, m_freeTiles.size() - 1);
 		}
 		CreateEnviroProps(m_farmEnviroList[Aleatory::GetInt(0, m_farmEnviroList.size() - 1)]->m_name, tile, SceneManager::Get()->GetScene("game"));
 	}
@@ -131,30 +136,57 @@ void EnviroSpawn::NewGameEnviroSpawn()
 	m_farmEnviroList.erase(m_farmEnviroList.begin() + 3, m_farmEnviroList.end());
 }
 
-void EnviroSpawn::UpdateFreeFarmTiles()
+void EnviroSpawn::UpdateFreeTiles()
 {
-	m_freeFarmTiles.clear();
-	std::vector<FarmTile*> farmTile = FarmManager::Get()->GetAllFarmTiles();
-	for (int i = 0; i < farmTile.size(); i++) {
-		if (farmTile[i]->CanGrow() == true) {
-			m_freeFarmTiles.push_back(farmTile[i]);
+	m_freeTiles.clear();
+	std::vector<FarmTile*> farmTile;
+	std::vector<CaveTile*> caveTile;
+	switch (GameData::Get().GetCurrentScene()) {
+	case CurrentScene::FARM:
+		farmTile = FarmManager::Get()->GetAllFarmTiles();
+		for (int i = 0; i < farmTile.size(); i++) {
+			if (farmTile[i]->CanGrow() == true) {
+				m_freeTiles.push_back(farmTile[i]);
+			}
 		}
-	}
-	for (int j = 0; j < m_freeFarmTiles.size() / 2; j++) {
-		std::swap(m_freeFarmTiles[j], m_freeFarmTiles[Aleatory::GetInt(0, m_freeFarmTiles.size() - 1)]);
+		for (int j = 0; j < m_freeTiles.size() / 2; j++) {
+			std::swap(m_freeTiles[j], m_freeTiles[Aleatory::GetInt(0, m_freeTiles.size() - 1)]);
+		}
+		break;
+	case CurrentScene::CAVE:
+		caveTile = CaveManager::Get()->GetAllCaveTiles();
+		for (int i = 0; i < caveTile.size(); i++) {
+			if (caveTile[i]->CanGrow() == true) {
+				m_freeTiles.push_back(caveTile[i]);
+			}
+		}
+		for (int j = 0; j < m_freeTiles.size() / 2; j++) {
+			std::swap(m_freeTiles[j], m_freeTiles[Aleatory::GetInt(0, m_freeTiles.size() - 1)]);
+		}
+		break;
+	default:
+		break;
 	}
 }
 
 void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _scene)
 {
-	EnviroProps* Props;
-	if (_tile < 0) {
-		_tile = Aleatory::GetInt(0, m_freeFarmTiles.size() - 1);
-	}
-	if (m_freeFarmTiles[_tile]->CanGrow() == false) {
+
+	UpdateFreeTiles();
+	if (m_freeTiles.size() == 0) {
 		return;
 	}
-	Props = _scene->CreateEntity<EnviroProps>(m_freeFarmTiles[_tile]->GetPosition(), { 128,128 }, "", Shape::Rectangle);
+
+	EnviroProps* Props;
+	if (_tile < 0) {
+		_tile = Aleatory::GetInt(0, m_freeTiles.size() - 1);
+	}
+	if (TileUtils::CanGrow(m_freeTiles[_tile]) == false) {
+		return;
+	}
+
+	Props = _scene->CreateEntity<EnviroProps>(TileUtils::GetPosition(m_freeTiles[_tile]), { 128,128 }, "", Shape::Rectangle);
+
 	Props->RemoveSprite("default");
 	Props->SetType(_name);
 	Props->SetTag(2);
@@ -205,66 +237,72 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _sc
 		float radius = 23.f;
 		float radiusSqr = radius * radius;
 		int posCheck = 0;
+		bool tileFound = false;
 
-		for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
+		for (int tile = 0; tile < m_freeTiles.size(); tile++) {
 
-			float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - m_freeFarmTiles[_tile]->GetPosition().GetX();
-			float dy = m_freeFarmTiles[tile]->GetPosition().GetY() - m_freeFarmTiles[_tile]->GetPosition().GetY();
+			float dx = TileUtils::GetPosition(m_freeTiles[tile]).GetX() - TileUtils::GetPosition(m_freeTiles[_tile]).GetX();
+			float dy = TileUtils::GetPosition(m_freeTiles[tile]).GetY() - TileUtils::GetPosition(m_freeTiles[_tile]).GetY();
 
-			if ((dx * dx + dy * dy) <= radiusSqr && m_freeFarmTiles[tile]->CanGrow() == true) {
+			if ((dx * dx + dy * dy) <= radiusSqr && TileUtils::CanGrow(m_freeTiles[tile]) == true) {
 				posCheck++;
 			}
 		}
 		if (posCheck <= 9) {
-			for (int pos = 0; pos < m_freeFarmTiles.size(); pos++) {
-				if (m_freeFarmTiles[pos]->GetPosition().GetX() >= 500) continue;
+			for (int pos = 0; pos < m_freeTiles.size(); pos++) {
+				if (TileUtils::GetPosition(m_freeTiles[pos]).GetX() >= 500) continue;
 				posCheck = 0;
-				for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
+				for (int tile = 0; tile < m_freeTiles.size(); tile++) {
 
-					float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - m_freeFarmTiles[pos]->GetPosition().GetX();
-					float dy = m_freeFarmTiles[tile]->GetPosition().GetY() - m_freeFarmTiles[pos]->GetPosition().GetY();
+					float dx = TileUtils::GetPosition(m_freeTiles[tile]).GetX() - TileUtils::GetPosition(m_freeTiles[pos]).GetX();
+					float dy = TileUtils::GetPosition(m_freeTiles[tile]).GetY() - TileUtils::GetPosition(m_freeTiles[pos]).GetY();
 
-					if ((dx * dx + dy * dy) <= radiusSqr && m_freeFarmTiles[tile]->CanGrow() == true) {
+					if ((dx * dx + dy * dy) <= radiusSqr && TileUtils::CanGrow(m_freeTiles[tile]) == true) {
 						posCheck++;
 					}
 				}
 				if (posCheck >= 9) {
-					Props->SetFarmTile(m_freeFarmTiles[pos]);
+					Props->SetTile(m_freeTiles[pos]);
+					tileFound = true;
 					break;
 				}
 			}
 		}
 		else {
-			Props->SetFarmTile(m_freeFarmTiles[_tile]);
+			Props->SetTile(m_freeTiles[_tile]);
 		}
 
-		if (Props->GetFarmTile() == NULL) {
+		if (!tileFound) {
 			Props->Destroy();
 			return;
 		}
 
-		for (int tile = 0; tile < m_freeFarmTiles.size(); tile++) {
+		for (int tile = 0; tile < m_freeTiles.size(); tile++) {
 
-			float dx = m_freeFarmTiles[tile]->GetPosition().GetX() - Props->GetFarmTile()->GetPosition().GetX();
-			float dy = m_freeFarmTiles[tile]->GetPosition().GetY() - Props->GetFarmTile()->GetPosition().GetY();
+			Vector2f p = TileUtils::GetPosition(m_freeTiles[tile]);
+			float dx = p.GetX() - Props->GetPosition().GetX();
+			float dy = p.GetY() - Props->GetPosition().GetY();
 
+
+			
 			if ((dx * dx + dy * dy) <= radiusSqr) {
-				m_freeFarmTiles[tile]->SetCanGrow(false);
+				TileUtils::SetCanGrow(m_freeTiles[tile], false);
 			}
 		}
 	}
 
 	else {
-		Props->SetFarmTile(m_freeFarmTiles[_tile]);
-		m_freeFarmTiles[_tile]->SetCanGrow(false);
+		Props->SetTile(m_freeTiles[_tile]);
+		TileUtils::SetCanGrow(m_freeTiles[_tile], false);
 	}
 
-	UpdateFreeFarmTiles();
+	UpdateFreeTiles();
 }
 
 void EnviroSpawn::Update() {
 	int curentDay = GetEnviroDay();
 
+	UpdateFreeTiles();
 
 	switch (GameData::Get().GetCurrentScene()) {
 	case CurrentScene::FARM:

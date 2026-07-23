@@ -34,6 +34,8 @@
 
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
+#include "CaveManager.h"
+#include "CaveTile.h"
 
 
 void CaveScene::OnInitialize()
@@ -58,6 +60,9 @@ void CaveScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
+	MapTiled* map = mm->GetCurrentMap();
+	CaveManager::Get()->Initialize(map, "canGrow");
+	
 }
 
 void CaveScene::OnEvent()

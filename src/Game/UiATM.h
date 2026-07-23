@@ -1,16 +1,11 @@
 #pragma once
 #include "Entity.h"
 
-class UiCash;
-class UiMoney; 
 class TextBox;
 class UiATM : public Entity
 {
 private : 
-	std::string m_atmAmountText = "0";
-
-	UiCash* m_cash = nullptr;
-	UiMoney* m_money = nullptr;
+	std::string m_atmAmountText = "";
 
 	Text* m_title = nullptr; 
 	Text* m_atmAmount = nullptr;

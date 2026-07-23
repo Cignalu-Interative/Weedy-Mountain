@@ -16,7 +16,7 @@ void UiATM::OnInitialize()
 	Scene* scene = GetScene();
 
 	RemoveCollider("default");
-	SetDrawLayer(INT_MAX - 700);
+	SetDrawLayer(700);
 	GetSprite()->ResizeStretched(GetDimension());
 	SyncSprites();
 
@@ -34,9 +34,10 @@ void UiATM::OnInitialize()
 	m_errorMsg->SetDrawLayer(INT_MAX);
 	m_errorMsg->SetIsVisible(false);
 
-
-	m_amountBox = scene->CreateTextBox("amountBox", GetPosition({ 0, 0.35f }) + Vector2f(250, 0), { 150, 75 }, ColorsNamed::Black, true);
+	m_amountBox = scene->CreateTextBox("atmTextBox", GetPosition({ 0, 0.35f }) + Vector2f(250, 0), { 150, 75 }, ColorsNamed::Black, true);
 	m_amountBox->GetCollider()->SetIsTrigger(true);
+	m_amountBox->SetDrawLayer(INT_MAX);
+	m_amountBox->GetText()->SetColor(ColorsNamed::Black);
 
 	m_depositPos = GetPosition({ 1,1 }) - Vector2f{ 200, 150 };
 	m_retrievePos = GetPosition({ 1,1 }) - Vector2f{ 200, 250 };
@@ -151,6 +152,10 @@ void UiATM::OnUpdate()
 {
 	m_cashAmount->SetText("Cash :    " + std::to_string(GameData::Get().GetPlayerData().m_cash));
 	m_bankAmount->SetText("In Bank :    " + std::to_string(GameData::Get().GetPlayerData().m_money));
+
+
+	std::cout << "text box : " << m_amountBox->GetDrawLayer() << std::endl;
+	std::cout << "ui : " << GetDrawLayer() << std::endl;
 }
 
 void UiATM::OnEvent()
@@ -196,9 +201,12 @@ void UiATM::Deposit(int p_amount)
 }
 
 void UiATM::StringToInt()
-{/*
-	std::cout << "[DEBUG] longueur = " << m_atmAmountText.size() << std::endl;
+{
+	/*std::cout << "[DEBUG] longueur = " << m_atmAmountText.size() << std::endl;
 	std::cout << "[DEBUG] contenu = \"" << m_atmAmountText << "\"" << std::endl;*/
+
+	if (m_atmAmountText.empty())
+		return;
 
 	try
 	{
@@ -209,16 +217,16 @@ void UiATM::StringToInt()
 			m_amountBox->SetTextInBox(std::to_string(m_amount));
 			m_errorMsg->SetIsVisible(true);
 		}
-		//std::cout << "[UiATM AMOUNT] : " << m_amount << std::endl;
+		std::cout << "[UiATM AMOUNT] : " << m_amount << std::endl;
 	}
 	catch (const std::invalid_argument&)
 	{
 		m_amount = 0;
-		//std::cout << "[UiATM AMOUNT] : invalid arguments " << std::endl;
+		std::cout << "[UiATM AMOUNT] : invalid arguments " << std::endl;
 	}
 	catch (const std::out_of_range&)
 	{
 		m_amount = 0;
-		//::cout << "[UiATM AMOUNT] : out of range " << std::endl;
+		std::cout << "[UiATM AMOUNT] : out of range " << std::endl;
 	}
 }

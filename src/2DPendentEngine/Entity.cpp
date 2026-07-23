@@ -463,3 +463,14 @@ void Entity::SetAnimationByName(const std::string& p_nameAnimation)
 		return;
 	m_animation->SetAnimationByName(p_nameAnimation);
 }
+
+bool Entity::GetSpriteTextBox() const
+{
+	for (SpriteContainer* sp : m_sprites)
+	{
+		if (sp->m_id != "textbox")
+			continue;
+		return true;
+	}
+	return false;
+}

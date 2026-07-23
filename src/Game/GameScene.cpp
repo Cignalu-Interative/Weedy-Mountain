@@ -26,7 +26,6 @@
 #include "PNJ.h"
 #include "Ui/UiShop.h"
 #include "SpriteContainer.h"
-
 #include "Ui/UiStats.h"
 #include "Ui/UiMoney.h"
 #include "Ui/UiCash.h"
@@ -80,7 +79,6 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetGravityEnabled(false);
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
-	//
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
@@ -165,7 +163,11 @@ void GameScene::OnInitialize()
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
 // 	m_textBox->SetBackgroundFilled(true);
 
-	GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_FISHING_ROD", 1, false);
+	PlayerInventory* pi = GameData::Get().GetPlayerData().m_playerInventory;
+	pi->AddItem("ITEM_WHEAT_SEED", 64, false);
+	pi->AddItem("ITEM_CARROT_SEED", 64, false);
+	pi->AddItem("ITEM_WATERING_CAN", 1, false);
+	pi->AddItem("ITEM_DIAMOND_HOE", 1, false);
 }
 
 

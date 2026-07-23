@@ -106,11 +106,6 @@ void Player::OnEvent()
 
 		SetDirection(dir);
 
-		if (InputManager::Get()->IsKeyboardDown(K_1))
-			m_selectedCrop = CropCatalog::Wheat();
-		if (InputManager::Get()->IsKeyboardDown(K_2))
-			m_selectedCrop = CropCatalog::Carrot();
-
 		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
 			HandlePrimaryAction();
 	}
@@ -172,9 +167,10 @@ void Player::HandleDefaultHarvestAction()
 		const std::string& selectedID = inv->GetSelectedItemID();
 		ItemData* data = (selectedID != "ITEM_NOTHING") ? ItemDataBase::Get()->GetItem(selectedID) : nullptr;
 
-		bool hasHoeInHand = (data != nullptr && data->GetItemType() == ItemType::Tool && data->GetToolType() == ToolType::Hoe);
+		bool hasSpadeInHand = (data != nullptr && data->GetItemType() == ItemType::Tool && data->GetToolType() == ToolType::Spade
+			);
 
-		if (hasHoeInHand == false)
+		if (hasSpadeInHand == false)
 			return;
 	}
 

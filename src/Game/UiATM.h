@@ -31,6 +31,9 @@ private :
 
 	int m_amount = 20;
 
+
+	bool m_isOpen = false;
+
 protected: 
 
 	void OnInitialize() override;
@@ -45,6 +48,8 @@ public :
 
 	void Open();
 	void Close();
+
+	bool IsOpen() { return m_isOpen; }
 
 };
 

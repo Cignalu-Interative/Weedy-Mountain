@@ -44,7 +44,7 @@ void VillageScene::OnInitialize()
 
 	GetCamera()->SetPosition(m_spawnPoint);
 
-	m_player = CreateEntity<Player>(m_spawnPoint + Vector2f(-100, 150), {16,32}, "player", Shape::Rectangle);
+	m_player = CreateEntity<Player>(m_spawnPoint, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 14,14 });
 	m_player->GetCollider()->SetOffset({ 0,9 });
 	m_player->SetRigidBody(true);
@@ -108,7 +108,8 @@ void VillageScene::OnInitialize()
 
 
 
-	UiATM* atmUi = CreateEntity<UiATM>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_atmUi = CreateEntity<UiATM>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	//m_atmUi->Close();
 	
 
 	GetCamera()->SetFollowedEntity(m_player);
@@ -159,6 +160,16 @@ void VillageScene::OnEvent()
 		m_dealerShop->Close();
 		m_player->UnlockInputs();
 	}
+	if ( InputManager::Get()->IsKeyboardDown(K_C) && m_atmUi->IsOpen() )
+	{
+		m_atmUi->Close();
+		m_player->UnlockInputs();
+	}
+	if ( InputManager::Get()->IsKeyboardDown(K_O) && !m_atmUi->IsOpen() )
+	{
+		m_player->LockInputs();
+		m_atmUi->Open();
+	}
 }
 
 void VillageScene::OnUpdate()
@@ -182,7 +193,7 @@ void VillageScene::OnWake()
 	mm->SetCurrentMap("Village");
 
 
-	m_player->SetPosition(m_spawnPoint + Vector2f(-20, 70));
+	m_player->SetPosition(m_spawnPoint);
 	GetCamera()->SetPosition(m_player->GetPosition());
 	GetCamera()->SetFollowedEntity(m_player);
 	SetSleepDraw(false);

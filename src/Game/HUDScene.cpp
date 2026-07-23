@@ -80,6 +80,7 @@ void HUDScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_C))
 	{
 		GameData::Get().UnlockRecipe("f");
+		//GameData::Get().UnlockRecipe("ffff");
 	}
 }
 

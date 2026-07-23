@@ -19,7 +19,7 @@ private :
 
 public :
 
-	void Initialize(std::vector<RecipeData*> p_recipeVector, int p_startIndex);
+	void Initialize(std::vector<RecipeBlock*> p_recipeVector, int p_startIndex);
 
 	//void Update(); //Update les recipes block dans le menu grace au slider
 	void SetIsVisible(bool p_isVisible);

@@ -48,7 +48,7 @@ int RecipesMenu::PlaceRecipeBlock(std::vector<RecipeBlock*> p_recipeVector, int 
 	std::vector<RecipeBlock*> newRecipes;
 	Vector2f bottomLeftPos = GetPosition({ 0,1 });
 	float previousPosY = GetPosition({ 0.5,0 }).GetY();
-	int nextIndex = p_startIndex;
+	int nextIndex = -1;
 
 	for(int  i = p_startIndex; i < p_recipeVector.size(); i++)
 	{
@@ -65,57 +65,59 @@ int RecipesMenu::PlaceRecipeBlock(std::vector<RecipeBlock*> p_recipeVector, int 
 		p_recipeVector[i]->SetPosition({ GetPosition().GetX(), previousPosY });
 		newRecipes.push_back(p_recipeVector[i]);
 	}
+
 	m_recipes.clear();
 	m_recipes = newRecipes;
 
-	if(nextIndex == p_recipeVector.size())
-		return -1;
+	//if(nextIndex == p_recipeVector.size())
+	//	return -1;
 
 	return nextIndex;
 }
 
 void RecipesMenu::OnUpdate()
 {
-	ChangeSelectedRecipe();
+	//ChangeSelectedRecipe();
 	
 }
 
 
-void RecipesMenu::Initialize(std::vector<RecipeData*> p_recipeVector, int p_startIndex)
+void RecipesMenu::Initialize(std::vector<RecipeBlock*> p_recipeVector, int p_startIndex)
 {
 	RemoveCollider("default");
-	ItemDataBase* item = ItemDataBase::Get();
-	RecipeDataBase* recipe = RecipeDataBase::Get();
+	//ItemDataBase* item = ItemDataBase::Get();
+	//RecipeDataBase* recipe = RecipeDataBase::Get();
 
-	Vector2f bottomLeftPos = GetPosition({0,1});
-	float previousPosY =GetPosition({0.5,0}).GetY();
-	int number = 1;
+	//Vector2f bottomLeftPos = GetPosition({0,1});
+	//float previousPosY =GetPosition({0.5,0}).GetY();
+	//int number = 1;
 
-	for (int i = p_startIndex ; i < p_recipeVector.size(); i++)
-	{
-		if (i == p_startIndex)
-			previousPosY += 100;
-		else
-			previousPosY += 150;
+	PlaceRecipeBlock(p_recipeVector);
+	//for (int i = p_startIndex ; i < p_recipeVector.size(); i++)
+	//{
+	//	if (i == p_startIndex)
+	//		previousPosY += 100;
+	//	else
+	//		previousPosY += 150;
 
-		if (previousPosY > bottomLeftPos.GetY())
-		{
-			return;
-		}
+	//	if (previousPosY > bottomLeftPos.GetY())
+	//	{
+	//		return;
+	//	}
+	//	
+	//	/*RecipeBlock* recipeBlock = GetScene()->CreateEntity<RecipeBlock>({GetPosition().GetX(), previousPosY}, {GetDimension().GetX(),150}, "InventoryWeedyMountain", Shape::Rectangle, true);
+	//	recipeBlock->Initialize(p_recipeVector[i]->GetRecipeID());
+	//	recipeBlock->SetOnLeftClick([this, recipeBlock] {
+	//		m_lastRecipeBlockSelected = m_actualRecipeBlockSelected;
+	//		m_actualRecipeBlockSelected = recipeBlock;
+	//		recipeBlock->GetSprite()->ChangeTexture("RecipeSelected");
+	//		});
+	//	previousPosY = recipeBlock->GetPosition().GetY();
 
-		RecipeBlock* recipeBlock = GetScene()->CreateEntity<RecipeBlock>({GetPosition().GetX(), previousPosY}, {GetDimension().GetX(),150}, "InventoryWeedyMountain", Shape::Rectangle, true);
-		recipeBlock->Initialize(p_recipeVector[i]->GetRecipeID());
-		recipeBlock->SetOnLeftClick([this, recipeBlock] {
-			m_lastRecipeBlockSelected = m_actualRecipeBlockSelected;
-			m_actualRecipeBlockSelected = recipeBlock;
-			recipeBlock->GetSprite()->ChangeTexture("RecipeSelected");
-			});
-		previousPosY = recipeBlock->GetPosition().GetY();
-
-		m_recipes.push_back(recipeBlock);
-		m_endRecipeIndex = i;
-		number++;
-	}
+	//	m_recipes.push_back(recipeBlock);*/
+	//	m_endRecipeIndex = i;
+	//	number++;
+	//}
 }
 
 void RecipesMenu::SetIsVisible(bool p_isVisible)

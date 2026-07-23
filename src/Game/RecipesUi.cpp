@@ -18,15 +18,38 @@ void RecipesUi::OnInitialize()
 	Scene* scene = GetScene();
 	//Vector2f menuPos = { GetPosition({ 1,0 }).GetX(), GetPosition().GetY() + GetDimension().GetX() * 4.f };
 	//creer les differents menus
+
+	//Creer tous les recipes blocks
 	for (int i = 0; i < recipes.size(); i++)
 	{
-		RecipesMenu* menu = scene->CreateEntity<RecipesMenu>({}, {400,GetDimension().GetY()- 100}, "InventoryWeedyMountain", Shape::Rectangle, true);
+		RecipeBlock* recipeBlock = GetScene()->CreateEntity<RecipeBlock>({}, { 400,150 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+		recipeBlock->Initialize(recipes[i]->GetRecipeID());
+		recipeBlock->SetOnLeftClick([this, recipeBlock] {
+			m_lastRecipeBlockSelected = m_actualRecipeBlockSelected;
+			m_actualRecipeBlockSelected = recipeBlock;
+			recipeBlock->GetSprite()->ChangeTexture("RecipeSelected");
+			});
+
+		m_recipes.push_back(recipeBlock);
+	}
+
+	//Placer les recipesBlocks dans les menus et creer les recipesblocks
+	int nextIndexToStart = 0;
+	//for (int i = 0; i < recipes.size(); i++)
+	while (nextIndexToStart != -1)
+	{
+		if (nextIndexToStart == -1)
+			break;
+
+		RecipesMenu* menu = scene->CreateEntity<RecipesMenu>({}, {400,GetDimension().GetY()- 100}, "", Shape::Rectangle, true);
 		menu->GetSprite()->ResizeStretched(menu->GetDimension());
 		menu->SetPosition(GetPosition({ 1,1 }) + Vector2f{ -30, 0 }, { 1,1 });
-		menu->Initialize(recipes, i);
+		nextIndexToStart = menu->PlaceRecipeBlock(m_recipes, nextIndexToStart);
+		//menu->Initialize(m_recipes, 0);
+		//menu->Initialize(recipes, i);
 		menu->SetIsVisible(false);
-		i = menu->GetEndRecipeIndex();
-
+		//i = menu->GetEndRecipeIndex();
+		//i = nextIndexToStart;
 		m_menus.push_back(menu);
 	}
 
@@ -47,6 +70,7 @@ void RecipesUi::OnInitialize()
 
 void RecipesUi::OnUpdate()
 {
+	ChangeSelectedRecipe();
 	SortUnlockedRecipe();
 }
 void RecipesUi::Open()
@@ -97,7 +121,8 @@ void RecipesUi::Close()
 void RecipesUi::NextPageMenu()
 {
 	m_menus[m_actualPageMenu]->SetIsVisible(false);
-	m_menus[m_actualPageMenu]->ResetSelectedRecipe();
+	//m_menus[m_actualPageMenu]->ResetSelectedRecipe();
+	ResetSelectedRecipe();
 
 	m_actualPageMenu++;
 
@@ -111,7 +136,8 @@ void RecipesUi::NextPageMenu()
 void RecipesUi::PreviousPageMenu()
 {
 	m_menus[m_actualPageMenu]->SetIsVisible(false);
-	m_menus[m_actualPageMenu]->ResetSelectedRecipe();
+	//m_menus[m_actualPageMenu]->ResetSelectedRecipe();
+	ResetSelectedRecipe();
 
 	m_actualPageMenu--;
 
@@ -123,7 +149,7 @@ void RecipesUi::PreviousPageMenu()
 
 void RecipesUi::CraftItem()
 {	
-	RecipeBlock* selectedRecipe = m_menus[m_actualPageMenu]->GetSelectedRecipe();
+	RecipeBlock* selectedRecipe = GetSelectedRecipe();
 	if (selectedRecipe == nullptr)
 		return;
 
@@ -183,6 +209,7 @@ void RecipesUi::SortUnlockedRecipe()
 		nextIndexToStart = menu->PlaceRecipeBlock(sortedRecipes, nextIndexToStart);
 	}
 
+	// Passer dans la boucle pour delete les pointeurs
 	unlockRecipes.clear();
 	lockRecipes.clear();
 	sortedRecipes.clear();

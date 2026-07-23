@@ -17,7 +17,18 @@
         "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Fiber.png",
         "maxStack": 64,
         "name": "Fiber",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 3,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "b",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -28,7 +39,22 @@
         "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Item_Rock.png",
         "maxStack": 64,
         "name": "Rock",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 2,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "c",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 2,
         "useActionID": ""
     },
@@ -69,7 +95,18 @@
         "imagePath": "C:\\Users\\kmermin\\source\\repos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Potatoe.png",
         "maxStack": 64,
         "name": "Potatoe",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "a",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -85,7 +122,7 @@
                 "ingredients": [
                     {
                         "itemID": 8,
-                        "quantity": 1
+                        "quantity": 6
                     },
                     {
                         "itemID": 7,

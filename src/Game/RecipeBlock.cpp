@@ -30,6 +30,7 @@ void RecipeBlock::OnUpdate()
 	{
 		m_isUnlocked = true;
 		RemoveSprite("LockedRecipe");
+		GetSprite()->ChangeTexture("InventoryWeedyMountain");
 	}
 	else
 		GetSprite()->ChangeTexture("LockedRecipe");
@@ -75,7 +76,7 @@ void RecipeBlock::Initialize(std::string p_recipeName)
 		Vector2f spritePos = GetSprite(std::to_string(m_myID + number))->GetPosition();
 		Vector2f textQuantityPos = spritePos + Vector2f{ 25,10 };
 
-		debug->CreateText("Amount" + std::to_string(m_myID + number + m_amountItem), textQuantityPos, std::to_string(data.quantity), ColorsNamed::White, true);
+		debug->CreateText(std::to_string(m_myID) + "_amount_" + std::to_string(number), textQuantityPos, std::to_string(data.quantity), ColorsNamed::White, true);
 		number++;
 	}
 }
@@ -90,8 +91,32 @@ void RecipeBlock::SetIsVisible(bool p_isVisible)
 	for (RecipeIngredientData data : m_ingredients)
 	{
 		GetSprite(std::to_string(m_myID + number))->SetIsVisible(p_isVisible);
-		Debug::Get()->GetText("Amount" + std::to_string(m_myID + number + m_amountItem))->SetIsVisible(p_isVisible);
+		Debug::Get()->GetText(std::to_string(m_myID) + "_amount_" + std::to_string(number))->SetIsVisible(p_isVisible);
 
 		number++;
 	}
+}
+
+void RecipeBlock::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Debug* debug = Debug::Get();
+
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2f recipeDescriptionPos = GetSprite("Recipe")->GetPosition({ 1,0.5f }) + Vector2f{ 10, 0 };
+	debug->GetText("RecipeDescription" + std::to_string(m_myID))->SetPosition(recipeDescriptionPos, {});
+
+	int number = 1;
+	for (RecipeIngredientData data : m_ingredients)
+	{
+		Vector2f spritePos = GetSprite(std::to_string(m_myID + number))->GetPosition();
+		Vector2f textQuantityPos = spritePos + Vector2f{ 25,10 };
+
+		Debug::Get()->GetText(std::to_string(m_myID) + "_amount_" + std::to_string(number))->SetPosition(textQuantityPos);
+		number++;
+	}
+
+	Vector2f spritePos = GetSprite("Recipe")->GetPosition();
+	Vector2f recipeNamePos = spritePos + Vector2f{ 75, -10 };
+	debug->GetText("RecipeName" + std::to_string(m_myID))->SetPosition(recipeNamePos);
 }

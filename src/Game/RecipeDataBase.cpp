@@ -102,6 +102,33 @@ RecipeData* RecipeDataBase::GetRecipe(const std::string& recipeID)
     return nullptr;
 }
 
+std::vector<RecipeData*> RecipeDataBase::GetRecipeForChar(const std::string& chain)
+{
+    std::vector<RecipeData*> result;
+
+    for (auto& pair : m_recipes)
+    {
+        if (pair.first.size() < chain.size())
+            continue;
+
+        bool match = true;
+
+        for (size_t i = 0; i < chain.size(); ++i)
+        {
+            if (chain[i] != pair.first[i])
+            {
+                match = false;
+                break;
+            }
+        }
+
+        if (match)
+            result.push_back(&pair.second);
+    }
+
+    return result;
+}
+
 const std::unordered_map<std::string, RecipeData>& RecipeDataBase::GetAll() const
 {
     return m_recipes;

@@ -171,7 +171,7 @@ void GameScene::OnInitialize()
 
 	//Application::Get()->GetWindow()->SetWindowAlwaysOnTop(true);
 
-	QuestManager::Get()->AddQuest("Quest", { (float)GetWindowWidth() - 128, 180.f }, { 192, 128 }, m_player);
+	QuestManager::Get()->AddQuest("Quest", { (float)GetWindowWidth() - 128, 180.f }, { 192, 69 }, m_player);
 	QuestManager::Get()->GetQuest("Quest")->AddRequirement("Item_Rock", 20);
 	QuestManager::Get()->GetQuest("Quest")->AddRequirement("Item_Wood", 10);
 	QuestManager::Get()->GetQuest("Quest")->AddRequirement("Item_Fiber", 5);

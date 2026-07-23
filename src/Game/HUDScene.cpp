@@ -86,6 +86,8 @@ void HUDScene::OnEvent()
 
 void HUDScene::OnUpdate()
 {
+	GameData& gm = GameData::Get();
+	gm.Update();
 	m_playerInventory->OnUpdate();
 
 	//std::cout << "Recipes unlocked : " << GameData::Get().GetUnlockedRecipes()[0] << std::endl;

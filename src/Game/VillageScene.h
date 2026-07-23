@@ -4,14 +4,20 @@
 
 class Player;
 class PNJ;
+class shopPNJ;
 class UiShop;
+class UiDealerShop;
+class UiATM;
 class VillageScene : public Scene
 {
 private :
+	UiATM* m_atmUi = nullptr;
 	Player* m_player = nullptr;
-	PNJ* m_shopPNJ = nullptr;
+	shopPNJ* m_shopPNJ = nullptr;
 	PNJ* m_PNJ = nullptr;
+	shopPNJ* m_drugDealer = nullptr;
 	UiShop* m_shop = nullptr;
+	UiDealerShop* m_dealerShop = nullptr;
 	Vector2f m_spawnPoint;
 
 protected :

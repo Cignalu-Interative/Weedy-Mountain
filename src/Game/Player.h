@@ -125,6 +125,8 @@ public:
 	void DecreaseToxicity(int p_amount);
 	void AddToxicity(int p_amount);
 
+	bool AreInputLocked() { return m_inputBlocker; }
+
 	// temp en attendant d'avoir la hotbar et le current item en main
 	bool hasSpade = false;
 	bool hasPickaxe = false;

@@ -126,20 +126,21 @@ void GameScene::OnInitialize()
 	//}
 
 
-	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);*/
-	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
+	// CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
+	// Text* t = Debug::Get()->GetText("KAKA");
+	// t->SetFont("Gameplay", 55);
+	// t->SetText("KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU");
+	// t->SetFontSize(60);
+	// t->SetColor(ColorsNamed::Violet);
+	// t->SetWrapWidth(600);
+	// t->SetFontStyle(false, true);
+	// t->SetOutlineSize(2);
+	// t->SetOutLineColor(ColorsNamed::White);
+	// t->SetLineSpacing(50);
+	// t->HorizontalAlignText(HorizontalAlignment::Center);
 
-	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
-
-	//EnviroSpawn::Get()->InitEnviroSpawn();
-	//EnviroSpawn::Get()->InitEnviroSpawn();
+	EnviroSpawn::Get()->InitEnviroSpawn();
 
 }
 
@@ -201,11 +202,11 @@ void GameScene::OnEvent()
 	// {
 	// 	im->DeleteLastCharInFinalTextInput();
 	// }
-	// if (im->IsTextInputActive() == true)
-	// {
-	// 	//m_textBox->SetText(im->GetfinalTextInput());
-	// 	m_textBox->SetTextInBox(im->GetfinalTextInput());
-	// }
+	 //if (im->IsTextInputActive() == true)
+	 //{
+	 //	//m_textBox->SetText(im->GetfinalTextInput());
+	 //	m_textBox->SetTextInBox(im->GetfinalTextInput());
+	 //}
 	// std::string t = im->GetfinalTextInput();
 	//std::cerr << "TextInput : " << t << std::endl;
 }
@@ -214,11 +215,6 @@ void GameScene::OnUpdate()
 {
 	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
-	GameData& gm = GameData::Get();
-	gm.Update();
-	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
-	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
-	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 }
 
 void GameScene::OnDestroy()

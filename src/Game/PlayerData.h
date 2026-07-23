@@ -89,6 +89,6 @@ struct PlayerData
 
 
 	int m_money = 200000;
-	int m_cash = 0;
+	int m_cash = 20000;
 
 };

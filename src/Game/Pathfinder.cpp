@@ -76,6 +76,11 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 
         for (Vector2i pos : neighborPos)
         {
+            if (p_navigationGrid.GetTileByGridPos(pos) == nullptr)
+            {
+                continue;
+            }
+
             if (p_navigationGrid.GetTileByGridPos(pos)->canBeCrossed &&
                 std::find(alreadyExplore.begin(), alreadyExplore.end(), pos) == alreadyExplore.end())
             {

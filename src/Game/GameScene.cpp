@@ -32,7 +32,7 @@ void GameScene::OnInitialize()
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Farm");
+	mm->SetCurrentMap("Village");
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
@@ -42,7 +42,7 @@ void GameScene::OnInitialize()
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
-	m_player = CreateEntity<Player>({ GetWindowWidth()/2.f, GetWindowHeight()/2.f}, {16,32}, "player", Shape::Rectangle);
+	m_player = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 16,16 });
 	m_player->GetCollider()->SetOffset({ 0,8 });
 	m_player->SetRigidBody(true);
@@ -56,8 +56,11 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetGravityEnabled(false);
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
+
+	m_policeman = CreateEntity<Policeman>({ GetWindowWidth() / 3.f, GetWindowHeight() / 3.f }, { 16, 32 }, "player", Shape::Rectangle);
+	m_policeman->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
 	
-	GetCamera()->SetZoom(5.f);
+	//GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 	GetCamera()->SetFollowedEntity(m_player);
@@ -95,7 +98,7 @@ void GameScene::OnInitialize()
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
 
-	m_navigationGrid->Initialize();
+	m_navigationGrid = new NavigationGrid;
 }
 
 
@@ -121,18 +124,13 @@ void GameScene::OnEvent()
 void GameScene::OnUpdate()
 {
 	
-	FarmManager::Get()->Update();
-	EnviroSpawn::Get()->Update();
+	//FarmManager::Get()->Update();
+	//EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 	gm.Update();
 	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
 	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
-
-	if (NewDay() != -1)
-	{
-		m_navigationGrid->Initialize();
-	}
 }
 
 void GameScene::OnDestroy()

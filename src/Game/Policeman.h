@@ -26,7 +26,7 @@ private:
 	StateMachine<Policeman> m_stateMachine;
 	
 	std::vector<Tile*> m_path;
-	int m_pathIndex;
+	int m_pathIndex = 0;
 
 	Pathfinder m_pathfinder;
 
@@ -53,7 +53,7 @@ public:
 	bool IsIdleCooldownEnded() { return m_isIdleCooldownEnded; }
 	bool IsLoosingPlayer() { return m_isLoosingPlayer; }
 	bool IsCollidingWithPlayer() { return m_isCollidingWithPlayer; }
-	bool IsArrived() { return m_pathIndex >= m_path.size(); }
+	bool IsArrived() { return m_pathIndex >= m_path.size() - 1; }
 
 	void StartChase();
 	void StartPatrol();
@@ -67,5 +67,6 @@ public:
 	void SetPathIndex(int p_newPathIndex) { m_pathIndex = p_newPathIndex; }
 	void SetPath(std::vector<Tile*> p_newPath) { m_path = p_newPath; }
 
+	void SetState(PolicemanState p_state);
 };
 

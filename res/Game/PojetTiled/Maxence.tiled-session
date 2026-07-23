@@ -1,5 +1,5 @@
 {
-    "activeFile": "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx",
+    "activeFile": "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx",
     "expandedProjectPaths": [
     ],
     "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
@@ -8,16 +8,16 @@
             "scale": 1.5,
             "selectedLayer": 5,
             "viewCenter": {
-                "x": 347,
-                "y": 225
+                "x": 352.3333333333333,
+                "y": 384.3333333333333
             }
         },
         "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx": {
-            "scale": 0.75,
+            "scale": 4,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 640.6666666666666,
-                "y": 436.66666666666663
+                "x": 640.125,
+                "y": 601.875
             }
         },
         "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx": {
@@ -87,7 +87,7 @@
     ],
     "project": "Maxence.tiled-project",
     "recentFiles": [
-        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx",
-        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx"
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx",
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx"
     ]
 }

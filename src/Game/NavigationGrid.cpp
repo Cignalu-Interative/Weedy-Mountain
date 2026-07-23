@@ -2,7 +2,7 @@
 #include "NavigationGrid.h"
 
 
-void NavigationGrid::Initialize()
+NavigationGrid::NavigationGrid()
 {
 	MapTiledManager* mm = MapTiledManager::Get();
 
@@ -19,7 +19,7 @@ void NavigationGrid::Initialize()
 		}
 	}
 
-	for (TileInfo info : tilesInfos)
+	for (const TileInfo &info : tilesInfos)
 	{
 		m_mapTiles.push_back(InitializeTile(info));
 	}
@@ -31,6 +31,13 @@ Tile* NavigationGrid::InitializeTile(TileInfo p_infos)
 
 	tile->pos = p_infos.worldPos;
 	tile->gridPos = p_infos.gridPos;
+
+	if (p_infos.IsValid() == false)
+	{
+		static int a = 0;
+		std::cout << a++ << std::endl;
+		return nullptr;
+	}
 
 	if (p_infos.layer->GetLayerName() == "Grass")
 	{
@@ -68,6 +75,11 @@ void NavigationGrid::SetTileCrossedByType(TileType p_type, bool p_value)
 {
 	for (Tile* tile : m_mapTiles)
 	{
+		if (tile == nullptr)
+		{
+			continue;
+		}
+
 		if (tile->type == p_type)
 		{
 			tile->canBeCrossed = p_value;
@@ -78,4 +90,24 @@ void NavigationGrid::SetTileCrossedByType(TileType p_type, bool p_value)
 Tile* NavigationGrid::GetTileByGridPos(Vector2i p_gridPos)
 {
 	return m_mapTiles[p_gridPos.GetX() * m_gridDimension.GetY() + p_gridPos.GetY()];
+}
+
+std::vector<Tile*> NavigationGrid::GetTilesByType(TileType p_type)
+{
+	std::vector<Tile*> tiles;
+
+	for (Tile* tile : m_mapTiles)
+	{
+		if (tile == nullptr)
+		{
+			continue;
+		}
+
+		if (tile->type == p_type)
+		{
+			tiles.push_back(tile);
+		}
+	}
+
+	return tiles;
 }

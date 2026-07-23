@@ -1,6 +1,7 @@
 #pragma once
 #include "2DPendentEngine/Scene.h"
 #include "Player.h"
+#include "Policeman.h"
 #include "NavigationGrid.h"
 
 enum CollisionLayers : uint32_t
@@ -18,6 +19,8 @@ private:
 	Player* m_player = nullptr;
 
 	Player* m_player2 = nullptr;
+
+	Policeman* m_policeman = nullptr;
 
 	NavigationGrid* m_navigationGrid;
 

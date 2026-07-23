@@ -34,13 +34,14 @@ private:
 
 public:
 
-	void Initialize();
+	NavigationGrid();
 
 	std::vector<Tile*> GetMapTiles() { return m_mapTiles; }
 
 	void SetTileCrossedByType(TileType p_type, bool p_value);
 
 	Tile* GetTileByGridPos(Vector2i p_gridPos);
+	std::vector<Tile*> GetTilesByType(TileType p_type);
 
 	Vector2i GetGridDimension() { return m_gridDimension; }
 

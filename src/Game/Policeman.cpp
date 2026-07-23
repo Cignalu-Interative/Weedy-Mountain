@@ -6,13 +6,25 @@
 
 void Policeman::OnInitialize()
 {
+	GetCollider()->SetIsTrigger(true);
 	AddCollider("detection", { 80, 80 }, Shape::Circle, { 0.f, 0.f }, true);
 	AddCollider("vision", { 300, 300 }, Shape::Circle, { 0.f, 0.f }, true);
+
+	for (Collider* col : GetColliders())
+	{
+		col->SetShow(true);
+	}
+
+	SetSpeed(500);
+
+	SetupStateMachine();
 }
 
 void Policeman::OnUpdate()
 {
 	MoveKinematic();
+
+	m_stateMachine.Update(this, GetDeltaTime());
 }
 
 void Policeman::OnEvent()
@@ -30,7 +42,7 @@ void Policeman::OnCollisionStay(Collider* p_self, Collider* p_other, CollisionSi
 		m_isPlayerDetected = true;
 		m_playerPos = p_other->GetOwner()->GetPosition();
 	}
-	if (p_other->GetOwner()->GetTag() == 1 && p_self->GetID() == "vision" &&
+	if (p_other->GetOwner()->GetTag() == 1 && p_other->GetID() == "default" && p_self->GetID() == "vision" &&
 		IsInVisionCone(p_other->GetPosition()))
 	{
 		m_isPlayerDetected = true;
@@ -77,7 +89,7 @@ void Policeman::SetupStateMachine()
 		transition->AddCondition(new HasDetectedPlayer);
 
 		// to idle
-		auto transition = m_stateMachine.AddTransition((int)PolicemanState::CHASE, (int)PolicemanState::IDLE);
+		transition = m_stateMachine.AddTransition((int)PolicemanState::PATROL, (int)PolicemanState::IDLE);
 		transition->AddCondition(new HasArrived);
 	}
 
@@ -89,6 +101,8 @@ void Policeman::SetupStateMachine()
 
 		transition->AddCondition(new HasLoosePlayer);
 	}
+
+	SetState(PolicemanState::IDLE);
 }
 
 void Policeman::StartChase()
@@ -114,9 +128,10 @@ void Policeman::StartPatrol()
 	m_pathIndex = 0;
 
 	Vector2i start = { (int)(m_position.GetX() / 16), (int)(m_position.GetY() / 16) };
-	Vector2i goal = Aleatory::GetVector2i({ 0, 0 }, navigationGrid->GetGridDimension());
+	int goalIndex = Aleatory::GetInt(0, navigationGrid->GetTilesByType(TileType::PATH).size());
+	Vector2i goalPos = navigationGrid->GetTilesByType(TileType::PATH)[goalIndex]->gridPos;
 
-	m_path = m_pathfinder.FindPath(*navigationGrid, start, goal);
+	m_path = m_pathfinder.FindPath(*navigationGrid, start, goalPos);
 }
 
 bool Policeman::IsInVisionCone(Vector2f p_goalPos)
@@ -140,4 +155,9 @@ bool Policeman::IsInVisionCone(Vector2f p_goalPos)
 	}
 
 	return false;
+}
+
+void Policeman::SetState(PolicemanState p_state)
+{
+	m_stateMachine.TryTransitionTo(this, (int)p_state);
 }

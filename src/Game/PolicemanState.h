@@ -1,6 +1,7 @@
 #pragma once
 #include "StateBase.h"
 #include "Policeman.h"
+#include "GameScene.h"
 
 class PolicemanIdleState : public StateBase<Policeman>
 {
@@ -19,6 +20,8 @@ public:
 
 	void Update(Policeman* p_policeman, float dt) 
 	{
+		std::cout << "AAAAAAAAAAAAAAHHHHHHHHHHHHHHHHH !!!!!" << std::endl;
+
 		m_cooldown -= p_policeman->GetDeltaTime();
 
 		if (m_cooldown <= 0.f)
@@ -62,19 +65,22 @@ class PolicemanPatrolState : public StateBase<Policeman>
 		else if (policemanDir.GetY() < 0)
 			p_policeman->SetAnimationByName("WalkUp");*/
 
+		std::cout << "BBBBBBBBBBBBBBHHHHHHHHHHHHHHHHH !!!!!" << std::endl;
+
 		int pathIndex = p_policeman->GetPathIndex();
 		std::vector<Tile*> path = p_policeman->GetPath();
 
 		Vector2i policemanGridPos = { (int)p_policeman->GetPosition().GetX() / 16, (int)p_policeman->GetPosition().GetY() / 16 };
 
-		Vector2f dir = { path[pathIndex]->gridPos.GetX() - policemanGridPos.GetX(),
-			path[pathIndex]->gridPos.GetY() - policemanGridPos.GetY() };
+		Vector2f dir = { (float)path[pathIndex]->gridPos.GetX() - (float)policemanGridPos.GetX(),
+			(float)path[pathIndex]->gridPos.GetY() - (float)policemanGridPos.GetY() };
 
 		p_policeman->SetDirection(dir);
 
 		if (policemanGridPos == path[pathIndex]->gridPos)
 		{
-			p_policeman->SetPathIndex(pathIndex++);
+			pathIndex++;
+			p_policeman->SetPathIndex(pathIndex);
 		}
 	};
 
@@ -102,6 +108,8 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 	void Update(Policeman* p_policeman, float dt) 
 	{
+		std::cout << "CCCCCCCCCCCCCCCCHHHHHHHHHHHHHHHHH !!!!!" << std::endl;
+
 		/*Vector2f policemanDir = p_policeman->GetDirection();
 		if (policemanDir.GetX() > 0)
 			p_policeman->SetAnimationByName("WalkRight");
@@ -122,8 +130,8 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 		std::vector<Tile*> path = p_policeman->GetPath();
 
-		Vector2f dir = { path[pathIndex]->gridPos.GetX() - policemanGridPos.GetX(),
-			path[pathIndex]->gridPos.GetY() - policemanGridPos.GetY() };
+		Vector2f dir = { (float)path[pathIndex]->gridPos.GetX() - (float)policemanGridPos.GetX(),
+			(float)path[pathIndex]->gridPos.GetY() - (float)policemanGridPos.GetY() };
 
 		p_policeman->SetDirection(dir);
 
@@ -134,7 +142,8 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 			if (pathIndex % 2 == 0)
 			{
-				p_policeman->SetPath(pathfinder.FindPath(*p_policeman->GetScene<GameScene>()->GetNavigationGrid(),
+				GameScene* gs = p_policeman->GetScene<GameScene>();
+				p_policeman->SetPath(pathfinder.FindPath(*gs->GetNavigationGrid(),
 					policemanGridPos, playerGridPos));
 			}
 		}
@@ -154,3 +163,4 @@ class PolicemanChaseState : public StateBase<Policeman>
 		}
 	};
 };
+

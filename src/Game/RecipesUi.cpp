@@ -267,20 +267,29 @@ void RecipesUi::SortUnlockedRecipe()
 
 void RecipesUi::SortRecipeSearchBox()
 {
+
+	if (m_searchText.empty())
+		return;
+
 	RecipeDataBase* recipeData = RecipeDataBase::Get();
 
 	std::vector<RecipeBlock*> sortedRecipes;
 	std::vector<RecipeBlock*> recipesWithChar;
 	std::vector<RecipeBlock*> notSortedRecipes;
 	std::vector<RecipeData*>  datas = recipeData->GetRecipeForChar(m_searchText);
+	std::vector<RecipeData*>  recipe = recipeData->GetRecipesForItem(m_searchText);
+
+	//if (datas.empty())
+	//	return;
+
 	for (RecipesMenu* menu : m_menus)
 	{
 		std::vector <RecipeBlock*> blocks = menu->GetRecipeBlock();
 		for (RecipeBlock* block : blocks)
 		{
-			for (RecipeData* data : datas)
+			for (RecipeData* data : recipe)
 			{
-				if (block->GetRecipeName() == data->GetResultItemID())
+				if (block->GetItemName() == data->GetResultItemID())
 					recipesWithChar.push_back(block);
 				else
 					notSortedRecipes.push_back(block);

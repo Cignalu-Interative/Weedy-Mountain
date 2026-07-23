@@ -106,25 +106,45 @@ std::vector<RecipeData*> RecipeDataBase::GetRecipeForChar(const std::string& cha
 {
     std::vector<RecipeData*> result;
 
-    for (auto& pair : m_recipes)
+    //Check recipe name 
+    for (auto it = m_recipes.begin(); it != m_recipes.end(); ++it)
     {
-        if (pair.first.size() < chain.size())
-            continue;
+        std::string itemId = it->second.GetResultItemID();
 
         bool match = true;
-
-        for (size_t i = 0; i < chain.size(); ++i)
-        {
-            if (chain[i] != pair.first[i])
+        //for (size_t i = 0; i < chain.size(); ++i)
+        //{
+            if (itemId.find(chain) != std::string::npos)
             {
-                match = false;
-                break;
+                result.push_back(&it->second);
+                //match = false;
+                //break;
             }
-        }
+        //}
 
-        if (match)
-            result.push_back(&pair.second);
+        //if (match)
+        //    result.push_back(&it->second);
     }
+
+    //for (auto& pair : m_recipes)
+    //{
+    //    if (pair.first.size() < chain.size())
+    //        continue;
+
+    //    bool match = true;
+
+    //    for (size_t i = 0; i < chain.size(); ++i)
+    //    {
+    //        if (chain[i] != pair.first[i])
+    //        {
+    //            match = false;
+    //            break;
+    //        }
+    //    }
+
+    //    if (match)
+    //        result.push_back(&pair.second);
+    //}
 
     return result;
 }

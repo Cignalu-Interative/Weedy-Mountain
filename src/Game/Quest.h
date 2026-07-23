@@ -72,7 +72,7 @@ private:
 	// signifie que le joueur perdra l'objet que la quête demande à la fin de la quête
 	bool m_lostItem = false;
 
-	std::unordered_map<size_t, QuestRequirement> m_requirements;
+	std::unordered_map<size_t, QuestRequirement*> m_requirements;
 
 	Entity* m_zone = nullptr;
 	Text* m_textQuest = nullptr;
@@ -99,7 +99,7 @@ public:
 	void SetFinished() { m_isNotStarted = false; m_isInProcess = false; m_isFinished = true; }
 
 	void AddRequirement(CheckQuest p_CheckType, const std::string& p_idTexture, int p_requiredAmount);
-	QuestRequirement GetRequirement(size_t p_emplacement) const;
+	QuestRequirement* GetRequirement(size_t p_emplacement) const;
 
 	size_t GetRequirementsCount() const { return m_requirements.size(); }
 
@@ -108,8 +108,6 @@ public:
 	void UpdateQuest();
 
 	void SetTextQuest();
-
-	void SetSpriteQuest();
 
 	void ResizeGrid();
 

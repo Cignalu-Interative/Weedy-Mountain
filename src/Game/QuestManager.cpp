@@ -114,15 +114,15 @@ void QuestManager::CheckAddItem(const std::string& ID, int amount)
 	{
 		for (size_t i = 0; i < quest->GetRequirementsCount(); ++i)
 		{
-			QuestRequirement requirement = quest->GetRequirement(i);
-			if (requirement.GetCheckType() != CheckQuest::AddItem)
+			QuestRequirement* requirement = quest->GetRequirement(i);
+			if (requirement->GetCheckType() == CheckQuest::AddItem)
 			{
-				continue;
+				if (ItemDataBase::Get()->GetItem(ID) == requirement->GetItemData())
+				{
+					requirement->AddHarvestedAmount(amount);
+				}
 			}
-			if (ItemDataBase::Get()->GetItem(ID) == requirement.GetItemData())
-			{
-				requirement.AddHarvestedAmount(amount);
-			}
+			
 		}
 	}
 }

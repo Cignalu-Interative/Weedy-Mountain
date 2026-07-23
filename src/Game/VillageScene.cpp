@@ -22,8 +22,8 @@
 #include "Ui/UiJobs.h"
 #include "Ui/UiGatherer.h"
 #include "Ui/UiShop.h"
-#include "UiATM.h"
 #include "UiDealerShop.h"
+#include "ATM.h"
 
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
@@ -106,11 +106,9 @@ void VillageScene::OnInitialize()
 	m_dealerShop->SetShopInventory(m_drugDealer->GetInventory());
 	m_dealerShop->SetIsVisible(false);
 
-
-
-	m_atmUi = CreateEntity<UiATM>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	//m_atmUi->Close();
 	
+	m_atm = CreateEntity<ATM>(m_spawnPoint + Vector2f(350, -100), { 32, 46 }, "ATM", Shape::Rectangle);
+
 
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
@@ -160,21 +158,20 @@ void VillageScene::OnEvent()
 		m_dealerShop->Close();
 		m_player->UnlockInputs();
 	}
-	if ( InputManager::Get()->IsKeyboardDown(K_C) && m_atmUi->IsOpen() )
+	if (InputManager::Get()->IsKeyboardDown(K_E) && m_atm->IsInPlayerZone() && !m_atm->IsOpen())
 	{
-		m_atmUi->Close();
-		m_player->UnlockInputs();
-	}
-	if ( InputManager::Get()->IsKeyboardDown(K_O) && !m_atmUi->IsOpen() )
-	{
+		m_atm->Toogle();
 		m_player->LockInputs();
-		m_atmUi->Open();
+	}
+	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE) && m_atm->IsOpen())
+	{
+		m_atm->Toogle();
+		m_player->UnlockInputs();
 	}
 }
 
 void VillageScene::OnUpdate()
 {
-
 }
 
 void VillageScene::OnDestroy()

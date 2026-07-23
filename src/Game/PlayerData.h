@@ -91,4 +91,8 @@ struct PlayerData
 	int m_money = 200000;
 	int m_cash = 20000;
 
+	int m_todayDepositCount = 0;
+	int m_maxDepositPerDay = 200;
+
+
 };

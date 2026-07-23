@@ -1,6 +1,9 @@
 {
   "textures": [
     {
+      "path": "../../res/Game/Assets/Textures/ATM.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Calendar.png"
     },
     {
@@ -11,6 +14,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/Clock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Diamond_Ore.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Drugs.png"
@@ -700,6 +706,9 @@
       "path": "../../res/Game/Assets/Textures/FishingRod.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Gold_Ore.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Grass.png"
     },
     {
@@ -719,6 +728,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Iron_Ore.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Item_Fiber.png"

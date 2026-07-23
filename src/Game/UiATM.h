@@ -11,6 +11,7 @@ private :
 	Text* m_atmAmount = nullptr;
 
 	Text* m_errorMsg = nullptr;
+	Text* m_dailyDepositError = nullptr;
 
 	Text* m_cashAmount = nullptr; 
 	Text* m_bankAmount = nullptr;

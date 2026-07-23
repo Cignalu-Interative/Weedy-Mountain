@@ -28,6 +28,12 @@ void UiATM::OnInitialize()
 	m_atmAmount->SetFontStyle(true);
 	m_atmAmount->SetFontSize(32);
 
+	m_dailyDepositError = Debug::Get()->CreateText("dailyDepositMax", GetPosition({ 0, 0.35f }) + Vector2f(500, -75), "You've reached your daily deposit amount you cannot deposit more today.", ColorsNamed::Red, true);
+	m_dailyDepositError->SetFontStyle(true);
+	m_dailyDepositError->SetFontSize(28);
+	m_dailyDepositError->SetDrawLayer(INT_MAX);
+	m_dailyDepositError->SetIsVisible(false);
+
 	m_errorMsg = Debug::Get()->CreateText("toomuch", GetPosition({ 0, 0.35f }) + Vector2f(650, 0), "Amount too high you can only retrieve/deposit 200", ColorsNamed::Red, true);
 	m_errorMsg->SetFontStyle(true);
 	m_errorMsg->SetFontSize(28);
@@ -183,6 +189,8 @@ void UiATM::Close()
 	m_retrieveButton->SetIsVisible(false);
 
 	m_errorMsg->SetIsVisible(false);
+	m_dailyDepositError->SetIsVisible(false);
+
 	m_title->SetIsVisible(false);
 	m_atmAmount->SetIsVisible(false);
 	m_cashAmount->SetIsVisible(false);
@@ -228,18 +236,28 @@ void UiATM::Retrieve(int p_amount)
 	if (GameData::Get().GetPlayerData().m_money < p_amount)
 		return;
 
-	GameData::Get().GetPlayerData().m_money -= m_amount;
-	GameData::Get().GetPlayerData().m_cash += m_amount;
+	GameData::Get().GetPlayerData().m_money -= p_amount;
+	GameData::Get().GetPlayerData().m_cash += p_amount;
 }
 
 void UiATM::Deposit(int p_amount)
 {
-
 	if (GameData::Get().GetPlayerData().m_cash < p_amount)
 		return;
 
-	GameData::Get().GetPlayerData().m_money += m_amount;
-	GameData::Get().GetPlayerData().m_cash -= m_amount;
+	int result = GameData::Get().GetPlayerData().m_todayDepositCount + p_amount;
+
+	if (result > GameData::Get().GetPlayerData().m_maxDepositPerDay)
+	{
+		m_dailyDepositError->SetIsVisible(true);
+		return;
+	}
+
+	
+
+	GameData::Get().GetPlayerData().m_money += p_amount;
+	GameData::Get().GetPlayerData().m_cash -= p_amount;
+	GameData::Get().GetPlayerData().m_todayDepositCount += p_amount;
 }
 
 void UiATM::StringToInt()
@@ -255,7 +273,7 @@ void UiATM::StringToInt()
 		m_amount = std::stoi(m_atmAmountText);
 		if (m_amount > 200)
 		{
-			m_amount = 200;
+			m_amount = 0;
 			m_amountBox->SetTextInBox(std::to_string(m_amount));
 			m_errorMsg->SetIsVisible(true);
 		}

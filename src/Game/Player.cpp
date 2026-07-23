@@ -304,6 +304,10 @@ void Player::UpdateFishing()
 
 void Player::OnUpdate()
 {
+	if (GameData::Get().GetHour() == 6 && GameData::Get().GetMinute() == 0)
+	{
+		GameData::Get().GetPlayerData().m_todayDepositCount = 0;
+	}
 	m_stateMachine.Update(this, GetDeltaTime());
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 	//std::cout << GetPosition().GetX() << "   " << GetPosition().GetY() << std::endl;

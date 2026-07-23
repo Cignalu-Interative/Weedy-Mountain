@@ -7,11 +7,11 @@ class PNJ;
 class shopPNJ;
 class UiShop;
 class UiDealerShop;
-class UiATM;
+class ATM;
 class VillageScene : public Scene
 {
 private :
-	UiATM* m_atmUi = nullptr;
+	ATM* m_atm = nullptr;
 	Player* m_player = nullptr;
 	shopPNJ* m_shopPNJ = nullptr;
 	PNJ* m_PNJ = nullptr;

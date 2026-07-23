@@ -7,6 +7,7 @@
 #include "ItemData.h"
 #include "ItemDataBase.h"
 #include "RecipeData.h"
+#include "2DPendentLib/InputManager.h"
 
 void RecipesUi::OnInitialize()
 {
@@ -66,13 +67,47 @@ void RecipesUi::OnInitialize()
 	m_craftButton = scene->CreateButton({ scene->GetWindowCenter() - Vector2f{0,-250} }, { 50,50 }, "", "Craft", "Craft", true);
 	m_craftButton->SetOnLeftClick([this] {CraftItem(); });
 	m_craftButton->GetCollider()->SetIsTrigger(true);
+
+	Vector2f searchPos = GetScene()->GetWindowCenter() + Vector2f{0, -250};
+	m_searchItem = scene->CreateTextBox("search", searchPos, { 150, 75 }, ColorsNamed::White, true);
+	m_searchItem->GetCollider()->SetIsTrigger(true);
+	m_searchItem->SetDrawLayer(INT_MAX);
+	m_searchItem->GetText()->SetColor(ColorsNamed::White);
+	m_searchItem->SetIsVisible(false);
+
 }
 
 void RecipesUi::OnUpdate()
 {
 	ChangeSelectedRecipe();
 	SortUnlockedRecipe();
+	//if (m_searchText != "")
+	SortRecipeSearchBox();
 }
+
+void RecipesUi::OnEvent()
+{
+	InputManager* im = InputManager::Get();
+
+	if (im->IsMouseDown(BUTTON_LEFT) && m_searchItem->IsMouseIn())
+	{
+		im->StartTextInput();
+	}
+	if (im->IsMouseDown(BUTTON_LEFT) && !m_searchItem->IsMouseIn())
+	{
+		im->StopTextInput();
+	}
+	if (im->IsTextInputActive() == true && im->IsKeyboardDown(K_DELETE))
+	{
+		im->DeleteLastCharInFinalTextInput();
+	}
+	if (im->IsTextInputActive() == true)
+	{
+		m_searchText = im->GetfinalTextInput();
+		m_searchItem->SetTextInBox(m_searchText);
+	}
+}
+
 void RecipesUi::Open()
 {
 	Vector2f pos = GetPosition({ 0,0.5f });
@@ -86,6 +121,7 @@ void RecipesUi::Open()
 	m_nextMenuButton->SetIsVisible(true);
 	m_previousMenuButton->SetIsVisible(true);
 	m_craftButton->SetIsVisible(true);
+	m_searchItem->SetIsVisible(true);
 	//m_actualPageMenu = 0;
 
 	//for(RecipesMenu* menu : m_menus)
@@ -111,6 +147,7 @@ void RecipesUi::Close()
 	m_nextMenuButton->SetIsVisible(false);
 	m_previousMenuButton->SetIsVisible(false);
 	m_craftButton->SetIsVisible(false);
+	m_searchItem->SetIsVisible(false);
 
 	for (RecipesMenu* menu : m_menus)
 	{
@@ -121,7 +158,6 @@ void RecipesUi::Close()
 void RecipesUi::NextPageMenu()
 {
 	m_menus[m_actualPageMenu]->SetIsVisible(false);
-	//m_menus[m_actualPageMenu]->ResetSelectedRecipe();
 	ResetSelectedRecipe();
 
 	m_actualPageMenu++;
@@ -136,7 +172,6 @@ void RecipesUi::NextPageMenu()
 void RecipesUi::PreviousPageMenu()
 {
 	m_menus[m_actualPageMenu]->SetIsVisible(false);
-	//m_menus[m_actualPageMenu]->ResetSelectedRecipe();
 	ResetSelectedRecipe();
 
 	m_actualPageMenu--;
@@ -177,6 +212,15 @@ void RecipesUi::CraftItem()
 
 }
 
+void RecipesUi::ChangeSelectedRecipe()
+{
+	for (RecipeBlock* block : m_recipes)
+	{
+		if (block != m_actualRecipeBlockSelected && block->GetIsUnlocked())
+			block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
+	}
+}
+
 void RecipesUi::SortUnlockedRecipe()
 {
 	std::vector <RecipeBlock*> unlockRecipes;
@@ -209,7 +253,6 @@ void RecipesUi::SortUnlockedRecipe()
 		nextIndexToStart = menu->PlaceRecipeBlock(sortedRecipes, nextIndexToStart);
 	}
 
-	// Passer dans la boucle pour delete les pointeurs
 	unlockRecipes.clear();
 	lockRecipes.clear();
 	sortedRecipes.clear();
@@ -220,4 +263,52 @@ void RecipesUi::SortUnlockedRecipe()
 	}
 
 	m_menus[m_actualPageMenu]->SetIsVisible(true);
+}
+
+void RecipesUi::SortRecipeSearchBox()
+{
+	RecipeDataBase* recipeData = RecipeDataBase::Get();
+
+	std::vector<RecipeBlock*> sortedRecipes;
+	std::vector<RecipeBlock*> recipesWithChar;
+	std::vector<RecipeBlock*> notSortedRecipes;
+	std::vector<RecipeData*>  datas = recipeData->GetRecipeForChar(m_searchText);
+	for (RecipesMenu* menu : m_menus)
+	{
+		std::vector <RecipeBlock*> blocks = menu->GetRecipeBlock();
+		for (RecipeBlock* block : blocks)
+		{
+			for (RecipeData* data : datas)
+			{
+				if (block->GetRecipeName() == data->GetResultItemID())
+					recipesWithChar.push_back(block);
+				else
+					notSortedRecipes.push_back(block);
+			}
+		}
+	}
+	if (recipesWithChar.empty())
+		return;
+
+	sortedRecipes = recipesWithChar;
+	sortedRecipes.insert(sortedRecipes.end(), notSortedRecipes.begin(), notSortedRecipes.end());
+
+	int nextIndexToStart = 0;
+	for (RecipesMenu* menu : m_menus)
+	{
+		nextIndexToStart = menu->PlaceRecipeBlock(sortedRecipes, nextIndexToStart);
+	}
+
+	recipesWithChar.clear();
+	notSortedRecipes.clear();
+	sortedRecipes.clear();
+}
+
+void RecipesUi::ResetSelectedRecipe()
+{
+	for (RecipeBlock* block : m_recipes)
+	{
+		block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
+	}
+	m_actualRecipeBlockSelected = nullptr;
 }

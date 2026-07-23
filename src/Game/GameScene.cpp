@@ -140,7 +140,7 @@ void GameScene::OnInitialize()
 	// t->SetLineSpacing(50);
 	// t->HorizontalAlignText(HorizontalAlignment::Center);
 
-	EnviroSpawn::Get()->InitEnviroSpawn();
+	//EnviroSpawn::Get()->InitEnviroSpawn();
 
 }
 

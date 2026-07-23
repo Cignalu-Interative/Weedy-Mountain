@@ -56,8 +56,6 @@ void HUDScene::OnInitialize()
 	m_recipe->ShowCollider(true);
 	m_recipe->Close();
 
-
-	//GameData::Get().UnlockRecipe("test");
 }
 
 void HUDScene::OnEvent()

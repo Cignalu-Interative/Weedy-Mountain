@@ -1,11 +1,11 @@
 #pragma once
 #include "Entity.h"
-#include "RecipeBlock.h"
+#include "TextBox.h"
 
 class RecipesMenu;
 class Button;
 class PlayerInventory;
-//class RecipeBlock;
+class RecipeBlock;
 class RecipesUi : public Entity
 {
 private:
@@ -22,22 +22,19 @@ private:
 	RecipeBlock* m_lastRecipeBlockSelected = nullptr;
 	RecipeBlock* m_actualRecipeBlockSelected = nullptr;
 
+	TextBox* m_searchItem = nullptr;
+	std::string m_searchText = "";
+
 	void OnInitialize() override;
 	void OnUpdate() override;
+	void OnEvent() override;
 
 	void NextPageMenu();
 	void PreviousPageMenu();
 
 	void CraftItem();
 
-	void ChangeSelectedRecipe()
-	{
-		for (RecipeBlock* block : m_recipes)
-		{
-			if (block != m_actualRecipeBlockSelected && block->GetIsUnlocked())
-				block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
-		}
-	}
+	void ChangeSelectedRecipe();
 
 	RecipeBlock* GetSelectedRecipe() { return m_actualRecipeBlockSelected; }
 public :
@@ -47,12 +44,8 @@ public :
 
 	void SortUnlockedRecipe(); // put unlocked recipes in top of menu
 
-	void ResetSelectedRecipe()
-	{
-		for (RecipeBlock* block : m_recipes)
-		{
-			block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
-		}
-	}
+	void SortRecipeSearchBox();
+
+	void ResetSelectedRecipe();
 };
 

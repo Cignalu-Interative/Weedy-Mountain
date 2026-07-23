@@ -48,13 +48,15 @@ struct QuestRequirement
 
 struct QuestReward
 {
-	std::string s_itemID; // id pas trouvé dans la base de donnée alors thune
+	ItemData* s_itemData = nullptr;
 	int s_amount = 0;
 
-	std::string GetItemID() const { return s_itemID; }
+	Text* s_amountText = nullptr;
+
+	void SetItemData(ItemData* p_itemData) { s_itemData = p_itemData; }
+	ItemData* GetItemData() const { return s_itemData; }
 
 	void SetAmount(int p_amount) { s_amount = p_amount; }
-
 	int GetAmount() const { return s_amount; }
 };
 
@@ -73,9 +75,9 @@ private:
 	bool m_lostItem = false;
 
 	std::unordered_map<size_t, QuestRequirement*> m_requirements;
+	std::unordered_map<size_t, QuestReward*> m_rewards;
 
 	Entity* m_zone = nullptr;
-	Text* m_textQuest = nullptr;
 
 	Vector2i m_dimSpriteRequirement = { 32, 32 };
 
@@ -100,10 +102,11 @@ public:
 
 	void AddRequirement(CheckQuest p_CheckType, const std::string& p_idTexture, int p_requiredAmount);
 	QuestRequirement* GetRequirement(size_t p_emplacement) const;
-
 	size_t GetRequirementsCount() const { return m_requirements.size(); }
 
-	Text* GetQuestText() const { return m_textQuest; }
+	void AddReward(ItemData* p_itemData, int p_amount);
+	QuestReward* GetReward(size_t p_emplacement) const;
+	size_t GetRewardsCount() const { return m_rewards.size(); }
 
 	void UpdateQuest();
 

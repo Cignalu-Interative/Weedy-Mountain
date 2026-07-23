@@ -17,10 +17,6 @@ Quest::Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimensio
 	m_zone->ShowCollider(true);
 	m_zone->GetSprite()->SetDimension(p_dimension);
 
-	m_textQuest = dg->CreateText("questText_" + p_name, p_position, "", ColorsNamed::Green, true, true);
-	m_textQuest->SetFontSize(18);
-	m_textQuest->SetDrawLayer(200);
-
 	m_icone = GetScene()->CreateEntity<Entity>(p_position, m_dimSpriteRequirement, "", Shape::Rectangle, true);
 	m_icone->SetDrawLayer(150);
 }
@@ -63,6 +59,16 @@ QuestRequirement* Quest::GetRequirement(size_t p_emplacement) const
 	}
 }
 
+void Quest::AddReward(ItemData* p_itemData, int p_amount)
+{
+
+}
+
+QuestReward* Quest::GetReward(size_t p_emplacement) const
+{
+	return nullptr;
+}
+
 void Quest::UpdateQuest()
 {
 	SetTextQuest();
@@ -80,7 +86,6 @@ void Quest::SetTextQuest()
 	{
 		std::cerr << "item : " << m_requirements[i]->GetItemData()->GetName() << " Harvested: " << m_requirements[i]->s_harvestedAmount << " / Required: " << m_requirements[i]->s_requiredAmount << std::endl;
 	}
-	
 }
 
 void Quest::ResizeGrid()

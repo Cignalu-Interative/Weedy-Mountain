@@ -32,7 +32,7 @@ void EnviroSpawn::InitEnviroSpawn()
 			break;
 		case 3:
 			enviro->m_name = EnviroSpawnName::Rock;
-			enviro->m_stats = { 3,6 };
+			enviro->m_stats = { 40,50 };
 			break;
 		case 4:
 			enviro->m_name = EnviroSpawnName::Stone;
@@ -40,15 +40,15 @@ void EnviroSpawn::InitEnviroSpawn()
 			break;
 		case 5:
 			enviro->m_name = EnviroSpawnName::IronOre;
-			enviro->m_stats = { 2,5 };
+			enviro->m_stats = { 1,4 };
 			break;
 		case 6:
 			enviro->m_name = EnviroSpawnName::GoldOre;
-			enviro->m_stats = { 1,4 };
+			enviro->m_stats = { 0,3 };
 			break;
 		case 7:
 			enviro->m_name = EnviroSpawnName::DiamondOre;
-			enviro->m_stats = { 0,3 };
+			enviro->m_stats = { 0,2 };
 			break;
 		default:
 			break;

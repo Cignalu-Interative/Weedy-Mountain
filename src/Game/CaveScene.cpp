@@ -62,6 +62,24 @@ void CaveScene::OnInitialize()
 
 	MapTiled* map = mm->GetCurrentMap();
 	CaveManager::Get()->Initialize(map, "canGrow");
+
+
+	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
+	int size = canGrowTiles.size();
+	Vector2i tileDim = map->GetTileDimension();
+
+	for (const TileInfo& info : canGrowTiles)
+	{
+		Vector2f center = {
+			info.worldPos.GetX() + tileDim.GetX() / 2.f,
+			info.worldPos.GetY() + tileDim.GetY() / 2.f
+		};
+		CaveTile* tile = CreateEntity<CaveTile>(center, tileDim, "", Shape::Rectangle, false);
+		tile->GetCollider()->SetLayer(FARMTILE);
+		tile->GetCollider()->SetMask(NoNE);
+		//tile->ShowCollider(true);
+		CaveManager::Get()->RegisterTile(tile);
+	}
 	
 }
 

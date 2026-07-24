@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="109">
- <tileset firstgid="1" source="../tsx/Village.tsx"/>
- <tileset firstgid="290" source="../tsx/props.tsx"/>
- <tileset firstgid="4386" source="../tsx/Bridges.tsx"/>
- <tileset firstgid="6108" source="../tsx/farm objects free.tsx"/>
- <tileset firstgid="6207" source="../tsx/Tileset_Road.tsx"/>
- <tileset firstgid="6267" source="../tsx/Set 1.1.tsx"/>
- <tileset firstgid="6429" source="../tsx/Set 1.0.tsx"/>
- <tileset firstgid="6681" source="../tsx/Buildings.tsx"/>
- <tileset firstgid="6688" source="../tsx/spring farm tilemap.tsx"/>
- <tileset firstgid="6868" source="../tsx/RockSlope.tsx"/>
+ <tileset firstgid="1" source="../../res/Game/Assets/Maps/tsx/Village.tsx"/>
+ <tileset firstgid="290" source="../../res/Game/Assets/Maps/tsx/props.tsx"/>
+ <tileset firstgid="4386" source="../../res/Game/Assets/Maps/tsx/Bridges.tsx"/>
+ <tileset firstgid="6108" source="../../res/Game/Assets/Maps/tsx/farm objects free.tsx"/>
+ <tileset firstgid="6207" source="../../res/Game/Assets/Maps/tsx/Tileset_Road.tsx"/>
+ <tileset firstgid="6267" source="../../res/Game/Assets/Maps/tsx/Set 1.1.tsx"/>
+ <tileset firstgid="6429" source="../../res/Game/Assets/Maps/tsx/Set 1.0.tsx"/>
+ <tileset firstgid="6681" source="../../res/Game/Assets/Maps/tsx/Buildings.tsx"/>
+ <tileset firstgid="6688" source="../../res/Game/Assets/Maps/tsx/spring farm tilemap.tsx"/>
+ <tileset firstgid="6868" source="../../res/Game/Assets/Maps/tsx/RockSlope.tsx"/>
  <layer id="1" name="Floor" width="80" height="80">
   <data encoding="csv">
 6547,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6548,6549,

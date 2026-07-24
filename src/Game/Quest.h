@@ -99,6 +99,8 @@ private:
 
 	bool m_QuestIsCompleted = false;
 
+	bool m_rewardclaimed = false;
+
 public:
 
 	Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner, Scene* p_scene);

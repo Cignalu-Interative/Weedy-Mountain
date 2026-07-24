@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "QuestManager.h"
 #include "ItemDataBase.h"
+#include "GameData.h"
 
 QuestManager* QuestManager::Get()
 {
@@ -338,11 +339,25 @@ void QuestManager::SetStateQuestFinished(const std::string& p_name)
 	{
 		quest->SetFinished();
 		AddQuestToFinished(quest);
+		GiveReward(quest);
 	}
 	else if (Quest* quest = GetQuestOnInProcess(p_name))
 	{
 		quest->SetFinished();
 		AddQuestToFinished(quest);
+		GiveReward(quest);
+	}
+}
+
+void QuestManager::GiveReward(Quest* p_quest)
+{
+	for (size_t i = 0; i < p_quest->GetRewardsCount(); ++i)
+	{
+		QuestReward* reward = p_quest->GetReward(i);
+		if (reward && reward->GetItemData())
+		{
+			GameData::Get().GetPlayerData().m_playerInventory->AddItem(reward->GetItemData()->GetID(), reward->GetAmount(), false);
+		}
 	}
 }
 

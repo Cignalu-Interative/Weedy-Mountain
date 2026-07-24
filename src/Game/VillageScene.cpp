@@ -75,7 +75,7 @@ void VillageScene::OnInitialize()
 			{
 				if (quest->IsQuestCompleted() == true)
 				{
-					quest->SetFinished();
+					QuestManager::Get()->SetStateQuestFinished("Quest");
 					std::cerr << "Quest finished" << std::endl;
 					//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
 				}

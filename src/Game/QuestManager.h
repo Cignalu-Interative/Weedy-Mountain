@@ -35,8 +35,6 @@ public:
 	QuestManager();
 	~QuestManager();	
 
-
-
 	void CreateQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
 	void RemoveAllQuests();
 	
@@ -61,6 +59,8 @@ public:
 	void SetStateQuestNotStarted(const std::string& p_name);
 	void SetStateQuestInProcess(const std::string& p_name);
 	void SetStateQuestFinished(const std::string& p_name);
+
+	void GiveReward(Quest* p_quest);
 
 };
 

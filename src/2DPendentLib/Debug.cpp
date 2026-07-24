@@ -126,7 +126,7 @@ Point* Debug::CreatePoint(std::string p_id, Vector2f p_position, Color p_color, 
 		p_id = "point_auto_" + std::to_string(m_pointCount++);
 	}
 	point->SetId(p_id);
-	m_points[std::move(p_id)] = m_pointsVector.size();
+	m_points[p_id] = m_pointsVector.size();
 	m_pointsVector.push_back(point);
 
 	SortGeometriesByDrawLayer();
@@ -155,7 +155,7 @@ Line* Debug::CreateLine(std::string p_id, Vector2f p_start, Vector2f p_end, Colo
 		p_id = "line_auto_" + std::to_string(m_lineCount++);
 	}
 	line->SetId(p_id);
-	m_lines[std::move(p_id)] = m_linesVector.size();
+	m_lines[p_id] = m_linesVector.size();
 	m_linesVector.push_back(line);
 
 	SortGeometriesByDrawLayer();
@@ -185,7 +185,7 @@ Rectangle* Debug::CreateRect(std::string p_id, Vector2f p_position, Vector2i p_d
 		p_id = "rect_auto_" + std::to_string(m_rectCount++);
 	}
 	rect->SetId(p_id);
-	m_rects[std::move(p_id)] = m_rectsVector.size();
+	m_rects[p_id] = m_rectsVector.size();
 	m_rectsVector.push_back(rect);
 
 	SortGeometriesByDrawLayer();
@@ -216,7 +216,7 @@ Rectangle* Debug::CreateFillRect(std::string p_id, Vector2f p_position, Vector2i
 		p_id = "fillRect_auto_" + std::to_string(m_fillRectCount++);
 	}
 	rect->SetId(p_id);
-	m_fillRects[std::move(p_id)] = m_fillRectsVector.size();
+	m_fillRects[p_id] = m_fillRectsVector.size();
 	m_fillRectsVector.push_back(rect);
 
 	SortGeometriesByDrawLayer();
@@ -246,7 +246,7 @@ Circle* Debug::CreateCircle(std::string p_id, Vector2f p_position, Vector2i p_di
 		p_id = "circle_auto_" + std::to_string(m_circleCount++);
 	}
 	circle->SetId(p_id);
-	m_circles[std::move(p_id)] = m_circlesVector.size();
+	m_circles[p_id] = m_circlesVector.size();
 	m_circlesVector.push_back(circle);
 
 	SortGeometriesByDrawLayer();
@@ -277,7 +277,7 @@ Circle* Debug::CreateFillCircle(std::string p_id, Vector2f p_position, Vector2i 
 		p_id = "fillCircle_auto_" + std::to_string(m_fillCircleCount++);
 	}
 	circle->SetId(p_id);
-	m_fillCircles[std::move(p_id)] = m_fillCirclesVector.size();
+	m_fillCircles[p_id] = m_fillCirclesVector.size();
 	m_fillCirclesVector.push_back(circle);
 
 	SortGeometriesByDrawLayer();
@@ -309,7 +309,7 @@ Text* Debug::CreateText(std::string p_id, Vector2f p_position, const std::string
 		p_id = "text_auto_" + std::to_string(m_textCount++);
 	}
 	text->SetId(p_id);
-	m_texts[std::move(p_id)] = m_textsVector.size();
+	m_texts[p_id] = m_textsVector.size();
 	m_textsVector.push_back(text);
 
 	SortGeometriesByDrawLayer();
@@ -343,7 +343,7 @@ Sprite* Debug::CreateSprite(std::string p_id, const std::string& p_idTexture, Ve
 	sprite->SetIsGUI(p_isGUI);
 	sprite->SetIsClamp(p_clampToScreen);
 
-	m_sprites[std::move(p_id)] = m_spritesVector.size();
+	m_sprites[p_id] = m_spritesVector.size();
 	m_spritesVector.push_back(sprite);
 
 	SortGeometriesByDrawLayer();
@@ -375,6 +375,8 @@ void Debug::destroyPoint(const std::string& p_id)
 	m_pointsVector[lastIndex] = nullptr;
 	m_pointsVector.pop_back();
 	m_points.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 void Debug::destroyLine(const std::string& p_id)
 {
@@ -401,6 +403,8 @@ void Debug::destroyLine(const std::string& p_id)
 	m_linesVector[lastIndex] = nullptr;
 	m_linesVector.pop_back();
 	m_lines.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 void Debug::destroyRect(const std::string& p_id)
 {
@@ -427,6 +431,8 @@ void Debug::destroyRect(const std::string& p_id)
 	m_rectsVector[lastIndex] = nullptr;
 	m_rectsVector.pop_back();
 	m_rects.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 void Debug::destroyFillRect(const std::string& p_id)
 {
@@ -453,6 +459,8 @@ void Debug::destroyFillRect(const std::string& p_id)
 	m_fillRectsVector[lastIndex] = nullptr;
 	m_fillRectsVector.pop_back();
 	m_fillRects.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 void Debug::destroyCircle(const std::string& p_id)
 {
@@ -479,6 +487,8 @@ void Debug::destroyCircle(const std::string& p_id)
 	m_circlesVector[lastIndex] = nullptr;
 	m_circlesVector.pop_back();
 	m_circles.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 void Debug::destroyFillCircle(const std::string& p_id)
 {
@@ -505,6 +515,8 @@ void Debug::destroyFillCircle(const std::string& p_id)
 	m_fillCirclesVector[lastIndex] = nullptr;
 	m_fillCirclesVector.pop_back();
 	m_fillCircles.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 void Debug::destroyText(const std::string& p_id)
 {
@@ -531,6 +543,8 @@ void Debug::destroyText(const std::string& p_id)
 	m_textsVector[lastIndex] = nullptr;
 	m_textsVector.pop_back();
 	m_texts.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 
 void Debug::destroySprite(const std::string& p_id)
@@ -558,6 +572,8 @@ void Debug::destroySprite(const std::string& p_id)
 	m_spritesVector[lastIndex] = nullptr;
 	m_spritesVector.pop_back();
 	m_sprites.erase(it);
+
+	SortGeometriesByDrawLayer();
 }
 
 void Debug::Destroy(const std::string& p_id)
@@ -1012,34 +1028,66 @@ void Debug::SortGeometriesByDrawLayer()
 
 	for (auto point : m_pointsVector)
 	{
+		if (point == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(point);
 	}
 	for (auto line : m_linesVector)
 	{
+		if (line == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(line);
 	}
 	for (auto rect : m_rectsVector)
 	{
+		if (rect == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(rect);
 	}
 	for (auto fillRect : m_fillRectsVector)
 	{
+		if (fillRect == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(fillRect);
 	}
 	for (auto circle : m_circlesVector)
 	{
+		if (circle == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(circle);
 	}
 	for (auto fillCircle : m_fillCirclesVector)
 	{
+		if (fillCircle == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(fillCircle);
 	}
 	for (auto text : m_textsVector)
 	{
+		if (text == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(text);
 	}
 	for (auto sprite : m_spritesVector)
 	{
+		if (sprite == nullptr)
+		{
+			continue;
+		}
 		m_geometries.push_back(sprite);
 	}
 

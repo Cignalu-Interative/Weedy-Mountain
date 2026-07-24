@@ -61,12 +61,25 @@ QuestRequirement* Quest::GetRequirement(size_t p_emplacement) const
 
 void Quest::AddReward(ItemData* p_itemData, int p_amount)
 {
-
+	QuestReward* reward = new QuestReward();
+	reward->SetItemData(p_itemData);
+	reward->SetAmount(p_amount);
+	m_rewards[m_rewards.size()] = reward;
 }
 
 QuestReward* Quest::GetReward(size_t p_emplacement) const
 {
-	return nullptr;
+	auto it = m_rewards.find(p_emplacement);
+
+	if (it != m_rewards.end())
+	{
+		return it->second;
+	}
+	else
+	{
+		std::cerr << "Quest::GetReward/Reward at emplacement " << p_emplacement << " not found." << std::endl;
+		return nullptr;
+	}
 }
 
 void Quest::UpdateQuest()
@@ -93,7 +106,7 @@ void Quest::SetTextQuest()
 	}
 	for (int i = 0; i < m_requirements.size(); ++i)
 	{
-		std::cerr << "item : " << m_requirements[i]->GetItemData()->GetName() << " Harvested: " << m_requirements[i]->s_harvestedAmount << " / Required: " << m_requirements[i]->s_requiredAmount << std::endl;
+		//std::cerr << "item : " << m_requirements[i]->GetItemData()->GetName() << " Harvested: " << m_requirements[i]->s_harvestedAmount << " / Required: " << m_requirements[i]->s_requiredAmount << std::endl;
 	}
 }
 
@@ -117,6 +130,7 @@ void Quest::ResizeGrid()
 	float widthUsed = columnsUsed * dimSprite.GetX(); // largeur totale utilisée pour afficher tous les éléments
 	float heightUsed = nbRows * dimSprite.GetY(); // hauteur totale utilisée pour afficher tous les éléments
 
+	m_zone->Transformable::SetDimension({ (int)widthUsed, (int)heightUsed });
 	m_icone->Transformable::SetDimension({ (int)widthUsed, (int)heightUsed });
 
 	float startX = -(columnsUsed - 1) * 0.5f * dimSprite.GetX();
@@ -137,7 +151,6 @@ void Quest::ResizeGrid()
 		m_icone->GetSpriteContainer("requirementSprite_" + std::to_string(i))->SetOffset({ offsetX, offsetY });
 	}
 	m_icone->SetPosition(m_zone->GetPosition());
-
 
 	for (auto& [index, requirement] : m_requirements)
 	{

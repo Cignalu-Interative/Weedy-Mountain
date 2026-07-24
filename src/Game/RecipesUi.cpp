@@ -271,13 +271,22 @@ void RecipesUi::SortRecipeSearchBox()
 	if (m_searchText.empty())
 		return;
 
+
+	std::string prefix = "ITEM_";
+	std::string text = m_searchText;
+	for (char& c : text) {
+		c = std::toupper(static_cast<unsigned char>(c));
+	}
+
+	std::string textToSearch = prefix + text;
+
 	RecipeDataBase* recipeData = RecipeDataBase::Get();
 
 	std::vector<RecipeBlock*> sortedRecipes;
 	std::vector<RecipeBlock*> recipesWithChar;
 	std::vector<RecipeBlock*> notSortedRecipes;
 	std::vector<RecipeData*>  datas = recipeData->GetRecipeForChar(m_searchText);
-	std::vector<RecipeData*>  recipe = recipeData->GetRecipesForItem(m_searchText);
+	std::vector<RecipeData*>  recipe = recipeData->GetRecipesForItem(textToSearch);
 
 	//if (datas.empty())
 	//	return;

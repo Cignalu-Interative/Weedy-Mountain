@@ -149,11 +149,11 @@ void GameScene::OnEvent()
 {
 	InputManager* im = InputManager::Get();
 
-	if (im->IsKeyboardDown(K_A))
-		GetCamera()->SetZoom(5);
+	//if (im->IsKeyboardDown(K_A))
+	//	GetCamera()->SetZoom(5);
 
-	if (im->IsKeyboardDown(K_E))
-		GetCamera()->SetZoom(1);
+	//if (im->IsKeyboardDown(K_E))
+	//	GetCamera()->SetZoom(1);
 
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{
@@ -177,17 +177,17 @@ void GameScene::OnEvent()
 	//	m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
 	//}
 
-	if (im->IsKeyboardDown(K_R))
-	{
-		
-		SceneManager::Get()->PushScene("village");
-	}
+	//if (im->IsKeyboardDown(K_R))
+	//{
+	//	
+	//	SceneManager::Get()->PushScene("village");
+	//}
 
-	if (im->IsKeyboardDown(K_M))
-		m_player->TakeDamage(5);
+	//if (im->IsKeyboardDown(K_M))
+	//	m_player->TakeDamage(5);
 
-	if (im->IsKeyboardDown(K_O))
-		GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
+	//if (im->IsKeyboardDown(K_O))
+	//	GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
 
 
 	// if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())

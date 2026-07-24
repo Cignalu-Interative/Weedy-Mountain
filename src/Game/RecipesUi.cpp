@@ -8,6 +8,7 @@
 #include "ItemDataBase.h"
 #include "RecipeData.h"
 #include "2DPendentLib/InputManager.h"
+#include <algorithm>
 
 void RecipesUi::OnInitialize()
 {
@@ -81,7 +82,6 @@ void RecipesUi::OnUpdate()
 {
 	ChangeSelectedRecipe();
 	SortUnlockedRecipe();
-	//if (m_searchText != "")
 	SortRecipeSearchBox();
 }
 
@@ -275,17 +275,18 @@ void RecipesUi::SortRecipeSearchBox()
 	std::string prefix = "ITEM_";
 	std::string text = m_searchText;
 	for (char& c : text) {
-		c = std::toupper(static_cast<unsigned char>(c));
+		c = std::toupper(unsigned char(c));
 	}
 
 	std::string textToSearch = prefix + text;
+	std::replace(textToSearch.begin(), textToSearch.end(), ' ', '_');
 
 	RecipeDataBase* recipeData = RecipeDataBase::Get();
 
 	std::vector<RecipeBlock*> sortedRecipes;
 	std::vector<RecipeBlock*> recipesWithChar;
 	std::vector<RecipeBlock*> notSortedRecipes;
-	std::vector<RecipeData*>  datas = recipeData->GetRecipeForChar(m_searchText);
+	std::vector<RecipeData*>  datas = recipeData->GetRecipeForChar(textToSearch);
 	std::vector<RecipeData*>  recipe = recipeData->GetRecipesForItem(textToSearch);
 
 	//if (datas.empty())
@@ -320,6 +321,12 @@ void RecipesUi::SortRecipeSearchBox()
 	recipesWithChar.clear();
 	notSortedRecipes.clear();
 	sortedRecipes.clear();
+
+	for (RecipesMenu* menu : m_menus)
+	{
+		menu->SetIsVisible(false);
+	}
+	m_menus[m_actualPageMenu]->SetIsVisible(true);
 }
 
 void RecipesUi::ResetSelectedRecipe()
@@ -330,3 +337,4 @@ void RecipesUi::ResetSelectedRecipe()
 	}
 	m_actualRecipeBlockSelected = nullptr;
 }
+

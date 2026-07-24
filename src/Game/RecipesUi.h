@@ -37,15 +37,17 @@ private:
 	void ChangeSelectedRecipe();
 
 	RecipeBlock* GetSelectedRecipe() { return m_actualRecipeBlockSelected; }
-public :
-
-	void Open();
-	void Close();
 
 	void SortUnlockedRecipe(); // put unlocked recipes in top of menu
 
 	void SortRecipeSearchBox();
 
 	void ResetSelectedRecipe();
+
+public :
+
+	void Open();
+	void Close();
+
 };
 

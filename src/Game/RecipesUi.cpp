@@ -16,12 +16,9 @@ void RecipesUi::OnInitialize()
 	GetCollider()->SetIsTrigger(true);
 	RecipeDataBase* recipe = RecipeDataBase::Get();
 	std::vector<RecipeData*> recipes = recipe->GetAllRecipes();
-
 	Scene* scene = GetScene();
 	//Vector2f menuPos = { GetPosition({ 1,0 }).GetX(), GetPosition().GetY() + GetDimension().GetX() * 4.f };
-	//creer les differents menus
 
-	//Creer tous les recipes blocks
 	for (int i = 0; i < recipes.size(); i++)
 	{
 		RecipeBlock* recipeBlock = GetScene()->CreateEntity<RecipeBlock>({}, { 400,150 }, "InventoryWeedyMountain", Shape::Rectangle, true);
@@ -35,17 +32,17 @@ void RecipesUi::OnInitialize()
 		m_recipes.push_back(recipeBlock);
 	}
 
-	//Placer les recipesBlocks dans les menus et creer les recipesblocks
+
 	int nextIndexToStart = 0;
-	//for (int i = 0; i < recipes.size(); i++)
 	while (nextIndexToStart != -1)
 	{
 		if (nextIndexToStart == -1)
 			break;
 
-		RecipesMenu* menu = scene->CreateEntity<RecipesMenu>({}, {400,GetDimension().GetY()- 100}, "", Shape::Rectangle, true);
+		RecipesMenu* menu = scene->CreateEntity<RecipesMenu>({}, {400,GetDimension().GetY()- 100}, "InventoryWeedyMountain", Shape::Rectangle, true);
+		menu->SetDrawLayer(INT_MAX - 100);
 		menu->GetSprite()->ResizeStretched(menu->GetDimension());
-		menu->SetPosition(GetPosition({ 1,1 }) + Vector2f{ -30, 0 }, { 1,1 });
+		menu->SetPosition(GetPosition() + Vector2f{ +325, 0 });
 		nextIndexToStart = menu->PlaceRecipeBlock(m_recipes, nextIndexToStart);
 		//menu->Initialize(m_recipes, 0);
 		//menu->Initialize(recipes, i);
@@ -54,27 +51,32 @@ void RecipesUi::OnInitialize()
 		//i = nextIndexToStart;
 		m_menus.push_back(menu);
 	}
-
+	if (m_menus.empty())
+		return;
+	
 	m_menus[m_actualPageMenu]->SetIsVisible(true);
 
-	m_nextMenuButton = scene->CreateButton({ scene->GetWindowCenter() - Vector2f{0,-200} }, {50,50}, "", "Next", "Next", true);
+	Vector2f nextButtonPos = m_menus[0]->GetPosition({ 1,1 }) + Vector2f{ -50, 20 };
+	m_nextMenuButton = scene->CreateButton({ nextButtonPos }, { 80,50 }, "InventoryWeedyMountain", "Next", "Next", true);
 	m_nextMenuButton->SetOnLeftClick([this] {NextPageMenu(); });
 	m_nextMenuButton->GetCollider()->SetIsTrigger(true);
 
-	m_previousMenuButton = scene->CreateButton({ scene->GetWindowCenter() - Vector2f{0,-100} }, { 50,50 }, "", "Previous", "Previous", true);
+	Vector2f previousButtonPos = m_menus[0]->GetPosition({ 0,1 }) + Vector2f{ 50, 20 };
+	m_previousMenuButton = scene->CreateButton({ previousButtonPos }, {100,50}, "InventoryWeedyMountain", "Previous", "Previous", true);
 	m_previousMenuButton->SetOnLeftClick([this] {PreviousPageMenu(); });
 	m_previousMenuButton->GetCollider()->SetIsTrigger(true);
 
-	m_craftButton = scene->CreateButton({ scene->GetWindowCenter() - Vector2f{0,-250} }, { 50,50 }, "", "Craft", "Craft", true);
+	Vector2f craftButtonPos = m_menus[0]->GetPosition({ 0.5,1 }) + Vector2f{ 0, 20 };
+	m_craftButton = scene->CreateButton({ craftButtonPos }, { 80,50 }, "InventoryWeedyMountain", "Craft", "Craft", true);
 	m_craftButton->SetOnLeftClick([this] {CraftItem(); });
 	m_craftButton->GetCollider()->SetIsTrigger(true);
 
-	Vector2f searchPos = GetScene()->GetWindowCenter() + Vector2f{0, -250};
-	m_searchItem = scene->CreateTextBox("search", searchPos, { 150, 75 }, ColorsNamed::White, true);
-	m_searchItem->GetCollider()->SetIsTrigger(true);
-	m_searchItem->SetDrawLayer(INT_MAX);
-	m_searchItem->GetText()->SetColor(ColorsNamed::White);
-	m_searchItem->SetIsVisible(false);
+	Vector2f textBoxPos = m_menus[0]->GetPosition({ 0.5,0 }) - Vector2f{0, 20};
+	m_textBox = scene->CreateTextBox("search", textBoxPos, { 150, 40 }, ColorsNamed::White, true);
+	m_textBox->GetCollider()->SetIsTrigger(true);
+	m_textBox->SetDrawLayer(INT_MAX);
+	m_textBox->GetText()->SetColor(ColorsNamed::White);
+	m_textBox->SetIsVisible(false);
 
 }
 
@@ -89,11 +91,11 @@ void RecipesUi::OnEvent()
 {
 	InputManager* im = InputManager::Get();
 
-	if (im->IsMouseDown(BUTTON_LEFT) && m_searchItem->IsMouseIn())
+	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
 	{
 		im->StartTextInput();
 	}
-	if (im->IsMouseDown(BUTTON_LEFT) && !m_searchItem->IsMouseIn())
+	if (im->IsMouseDown(BUTTON_LEFT) && !m_textBox->IsMouseIn())
 	{
 		im->StopTextInput();
 	}
@@ -104,7 +106,7 @@ void RecipesUi::OnEvent()
 	if (im->IsTextInputActive() == true)
 	{
 		m_searchText = im->GetfinalTextInput();
-		m_searchItem->SetTextInBox(m_searchText);
+		m_textBox->SetTextInBox(m_searchText);
 	}
 }
 
@@ -112,7 +114,7 @@ void RecipesUi::Open()
 {
 	Vector2f pos = GetPosition({ 0,0.5f });
 
-	float offsetY = pos.GetY() + 110;
+	float offsetY = pos.GetY() + 80;
 	m_playerInventory->GetInventory()->SetPosition({pos.GetX() * 1.25f,offsetY}, {0,1});
 	m_playerInventory->GetInventory()->SetVisible(true);
 
@@ -121,7 +123,7 @@ void RecipesUi::Open()
 	m_nextMenuButton->SetIsVisible(true);
 	m_previousMenuButton->SetIsVisible(true);
 	m_craftButton->SetIsVisible(true);
-	m_searchItem->SetIsVisible(true);
+	m_textBox->SetIsVisible(true);
 	//m_actualPageMenu = 0;
 
 	//for(RecipesMenu* menu : m_menus)
@@ -147,7 +149,7 @@ void RecipesUi::Close()
 	m_nextMenuButton->SetIsVisible(false);
 	m_previousMenuButton->SetIsVisible(false);
 	m_craftButton->SetIsVisible(false);
-	m_searchItem->SetIsVisible(false);
+	m_textBox->SetIsVisible(false);
 
 	for (RecipesMenu* menu : m_menus)
 	{

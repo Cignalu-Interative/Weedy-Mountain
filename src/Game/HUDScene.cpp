@@ -53,6 +53,7 @@ void HUDScene::OnInitialize()
 	SceneManager::Get()->SetPersistentScene(this);
 
 	m_recipe = CreateEntity<RecipesUi>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
+	m_recipe->SetDrawLayer(INT_MAX - 200);
 	m_recipe->ShowCollider(true);
 	m_recipe->Close();
 

@@ -22,7 +22,7 @@ private:
 	RecipeBlock* m_lastRecipeBlockSelected = nullptr;
 	RecipeBlock* m_actualRecipeBlockSelected = nullptr;
 
-	TextBox* m_searchItem = nullptr;
+	TextBox* m_textBox = nullptr;
 	std::string m_searchText;
 
 	void OnInitialize() override;

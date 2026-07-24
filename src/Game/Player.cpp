@@ -167,8 +167,7 @@ void Player::HandleDefaultHarvestAction()
 		const std::string& selectedID = inv->GetSelectedItemID();
 		ItemData* data = (selectedID != "ITEM_NOTHING") ? ItemDataBase::Get()->GetItem(selectedID) : nullptr;
 
-		bool hasSpadeInHand = (data != nullptr && data->GetItemType() == ItemType::Tool && data->GetToolType() == ToolType::Spade
-			);
+		bool hasSpadeInHand = (data != nullptr && data->GetItemType() == ItemType::Tool && data->GetToolType() == ToolType::Spade);
 
 		if (hasSpadeInHand == false)
 			return;

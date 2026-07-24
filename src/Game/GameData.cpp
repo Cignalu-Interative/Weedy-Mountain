@@ -78,7 +78,23 @@ int GameData::GetMinute()
 	return ((m_timeSpent - time * IRL_SECONDS_PER_GAME_HOUR) * MINUTES_PER_HOUR) / IRL_SECONDS_PER_GAME_HOUR; //regardder si on peut faire mieux
 }
 
+Weather GameData::GetWeather()
+{
+	return Weather::Clear;
+}
 
+TimeOfDay GameData::GetTimeOfDay()
+{
+	if (GetHour() < 5 || GetHour() > 20)
+		return TimeOfDay::Night;
+
+	return TimeOfDay::Day;
+}
+
+Season GameData::GetSeason()
+{
+	return (Season)(GetMonth() - 1);
+}
 
 std::string GameData::GetMonthName()
 {

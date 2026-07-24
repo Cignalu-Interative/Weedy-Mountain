@@ -3,9 +3,9 @@
 #include <array>
 #include <cstdint>
 
-enum class Weather : uint8_t { Clear, Rain, Storm };
-enum class TimeOfDay : uint8_t { Day, Night };
-enum class Season : uint8_t { Winter, Spring, Summer, Autumn };
+enum class Weather : uint8_t;
+enum class TimeOfDay : uint8_t;
+enum class Season : uint8_t;
 
 using WeatherMask = uint8_t;
 using TimeMask = uint8_t;

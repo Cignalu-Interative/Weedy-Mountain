@@ -66,7 +66,24 @@ void VillageScene::OnInitialize()
 	m_PNJ->SetOnFinishFunction([this]
 		{
 			m_player->UnlockInputs();
-			QuestManager::Get()->SetStateQuestInProcess("Quest");
+			if (QuestManager::Get()->GetQuestOnNotStarted("Quest") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("Quest");
+			}
+			Quest* quest = QuestManager::Get()->GetQuestOnInProcess("Quest");
+			if (quest != nullptr)
+			{
+				if (quest->IsQuestCompleted() == true)
+				{
+					quest->SetFinished();
+					std::cerr << "Quest finished" << std::endl;
+					//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
+				}
+				else
+				{
+					//m_PNJ->Talk("Tu n'as pas encore terminé la quête, continue à chercher les objets dont j'ai besoin !");
+				}
+			}
 		});
 
 	Inventory* shopInventory = CreateEntity<Inventory>({ m_spawnPoint + Vector2f{200,0} }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);

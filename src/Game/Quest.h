@@ -33,17 +33,29 @@ struct QuestRequirement
 	Text* s_requiredText = nullptr;
 	Text* s_harvestedText = nullptr;
 
+	bool s_isCompleted = false;
+
 	void SetCheckType(CheckQuest p_checkType) { s_checkType = p_checkType; }
 	CheckQuest GetCheckType() const { return s_checkType; }
 
 	void SetRequiredAmount(int p_amount) { s_requiredAmount = p_amount; }
-	void AddHarvestedAmount(int p_amount) { s_harvestedAmount += p_amount; }
+	void AddHarvestedAmount(int p_amount)
+	{
+		s_harvestedAmount += p_amount;
+		if (s_harvestedAmount >= s_requiredAmount)
+		{
+			s_isCompleted = true;
+			s_harvestedAmount = s_requiredAmount;
+		}
+	}
 
 	int GetRequiredAmount() const { return s_requiredAmount; }
 	int GetHarvestedAmount() const { return s_harvestedAmount; }
 
 	void SetItemData(ItemData* p_itemData) { s_itemData = p_itemData; }
 	ItemData* GetItemData() const { return s_itemData; }
+
+	bool IsCompleted() const { return s_isCompleted; }
 };
 
 struct QuestReward
@@ -85,6 +97,8 @@ private:
 
 	Entity* m_icone = nullptr;
 
+	bool m_QuestIsCompleted = false;
+
 public:
 
 	Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner, Scene* p_scene);
@@ -118,4 +132,6 @@ public:
 
 	void SetScene(Scene* p_scene) { m_scene = p_scene; }
 	Scene* GetScene() const { return m_scene; }
+
+	bool IsQuestCompleted() const { return m_QuestIsCompleted; }
 };

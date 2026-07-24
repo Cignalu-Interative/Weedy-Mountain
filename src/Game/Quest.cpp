@@ -73,6 +73,15 @@ void Quest::UpdateQuest()
 {
 	SetTextQuest();
 	ResizeGrid();
+
+	for (auto& [index, requirement] : m_requirements)
+	{
+		if (requirement->s_isCompleted == false)
+		{
+			break;
+		}
+		m_QuestIsCompleted = true;
+	}
 }
 
 void Quest::SetTextQuest()

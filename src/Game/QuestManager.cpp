@@ -185,6 +185,12 @@ void QuestManager::RemoveQuestFromFinished(Quest* p_quest)
 
 void QuestManager::AddQuestToNotStarted(Quest* p_quest)
 {
+	if (GetQuestOnNotStarted(p_quest->GetName()))
+	{
+		SDL_Log("QuestManager::AddQuestToNotStarted/Quest with name '%s' already exists in Not Started", p_quest->GetName().c_str());
+		return;
+	}
+
 	RemoveQuestFromInProcess(p_quest);
 	RemoveQuestFromFinished(p_quest);
 
@@ -194,6 +200,12 @@ void QuestManager::AddQuestToNotStarted(Quest* p_quest)
 
 void QuestManager::AddQuestToInProcess(Quest* p_quest)
 {
+	if (GetQuestOnInProcess(p_quest->GetName()))
+	{
+		SDL_Log("QuestManager::AddQuestToInProcess/Quest with name '%s' already exists in In Process", p_quest->GetName().c_str());
+		return;
+	}
+
 	RemoveQuestFromNotStarted(p_quest);
 	RemoveQuestFromFinished(p_quest);
 
@@ -203,6 +215,12 @@ void QuestManager::AddQuestToInProcess(Quest* p_quest)
 
 void QuestManager::AddQuestToFinished(Quest* p_quest)
 {
+	if (GetQuestOnFinished(p_quest->GetName()))
+	{
+		SDL_Log("QuestManager::AddQuestToFinished/Quest with name '%s' already exists in Finished", p_quest->GetName().c_str());
+		return;
+	}
+
 	RemoveQuestFromNotStarted(p_quest);
 	RemoveQuestFromInProcess(p_quest);
 

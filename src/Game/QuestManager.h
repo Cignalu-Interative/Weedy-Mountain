@@ -10,12 +10,20 @@ class QuestManager
 {
 private:
 
-	std::unordered_map<std::string, size_t> m_quests;
+	std::unordered_map<std::string, size_t> m_questsNotStarted;
+	std::vector<Quest*> m_questsNotStartedVector;
 
-	std::vector<Quest*> m_questsVector;
+	std::unordered_map<std::string, size_t> m_questsInProcess;
+	std::vector<Quest*> m_questsInProcessVector;
+
+	std::unordered_map<std::string, size_t> m_questsFinished;
+	std::vector<Quest*> m_questsFinishedVector;
 
 	Scene* m_scene = nullptr;
 
+	void RemoveQuestFromNotStarted(Quest* p_quest);
+	void RemoveQuestFromInProcess(Quest* p_quest);
+	void RemoveQuestFromFinished(Quest* p_quest);
 
 public:
 
@@ -27,19 +35,32 @@ public:
 	QuestManager();
 	~QuestManager();	
 
-	void AddQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
 
-	void RemoveQuest(const std::string& p_name);
 
+	void CreateQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
 	void RemoveAllQuests();
+	
+	void DeleteQuestOnNotStarted(const std::string& p_name);
+	void DeleteQuestOnInProcess(const std::string& p_name);
+	void DeleteQuestOnFinished(const std::string& p_name);
 
-	Quest* GetQuest(const std::string& p_name) const;
+	void AddQuestToNotStarted(Quest* p_quest);
+	void AddQuestToInProcess(Quest* p_quest);
+	void AddQuestToFinished(Quest* p_quest);
+
+	Quest* GetQuestOnNotStarted(const std::string& p_name) const;
+	Quest* GetQuestOnInProcess(const std::string& p_name) const;
+	Quest* GetQuestOnFinished(const std::string& p_name) const;
 
 	void UpdateQuests();
 
 	void DrawQuests();
 
 	void CheckAddItem(const std::string& ID, int amount);
+
+	void SetStateQuestNotStarted(const std::string& p_name);
+	void SetStateQuestInProcess(const std::string& p_name);
+	void SetStateQuestFinished(const std::string& p_name);
 
 };
 

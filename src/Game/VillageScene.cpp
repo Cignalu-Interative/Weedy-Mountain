@@ -58,7 +58,7 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
-	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{350,100} }, { 8,32 }, "player", Shape::Rectangle);
+	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{50,100} }, { 8,32 }, "player", Shape::Rectangle);
 	m_shopPNJ->SetOnFinishFunction([this] {
 		/*m_shop->SetIsVisible(true)*/m_shop->Open(); }
 	);
@@ -66,7 +66,7 @@ void VillageScene::OnInitialize()
 	m_PNJ->SetOnFinishFunction([this]
 		{
 			m_player->UnlockInputs();
-			QuestManager::Get()->AddQuest("Quest", { 2000.f, 180.f }, { 275, 50 }, m_player);
+			QuestManager::Get()->SetStateQuestInProcess("Quest");
 		});
 
 	Inventory* shopInventory = CreateEntity<Inventory>({ m_spawnPoint + Vector2f{200,0} }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);

@@ -6,6 +6,8 @@ class HUDScene : public Scene
 {
 private:
 	PlayerInventory* m_playerInventory = nullptr;
+
+
 protected:
 
 	void OnInitialize() override;

@@ -703,6 +703,117 @@
       "path": "../../res/Game/Assets/Textures/Environment/Tilesets/interior/supplies_objects.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Fish/fish.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-11-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-11-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-11-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-11-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-12-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-12-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-12-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-12-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-17-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-17-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-17-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-17-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-19-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-19-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-19-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-19-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-2-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-2-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-2-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-2-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-20-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-20-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-20-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-20-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-3-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-3-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-3-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-3-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-4-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-4-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-4-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-4-6.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-9-10.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-9-14.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-9-2.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Fish/sprites/sprite-9-6.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/FishingRod.png"
     },
     {

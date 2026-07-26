@@ -167,7 +167,9 @@ void GameScene::OnInitialize()
 	pi->AddItem("ITEM_WHEAT_SEED", 64, false);
 	pi->AddItem("ITEM_CARROT_SEED", 64, false);
 	pi->AddItem("ITEM_WATERING_CAN", 1, false);
-	pi->AddItem("ITEM_DIAMOND_HOE", 1, false);
+	pi->AddItem("ITEM_DIAMOND_SHOVEL", 1, false);
+
+	pi->AddItem("ITEM_FISHING_ROD", 1, false);
 }
 
 

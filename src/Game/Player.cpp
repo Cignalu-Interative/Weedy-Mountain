@@ -20,6 +20,8 @@
 #include "ItemDataBase.h"
 #include "ItemActionRegistry.h"
 
+#include "FishLootTable.h"
+
 void Player::OnInitialize()
 {
 
@@ -321,7 +323,11 @@ void Player::UpdateFishing()
 
 		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
 		{
-			std::cout << "[Fishing] poisson attrape !" << std::endl;
+			std::string fish = FishLootTable::PickOne();
+
+			std::cout << "[Fishing] poisson attraper : " << fish << std::endl;
+
+			GetInventory()->AddItem(fish, 1, false);
 			RetractFishingRod();
 			break;
 		}

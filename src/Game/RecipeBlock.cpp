@@ -14,7 +14,6 @@ RecipeBlock::RecipeBlock()
 
 void RecipeBlock::OnInitialize()
 {
-	//RemoveCollider("default");
 	GetCollider()->SetIsTrigger(true);
 }
 

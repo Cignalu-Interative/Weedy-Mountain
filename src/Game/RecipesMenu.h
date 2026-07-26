@@ -10,10 +10,6 @@ class RecipesMenu : public Entity
 private :
 
 	std::vector<RecipeBlock*> m_recipes;
-	
-	int m_endRecipeIndex;
-	RecipeBlock* m_lastRecipeBlockSelected = nullptr;
-	RecipeBlock* m_actualRecipeBlockSelected = nullptr;
 
 	void OnInitialize() override;
 public :
@@ -21,10 +17,6 @@ public :
 	//void Update(); //Update les recipes block dans le menu grace au slider
 	void SetIsVisible(bool p_isVisible);
 	std::vector<RecipeBlock*> GetRecipeBlock();
-
-	int GetEndRecipeIndex() { return m_endRecipeIndex; }
-
-	RecipeBlock* GetSelectedRecipe() { return m_actualRecipeBlockSelected; }
 
 	void SetRecipeVector(std::vector<RecipeBlock*> p_recipeVector) { m_recipes.clear(); m_recipes = p_recipeVector; }
 

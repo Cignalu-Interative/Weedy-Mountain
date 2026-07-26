@@ -17,6 +17,7 @@
 #include "RecipesUi.h"
 #include "RecipeDataBase.h"
 #include "ItemDataBase.h"
+#include "Ui/UiShop.h"
 
 void HUDScene::OnInitialize()
 {
@@ -54,9 +55,8 @@ void HUDScene::OnInitialize()
 
 	m_recipe = CreateEntity<RecipesUi>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
 	m_recipe->SetDrawLayer(INT_MAX - 200);
-	m_recipe->ShowCollider(true);
 	m_recipe->Close();
-
+;
 }
 
 void HUDScene::OnEvent()
@@ -66,10 +66,10 @@ void HUDScene::OnEvent()
 	//if (InputManager::Get()->IsKeyboardDown(K_R))
 	//	m_recipe->Close();
 
-	if (InputManager::Get()->IsKeyboardDown(K_B))
-	{
-		GameData::Get().UnlockRecipe("test");
-	}
+	//if (InputManager::Get()->IsKeyboardDown(K_B))
+	//{
+	//	GameData::Get().UnlockRecipe("test");
+	//}
 
 	//if (InputManager::Get()->IsKeyboardDown(K_X))
 	//{

@@ -251,7 +251,6 @@ void GameScene::OnWake()
 	GetCamera()->SetPosition(m_player->GetPosition());
 	GetCamera()->SetFollowedEntity(m_player);
 
-
 	//m_player->SetPosition(m_spawnPoint);
 	//GetCamera()->SetPosition(m_spawnPoint);
 

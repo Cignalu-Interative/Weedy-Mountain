@@ -8,16 +8,19 @@
 #include "ItemDataBase.h"
 #include "RecipeData.h"
 #include "2DPendentLib/InputManager.h"
+#include "SpriteContainer.h"
 #include <algorithm>
 
 void RecipesUi::OnInitialize()
 {
+	AddSprite("RecipeUiBackground", "InventoryWeedyMountain", GetDimension(), 0, {}, true);
+	GetSprite("RecipeUiBackground")->ResizeStretched(GetDimension());
+	SyncSprites();
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 	GetCollider()->SetIsTrigger(true);
 	RecipeDataBase* recipe = RecipeDataBase::Get();
 	std::vector<RecipeData*> recipes = recipe->GetAllRecipes();
 	Scene* scene = GetScene();
-	//Vector2f menuPos = { GetPosition({ 1,0 }).GetX(), GetPosition().GetY() + GetDimension().GetX() * 4.f };
 
 	for (int i = 0; i < recipes.size(); i++)
 	{
@@ -57,19 +60,26 @@ void RecipesUi::OnInitialize()
 	m_menus[m_actualPageMenu]->SetIsVisible(true);
 
 	Vector2f nextButtonPos = m_menus[0]->GetPosition({ 1,1 }) + Vector2f{ -50, 20 };
-	m_nextMenuButton = scene->CreateButton({ nextButtonPos }, { 80,50 }, "InventoryWeedyMountain", "Next", "Next", true);
+	m_nextMenuButton = scene->CreateButton({ nextButtonPos }, { 80,50 }, "button", "Next", "Next", true);
 	m_nextMenuButton->SetOnLeftClick([this] {NextPageMenu(); });
 	m_nextMenuButton->GetCollider()->SetIsTrigger(true);
+	m_nextMenuButton->SetOnHoverStay([this] { m_nextMenuButton->SetSprite("button2"); });
+	m_nextMenuButton->SetOnHoverExit([this] { m_nextMenuButton->SetSprite("button"); });
+
 
 	Vector2f previousButtonPos = m_menus[0]->GetPosition({ 0,1 }) + Vector2f{ 50, 20 };
-	m_previousMenuButton = scene->CreateButton({ previousButtonPos }, {100,50}, "InventoryWeedyMountain", "Previous", "Previous", true);
+	m_previousMenuButton = scene->CreateButton({ previousButtonPos }, {90,50}, "button", "Previous", "Previous", true);
 	m_previousMenuButton->SetOnLeftClick([this] {PreviousPageMenu(); });
 	m_previousMenuButton->GetCollider()->SetIsTrigger(true);
+	m_previousMenuButton->SetOnHoverStay([this] { m_previousMenuButton->SetSprite("button2"); });
+	m_previousMenuButton->SetOnHoverExit([this] { m_previousMenuButton->SetSprite("button"); });
 
 	Vector2f craftButtonPos = m_menus[0]->GetPosition({ 0.5,1 }) + Vector2f{ 0, 20 };
-	m_craftButton = scene->CreateButton({ craftButtonPos }, { 80,50 }, "InventoryWeedyMountain", "Craft", "Craft", true);
+	m_craftButton = scene->CreateButton({ craftButtonPos }, { 80,50 }, "button", "Craft", "Craft", true);
 	m_craftButton->SetOnLeftClick([this] {CraftItem(); });
 	m_craftButton->GetCollider()->SetIsTrigger(true);
+	m_craftButton->SetOnHoverStay([this] { m_craftButton->SetSprite("button2"); });
+	m_craftButton->SetOnHoverExit([this] { m_craftButton->SetSprite("button"); });
 
 	Vector2f textBoxPos = m_menus[0]->GetPosition({ 0.5,0 }) - Vector2f{0, 20};
 	m_textBox = scene->CreateTextBox("search", textBoxPos, { 150, 40 }, ColorsNamed::White, true);
@@ -77,7 +87,6 @@ void RecipesUi::OnInitialize()
 	m_textBox->SetDrawLayer(INT_MAX);
 	m_textBox->GetText()->SetColor(ColorsNamed::White);
 	m_textBox->SetIsVisible(false);
-
 }
 
 void RecipesUi::OnUpdate()
@@ -113,24 +122,19 @@ void RecipesUi::OnEvent()
 void RecipesUi::Open()
 {
 	Vector2f pos = GetPosition({ 0,0.5f });
-
+	
 	float offsetY = pos.GetY() + 80;
-	m_playerInventory->GetInventory()->SetPosition({pos.GetX() * 1.25f,offsetY}, {0,1});
+	m_playerInventory->GetInventory()->SetPosition({pos.GetX() * 1.6f,offsetY}, {0,1});
 	m_playerInventory->GetInventory()->SetVisible(true);
 
-	m_playerInventory->GetHotbar()->SetPosition({ pos.GetX() * 1.25f,offsetY + 110 }, { 0,1 });
+	m_playerInventory->GetHotbar()->SetPosition({ pos.GetX() * 1.6f,offsetY + 110 }, { 0,1 });
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
+
+	SetIsVisible(true);
 	m_nextMenuButton->SetIsVisible(true);
 	m_previousMenuButton->SetIsVisible(true);
 	m_craftButton->SetIsVisible(true);
 	m_textBox->SetIsVisible(true);
-	//m_actualPageMenu = 0;
-
-	//for(RecipesMenu* menu : m_menus)
-	//{
-	//	menu->SetIsVisible(false);
-	//	menu->ResetSelectedRecipe();	
-	//}
 
 	m_menus[m_actualPageMenu]->SetIsVisible(true);
 }
@@ -228,9 +232,7 @@ void RecipesUi::SortUnlockedRecipe()
 	std::vector <RecipeBlock*> unlockRecipes;
 	std::vector <RecipeBlock*> lockRecipes;
 	std::vector <RecipeBlock*> sortedRecipes;
-	// Sort all recipes in all pages
 
-	//Sort unlocked and locked recipes in all pages
 	for (RecipesMenu* menu : m_menus)
 	{
 		std::vector <RecipeBlock*> blocks = menu->GetRecipeBlock();
@@ -273,39 +275,43 @@ void RecipesUi::SortRecipeSearchBox()
 	if (m_searchText.empty())
 		return;
 
-
-	std::string prefix = "ITEM_";
-	std::string text = m_searchText;
-	for (char& c : text) {
+	for (char& c : m_searchText) 
+	{
 		c = std::toupper(unsigned char(c));
 	}
 
-	std::string textToSearch = prefix + text;
-	std::replace(textToSearch.begin(), textToSearch.end(), ' ', '_');
+	std::replace(m_searchText.begin(), m_searchText.end(), ' ', '_');
 
 	RecipeDataBase* recipeData = RecipeDataBase::Get();
 
 	std::vector<RecipeBlock*> sortedRecipes;
 	std::vector<RecipeBlock*> recipesWithChar;
 	std::vector<RecipeBlock*> notSortedRecipes;
-	std::vector<RecipeData*>  datas = recipeData->GetRecipeForChar(textToSearch);
-	std::vector<RecipeData*>  recipe = recipeData->GetRecipesForItem(textToSearch);
+	std::vector<RecipeData*>  datas = recipeData->GetRecipeForChar(m_searchText);
 
-	//if (datas.empty())
-	//	return;
+	if (datas.empty())
+		return;
 
 	for (RecipesMenu* menu : m_menus)
 	{
 		std::vector <RecipeBlock*> blocks = menu->GetRecipeBlock();
 		for (RecipeBlock* block : blocks)
 		{
-			for (RecipeData* data : recipe)
+			bool match = false;
+
+			for (RecipeData* data : datas)
 			{
 				if (block->GetItemName() == data->GetResultItemID())
-					recipesWithChar.push_back(block);
-				else
-					notSortedRecipes.push_back(block);
+				{
+					match = true;
+					break;
+				}
 			}
+
+			if(match)
+				recipesWithChar.push_back(block);
+			else
+				notSortedRecipes.push_back(block);
 		}
 	}
 	if (recipesWithChar.empty())
@@ -339,4 +345,3 @@ void RecipesUi::ResetSelectedRecipe()
 	}
 	m_actualRecipeBlockSelected = nullptr;
 }
-

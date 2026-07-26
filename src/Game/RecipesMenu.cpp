@@ -9,7 +9,6 @@
 void RecipesMenu::OnInitialize()
 {
 	RemoveCollider("default");
-	//AddSprite("BackgroundMenu", "InventoryWeedyMountain", GetDimension(), 0, {}, false);
 }
 
 void RecipesMenu::PlaceRecipeBlock()
@@ -47,7 +46,6 @@ int RecipesMenu::PlaceRecipeBlock(std::vector<RecipeBlock*> p_recipeVector, int 
 			previousPosY += 150;
 		if (previousPosY > bottomLeftPos.GetY())
 		{
-			//return the next index to start from for the next menu
 			nextIndex = i;
 			break;
 		}
@@ -57,9 +55,6 @@ int RecipesMenu::PlaceRecipeBlock(std::vector<RecipeBlock*> p_recipeVector, int 
 
 	m_recipes.clear();
 	m_recipes = newRecipes;
-
-	//if(nextIndex == p_recipeVector.size())
-	//	return -1;
 
 	return nextIndex;
 }

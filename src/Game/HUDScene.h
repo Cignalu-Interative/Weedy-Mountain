@@ -8,6 +8,7 @@ class UiCash;
 class UiTime;
 class UiDate;
 class RecipesUi;
+class UiShop;
 class HUDScene : public Scene
 {
 private:
@@ -20,6 +21,8 @@ private:
 	UiDate* m_dateUi = nullptr;
 
 	RecipesUi* m_recipe = nullptr;
+	UiShop* m_shop = nullptr;
+
 protected:
 
 	void OnInitialize() override;

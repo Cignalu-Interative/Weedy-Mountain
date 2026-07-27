@@ -6,7 +6,7 @@
 
 enum class Weather : uint8_t { Clear, Rain, Storm };
 enum class TimeOfDay : uint8_t { Day, Night };
-enum class Season : uint8_t { Winter, Spring, Summer, Autumn };
+enum class Season : uint8_t { Spring, Summer, Autumn, Winter };
 
 class GameData
 {

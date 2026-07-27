@@ -107,7 +107,9 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath, std::function<bool(
         int consumableEnergyRestored = obj.value("consumableEnergyRestored", 0);
         int consumableFatigueReduced = obj.value("consumableFatigueReduced", 0);
 
-        if (name.empty()) 
+        float cookTime = obj.value("cookTime", 0.f);
+
+        if (name.empty())
             continue;
 
         std::string id = MakeItemID(name);
@@ -121,10 +123,42 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath, std::function<bool(
             }
         }
 
-        m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack, useActionID, itemType, weaponDamage, toolRarity, toolType, consumableEnergyRestored, consumableFatigueReduced });
+        m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack, useActionID, itemType, weaponDamage, toolRarity, toolType, consumableEnergyRestored, consumableFatigueReduced, cookTime, std::string{} });
 
         if (internalID >= 0)
             m_internalIdToStringId[internalID] = id;
+
+    }
+
+    for (const auto& obj : root)
+    {
+        std::string name = obj.value("name", "");
+
+        if (name.empty()) 
+            continue;
+
+        float cookTime = obj.value("cookTime", 0.f);
+
+        if (cookTime <= 0.f)
+            continue;   
+
+        int cookResultInternalID = obj.value("cookResultItemID", -1);
+
+        if (cookResultInternalID < 0) 
+            continue;
+
+        const std::string& resolvedResultID = ResolveInternalID(cookResultInternalID);
+        if (resolvedResultID.empty())
+        {
+            std::cerr << "[ItemDataBase] Warning: item \"" << name << "\" a un cookResultItemID introuvable (internal id " << cookResultInternalID << ")" << std::endl;
+            continue;
+        }
+
+        std::string id = MakeItemID(name);
+        auto it = m_items.find(id);
+
+        if (it != m_items.end())
+            it->second.SetCookResultItemID(resolvedResultID);
     }
 
     return true;

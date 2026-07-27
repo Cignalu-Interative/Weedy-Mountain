@@ -34,6 +34,9 @@ private:
 	int m_consumableEnergyRestored = 0;
 	int m_consumableFatigueReduced = 0;
 
+	float m_cookTime = 0.f;   
+	std::string m_cookResultItemID;
+
 public:
 
 	ItemData(std::string ID, std::string path, std::string name,
@@ -41,7 +44,8 @@ public:
 		std::string useActionID, ItemType itemType,
 		int weaponDamage,
 		ToolRarity toolRarity, ToolType toolType,
-		int consumableEnergyRestored, int consumableFatigueReduced);
+		int consumableEnergyRestored, int consumableFatigueReduced,
+		float cookTime, std::string cookResultItemID);
 
 	const std::string& GetID() const;
 	const std::string& GetPath() const;
@@ -64,4 +68,11 @@ public:
 	// Consumable
 	int GetConsumableEnergyRestored() const;
 	int GetConsumableFatigueReduced() const;
+
+	bool IsCookable() const;
+
+	float GetCookTime() const;
+	const std::string& GetCookResultItemID() const;
+
+	void SetCookResultItemID(std::string resolvedID);
 };

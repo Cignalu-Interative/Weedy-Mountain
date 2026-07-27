@@ -6,7 +6,8 @@ ItemData::ItemData(std::string ID, std::string path, std::string name,
     std::string useActionID, ItemType itemType,
     int weaponDamage,
     ToolRarity toolRarity, ToolType toolType,
-    int consumableEnergyRestored, int consumableFatigueReduced)
+    int consumableEnergyRestored, int consumableFatigueReduced,
+    float cookTime, std::string cookResultItemID)
     : m_ID(std::move(ID)),
     m_path(std::move(path)),
     m_name(std::move(name)),
@@ -20,7 +21,9 @@ ItemData::ItemData(std::string ID, std::string path, std::string name,
     m_toolRarity(toolRarity),
     m_toolType(toolType),
     m_consumableEnergyRestored(consumableEnergyRestored),
-    m_consumableFatigueReduced(consumableFatigueReduced)
+    m_consumableFatigueReduced(consumableFatigueReduced),
+    m_cookTime(cookTime),
+    m_cookResultItemID(std::move(cookResultItemID))
 {}
 
 const std::string& ItemData::GetID() const
@@ -72,3 +75,13 @@ ToolType ItemData::GetToolType() const { return m_toolType; }
 
 int ItemData::GetConsumableEnergyRestored() const { return m_consumableEnergyRestored; }
 int ItemData::GetConsumableFatigueReduced() const { return m_consumableFatigueReduced; }
+
+bool ItemData::IsCookable() const { return m_cookTime > 0.f; }
+
+float ItemData::GetCookTime() const { return m_cookTime; }
+const std::string& ItemData::GetCookResultItemID() const { return m_cookResultItemID; }
+
+void ItemData::SetCookResultItemID(std::string resolvedID)
+{
+    m_cookResultItemID = std::move(resolvedID);
+}

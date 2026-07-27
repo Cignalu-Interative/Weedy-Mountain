@@ -2,11 +2,12 @@
 #include "2DPendentEngine\Scene.h"
 
 class PlayerInventory;
+class QuestMenu;
 class HUDScene : public Scene
 {
 private:
 	PlayerInventory* m_playerInventory = nullptr;
-
+	QuestMenu* m_questMenu = nullptr;
 
 protected:
 

@@ -87,11 +87,6 @@ void Application::Run()
 			continue;
 		}
 
-		/*if (CapFPS() == false)
-		{
-			continue;
-		}*/
-
 		FPSDeltaTime();
 
 		UpdateFPSCounter();
@@ -101,8 +96,6 @@ void Application::Run()
 		Update();
 
 		Draw();
-
-		//SceneManager::Get()->ChangeCurrentScene();
 	}
 }
 

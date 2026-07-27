@@ -86,5 +86,27 @@
         "recipes": [],
         "sellPrice": 5,
         "useActionID": ""
+    },
+    {
+        "buyPrice": 10,
+        "description": "",
+        "id": 9,
+        "imagePath": "C:\\Users\\grandon\\Documents\\GitHub\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Raw_Gold.png",
+        "maxStack": 64,
+        "name": "Raw Gold",
+        "recipes": [],
+        "sellPrice": 10,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 10,
+        "description": "",
+        "id": 10,
+        "imagePath": "C:\\Users\\grandon\\Documents\\GitHub\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Gold_Ingot.png",
+        "maxStack": 64,
+        "name": "Gold Ingot",
+        "recipes": [],
+        "sellPrice": 10,
+        "useActionID": ""
     }
 ]

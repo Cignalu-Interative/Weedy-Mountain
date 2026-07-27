@@ -13,10 +13,13 @@
 #include "GameData.h"
 #include "PlayerInventory.h"
 #include "2DPendentLib/InputManager.h"
+#include "FurnaceUi.h"
+#include "ItemDataBase.h"
 
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
@@ -44,7 +47,16 @@ void HUDScene::OnInitialize()
 	m_playerInventory = new PlayerInventory(inv, hot);
 
 	GameData::Get().SetInventory(m_playerInventory);
+	m_playerInventory->AddItem("ITEM_WOOD", 25, false);
+	m_playerInventory->AddItem("ITEM_WOOD", 64, false);
+	m_playerInventory->AddItem("ITEM_RAW_GOLD", 64, false);
+	m_playerInventory->AddItem("ITEM_RAW_GOLD", 64, false);
+	m_playerInventory->AddItem("ITEM_FIBER", 25, false);
 	SceneManager::Get()->SetPersistentScene(this);
+
+	FurnaceUi* f = CreateEntity<FurnaceUi>(GetWindowCenter(), { 800,600 }, "", Shape::Rectangle, true);
+	f->Open();
+	f->SetDrawLayer(INT_MAX - 200);
 }
 
 void HUDScene::OnEvent()

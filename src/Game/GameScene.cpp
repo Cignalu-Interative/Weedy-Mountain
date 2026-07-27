@@ -39,7 +39,7 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
-#include "2DPendentLib/ObjectGroupTiled.h"
+#include "Furnace.h"
 
 void GameScene::OnInitialize()
 {
@@ -120,8 +120,8 @@ void GameScene::OnInitialize()
 		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}
-
-
+	
+	Furnace* f = CreateEntity<Furnace>({ m_spawnPoint + Vector2f{0, 200} }, { 16,32 }, "", Shape::Rectangle);
 
 	// CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	// Text* t = Debug::Get()->GetText("KAKA");
@@ -148,11 +148,11 @@ void GameScene::OnEvent()
 {
 	InputManager* im = InputManager::Get();
 
-	if (im->IsKeyboardDown(K_A))
-		GetCamera()->SetZoom(5);
+	//if (im->IsKeyboardDown(K_A))
+	//	GetCamera()->SetZoom(5);
 
-	if (im->IsKeyboardDown(K_E))
-		GetCamera()->SetZoom(1);
+	//if (im->IsKeyboardDown(K_E))
+	//	GetCamera()->SetZoom(1);
 
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{

@@ -13,7 +13,7 @@
 #include "GameData.h"
 #include "PlayerInventory.h"
 #include "2DPendentLib/InputManager.h"
-#include "FurnaceUi.h"
+#include "Furnace.h"
 #include "ItemDataBase.h"
 
 void HUDScene::OnInitialize()
@@ -54,9 +54,6 @@ void HUDScene::OnInitialize()
 	m_playerInventory->AddItem("ITEM_FIBER", 25, false);
 	SceneManager::Get()->SetPersistentScene(this);
 
-	FurnaceUi* f = CreateEntity<FurnaceUi>(GetWindowCenter(), { 800,600 }, "", Shape::Rectangle, true);
-	f->Open();
-	f->SetDrawLayer(INT_MAX - 200);
 }
 
 void HUDScene::OnEvent()

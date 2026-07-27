@@ -6,6 +6,7 @@
 #include "ItemData.h"
 #include "ItemDataBase.h"
 #include "2DPendentLib/InputManager.h"
+#include "2DPendentLib/Utils.h"
 
 void FurnaceUi::OnInitialize()
 {
@@ -15,6 +16,10 @@ void FurnaceUi::OnInitialize()
 	AddSprite("BackgroundFurnace", "InventoryWeedyMountain", GetDimension(), 0, {}, true);
 	GetSprite("BackgroundFurnace")->ResizeStretched(GetDimension());
 	SyncSprites();
+
+	AddSprite("MeltedEmpty", "emptyHorizontal", { 90,25 }, 1, {0, -165 }, true);
+	AddSprite("MeltedFull", "fullHorizontalRed", { 90,25 }, 2, {0, -165 }, true);
+	GetSprite("MeltedFull")->SetDimension({});
 
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 
@@ -42,7 +47,6 @@ void FurnaceUi::OnInitialize()
 	m_meltedOres->SetSprite("item_texture", "");
 	m_meltedOres->InitText("slot" + std::to_string(1), "");
 
-
 }
 
 void FurnaceUi::OnUpdate()
@@ -51,53 +55,69 @@ void FurnaceUi::OnUpdate()
 	if (m_meltedOres->GetStack().GetAmount() == 64)
 		return;
 
-	if (m_rawOres->IsEmpty() || m_consumables->IsEmpty())
+	float progress = 1.f - (m_currentHeatingTime / m_heatingTimeRequired);
+	progress = Utils::Clamp(progress, 0.f, 1.f);
+	int maxWidth = GetSprite("MeltedEmpty")->GetDimension().GetX();
+	int height = GetSprite("MeltedEmpty")->GetDimension().GetY();
+	GetSprite("MeltedFull")->SetDimension({ int(maxWidth * progress), height });
+
+
+	if (m_rawOres->IsEmpty() /*|| m_consumables->IsEmpty()*/)
 	{
 		m_currentHeatingTime = m_heatingTimeRequired;
 		return;
 	}
 
 
-	m_currentfuelTime -= GetDeltaTime();
-
 	if (m_currentfuelTime <= 0)
 	{
+		if (m_consumables->IsEmpty())
+			return;
+
 		ItemStack& consumablesStack = m_consumables->GetStack();
 		consumablesStack.SetAmount(consumablesStack.GetAmount() - 1);
 		m_consumables->RefreshVisual();
 		m_currentfuelTime = m_fuelTime;
 	}
 
-
-	ItemStack& meltedStack = m_meltedOres->GetStack();
-
-	m_currentHeatingTime -= GetDeltaTime();
-
-	if (m_currentHeatingTime <= 0)
+	if (m_currentfuelTime > 0)
 	{
-		ItemStack& rawStack = m_rawOres->GetStack();
-		//remove 1 to m_rawOres
-		rawStack.SetAmount(rawStack.GetAmount() - 1);
-		m_rawOres->RefreshVisual();
-		//add 1 to m_meltedOres
+		m_currentfuelTime -= GetDeltaTime();
+		m_currentHeatingTime -= GetDeltaTime();
+
+		ItemStack& meltedStack = m_meltedOres->GetStack();
+
+		if (m_currentHeatingTime <= 0)
 		{
-			std::string id = m_rawOres->GetStack().GetID();
-			std::string textToDelete = "_RAW";
-			std::string textToAdd = "_INGOT";
+			ItemStack& rawStack = m_rawOres->GetStack();
+			//remove 1 to m_rawOres
+			rawStack.SetAmount(rawStack.GetAmount() - 1);
+			m_rawOres->RefreshVisual();
+			//add 1 to m_meltedOres
+			{
+				std::string id = m_rawOres->GetStack().GetID();
+				std::string textToDelete = "_RAW";
+				std::string textToAdd = "_INGOT";
 
-			size_t pos = id.find(textToDelete);
-			if (pos != std::string::npos)
-				id.erase(pos, textToDelete.size());
+				size_t pos = id.find(textToDelete);
+				if (pos != std::string::npos)
+					id.erase(pos, textToDelete.size());
 
-			std::string finalId = id + textToAdd;
+				std::string finalId = id + textToAdd;
 
-			//id == GOLD_INGOT
-			m_meltedOres->GetStack().SetID(finalId);
-			meltedStack.SetAmount(meltedStack.GetAmount() + 1);
-			m_meltedOres->RefreshVisual();
+				//id == GOLD_INGOT
+				m_meltedOres->GetStack().SetID(finalId);
+				meltedStack.SetAmount(meltedStack.GetAmount() + 1);
+				m_meltedOres->RefreshVisual();
+			}
+
+			m_currentHeatingTime = m_heatingTimeRequired;
 		}
+	}
+	if (m_currentfuelTime < 0)
+	{
+		GetSprite("MeltedFull")->SetDimension({});
 
-		m_currentHeatingTime = m_heatingTimeRequired;
 	}
 }
 
@@ -196,6 +216,10 @@ void FurnaceUi::Open()
 	m_rawOres->SetIsVisible(true);
 	m_meltedOres->SetIsVisible(true);
 	m_consumables->SetIsVisible(true);
+
+	m_rawOres->RefreshVisual();
+	m_meltedOres->RefreshVisual();
+	m_consumables->RefreshVisual();
 }
 
 void FurnaceUi::Close()
@@ -211,4 +235,8 @@ void FurnaceUi::Close()
 	m_rawOres->SetIsVisible(false);
 	m_meltedOres->SetIsVisible(false);
 	m_consumables->SetIsVisible(false);
+
+	m_rawOres->RefreshVisual();
+	m_meltedOres->RefreshVisual();
+	m_consumables->RefreshVisual();
 }

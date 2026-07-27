@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GameData.h"
 #include "RecipeDataBase.h"
+#include "UiChest.h"
 
 //Trucs qu'on peut changer si on veut changer la dur�e plus tard
 

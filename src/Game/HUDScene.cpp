@@ -13,6 +13,7 @@
 #include "GameData.h"
 #include "PlayerInventory.h"
 #include "2DPendentLib/InputManager.h"
+#include "UiChest.h"
 
 void HUDScene::OnInitialize()
 {
@@ -45,6 +46,9 @@ void HUDScene::OnInitialize()
 
 	GameData::Get().SetInventory(m_playerInventory);
 	SceneManager::Get()->SetPersistentScene(this);
+
+	UiChest* c = CreateEntity<UiChest>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
+	c->Open();
 }
 
 void HUDScene::OnEvent()

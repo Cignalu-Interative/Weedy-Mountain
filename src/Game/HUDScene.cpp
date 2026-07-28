@@ -9,6 +9,7 @@
 #include "Ui/UiDate.h"
 #include "Ui/UiTime.h"
 #include "Ui/UiJobs.h"
+#include "UiCollection.h"
 
 #include "GameData.h"
 #include "PlayerInventory.h"
@@ -25,6 +26,7 @@ void HUDScene::OnInitialize()
 	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+	UiCollection* collectionUi = CreateEntity<UiCollection>(GetWindowCenter(), {892,957}, "", Shape::Rectangle, true);
 
 	statsUi->RemoveCollider("default");
 	moneyUi->RemoveCollider("default");

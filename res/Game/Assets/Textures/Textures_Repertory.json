@@ -13,6 +13,9 @@
       "path": "../../res/Game/Assets/Textures/Clock.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Diamond_Ore.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Drugs.png"
     },
     {
@@ -700,6 +703,9 @@
       "path": "../../res/Game/Assets/Textures/FishingRod.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Gold_Ore.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Grass.png"
     },
     {
@@ -719,6 +725,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Iron_Ore.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Item_Fiber.png"
@@ -793,6 +802,12 @@
       "path": "../../res/Game/Assets/Textures/cisailles.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/collection0.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/collection1.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/emptyHorizontal.png"
     },
     {
@@ -811,7 +826,13 @@
       "path": "../../res/Game/Assets/Textures/inventory.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/nextButton.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/player.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/previousButton.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/slot.png"

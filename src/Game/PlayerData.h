@@ -86,6 +86,7 @@ struct PlayerData
 
 	std::vector<PlayerJob> m_jobs;
 	std::vector<Recipes> m_unlockedRecipes;
+	std::vector<std::string> m_unlockedItemsId;
 
 
 	int m_money = 200000;

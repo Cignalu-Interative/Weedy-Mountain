@@ -52,4 +52,6 @@ public:
 	bool IsRecipeUnlocked(const std::string& recipeID);
 
 	const std::vector<std::string>& GetUnlockedRecipes();
+
+	void UnlockItems();
 };

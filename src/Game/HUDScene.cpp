@@ -56,7 +56,8 @@ void HUDScene::OnInitialize()
 
 void HUDScene::OnEvent()
 {
-
+	InputManager* input = InputManager::Get();
+	//input->IsKeyboardDown(KeyboardKeycodeKeys::K_)
 }
 
 void HUDScene::OnUpdate()

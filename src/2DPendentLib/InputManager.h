@@ -131,6 +131,9 @@ public:
 
 	void DeleteLastCharInFinalTextInput() { if (!m_finalTextInput.empty()) m_finalTextInput.pop_back(); }
 
+	KeyboardKeycodeKeys GetKeyFromScancode(KeyboardScancodeKeys p_scancode) const;
+	KeyboardScancodeKeys GetScancodeFromKey(KeyboardKeycodeKeys p_key) const;
+
 private:
 
 	//Struct pour stocker les états des entrées

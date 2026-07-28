@@ -13,6 +13,8 @@ InputManager* InputManager::Get()
 
 void InputManager::Update()
 {
+	//DebugKeys();
+
 	for (int i = 0; i < NUM_SCANCODES; i++)
 	{
 		if (m_keyboardStates[i].s_isDown)
@@ -532,6 +534,16 @@ void InputManager::StopTextInput()
 	m_compositionTextInput.clear();
 	m_finalTextInput.clear();
 	std::cerr << "InputManager : SDL_StopTextInput" << std::endl;
+}
+
+KeyboardKeycodeKeys InputManager::GetKeyFromScancode(KeyboardScancodeKeys p_scancode) const
+{
+	return KeyboardKeycodeKeys();
+}
+
+KeyboardScancodeKeys InputManager::GetScancodeFromKey(KeyboardKeycodeKeys p_key) const
+{
+	return KeyboardScancodeKeys();
 }
 
 void InputManager::SetWindow(Window* p_window)

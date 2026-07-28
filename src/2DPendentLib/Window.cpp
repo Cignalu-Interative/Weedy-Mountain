@@ -177,3 +177,7 @@ Vector2i Window::GetHalfWindowSize()
 	Vector2i halfSizewindow = GetWindowSize() / 2;
 	return halfSizewindow;
 }
+
+GPUDevice* Window::GetGPUDevice() {
+	return m_gpuDevice;
+}

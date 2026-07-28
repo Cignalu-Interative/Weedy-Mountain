@@ -29,6 +29,10 @@ private:
 
 	~GPUDevice();
 
+	SDL_GPUComputePipeline* GetComputePipeline(const std::string& p_filename);
+
 	friend class Window;
 
+public:
+	Shader* GetShader(const std::string& p_filename);
 };

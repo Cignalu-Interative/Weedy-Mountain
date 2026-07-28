@@ -60,4 +60,6 @@ public:
 	SDL_DisplayMode GetDisplayMode() const { return m_displayMode; }
 	//Obtention du mixer
 	MIX_Mixer* GetMixer() const { return m_mixer; }
+
+	GPUDevice* GetGPUDevice();
 };

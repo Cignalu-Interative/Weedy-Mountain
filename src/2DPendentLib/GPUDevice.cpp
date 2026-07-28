@@ -224,3 +224,11 @@ GPUDevice::~GPUDevice(){
 		}
 	}	
 }
+
+SDL_GPUComputePipeline* GPUDevice::GetComputePipeline(const std::string& p_filename){
+	return (m_computeShaderPipelines.contains(p_filename)) ? m_computeShaderPipelines[p_filename] : nullptr;
+}
+
+Shader* GPUDevice::GetShader(const std::string& p_filename){
+	return (m_shaders.contains(p_filename)) ? m_shaders[p_filename] : nullptr;
+}

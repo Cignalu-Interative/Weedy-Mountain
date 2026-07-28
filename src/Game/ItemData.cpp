@@ -1,8 +1,30 @@
 #include "pch.h"
 #include "ItemData.h"
 
-ItemData::ItemData(const std::string& ID, const std::string& path, const std::string& name, const std::string& description, int buyPrice, int sellPrice, int maxStack, const std::string& useActionID) 
-: m_ID(ID), m_path(path), m_name(name), m_description(description), m_buyPrice(buyPrice), m_sellPrice(sellPrice), m_maxStack(maxStack), m_useActionID(useActionID) {}
+ItemData::ItemData(std::string ID, std::string path, std::string name,
+    std::string description, int buyPrice, int sellPrice, int maxStack,
+    std::string useActionID, ItemType itemType,
+    int weaponDamage,
+    ToolRarity toolRarity, ToolType toolType,
+    int consumableEnergyRestored, int consumableFatigueReduced,
+    float cookTime, std::string cookResultItemID)
+    : m_ID(std::move(ID)),
+    m_path(std::move(path)),
+    m_name(std::move(name)),
+    m_description(std::move(description)),
+    m_buyPrice(buyPrice),
+    m_sellPrice(sellPrice),
+    m_maxStack(maxStack),
+    m_useActionID(std::move(useActionID)),
+    m_itemType(itemType),
+    m_weaponDamage(weaponDamage),
+    m_toolRarity(toolRarity),
+    m_toolType(toolType),
+    m_consumableEnergyRestored(consumableEnergyRestored),
+    m_consumableFatigueReduced(consumableFatigueReduced),
+    m_cookTime(cookTime),
+    m_cookResultItemID(std::move(cookResultItemID))
+{}
 
 const std::string& ItemData::GetID() const
 {
@@ -42,4 +64,24 @@ int ItemData::GetMaxStack() const
 const std::string& ItemData::GetUseActionID() const
 {
 	return m_useActionID; 
+}
+
+ItemType ItemData::GetItemType() const { return m_itemType; }
+
+int ItemData::GetWeaponDamage() const { return m_weaponDamage; }
+
+ToolRarity ItemData::GetToolRarity() const { return m_toolRarity; }
+ToolType ItemData::GetToolType() const { return m_toolType; }
+
+int ItemData::GetConsumableEnergyRestored() const { return m_consumableEnergyRestored; }
+int ItemData::GetConsumableFatigueReduced() const { return m_consumableFatigueReduced; }
+
+bool ItemData::IsCookable() const { return m_cookTime > 0.f; }
+
+float ItemData::GetCookTime() const { return m_cookTime; }
+const std::string& ItemData::GetCookResultItemID() const { return m_cookResultItemID; }
+
+void ItemData::SetCookResultItemID(std::string resolvedID)
+{
+    m_cookResultItemID = std::move(resolvedID);
 }

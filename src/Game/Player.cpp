@@ -16,6 +16,12 @@
 
 #include "Aleatory.h"
 
+#include "EnviroProps.h"
+#include "ItemDataBase.h"
+#include "ItemActionRegistry.h"
+
+#include "FishLootTable.h"
+
 void Player::OnInitialize()
 {
 
@@ -102,26 +108,8 @@ void Player::OnEvent()
 
 		SetDirection(dir);
 
-		//input souris
-		if (InputManager::Get()->IsMouseDown(BUTTON_RIGHT)) {
-			//utilise l'objet selectionner dans l'inventaire (Vivien a l'aide)
-		}
-
-		if (InputManager::Get()->IsKeyboardDown(K_1))
-			m_selectedCrop = CropCatalog::Wheat();
-		if (InputManager::Get()->IsKeyboardDown(K_2))
-			m_selectedCrop = CropCatalog::Carrot();
-
-		// Action farm 
-		// TEMP - AGRI
-
-		// S�lection plante 
 		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
-			HandleFarmAction();
-
-		// TEMP - PECHE
-		if (InputManager::Get()->IsKeyboardDown(K_F))
-			StartFishing();
+			HandlePrimaryAction();
 	}
 
 	float len = std::sqrtf(dir.GetX() * dir.GetX() + dir.GetY() * dir.GetY());
@@ -136,17 +124,81 @@ void Player::OnEvent()
 	{
 		body->SetLinearVelocity({dir.GetX() * currentSpeed, dir.GetY() * currentSpeed});
 	}
-
-	// TEMP - AGRI
-
-	// S�lection plante 
-	if (InputManager::Get()->IsKeyboardDown(K_1))
-		m_selectedCrop = CropCatalog::Wheat();
-	if (InputManager::Get()->IsKeyboardDown(K_2))
-		m_selectedCrop = CropCatalog::Carrot();
 }
 
-// TEMP - AGRI
+void Player::HandlePrimaryAction()
+{
+	PlayerInventory* inv = GetInventory();
+
+	if (inv != nullptr)
+	{
+		const std::string& selectedID = inv->GetSelectedItemID();
+
+		if (selectedID != "ITEM_NOTHING")
+		{
+			ItemData* data = ItemDataBase::Get()->GetItem(selectedID);
+
+			if (data != nullptr && data->GetUseActionID().empty() == false)
+			{
+				bool executed = ItemActionRegistry::Get()->Execute(data->GetUseActionID(), *this, *inv, selectedID, inv->GetSelectedIndex());
+
+				if (executed)
+					return;
+			}
+		}
+	}
+
+	HandleDefaultHarvestAction();
+}
+
+void Player::HandleDefaultHarvestAction()
+{
+	Collider* actionBox = GetCollider("actionBox");
+
+	if (actionBox == nullptr)
+		return;
+
+	FarmTile* farmTarget = FarmManager::Get()->GetTileInActionBox(actionBox);
+
+	if (farmTarget != nullptr && farmTarget->GetState() == FarmTileState::IDLE)
+	{
+		PlayerInventory* inv = GetInventory();
+		if (inv == nullptr)
+			return;
+
+		const std::string& selectedID = inv->GetSelectedItemID();
+		ItemData* data = (selectedID != "ITEM_NOTHING") ? ItemDataBase::Get()->GetItem(selectedID) : nullptr;
+
+		bool hasSpadeInHand = (data != nullptr && data->GetItemType() == ItemType::Tool && data->GetToolType() == ToolType::Spade);
+
+		if (hasSpadeInHand == false)
+			return;
+	}
+
+	HandleFarmAction();
+}
+
+void Player::TryHitEnviroProps(EnviroProps* props)
+{
+	if (props == nullptr)
+		return;
+
+	PlayerInventory* inv = GetInventory();
+	if (inv == nullptr)
+		return;
+
+	const std::string& selectedID = inv->GetSelectedItemID();
+	ItemData* data = (selectedID != "ITEM_NOTHING") ? ItemDataBase::Get()->GetItem(selectedID) : nullptr;
+
+	if (data != nullptr && data->GetUseActionID().empty() == false)
+		return;
+
+	if (data == nullptr || data->GetItemType() != ItemType::Tool)
+		return;
+
+	props->TryHit(data->GetToolType(), data->GetToolRarity());
+}
+
 void Player::HandleFarmAction()
 {
 	Collider* actionBox = GetCollider("actionBox");
@@ -164,35 +216,14 @@ void Player::HandleFarmAction()
 	switch (target->GetState())
 	{
 	case FarmTileState::IDLE:
-		// B�cher
 		target->Till(currentDay);
 		break;
 
-	case FarmTileState::TILLED:
-		// T maintenu = arroser, Y maintenu = planter, sinon = d�-b�cher
-		if (InputManager::Get()->IsKeyboardHeld(K_T))
-			target->Water(currentDay);
-		else if (InputManager::Get()->IsKeyboardHeld(K_Y))
-			target->Plant(m_selectedCrop, currentDay);
-		else
-			target->Till(currentDay);
-		break;
-
-	case FarmTileState::WATERED:
-		// Y maintenu = planter
-		if (InputManager::Get()->IsKeyboardHeld(K_Y))
-			target->Plant(m_selectedCrop, currentDay);
-		break;
-
-	case FarmTileState::PLANTED:
-	case FarmTileState::GROWING:
-		// Arroser
-		target->Water(currentDay);
-		break;
-
 	case FarmTileState::READY:
-		// R�colter
 		target->Harvest(currentDay);
+		break;
+
+	default:
 		break;
 	}
 }
@@ -244,7 +275,7 @@ void Player::UpdateFishing()
 		{
 			m_fishingState = FishingState::Waiting;
 			m_fishingTimer = 0.f;
-			m_fishingTimerTarget = Aleatory::GetFloat(2.f, 5.f);
+			m_fishingTimerTarget = Aleatory::GetFloat(2.f, 10.f);
 		}
 		else
 		{
@@ -259,6 +290,12 @@ void Player::UpdateFishing()
 		if (m_isMovingThisFrame)
 		{
 			std::cout << "[Fishing] mouvement detecter, cane range !" << std::endl;
+			RetractFishingRod();
+			break;
+		}
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		{
+			std::cout << "[Fishing] cane retracte !" << std::endl;
 			RetractFishingRod();
 			break;
 		}
@@ -286,7 +323,11 @@ void Player::UpdateFishing()
 
 		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
 		{
-			std::cout << "[Fishing] poisson attrape !" << std::endl;
+			std::string fish = FishLootTable::PickOne();
+
+			std::cout << "[Fishing] poisson attraper : " << fish << std::endl;
+
+			GetInventory()->AddItem(fish, 1, false);
 			RetractFishingRod();
 			break;
 		}
@@ -316,12 +357,30 @@ void Player::OnCollisionEnter(Collider* _self, Collider* _other, CollisionSide _
 {
 	if (_self->GetID() == "fishingZone" && _other->GetOwner()->GetTag() == 5)
 		m_fishingZoneTouchingWater = true;
+
+	if (_other->GetOwner()->GetTag() == 2 && _self->GetID() == "actionBox") 
+	{
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		{
+			EnviroProps* props = (EnviroProps*)_other->GetOwner();
+			TryHitEnviroProps(props);
+		}
+	}
 }
 
 void Player::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
 	if (_self->GetID() == "fishingZone" && _other->GetOwner()->GetTag() == 5)
 		m_fishingZoneTouchingWater = true;
+
+	if (_other->GetOwner()->GetTag() == 2 && _self->GetID() == "actionBox") 
+	{
+		if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+		{
+			EnviroProps* props = (EnviroProps*)_other->GetOwner();
+			TryHitEnviroProps(props);
+		}
+	}
 }
 
 void Player::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
@@ -346,6 +405,7 @@ PlayerJob Player::GetJobByName(JobType p_type)
 
 void Player::UpdateJobs()
 {
+	/*
 	for (int i = 0; i < gm.GetPlayerData().m_jobs.size(); i++) {
 		gm.GetPlayerData().m_jobs[i].levelUp();
 		switch (gm.GetPlayerData().m_jobs[i].m_name)
@@ -457,16 +517,7 @@ void Player::UpdateJobs()
 			break;
 		}
 	}
-}
-
-void Player::UnlockRecipe(Recipes _toUnlock)
-{
-	if (!IsRecipeUnlocked(_toUnlock))
-	{
-		gm.GetPlayerData().m_unlockedRecipes.push_back(_toUnlock);
-		std::cout << "item unlocked" << std::endl;
-	}
-
+	*/
 }
 
 void Player::SetupStateMachine()
@@ -583,19 +634,6 @@ void Player::SetupStateMachine()
 	}
 
 	SetState(PlayerState::WALKING);
-}
-
-bool Player::IsRecipeUnlocked(Recipes _toUnlock)
-{
-	for (int i = 0; i < gm.GetPlayerData().m_unlockedRecipes.size(); i++)
-	{
-		if (gm.GetPlayerData().m_unlockedRecipes[i] == _toUnlock)
-		{
-			return true;
-		}
-
-	}
-	return false;
 }
 
 void Player::LockInputs()

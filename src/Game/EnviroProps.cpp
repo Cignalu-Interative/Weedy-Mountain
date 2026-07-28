@@ -17,15 +17,6 @@ void EnviroProps::OnInitialize()
 
 void EnviroProps::OnEvent()
 {
-	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_isInPlayerZone){
-		// ajouter la verification de l'outils et de sa raret�
-		m_stats.m_hitToDestroy--;
-	}
-
-	if (m_stats.m_hitToDestroy <= 0) {
-		Destroy();
-	}
-
 	Vector2f playerPos = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetPosition();
 	int playerLayer = SceneManager::Get()->GetScene("game")->GetEntityByTag(1)->GetDrawLayer();
 
@@ -40,23 +31,20 @@ void EnviroProps::OnEvent()
 
 void EnviroProps::OnUpdate()
 {
+	if (m_stats.m_hitToDestroy <= 0) {
+		Destroy();
+	}
+
 	SetPosition(m_stats.m_position->GetPosition());
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 }
 
 void EnviroProps::OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	if(_other->GetOwner()->GetTag() == 1 && _other->GetID() == "actionBox") {
-		m_isInPlayerZone = true;
-	}
-
 }
 
 void EnviroProps::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side)
 {
-	if (_other->GetOwner()->GetTag() == 1 && _other->GetID() == "actionBox") {
-		m_isInPlayerZone = false;
-	}
 }
 
 void EnviroProps::OnDestroy()
@@ -113,7 +101,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 4;
-		m_stats.m_minToolsRarity = Rarity::Stone;
+		m_stats.m_minToolsRarity = ToolRarity::Stone;
 		m_stats.m_toolType = { ToolType::Axe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_WOOD",1)), 3,4 };
 		EnviroLoots* loot2 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 1,2 };
@@ -125,7 +113,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 2;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Axe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_WOOD",1)), 1,2 };
 		EnviroLoots* Loot2 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 0,2 };
@@ -137,7 +125,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 1;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Hoe, ToolType::Spade };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_FIBER",1)), 1,3 };
 		m_loots.push_back(loot1);
@@ -147,7 +135,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 2;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_ROCK",1)), 1,3 };
 		m_loots.push_back(loot1);
@@ -157,11 +145,41 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 4;
-		m_stats.m_minToolsRarity = Rarity::Iron;
+		m_stats.m_minToolsRarity = ToolRarity::Iron;
 		m_stats.m_toolType = { ToolType::Pickaxe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_ROCK",1)), 2,5 };
 		m_loots.push_back(loot1);
 		break;
 	}
 	}
+}
+
+bool EnviroProps::CanBeHitBy(ToolType toolType, ToolRarity toolRarity)
+{
+	bool typeMatches = false;
+	for (ToolType accepted : m_stats.m_toolType)
+	{
+		if (accepted == toolType)
+		{
+			typeMatches = true;
+			break;
+		}
+	}
+
+	if (typeMatches == false)
+		return false;
+
+	if (static_cast<int>(toolRarity) < static_cast<int>(m_stats.m_minToolsRarity))
+		return false;
+
+	return true;
+}
+
+bool EnviroProps::TryHit(ToolType toolType, ToolRarity toolRarity)
+{
+	if (CanBeHitBy(toolType, toolRarity) == false)
+		return false;
+
+	m_stats.m_hitToDestroy--;
+	return true;
 }

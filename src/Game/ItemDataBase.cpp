@@ -25,6 +25,49 @@ static std::string MakeItemID(const std::string& name)
     return id;
 }
 
+static ItemType ParseItemType(const std::string& s)
+{
+    if (s == "Weapon")
+        return ItemType::Weapon;
+
+    else if (s == "Tool")       
+        return ItemType::Tool;
+
+    else if (s == "Consumable") 
+        return ItemType::Consumable;
+
+    return ItemType::Default;
+}
+
+static ToolRarity ParseToolRarity(const std::string& s)
+{
+    if (s == "Wooden")
+        return ToolRarity::Wooden;
+
+    else if (s == "Stone")   
+        return ToolRarity::Stone;
+
+    else if (s == "Iron")   
+        return ToolRarity::Iron;
+
+    else if (s == "Gold")    
+        return ToolRarity::Gold;
+
+    else if (s == "Diamond") 
+        return ToolRarity::Diamond;
+
+    return ToolRarity::Wooden;
+}
+
+static ToolType ParseToolType(const std::string& s)
+{
+    if (s == "Hoe")         return ToolType::Hoe;
+    if (s == "Pickaxe")     return ToolType::Pickaxe;
+    if (s == "Spade")       return ToolType::Spade;
+    if (s == "WateringCan") return ToolType::WateringCan;
+    return ToolType::Axe;
+}
+
 ItemDataBase* ItemDataBase::Get()
 {
 	static ItemDataBase instance;
@@ -57,7 +100,16 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath, std::function<bool(
         std::string useActionID = obj.value("useActionID", "");
         int internalID = obj.value("id", -1);
 
-        if (name.empty()) 
+        ItemType itemType = ParseItemType(obj.value("itemType", "Default"));
+        int weaponDamage = obj.value("weaponDamage", 0);
+        ToolRarity toolRarity = ParseToolRarity(obj.value("toolRarity", "Wooden"));
+        ToolType toolType = ParseToolType(obj.value("toolType", "Axe"));
+        int consumableEnergyRestored = obj.value("consumableEnergyRestored", 0);
+        int consumableFatigueReduced = obj.value("consumableFatigueReduced", 0);
+
+        float cookTime = obj.value("cookTime", 0.f);
+
+        if (name.empty())
             continue;
 
         std::string id = MakeItemID(name);
@@ -71,10 +123,42 @@ bool ItemDataBase::LoadFromJSON(const std::string& filePath, std::function<bool(
             }
         }
 
-        m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack });
+        m_items.try_emplace(id, ItemData{ id, stem, name, description, buyPrice, sellPrice, maxStack, useActionID, itemType, weaponDamage, toolRarity, toolType, consumableEnergyRestored, consumableFatigueReduced, cookTime, std::string{} });
 
         if (internalID >= 0)
             m_internalIdToStringId[internalID] = id;
+
+    }
+
+    for (const auto& obj : root)
+    {
+        std::string name = obj.value("name", "");
+
+        if (name.empty()) 
+            continue;
+
+        float cookTime = obj.value("cookTime", 0.f);
+
+        if (cookTime <= 0.f)
+            continue;   
+
+        int cookResultInternalID = obj.value("cookResultItemID", -1);
+
+        if (cookResultInternalID < 0) 
+            continue;
+
+        const std::string& resolvedResultID = ResolveInternalID(cookResultInternalID);
+        if (resolvedResultID.empty())
+        {
+            std::cerr << "[ItemDataBase] Warning: item \"" << name << "\" a un cookResultItemID introuvable (internal id " << cookResultInternalID << ")" << std::endl;
+            continue;
+        }
+
+        std::string id = MakeItemID(name);
+        auto it = m_items.find(id);
+
+        if (it != m_items.end())
+            it->second.SetCookResultItemID(resolvedResultID);
     }
 
     return true;

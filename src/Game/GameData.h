@@ -4,6 +4,10 @@
 #include <string>
 #include "PlayerData.h"
 
+enum class Weather : uint8_t { Clear, Rain, Storm };
+enum class TimeOfDay : uint8_t { Day, Night };
+enum class Season : uint8_t { Spring, Summer, Autumn, Winter };
+
 class GameData
 {
 private:
@@ -35,6 +39,10 @@ public:
 
 	int GetHour();
 	int GetMinute();
+
+	Weather GetWeather();
+	TimeOfDay GetTimeOfDay();
+	Season GetSeason();
 
 	std::string GetMonthName();
 	std::string GetDayName();

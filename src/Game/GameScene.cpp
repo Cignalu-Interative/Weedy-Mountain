@@ -26,7 +26,6 @@
 #include "PNJ.h"
 #include "Ui/UiShop.h"
 #include "SpriteContainer.h"
-
 #include "Ui/UiStats.h"
 #include "Ui/UiMoney.h"
 #include "Ui/UiCash.h"
@@ -37,9 +36,10 @@
 #include "TextBox.h"
 
 #include "2DPendentLib/ObjectGroupTiled.h"
-#include "2DPendentLib/ObjectTiled.h"
+#include "2DPendentLib/ObjectTiled.h"	
 
 #include "Furnace.h"
+#include "ItemActions.h"
 
 void GameScene::OnInitialize()
 {
@@ -60,6 +60,7 @@ void GameScene::OnInitialize()
 	gm.Initialize();
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	RegisterAllItemActions();
 	Application::Get()->SetFPSUserWanted(10000);
 	Application::Get()->SetIsAutoFPS(false);
 
@@ -79,7 +80,6 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetGravityEnabled(false);
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
-	//
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
@@ -141,6 +141,14 @@ void GameScene::OnInitialize()
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
 // 	m_textBox->SetBackgroundFilled(true);
+
+	PlayerInventory* pi = GameData::Get().GetPlayerData().m_playerInventory;
+	pi->AddItem("ITEM_WHEAT_SEED", 64, false);
+	pi->AddItem("ITEM_CARROT_SEED", 64, false);
+	pi->AddItem("ITEM_WATERING_CAN", 1, false);
+	pi->AddItem("ITEM_DIAMOND_SHOVEL", 1, false);
+
+	pi->AddItem("ITEM_FISHING_ROD", 1, false);
 }
 
 

@@ -5,18 +5,19 @@
 #include <functional>
 
 class PlayerInventory;
+class Player;
 
 class ItemActionRegistry
 {
 public:
 
-    using ActionFn = std::function<void(PlayerInventory& inventory, const std::string& itemID, int slotIndex)>;
+    using ActionFn = std::function<void(Player& player, PlayerInventory& inventory, const std::string& itemID, int slotIndex) > ;
 
     static ItemActionRegistry* Get();
 
     void Register(const std::string& actionID, ActionFn fn);
 
-    bool Execute(const std::string& actionID, PlayerInventory& inventory, const std::string& itemID, int slotIndex);
+    bool Execute(const std::string& actionID, Player& player, PlayerInventory& inventory, const std::string& itemID, int slotIndex);
 
     bool IsRegistered(const std::string& actionID) const;
 

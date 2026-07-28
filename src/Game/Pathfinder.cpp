@@ -33,7 +33,7 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 	float dx = std::abs(p_start.GetX() - p_goal.GetX());
 	float dy = std::abs(p_start.GetY() - p_goal.GetY());
 
-	previousNode.s_h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
+	previousNode.s_h = Utils::Max({ dx, dy }) + (m_sqrt2 - 1) * Utils::Min({ dx, dy });
 
 	previousNode.s_f = previousNode.s_g + previousNode.s_h;
 
@@ -95,7 +95,7 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 				float dx = std::abs(pos.GetX() - p_goal.GetX());
 				float dy = std::abs(pos.GetY() - p_goal.GetY());
 
-				float h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
+				float h = Utils::Max({ dx, dy }) + (m_sqrt2 - 1) * Utils::Min({ dx, dy });
 
 				PathNode pathNode;
 

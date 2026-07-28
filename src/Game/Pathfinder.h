@@ -18,6 +18,7 @@ private:
 
 	std::vector<PathNode> m_nodePool;
 	std::vector<Vector2i> m_neighborPos;
+	static constexpr float m_sqrt2 = 1.41421356237;
 
 public:
 

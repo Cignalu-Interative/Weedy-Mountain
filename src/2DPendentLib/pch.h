@@ -4,31 +4,31 @@
 #define NOMINMAX
 #define WIN32_LEAN_AND_MEAN
 
-// Pour les flux d'entrée/sortie (std::cout, std::cin, etc.)
+// Pour les flux d'entrï¿½e/sortie (std::cout, std::cin, etc.)
 #include <iostream>
-// Pour la classe std::vector, qui est une structure de données de conteneur dynamique utilisée pour stocker des éléments de manière séquentielle.
+// Pour la classe std::vector, qui est une structure de donnï¿½es de conteneur dynamique utilisï¿½e pour stocker des ï¿½lï¿½ments de maniï¿½re sï¿½quentielle.
 #include <vector>
-// Pour la classe std::map, qui est une structure de données de conteneur associatif utilisée pour stocker des paires clé-valeur, où chaque clé est unique et associée à une valeur.
+// Pour la classe std::map, qui est une structure de donnï¿½es de conteneur associatif utilisï¿½e pour stocker des paires clï¿½-valeur, oï¿½ chaque clï¿½ est unique et associï¿½e ï¿½ une valeur.
 #include <map>
-// Pour la classe std::string, qui est une classe de chaîne de caractères utilisée pour manipuler des chaînes de texte de manière plus facile et efficace que les tableaux de caractères traditionnels.
+// Pour la classe std::string, qui est une classe de chaï¿½ne de caractï¿½res utilisï¿½e pour manipuler des chaï¿½nes de texte de maniï¿½re plus facile et efficace que les tableaux de caractï¿½res traditionnels.
 #include <string>
-// Pour les flux de fichiers (std::ifstream, std::ofstream, etc.), qui sont utilisés pour lire et écrire des données à partir de fichiers.
+// Pour les flux de fichiers (std::ifstream, std::ofstream, etc.), qui sont utilisï¿½s pour lire et ï¿½crire des donnï¿½es ï¿½ partir de fichiers.
 #include <fstream>
-// Pour les classes std::thread et std::mutex, qui sont utilisées pour la programmation multithread, permettant d'exécuter plusieurs threads d'exécution simultanément et de synchroniser l'accès aux ressources partagées.
+// Pour les classes std::thread et std::mutex, qui sont utilisï¿½es pour la programmation multithread, permettant d'exï¿½cuter plusieurs threads d'exï¿½cution simultanï¿½ment et de synchroniser l'accï¿½s aux ressources partagï¿½es.
 #include <thread>
-// Pour la classe std::function, qui est une classe de fonction générique utilisée pour stocker et appeler des fonctions, des lambdas, ou des objets fonctionnels de manière flexible.
+// Pour la classe std::function, qui est une classe de fonction gï¿½nï¿½rique utilisï¿½e pour stocker et appeler des fonctions, des lambdas, ou des objets fonctionnels de maniï¿½re flexible.
 #include <mutex>
-// Pour les fonctions mathématiques (std::sqrt, std::sin, etc.) et les constantes mathématiques (std::numbers::pi, etc.).
+// Pour les fonctions mathï¿½matiques (std::sqrt, std::sin, etc.) et les constantes mathï¿½matiques (std::numbers::pi, etc.).
 #include <functional>
-// Pour les fonctions de manipulation de chaînes de caractères (std::to_string, std::stoi, etc.).
+// Pour les fonctions de manipulation de chaï¿½nes de caractï¿½res (std::to_string, std::stoi, etc.).
 #include <cmath>
-// Pour les constantes mathématiques (std::numbers::pi, etc.).
+// Pour les constantes mathï¿½matiques (std::numbers::pi, etc.).
 #include <numbers>
 // Pour les fonctions de manipulation de conteneurs (std::sort, std::find, etc.).
 #include <algorithm>
-// Pour les classes std::vector, std::array, etc. utilisées pour stocker des collections d'éléments.
+// Pour les classes std::vector, std::array, etc. utilisï¿½es pour stocker des collections d'ï¿½lï¿½ments.
 #include <initializer_list>
-// Pour les classes std::array, qui est une structure de données de conteneur statique utilisée pour stocker des éléments de manière séquentielle avec une taille fixe.
+// Pour les classes std::array, qui est une structure de donnï¿½es de conteneur statique utilisï¿½e pour stocker des ï¿½lï¿½ments de maniï¿½re sï¿½quentielle avec une taille fixe.
 #include <cassert>
 // Pour les classes std::utility, qui contient des fonctions utilitaires telles que std::swap, std::move, etc.
 #include <filesystem>

@@ -9,7 +9,6 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentLib/FontManager.h"
 #include "CollisionManager.h"
-#include "2DPendentLib/SDLShader.h"
 #include "DialogueManager.h"
 #include "PhysicsManager.h"
 #include "2DPendentLib/BatchRenderer2D.h"

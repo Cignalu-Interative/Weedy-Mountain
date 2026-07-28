@@ -4,6 +4,7 @@
 #include <SDL3_mixer/SDL_mixer.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include "Utils.h"
+#include "GPUDevice.h"
 
 Window::~Window()
 {
@@ -48,8 +49,8 @@ bool Window::CreateWindow()
 
 	//SDL_AUDIO_S16LE son classique
 	//SDL_AUDIO_F32LE son haut de gamme
-	// 44100 Hz est la fréquence d'échantillonnage standard pour l'audio, utilisée dans les CD audio et de nombreux formats audio numériques.
-	// 48000 Hz est une fréquence d'échantillonnage couramment utilisée dans la production audio professionnelle, notamment pour les films, la télévision et les jeux vidéo.
+	// 44100 Hz est la frï¿½quence d'ï¿½chantillonnage standard pour l'audio, utilisï¿½e dans les CD audio et de nombreux formats audio numï¿½riques.
+	// 48000 Hz est une frï¿½quence d'ï¿½chantillonnage couramment utilisï¿½e dans la production audio professionnelle, notamment pour les films, la tï¿½lï¿½vision et les jeux vidï¿½o.
 
 	SDL_AudioSpec desiredSpec;
 	desiredSpec.format = SDL_AUDIO_F32LE;
@@ -105,6 +106,12 @@ bool Window::CreateWindow()
 		SDL_Log("Lib/Window.cpp/CreateWindow/IMG_Load/IMG_Load non reussie : %s", SDL_GetError());
 		return false;
 	}
+	m_gpuDevice = new GPUDevice(this);
+	if (m_gpuDevice == nullptr) {
+		std::cerr << "GPU device failed to init" << std::endl;
+		return false;
+	}
+
 	return true;
 }
 

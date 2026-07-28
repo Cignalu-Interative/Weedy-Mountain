@@ -5,6 +5,8 @@
 #include "Vector2.h"
 //Version 4.3.0
 
+class GPUDevice;
+
 class Window
 {
 private:
@@ -12,6 +14,8 @@ private:
 	SDL_Window* m_window = nullptr; //Pointeur qui stock la window
 
 	MIX_Mixer* m_mixer = nullptr; //Pointeur qui stock le mixer
+
+	GPUDevice* m_gpuDevice = nullptr;  //SDL_GPUDevice encapsulation which can load shaders and compute shaders (manage computes pipelines)
 
 	SDL_DisplayMode m_displayMode; //Struct qui stock différente informations de l'écran
 

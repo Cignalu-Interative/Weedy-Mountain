@@ -820,6 +820,12 @@
       "path": "../../res/Game/Assets/Textures/FurnaceBackGround.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Furnace_Fuel.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Furnace_progresBar.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Gold_Ingot.png"
     },
     {

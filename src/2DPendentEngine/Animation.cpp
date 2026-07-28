@@ -6,7 +6,7 @@
 void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool p_loop,const std::string& p_infoAnimationSpriteSheet)
 {
     m_sprite = p_sprite;
-    m_currentTimer = m_frameTime;
+    
     m_nameAnimation = p_nameAnimation;
     m_loop = p_loop;
 
@@ -19,6 +19,8 @@ void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool 
     m_frameSize = m_parser->GetFrameDimension();
     m_totalFrames = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_nbFrames.size();
     m_frameTime = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_frameTime;
+
+    m_currentTimer = m_frameTime;
         //m_sprite->GetSpriteRect() = new SDL_Rect();
 		//m_infoAnimation = m_parser->GetInfoAnimationByName(p_nameAnimation);
 }
@@ -30,13 +32,13 @@ void Animation::Update(float p_deltaTime)
 
     m_currentTimer -= p_deltaTime;
     //int nbFrames = nameAnimation->s_nbFrames;
-
+    //std::cout << m_frameTime << std::endl;
     if (m_currentTimer <= 0.f)
     {
-        m_currentTimer += m_frameTime;
+        m_currentTimer = m_frameTime;
         m_currentFrame = (m_currentFrame + 1) % m_totalFrames;
 
-		int spriteColumns = m_sprite->GetDimension().GetX() / m_frameSize.GetX();
+ 		int spriteColumns = m_sprite->GetDimension().GetX() / m_frameSize.GetX();
 
         // recuperer l emplacement de l image sur le sprite source, recup le int dans le vector du parser 
         int frameInSprite = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
@@ -107,6 +109,7 @@ void Animation::SetAnimationByName(const std::string& p_name)
         m_frameTime = info->s_frameTime;
         m_totalFrames = info->s_nbFrames.size();
         m_frameSize = m_parser->GetFrameDimension();
-
+        m_currentFrame = 0;
+        m_currentTimer = m_frameTime;
     }
 }

@@ -52,7 +52,7 @@ public:
 	bool IsFacingRight() const { return m_isFacingRight; }
 
 	//Set la durée de l'animation en secondes
-	void SetDuration(float p_duration) { m_frameTime = p_duration;}
+	void SetDuration(float p_duration) { m_frameTime = p_duration; m_currentTimer = m_frameTime; }
 
 	//Definir l'animation à jouer en fonction de son nom (ex: "idle", "walk", etc.)
 	void SetAnimationByName(const std::string& p_name);

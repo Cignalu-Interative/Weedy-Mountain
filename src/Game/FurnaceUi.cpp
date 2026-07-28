@@ -7,6 +7,7 @@
 #include "ItemDataBase.h"
 #include "2DPendentLib/InputManager.h"
 #include "2DPendentLib/Utils.h"
+#include "Animation.h"
 
 void FurnaceUi::OnInitialize()
 {
@@ -17,9 +18,9 @@ void FurnaceUi::OnInitialize()
 	GetSprite("BackgroundFurnace")->ResizeStretched(GetDimension());
 	SyncSprites();
 
-	AddSprite("MeltedEmpty", "emptyHorizontal", { 90,25 }, 1, {0, -165 }, true);
+/*	AddSprite("MeltedEmpty", "emptyHorizontal", { 90,25 }, 1, {0, -165 }, true);
 	AddSprite("MeltedFull", "fullHorizontalRed", { 90,25 }, 2, {0, -165 }, true);
-	GetSprite("MeltedFull")->SetDimension({});
+	GetSprite("MeltedFull")->SetDimension({})*/;
 
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 
@@ -47,27 +48,52 @@ void FurnaceUi::OnInitialize()
 	m_meltedOres->SetSprite("item_texture", "");
 	m_meltedOres->InitText("slot" + std::to_string(1), "");
 
+	SpriteContainer* progressBar = AddSprite("ProgressBarSpriteSheet", "Furnace_progresBar", {100,25}, 1, {0, -165}, true);
+	m_progressBarAnimation = new Animation();
+	m_progressBarAnimation->Init(progressBar->m_sprite, "default", true, "../../res/Game/progressBarAnimation.json");
+
+	//SpriteContainer* flame = AddSprite("FlameSpriteSheet", "Furnace_Fuel", { 100,25 }, 1, { 0, -165 }, true);
+	//m_flameAnimation = new Animation();
+	//m_flameAnimation->Init(flame->m_sprite, "default", true, "../../res/Game/progressBarAnimation.json");
+	//m_flameAnimation->SetDuration(m_fuelTime);
+
 }
 
 void FurnaceUi::OnUpdate()
-{
+{	
+	float dt = GetDeltaTime();
 
-	if (m_meltedOres->GetStack().GetAmount() == 64)
-		return;
+	if ( m_currentfuelTime > 0)
+		m_progressBarAnimation->Update(dt);
 
-	float progress = 1.f - (m_currentHeatingTime / m_heatingTimeRequired);
-	progress = Utils::Clamp(progress, 0.f, 1.f);
-	int maxWidth = GetSprite("MeltedEmpty")->GetDimension().GetX();
-	int height = GetSprite("MeltedEmpty")->GetDimension().GetY();
-	GetSprite("MeltedFull")->SetDimension({ int(maxWidth * progress), height });
-
-
-	if (m_rawOres->IsEmpty() /*|| m_consumables->IsEmpty()*/)
+	ItemData* data = ItemDataBase::Get()->GetItem(m_rawOres->GetStack().GetID());
+	if (data == nullptr)
 	{
-		m_currentHeatingTime = m_heatingTimeRequired;
 		return;
 	}
 
+	std::string resultItem = data->GetCookResultItemID();
+
+	if (m_meltedOres->IsEmpty() == false)
+	{
+		if (m_meltedOres->GetStack().GetID() != resultItem)
+			return;
+	}
+
+	if (m_meltedOres->GetStack().GetAmount() == 64)
+		return;
+	//float progress = 1.f - (m_currentHeatingTime / m_heatingTimeRequired);
+	//progress = Utils::Clamp(progress, 0.f, 1.f);
+	//int maxWidth = GetSprite("MeltedEmpty")->GetDimension().GetX();
+	//int height = GetSprite("MeltedEmpty")->GetDimension().GetY();
+	//GetSprite("MeltedFull")->SetDimension({ int(maxWidth * progress), height });
+
+	if (m_rawOres->IsEmpty())
+	{
+		m_progressBarAnimation->SetAnimationByName("idle");
+		m_currentHeatingTime = m_heatingTimeRequired;
+		return;
+	}
 
 	if (m_currentfuelTime <= 0)
 	{
@@ -82,43 +108,36 @@ void FurnaceUi::OnUpdate()
 
 	if (m_currentfuelTime > 0)
 	{
-		m_currentfuelTime -= GetDeltaTime();
-		m_currentHeatingTime -= GetDeltaTime();
+		m_currentfuelTime -= dt;
+		m_currentHeatingTime -= dt;
 
 		ItemStack& meltedStack = m_meltedOres->GetStack();
 
 		if (m_currentHeatingTime <= 0)
 		{
+	
+			int heatingTime = data->GetCookTime();
+
 			ItemStack& rawStack = m_rawOres->GetStack();
 			//remove 1 to m_rawOres
 			rawStack.SetAmount(rawStack.GetAmount() - 1);
 			m_rawOres->RefreshVisual();
 			//add 1 to m_meltedOres
 			{
-				std::string id = m_rawOres->GetStack().GetID();
-				std::string textToDelete = "_RAW";
-				std::string textToAdd = "_INGOT";
 
-				size_t pos = id.find(textToDelete);
-				if (pos != std::string::npos)
-					id.erase(pos, textToDelete.size());
-
-				std::string finalId = id + textToAdd;
-
-				//id == GOLD_INGOT
-				m_meltedOres->GetStack().SetID(finalId);
+				m_meltedOres->GetStack().SetID(resultItem);
 				meltedStack.SetAmount(meltedStack.GetAmount() + 1);
 				m_meltedOres->RefreshVisual();
 			}
-
-			m_currentHeatingTime = m_heatingTimeRequired;
+			m_heatingTimeRequired = heatingTime;
+			m_currentHeatingTime = heatingTime;
 		}
 	}
-	if (m_currentfuelTime < 0)
-	{
-		GetSprite("MeltedFull")->SetDimension({});
+	//if (m_currentfuelTime < 0)
+	//{
+	//	GetSprite("MeltedFull")->SetDimension({});
 
-	}
+	//}
 }
 
 void FurnaceUi::OnEvent()
@@ -131,12 +150,60 @@ void FurnaceUi::OnEvent()
 
 void FurnaceUi::PlaceItemInRawOresSlot()
 {
-	PlaceItemInFurnaceSlot("RAW", m_rawOres);
+	PlaceItemInFurnaceSlot(m_rawOres);
 }
 
 void FurnaceUi::PlaceItemInConsumablesSlot()
 {
 	PlaceItemInFurnaceSlot("ITEM_WOOD", m_consumables);
+}
+
+void FurnaceUi::PlaceItemInFurnaceSlot( InventorySlot* p_slot)
+{
+	// take item with p_idToTest in inventory and place in slot
+	std::vector<InventorySlot*> slots = m_playerInventory->GetHotbar()->GetSlots(); // replace by GetAllSlots
+	for (InventorySlot* slot : slots)
+	{
+		if (slot->IsMouseIn() == false)
+			continue;
+		ItemData* data = ItemDataBase::Get()->GetItem(slot->GetStack().GetID());
+
+		if (data == nullptr)
+			continue;
+		
+		if (data->IsCookable() == false)
+			return;
+
+		m_currentHeatingTime = data->GetCookTime();
+		m_heatingTimeRequired = data->GetCookTime();
+		m_progressBarAnimation->SetAnimationByName("default");
+		m_progressBarAnimation->SetDuration(data->GetCookTime()/ m_progressBarAnimation->GetTotalFrames());
+
+		// AddItem in furnaceSlot
+		{
+
+			ItemStack& stack = slot->GetStack();
+
+			int remaining = stack.GetAmount();
+
+			int freeSpace = data->GetMaxStack() - p_slot->GetStack().GetAmount();
+			int toAdd = std::min(freeSpace, remaining);
+			p_slot->GetStack().SetAmount(p_slot->GetStack().GetAmount() + toAdd);
+			p_slot->GetStack().SetID(stack.GetID());
+			p_slot->RefreshVisual();
+
+			//RemoveAmount of item toAdd in p_slot in inventory
+			{
+
+				stack.SetAmount(stack.GetAmount() - toAdd);
+				slot->RefreshVisual();
+
+				if (stack.GetAmount() == 0)
+					slot->Clear();
+			}
+		}
+	
+	}
 }
 
 void FurnaceUi::PlaceItemInFurnaceSlot(const std::string& p_idToTest, InventorySlot* p_slot)
@@ -147,17 +214,16 @@ void FurnaceUi::PlaceItemInFurnaceSlot(const std::string& p_idToTest, InventoryS
 	{
 		if (slot->IsMouseIn() == false)
 			continue;
+		ItemData* data = ItemDataBase::Get()->GetItem(slot->GetStack().GetID());
+
+		if (data == nullptr)
+			continue;
 
 		if (slot->GetStack().GetID().find(p_idToTest) == std::string::npos)
 			continue;
 	
 		// AddItem in furnaceSlot
 		{
-			
-			ItemData* data = ItemDataBase::Get()->GetItem(slot->GetStack().GetID());
-
-			if (data == nullptr)
-				continue;
 
 			ItemStack& stack = slot->GetStack();
 

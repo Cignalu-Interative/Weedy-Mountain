@@ -73,6 +73,8 @@
     },
     {
         "buyPrice": 30,
+        "cookResultItemID": 58,
+        "cookTime": 20.0,
         "description": "T'as vu de l'eau quelque part ???",
         "id": 7,
         "imagePath": "..\\Textures\\Items\\Tools\\item189.png",

@@ -13,6 +13,7 @@ private :
 	Inventory* m_chestInventory = nullptr;
 
 	void OnInitialize() override;
+	void OnEvent() override;
 
 	void AddItemInChest();
 	void AddItemInPlayerInventory();

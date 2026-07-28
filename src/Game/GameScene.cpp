@@ -39,8 +39,6 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
-#include "2DPendentLib/ObjectGroupTiled.h"
-
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");

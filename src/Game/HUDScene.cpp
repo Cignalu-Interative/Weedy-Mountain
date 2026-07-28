@@ -14,11 +14,12 @@
 #include "PlayerInventory.h"
 #include "2DPendentLib/InputManager.h"
 #include "UiChest.h"
+#include "ItemDataBase.h"
 
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
-
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	Vector2f uiStatsPos = { 1175, 600 };
 
 	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
@@ -43,11 +44,12 @@ void HUDScene::OnInitialize()
 	Hotbar* hot = CreateEntity<Hotbar>(hotbarPos, { 636, 96 }, "Hotbar", Shape::Rectangle);
 
 	m_playerInventory = new PlayerInventory(inv, hot);
+	m_playerInventory->AddItem("ITEM_WOOD", 128, false);
 
 	GameData::Get().SetInventory(m_playerInventory);
 	SceneManager::Get()->SetPersistentScene(this);
 
-	UiChest* c = CreateEntity<UiChest>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
+	UiChest* c = CreateEntity<UiChest>(GetWindowCenter(), { 800,700 }, "", Shape::Rectangle, true);
 	c->Open();
 }
 

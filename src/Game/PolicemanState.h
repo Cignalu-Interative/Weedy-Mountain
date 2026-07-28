@@ -22,8 +22,6 @@ public:
 
 	void Update(Policeman* p_policeman, float dt) 
 	{
-		std::cout << "AAAAAAAAAAAAAAHHHHHHHHHHHHHHHHH !!!!!" << std::endl;
-
 		m_cooldown -= p_policeman->GetDeltaTime();
 
 		if (m_cooldown <= 0.f)
@@ -56,8 +54,6 @@ class PolicemanPatrolState : public StateBase<Policeman>
 
 	void Update(Policeman* p_policeman, float dt)
 	{
-		
-		std::cout << "Patrol " << std::endl;
 		/*Vector2f policemanDir = p_policeman->GetDirection();
 		if (policemanDir.GetX() > 0)
 			p_policeman->SetAnimationByName("WalkRight");
@@ -120,8 +116,6 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 	void Update(Policeman* p_policeman, float dt) 
 	{
-		std::cout << "CCCCCCCCCCCCCCCCHHHHHHHHHHHHHHHHH !!!!!" << std::endl;
-
 		/*Vector2f policemanDir = p_policeman->GetDirection();
 		if (policemanDir.GetX() > 0)
 			p_policeman->SetAnimationByName("WalkRight");

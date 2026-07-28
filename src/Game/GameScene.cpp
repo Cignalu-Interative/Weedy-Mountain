@@ -60,7 +60,7 @@ void GameScene::OnInitialize()
 	m_policeman = CreateEntity<Policeman>({ GetWindowWidth() / 3.f, GetWindowHeight() / 3.f }, { 16, 32 }, "player", Shape::Rectangle);
 	m_policeman->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
 	
-	//GetCamera()->SetZoom(5.f);
+	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetSmoothSpeed(2);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 	GetCamera()->SetFollowedEntity(m_player);

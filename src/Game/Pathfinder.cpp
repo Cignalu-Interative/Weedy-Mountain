@@ -5,8 +5,6 @@
 
 std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal)
 {
-	std::cout << "Euuuuhhhh je calcule le chemin !!" << std::endl;
-
 	m_nodePool.clear();
 	m_nodePool.reserve(p_navigationGrid.GetGridDimension().GetX() * p_navigationGrid.GetGridDimension().GetY());
 

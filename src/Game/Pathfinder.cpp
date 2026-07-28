@@ -1,168 +1,153 @@
 #include "pch.h"
 #include "Pathfinder.h"
 #include <algorithm>
+#include <queue>
 
 std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal)
 {
-    std::vector<Tile*> path;
-    std::vector<PathNode*> toExplore;
-    std::vector<PathNode*> toDelete;
+	std::cout << "Euuuuhhhh je calcule le chemin !!" << std::endl;
 
-    float g = 0.f;
+	m_nodePool.clear();
+	m_nodePool.reserve(p_navigationGrid.GetGridDimension().GetX() * p_navigationGrid.GetGridDimension().GetY());
 
-    PathNode* previousNode = new PathNode;
+	m_neighborPos.clear();
 
-    previousNode->s_gridPos = p_start;
+	if (p_navigationGrid.GetTileByGridPos(p_goal)->canBeCrossed == false)
+	{
+		return {};
+	}
 
-    previousNode->s_g = g;
+	std::vector<Tile*> path;
 
-    float dx = std::abs(p_start.GetX() - p_goal.GetX());
-    float dy = std::abs(p_start.GetY() - p_goal.GetY());
+	auto comparator = [this](int a, int b) { return m_nodePool[a].s_f > m_nodePool[b].s_f; };
+	std::priority_queue<int, std::vector<int>, decltype(comparator)> toExplore(comparator);
 
-    previousNode->s_h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
+	float g = 0.f;
 
-    previousNode->s_f = previousNode->s_g + previousNode->s_h;
+	PathNode previousNode;
 
-    previousNode->s_previousPathNode = nullptr;
-    std::vector<Vector2i> neighborPos;
+	previousNode.s_gridPos = p_start;
 
-    std::vector<Vector2i> alreadyExplore;
+	previousNode.s_g = g;
 
-    toExplore.push_back(previousNode);
-    toDelete.push_back(previousNode);
+	float dx = std::abs(p_start.GetX() - p_goal.GetX());
+	float dy = std::abs(p_start.GetY() - p_goal.GetY());
 
-    while (toExplore.size() > 0)
-    {
-        int bestIndex = 0;
-        float bestF = toExplore[0]->s_f;
+	previousNode.s_h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
 
-        for (int i = 1; i < toExplore.size(); i++)
-        {
-            if (toExplore[i]->s_f < bestF)
-            {
-                bestF = toExplore[i]->s_f;
-                bestIndex = i;
-            }
-        }
+	previousNode.s_f = previousNode.s_g + previousNode.s_h;
 
-        PathNode* currentNode = toExplore[bestIndex];
-        alreadyExplore.push_back(currentNode->s_gridPos);
+	previousNode.s_previousPathNode = -1;
+	
+	m_nodePool.push_back(previousNode);
+	int startIndex = (int)(m_nodePool.size() - 1);
 
-        toExplore.erase(toExplore.begin() + bestIndex);
+	int currentIndex = 0;
 
+	Vector2i dim = p_navigationGrid.GetGridDimension();
+	std::vector<bool> alreadyExplore(dim.GetX() * dim.GetY(), false);
 
+	toExplore.push(currentIndex);
 
-        if (currentNode->s_gridPos == p_goal)
-        {
-            PathNode* tempNode = currentNode;
+	while (toExplore.size() > 0)
+	{
+		currentIndex = toExplore.top();
+		toExplore.pop();
 
-            while (tempNode != nullptr)
-            {
-                path.push_back(p_navigationGrid.GetTileByGridPos(tempNode->s_gridPos));
-                tempNode = tempNode->s_previousPathNode;
-            }
+		if (alreadyExplore[m_nodePool[currentIndex].s_gridPos.GetX() * dim.GetY() + m_nodePool[currentIndex].s_gridPos.GetY()])
+		{
+			continue;
+		}
 
-            std::reverse(path.begin(), path.end());
+		alreadyExplore[m_nodePool[currentIndex].s_gridPos.GetX() * dim.GetY() + m_nodePool[currentIndex].s_gridPos.GetY()] = true;
 
-            for (PathNode* deleted : toDelete)
-            {
-                delete deleted;
-            }
+		if (m_nodePool[currentIndex].s_gridPos == p_goal)
+		{
+			int tempIndex = currentIndex;
 
-            return path;
-        }
+			while (tempIndex != -1)
+			{
+				path.push_back(p_navigationGrid.GetTileByGridPos(m_nodePool[tempIndex].s_gridPos));
+				tempIndex = m_nodePool[tempIndex].s_previousPathNode;
+			}
 
-        neighborPos = GetNeighborPos(p_navigationGrid.GetGridDimension(), currentNode->s_gridPos);
+			std::reverse(path.begin(), path.end());
 
-        for (Vector2i pos : neighborPos)
-        {
-            if (p_navigationGrid.GetTileByGridPos(pos) == nullptr)
-            {
-                continue;
-            }
+			return path;
+		}
 
-            if (p_navigationGrid.GetTileByGridPos(pos)->canBeCrossed &&
-                std::find(alreadyExplore.begin(), alreadyExplore.end(), pos) == alreadyExplore.end())
-            {
-                g = StepCost(currentNode->s_gridPos, pos);
+		GetNeighborPos(p_navigationGrid.GetGridDimension(), m_nodePool[currentIndex].s_gridPos);
 
-                float dx = std::abs(pos.GetX() - p_goal.GetX());
-                float dy = std::abs(pos.GetY() - p_goal.GetY());
+		for (Vector2i pos : m_neighborPos)
+		{
+			Tile* tile = p_navigationGrid.GetTileByGridPos(pos);
 
-                float h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
+			if (tile == nullptr)
+			{
+				continue;
+			}
 
-                auto it = std::find_if(toExplore.begin(), toExplore.end(), [pos](PathNode* node) {return node->s_gridPos == pos; });
+			if (tile->canBeCrossed &&
+				alreadyExplore[pos.GetX() * dim.GetY() + pos.GetY()] == false)
+			{
+				g = StepCost(m_nodePool[currentIndex].s_gridPos, pos);
 
-                if (it == toExplore.end())
-                {
-                    PathNode* pathNode = new PathNode;
+				float dx = std::abs(pos.GetX() - p_goal.GetX());
+				float dy = std::abs(pos.GetY() - p_goal.GetY());
 
-                    pathNode->s_gridPos = pos;
+				float h = Utils::Max({ dx, dy }) + (std::sqrt(2) - 1) * Utils::Min({ dx, dy });
 
-                    pathNode->s_g = currentNode->s_g + g;
+				PathNode pathNode;
 
-                    pathNode->s_h = h;
+				pathNode.s_gridPos = pos;
 
-                    pathNode->s_f = pathNode->s_g + pathNode->s_h;
+				pathNode.s_g = m_nodePool[currentIndex].s_g + g;
 
-                    pathNode->s_previousPathNode = currentNode;
+				pathNode.s_h = h;
 
-                    toExplore.push_back(pathNode);
-                    toDelete.push_back(pathNode);
-                }
-                else
-                {
-                    if (currentNode->s_g + g < (*it)->s_g)
-                    {
-                        (*it)->s_g = currentNode->s_g + g;
-                        (*it)->s_h = h;
-                        (*it)->s_f = (*it)->s_g + (*it)->s_h;
-                        (*it)->s_previousPathNode = currentNode;
-                    }
-                }
-            }
-        }
-        neighborPos.clear();
-    }
+				pathNode.s_f = pathNode.s_g + pathNode.s_h;
 
-    for (PathNode* deleted : toDelete)
-    {
-        delete deleted;
-    }
+				pathNode.s_previousPathNode = currentIndex;
 
-    return path;
+				m_nodePool.push_back(pathNode);
+
+				int newIndex = (int)m_nodePool.size() - 1;
+
+				toExplore.push(newIndex);
+			}
+		}
+		m_neighborPos.clear();
+	}
+
+	return path;
 }
 
-std::vector<Vector2i> Pathfinder::GetNeighborPos(Vector2i p_gridDimension, Vector2i p_startPos)
+void Pathfinder::GetNeighborPos(Vector2i p_gridDimension, Vector2i p_startPos)
 {
-    std::vector<Vector2i> allNeighbors;
-    
-    for (int i = p_startPos.GetX() - 1; i <= p_startPos.GetX() + 1; i++)
-    {
-        for (int j = p_startPos.GetY() - 1; j <= p_startPos.GetY() + 1; j++)
-        {
-            if (i >= 0 && i < p_gridDimension.GetX() && j >= 0 && j < p_gridDimension.GetY())
-            {
-                if (i == p_startPos.GetX() && j == p_startPos.GetY())
-                    continue;
+	for (int i = p_startPos.GetX() - 1; i <= p_startPos.GetX() + 1; i++)
+	{
+		for (int j = p_startPos.GetY() - 1; j <= p_startPos.GetY() + 1; j++)
+		{
+			if (i >= 0 && i < p_gridDimension.GetX() && j >= 0 && j < p_gridDimension.GetY())
+			{
+				if (i == p_startPos.GetX() && j == p_startPos.GetY())
+					continue;
 
-                allNeighbors.push_back({ i, j });
-            }
-        }
-    }
-
-    return allNeighbors;
+				m_neighborPos.push_back({ i, j });
+			}
+		}
+	}
 }
 
 float Pathfinder::StepCost(Vector2i p_previousPos, Vector2i p_currentPos)
 {
-    if (p_previousPos == p_currentPos)
-        return 0.f;
+	if (p_previousPos == p_currentPos)
+		return 0.f;
 
-    Vector2i diffPos = p_currentPos - p_previousPos;
+	Vector2i diffPos = p_currentPos - p_previousPos;
 
-    if (diffPos.GetX() != 0 && diffPos.GetY() != 0)
-        return std::sqrt(2);
+	if (diffPos.GetX() != 0 && diffPos.GetY() != 0)
+		return std::sqrt(2);
 
-    return 1.f;
+	return 1.f;
 }

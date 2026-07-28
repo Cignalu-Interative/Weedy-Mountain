@@ -15,16 +15,15 @@ void Policeman::OnInitialize()
 		col->SetShow(true);
 	}
 
-	SetSpeed(500);
+	SetSpeed(50);
 
 	SetupStateMachine();
 }
 
 void Policeman::OnUpdate()
 {
-	MoveKinematic();
-
 	m_stateMachine.Update(this, GetDeltaTime());
+	MoveKinematic();
 }
 
 void Policeman::OnEvent()
@@ -33,33 +32,63 @@ void Policeman::OnEvent()
 
 void Policeman::OnCollisionStay(Collider* p_self, Collider* p_other, CollisionSide p_side)
 {
-	if (p_other->GetOwner()->GetTag() == 1 && p_self->GetID() == "default")
+	if (p_self->GetID() == "default" && p_other->GetOwner()->GetTag() == 1 && p_other->GetID() == "default")
 	{
 		m_isCollidingWithPlayer = true;
 	}
+
+	if (m_isUnreachable)
+	{
+		m_isPlayerDetected = false;
+		m_isLoosingPlayer = true;
+		return;
+	}
+
 	if (p_other->GetOwner()->GetTag() == 1 && p_self->GetID() == "detection")
 	{
-		m_isPlayerDetected = true;
+		if (m_isPlayerDetected == false && m_isUnreachable == false)
+		{
+			m_isPlayerDetected = true;
+			m_isLoosingPlayer = false;
+			SetState(PolicemanState::CHASE);
+		}
+
 		m_playerPos = p_other->GetOwner()->GetPosition();
 	}
 	if (p_other->GetOwner()->GetTag() == 1 && p_other->GetID() == "default" && p_self->GetID() == "vision" &&
 		IsInVisionCone(p_other->GetPosition()))
 	{
-		m_isPlayerDetected = true;
+		if (m_isPlayerDetected == false && m_isUnreachable == false)
+		{
+			m_isPlayerDetected = true;
+			m_isLoosingPlayer = false;
+
+			if (m_stateMachine.GetState() != (int)PolicemanState::CHASE)
+			{
+				SetState(PolicemanState::CHASE);
+			}
+		}
 		m_playerPos = p_other->GetOwner()->GetPosition();
 	}
 }
 
 void Policeman::OnCollisionExit(Collider* p_self, Collider* p_other, CollisionSide p_side)
 {
-	if (p_self->GetID() == "detection" && p_other->GetOwner()->GetTag() == 1)
+	if (p_self->GetID() == "default" && p_other->GetOwner()->GetTag() == 1 && p_other->GetID() == "default")
 	{
-		m_isLoosingPlayer = true;
+		m_isCollidingWithPlayer = false;
 	}
-	if (p_other->GetOwner()->GetTag() == 1 && p_self->GetID() == "vision" &&
-		IsInVisionCone(p_other->GetPosition()))
+	if (p_other->GetOwner()->GetTag() == 1 && p_self->GetID() == "vision")
 	{
 		m_isLoosingPlayer = true;
+		m_isPlayerDetected = false;
+		m_isUnreachable = false;
+	}
+	if (IsInVisionCone(p_other->GetPosition()) == false && p_self->GetID() == "detection")
+	{
+		m_isLoosingPlayer = true;
+		m_isPlayerDetected = false;
+		m_isUnreachable = false;
 	}
 }
 
@@ -99,7 +128,8 @@ void Policeman::SetupStateMachine()
 		auto transition = m_stateMachine.AddTransition((int)PolicemanState::CHASE, (int)PolicemanState::IDLE);
 		transition->AddCondition(new HasCollideWithPlayer);
 
-		transition->AddCondition(new HasLoosePlayer);
+		auto transition2 = m_stateMachine.AddTransition((int)PolicemanState::CHASE, (int)PolicemanState::IDLE);
+		transition2->AddCondition(new HasLoosePlayer);
 	}
 
 	SetState(PolicemanState::IDLE);
@@ -123,15 +153,33 @@ void Policeman::StartPatrol()
 {
 	NavigationGrid* navigationGrid = GetScene<GameScene>()->GetNavigationGrid();
 
-	navigationGrid->SetTileCrossedByType(TileType::GRASS, false);
-
 	m_pathIndex = 0;
 
 	Vector2i start = { (int)(m_position.GetX() / 16), (int)(m_position.GetY() / 16) };
 	int goalIndex = Aleatory::GetInt(0, navigationGrid->GetTilesByType(TileType::PATH).size());
 	Vector2i goalPos = navigationGrid->GetTilesByType(TileType::PATH)[goalIndex]->gridPos;
 
+	if (navigationGrid->GetTileByGridPos(start)->type == TileType::PATH)
+	{
+		navigationGrid->SetTileCrossedByType(TileType::GRASS, false);
+	}
+
 	m_path = m_pathfinder.FindPath(*navigationGrid, start, goalPos);
+
+	int maxAttempts = 10;
+	int attempts = 0;
+
+	do
+	{
+		int goalIndex = Aleatory::GetInt(0, navigationGrid->GetTilesByType(TileType::PATH).size());
+		Vector2i goalPos = navigationGrid->GetTilesByType(TileType::PATH)[goalIndex]->gridPos;
+
+		m_path = m_pathfinder.FindPath(*navigationGrid, start, goalPos);
+
+		attempts++;
+	} while (m_path.size() == 0 && attempts < maxAttempts);
+
+	navigationGrid->SetTileCrossedByType(TileType::GRASS, false);
 }
 
 bool Policeman::IsInVisionCone(Vector2f p_goalPos)
@@ -147,7 +195,16 @@ bool Policeman::IsInVisionCone(Vector2f p_goalPos)
 
 	Vector2f normalizeDir = dir / dirLength;
 
-	float dotDir = Utils::Dot(Utils::NormalizeVector(m_direction), normalizeDir);
+	float dotDir;
+
+	if (m_facingDir.GetX() == 0.f && m_facingDir.GetY() == 0.f)
+	{
+		dotDir = Utils::Dot(m_facingDir, normalizeDir);
+	}
+	else
+	{
+		dotDir = Utils::Dot(Utils::NormalizeVector(m_facingDir), normalizeDir);
+	}
 
 	if (dotDir >= m_limitedCos)
 	{

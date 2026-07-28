@@ -9,16 +9,21 @@ struct PathNode
 	float s_h;
 	float s_f;
 	
-	PathNode* s_previousPathNode;
+	int s_previousPathNode;
 };
 
 class Pathfinder
 {
+private:
+
+	std::vector<PathNode> m_nodePool;
+	std::vector<Vector2i> m_neighborPos;
+
 public:
 
 	std::vector<Tile*> FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal);
 
-	std::vector<Vector2i> GetNeighborPos(Vector2i p_gridDimension, Vector2i p_startPos);
+	void GetNeighborPos(Vector2i p_gridDimension, Vector2i p_startPos);
 
 	float StepCost(Vector2i p_previousPos, Vector2i p_currentPos);
 };

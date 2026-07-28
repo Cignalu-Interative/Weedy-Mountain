@@ -16,6 +16,8 @@ public:
 
 		m_cooldown = 1.5f;
 		p_policeman->SetIdleCooldownEnded(false);
+		p_policeman->SetIsLoosingPlayer(false);
+		p_policeman->SetIsPlayerDetected(false);
 	};
 
 	void Update(Policeman* p_policeman, float dt) 
@@ -54,6 +56,8 @@ class PolicemanPatrolState : public StateBase<Policeman>
 
 	void Update(Policeman* p_policeman, float dt)
 	{
+		
+		std::cout << "Patrol " << std::endl;
 		/*Vector2f policemanDir = p_policeman->GetDirection();
 		if (policemanDir.GetX() > 0)
 			p_policeman->SetAnimationByName("WalkRight");
@@ -65,10 +69,14 @@ class PolicemanPatrolState : public StateBase<Policeman>
 		else if (policemanDir.GetY() < 0)
 			p_policeman->SetAnimationByName("WalkUp");*/
 
-		std::cout << "BBBBBBBBBBBBBBHHHHHHHHHHHHHHHHH !!!!!" << std::endl;
-
 		int pathIndex = p_policeman->GetPathIndex();
 		std::vector<Tile*> path = p_policeman->GetPath();
+
+		if (pathIndex >= path.size())
+		{
+			p_policeman->SetState(PolicemanState::IDLE);
+			return;
+		}
 
 		Vector2i policemanGridPos = { (int)p_policeman->GetPosition().GetX() / 16, (int)p_policeman->GetPosition().GetY() / 16 };
 
@@ -76,6 +84,7 @@ class PolicemanPatrolState : public StateBase<Policeman>
 			(float)path[pathIndex]->gridPos.GetY() - (float)policemanGridPos.GetY() };
 
 		p_policeman->SetDirection(dir);
+		p_policeman->SetFacingDir(dir);
 
 		if (policemanGridPos == path[pathIndex]->gridPos)
 		{
@@ -94,7 +103,7 @@ class PolicemanPatrolState : public StateBase<Policeman>
 			return true;
 			break;
 		case (int)PolicemanState::CHASE:
-			return true;
+			return false;
 			break;
 		}
 	};
@@ -102,7 +111,10 @@ class PolicemanPatrolState : public StateBase<Policeman>
 
 class PolicemanChaseState : public StateBase<Policeman>
 {
-	void Start(Policeman* p_policeman) {
+	void Start(Policeman* p_policeman) 
+	{
+		p_policeman->SetIsLoosingPlayer(false);
+
 		p_policeman->StartChase();
 	};
 
@@ -121,7 +133,13 @@ class PolicemanChaseState : public StateBase<Policeman>
 		else if (policemanDir.GetY() < 0)
 			p_policeman->SetAnimationByName("WalkUp");*/
 
+		if (p_policeman->IsUnreachable())
+		{
+			return;
+		}
+
 		Pathfinder pathfinder;
+		GameScene* gs = p_policeman->GetScene<GameScene>();
 
 		Vector2i policemanGridPos = { (int)p_policeman->GetPosition().GetX() / 16, (int)p_policeman->GetPosition().GetY() / 16 };
 		Vector2i playerGridPos = { (int)p_policeman->GetPlayerPos().GetX() / 16, (int)p_policeman->GetPlayerPos().GetY() / 16 };
@@ -130,10 +148,30 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 		std::vector<Tile*> path = p_policeman->GetPath();
 
+		if (pathIndex >= path.size())
+		{
+			path = pathfinder.FindPath(*gs->GetNavigationGrid(), policemanGridPos, playerGridPos);
+			
+			if (path.size() == 0)
+			{
+				p_policeman->SetIsUnreachable(true);
+				p_policeman->SetIsLoosingPlayer(true);
+				p_policeman->SetIsPlayerDetected(false);
+
+				p_policeman->SetState(PolicemanState::IDLE);
+				return;
+			}
+
+			pathIndex = 0;
+			p_policeman->SetPathIndex(pathIndex);
+			p_policeman->SetPath(path);
+		}
+
 		Vector2f dir = { (float)path[pathIndex]->gridPos.GetX() - (float)policemanGridPos.GetX(),
 			(float)path[pathIndex]->gridPos.GetY() - (float)policemanGridPos.GetY() };
 
 		p_policeman->SetDirection(dir);
+		p_policeman->SetFacingDir(dir);
 
 		if (policemanGridPos == path[pathIndex]->gridPos)
 		{
@@ -142,9 +180,10 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 			if (pathIndex % 2 == 0)
 			{
-				GameScene* gs = p_policeman->GetScene<GameScene>();
 				p_policeman->SetPath(pathfinder.FindPath(*gs->GetNavigationGrid(),
 					policemanGridPos, playerGridPos));
+
+				p_policeman->SetPathIndex(0);
 			}
 		}
 	};
@@ -158,7 +197,7 @@ class PolicemanChaseState : public StateBase<Policeman>
 			return true;
 			break;
 		case (int)PolicemanState::PATROL:
-			return false;
+			return true;
 			break;
 		}
 	};

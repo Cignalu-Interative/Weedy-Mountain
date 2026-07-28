@@ -18,10 +18,13 @@ private:
 	
 	bool m_isPlayerDetected = false;
 	bool m_isLoosingPlayer = false;
+	bool m_isUnreachable = false;
 
 	bool m_isIdleCooldownEnded = false;
 
 	bool m_isCollidingWithPlayer = false;
+
+	Vector2f m_facingDir = { 0.f, 0.f };
 
 	StateMachine<Policeman> m_stateMachine;
 	
@@ -32,7 +35,7 @@ private:
 
 	Vector2f m_playerPos;
 
-	int m_demiConeSize = 40;
+	int m_demiConeSize = 55;
 	float m_limitedCos = std::cos(m_demiConeSize * (Utils::PI / 180));
 
 protected:
@@ -55,6 +58,12 @@ public:
 	bool IsCollidingWithPlayer() { return m_isCollidingWithPlayer; }
 	bool IsArrived() { return m_pathIndex >= m_path.size() - 1; }
 
+	bool IsUnreachable() { return m_isUnreachable; }
+
+	void SetIsLoosingPlayer(bool p_newValue) { m_isLoosingPlayer = p_newValue; }
+	void SetIsUnreachable(bool p_newValue) { m_isUnreachable = p_newValue; }
+	void SetIsPlayerDetected(bool p_newValue) { m_isPlayerDetected = p_newValue; }
+
 	void StartChase();
 	void StartPatrol();
 
@@ -68,5 +77,7 @@ public:
 	void SetPath(std::vector<Tile*> p_newPath) { m_path = p_newPath; }
 
 	void SetState(PolicemanState p_state);
+
+	void SetFacingDir(Vector2f p_newValue) { m_facingDir = p_newValue; }
 };
 

@@ -13,8 +13,6 @@ InputManager* InputManager::Get()
 
 void InputManager::Update()
 {
-	//DebugKeys();
-
 	for (int i = 0; i < NUM_SCANCODES; i++)
 	{
 		if (m_keyboardStates[i].s_isDown)
@@ -538,12 +536,12 @@ void InputManager::StopTextInput()
 
 KeyboardKeycodeKeys InputManager::GetKeyFromScancode(KeyboardScancodeKeys p_scancode) const
 {
-	return KeyboardKeycodeKeys();
+	return static_cast<KeyboardKeycodeKeys>(SDL_GetKeyFromScancode((SDL_Scancode)p_scancode, SDL_KMOD_NONE, false));
 }
 
 KeyboardScancodeKeys InputManager::GetScancodeFromKey(KeyboardKeycodeKeys p_key) const
 {
-	return KeyboardScancodeKeys();
+	return static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey((SDL_Keycode)p_key, SDL_KMOD_NONE));
 }
 
 void InputManager::SetWindow(Window* p_window)

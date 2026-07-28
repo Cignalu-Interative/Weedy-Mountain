@@ -19,6 +19,8 @@ private:
 	std::unordered_map<std::string, size_t> m_questsFinished;
 	std::vector<Quest*> m_questsFinishedVector;
 
+	std::vector<Quest*> m_allQuests;
+
 	Scene* m_scene = nullptr;
 
 	void RemoveQuestFromNotStarted(Quest* p_quest);
@@ -49,6 +51,12 @@ public:
 	Quest* GetQuestOnNotStarted(const std::string& p_name) const;
 	Quest* GetQuestOnInProcess(const std::string& p_name) const;
 	Quest* GetQuestOnFinished(const std::string& p_name) const;
+
+	std::vector<Quest*>& GetQuestsNotStarted() { return m_questsNotStartedVector; }
+	std::vector<Quest*>& GetQuestsInProcess() { return m_questsInProcessVector; }
+	std::vector<Quest*>& GetQuestsFinished() { return m_questsFinishedVector; }
+
+	std::vector<Quest*>& GetAllQuests();
 
 	void UpdateQuests();
 

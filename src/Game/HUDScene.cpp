@@ -48,16 +48,17 @@ void HUDScene::OnInitialize()
 	questMenu->SyncSprites();
 	questMenu->SetDrawLayer(INT_MAX - 20);
 	questMenu->GetCollider()->SetIsTrigger(true);
-	questMenu->GetCollider()->SetShow(true);
-
-
-
+	//questMenu->GetCollider()->SetShow(true);
+	m_questMenu = questMenu;
 }
 
 void HUDScene::OnEvent()
 {
 	InputManager* input = InputManager::Get();
-	//input->IsKeyboardDown(KeyboardKeycodeKeys::K_)
+	if (input->IsKeyboardDown(KeyboardKeycodeKeys::K_SUPERSCRIPT_TWO))
+	{
+		m_questMenu->Toggle(&QuestManager::Get()->GetAllQuests());
+	}
 }
 
 void HUDScene::OnUpdate()

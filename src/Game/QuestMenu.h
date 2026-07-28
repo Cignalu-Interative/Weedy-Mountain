@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <string>
 #include "2DPendentEngine/Entity.h"
 #include "QuestMenuSlot.h"
 #include "Quest.h"
@@ -23,15 +24,21 @@ public:
 
 	int GetSlotCount() const { return (int)m_slots.size(); }
 
-	void SyncQuests(const std::vector<Quest*>& p_questVector);
+	void SyncQuests(const std::vector<Quest*>* p_questVector);
 
 	void SetSelectedQuest(Quest* p_quest) { m_selectedQuest = p_quest; }
 	Quest* GetSelectedQuest() const { return m_selectedQuest; }
 
 	void SetVisible(bool p_visible);
 
-	void Open();
+	void Open(std::vector<Quest*>* p_quest);
 	void Close();
-	void Toggle();
+	void Toggle(std::vector<Quest*>* p_quests);
+
+	void OnUpdate() override;
+
+	QuestMenuSlot* GetSlot(const std::string& p_id);
+
+	void DisplayQuest(QuestMenuSlot* p_quest);
 };
 

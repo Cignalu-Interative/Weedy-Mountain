@@ -7,6 +7,8 @@ class Button : public Entity
 private:
 	std::string m_textID;
 
+	Text* m_text = nullptr;
+
 	bool m_mouseWasIn = false;
 
 	std::function<void()> m_onLeftClick;
@@ -45,6 +47,7 @@ public:
 
 	void OnUpdate() override;
 	std::string GetTextID() { return m_textID; }
+	Text* GetButtonText() { return m_text; }
 
 	void SetIsVisible(bool p_isVisible);
 };

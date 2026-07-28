@@ -265,6 +265,28 @@ Quest* QuestManager::GetQuestOnFinished(const std::string& p_name) const
 	return m_questsFinishedVector[it->second];
 }
 
+std::vector<Quest*>& QuestManager::GetAllQuests()
+{
+	if (m_allQuests.empty() == false)
+	{
+		m_allQuests.clear();
+	}
+
+	for (Quest* quest : m_questsNotStartedVector)
+	{
+		m_allQuests.push_back(quest);
+	}
+	for (Quest* quest : m_questsInProcessVector)
+	{
+		m_allQuests.push_back(quest);
+	}
+	for (Quest* quest : m_questsFinishedVector)
+	{
+		m_allQuests.push_back(quest);
+	}
+	return m_allQuests;
+}
+
 void QuestManager::UpdateQuests()
 {
 	for (Quest* quest : m_questsInProcessVector)

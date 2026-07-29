@@ -15,6 +15,12 @@ private:
 
 	bool m_isOpen = false;
 
+	int m_NBPages = 0;
+	int m_currentPage = 0;
+
+	Text* m_rewardText = nullptr;
+	Text* m_requirementText = nullptr;
+
 public:
 
 	QuestMenu(int p_slotCount = 9);
@@ -40,5 +46,9 @@ public:
 	QuestMenuSlot* GetSlot(const std::string& p_id);
 
 	void DisplayQuest(QuestMenuSlot* p_quest);
+	void DisplayPage(int p_page = 0);
+
+	int GetNBPages() const { return m_NBPages; }
+	int GetCurrentPage() const { return m_currentPage; }
 };
 

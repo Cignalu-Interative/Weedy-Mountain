@@ -1,17 +1,40 @@
 #include "pch.h"
 #include "QuestMenu.h"
 #include "Application.h"
+#include "2DPendentLib/Utils.h"
 
 
 QuestMenu::QuestMenu(int p_slotCount)
 {
 	m_slots.reserve(p_slotCount + 10);
+	m_quests.reserve(10);
 }
 
 QuestMenu::~QuestMenu()
 {
+	/*for (QuestMenuSlot* slot : m_slots)
+	{
+		if (slot != nullptr)
+		{
+			slot->Destroy();
+		}
+	}*/
+	/*for (Quest* quest : m_quests)
+	{
+		if (quest != nullptr)
+		{
+			delete quest;
+		}
+	}*/
 
-
+	if (m_slots.empty() == false)
+	{
+		m_slots.clear();
+	}
+	if (m_quests.empty() == false)
+	{
+		m_quests.clear();
+	}
 }
 
 void QuestMenu::OnInitialize()
@@ -38,8 +61,6 @@ void QuestMenu::OnInitialize()
 	title->GetCollider()->SetIsTrigger(true);
 	//title->GetCollider()->SetShow(true);
 	m_slots.push_back(title);
-	
-	
 
 	//Reward
 	QuestMenuSlot* reward = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 380, 120 }, "button", "reward", "", true);
@@ -50,6 +71,13 @@ void QuestMenu::OnInitialize()
 	reward->GetCollider()->SetIsTrigger(true);
 	//reward->GetCollider()->SetShow(true);
 	m_slots.push_back(reward);
+
+
+	//Text Reward
+	scene->CreateText("textReward", reward->GetPosition({ 0.5f, 0.0f }), "REWARDS", ColorsNamed::Black, true);
+	m_rewardText = scene->GetGeometry<Text>("textReward");
+	m_rewardText->SetFontSize(36);
+	m_rewardText->SetPosition(reward->GetPosition({ 0.5f, 0.2f }));
 
 	//History
 	QuestMenuSlot* history = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 380, (int)std::ceil(reward->GetPosition({0.5f, 1.0f}).GetY() - title->GetPosition({0.5f, 0.0f}).GetY()) + 6 }, "button", "history", "", true);
@@ -71,6 +99,12 @@ void QuestMenu::OnInitialize()
 	//requiquement->GetCollider()->SetShow(true);
 	m_slots.push_back(requiquement);
 
+	//Text Requiquement
+	scene->CreateText("textRequiquement", requiquement->GetPosition({ 0.5f, 0.0f }), "REQUIREMENTS", ColorsNamed::Black, true);
+	m_requirementText = scene->GetGeometry<Text>("textRequiquement");
+	m_rewardText->SetFontSize(36);
+	m_rewardText->SetPosition(requiquement->GetPosition({ 0.5f, 0.2f }));
+
 	//Follow Quest
 	QuestMenuSlot* followQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 160, 69 }, "button", "followQuest", "follow Quest", true);
 	followQuest->GetSprite()->ResizeStretched(followQuest->GetDimension());
@@ -86,7 +120,7 @@ void QuestMenu::OnInitialize()
 	QuestMenuSlot* unfollowQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 160, 69 }, "button", "unfollowQuest", "unfollow Quest", true);
 	unfollowQuest->GetSprite()->ResizeStretched(unfollowQuest->GetDimension());
 	unfollowQuest->SyncSprites();
-	unfollowQuest->SetPosition(requiquement->GetPosition({ 0.75f, 1.0f }) + Vector2f{ 0.0f,(float)marginOut - 1 }, { 1.0f, 0.0f });
+	unfollowQuest->SetPosition(requiquement->GetPosition({ 0.75f, 1.0f }) + Vector2f{ 0.0f,(float)marginOut }, { 1.0f, 0.0f });
 	unfollowQuest->GetButtonText()->SetPosition(unfollowQuest->GetPosition());
 	unfollowQuest->GetButtonText()->SetColor(ColorsNamed::Black);
 	unfollowQuest->GetCollider()->SetIsTrigger(true);
@@ -102,6 +136,7 @@ void QuestMenu::OnInitialize()
 	nextQuest->GetButtonText()->SetFontSize(42);
 	nextQuest->GetButtonText()->SetPosition(nextQuest->GetPosition());
 	nextQuest->GetCollider()->SetIsTrigger(true);
+	nextQuest->SetOnLeftClick([this] {DisplayPage(GetCurrentPage() + 1); });
 	//nextQuest->GetCollider()->SetShow(true);
 	m_slots.push_back(nextQuest);
 
@@ -114,6 +149,7 @@ void QuestMenu::OnInitialize()
 	previousQuest->GetButtonText()->SetFontSize(42);
 	previousQuest->GetButtonText()->SetPosition(previousQuest->GetPosition());
 	previousQuest->GetCollider()->SetIsTrigger(true);
+	previousQuest->SetOnLeftClick([this] {DisplayPage(GetCurrentPage() - 1); });
 	//previousQuest->GetCollider()->SetShow(true);
 	m_slots.push_back(previousQuest);
 
@@ -136,22 +172,36 @@ void QuestMenu::SyncQuests(const std::vector<Quest*>* p_questVector)
 	float margin = 10;
 	int count = 0;
 	QuestMenuSlot* listOfQuest = GetSlot("listOfQuest");
+	int totalHeight = listOfQuest->GetPosition({0.5f, 0.92f}).GetY() - GetPosition({ 0.5f, 0.08f }).GetY();
+	int sizeelement = (int)std::ceil(totalHeight / 6);
+
+	int page = 0;
+
 	for (Quest* quest : *p_questVector)
 	{
-		QuestMenuSlot* questSlot = (QuestMenuSlot*)m_scene->CreateButton({ 0.0f, 0.0f }, { 180, 50 }, "button", quest->GetName(), quest->GetName(), true);
+		QuestMenuSlot* questSlot = (QuestMenuSlot*)m_scene->CreateButton({ 0.0f, 0.0f }, { 180, sizeelement }, "button", quest->GetName(), quest->GetName(), true);
 		questSlot->GetSprite()->ResizeStretched(questSlot->GetDimension());
 		questSlot->SyncSprites();
-		questSlot->SetPosition(listOfQuest->GetPosition({0.5f, 0.08f}) + Vector2f{ 0.0f, margin + (questSlot->GetDimension().GetY() * count)}, {0.5f, 0.0f});
+		questSlot->SetPosition(listOfQuest->GetPosition({0.5f, 0.075f}) + Vector2f{ 0.0f, margin + (questSlot->GetDimension().GetY() * count)}, {0.5f, 0.0f});
 		questSlot->GetButtonText()->SetColor(ColorsNamed::DarkIndigo);
 		questSlot->GetButtonText()->SetFontSize(24);
 		questSlot->GetButtonText()->SetPosition(questSlot->GetPosition());
 		questSlot->GetCollider()->SetIsTrigger(true);
 		questSlot->SetOnLeftClick([this, questSlot] {DisplayQuest(questSlot); });
 		//questSlot->GetCollider()->SetShow(true);
+		questSlot->SetIsVisible(false);
+		questSlot->SetPagesQuest(page);
+
 		m_slots.push_back(questSlot);
 		m_quests.push_back(quest);
 		count++;
+		if (count >= 5)
+		{
+			count = 0;
+			page++;
+		}
 	}
+	m_NBPages = page;
 }
 
 void QuestMenu::SetVisible(bool p_visible)
@@ -162,13 +212,15 @@ void QuestMenu::SetVisible(bool p_visible)
 	{
 		slot->SetIsVisible(p_visible);
 	}
+
 }
 
 void QuestMenu::Open(std::vector<Quest*>* p_quest)
 {
 	m_isOpen = true;
-	SyncQuests(p_quest);
 	SetVisible(true);
+	SyncQuests(p_quest);
+	DisplayPage();
 }
 
 void QuestMenu::Close()
@@ -185,24 +237,27 @@ void QuestMenu::Close()
 			text->SetText(" ");
 			text->SetPosition(slot->GetPosition());
 		}
-		if (slot->GetTextID() == "reward")
+		else if (slot->GetTextID() == "reward")
 		{
 			text->SetText(" ");
 			text->SetPosition(slot->GetPosition());
 		}
-		if (slot->GetTextID() == "history")
+		else if (slot->GetTextID() == "history")
 		{
 			text->SetText(" ");
 			text->SetPosition(slot->GetPosition());
 		}
-		if (slot->GetTextID() == "requiquement")
+		else if (slot->GetTextID() == "requiquement")
 		{
 			text->SetText(" ");
 			text->SetPosition(slot->GetPosition());
 		}
+		else
+		{
+			//slot->Destroy();
+		}
+
 	}
-
-
 }
 void QuestMenu::Toggle(std::vector<Quest*>* p_quest)
 {
@@ -279,6 +334,24 @@ void QuestMenu::DisplayQuest(QuestMenuSlot* p_quest)
 				}
 			}
 			break;
+		}
+	}
+}
+
+void QuestMenu::DisplayPage(int p_page)
+{
+	int page = Utils::Clamp(p_page, 0, m_NBPages);
+	m_currentPage = page;
+
+	for (QuestMenuSlot* slot : m_slots)
+	{
+		if (slot->GetPagesQuest() == page)
+		{
+			slot->SetIsVisible(true);
+		}
+		else if (slot->GetTextID() != "title" && slot->GetTextID() != "reward" && slot->GetTextID() != "history" && slot->GetTextID() != "requiquement" && slot->GetTextID() != "followQuest" && slot->GetTextID() != "unfollowQuest" && slot->GetTextID() != "nextQuest" && slot->GetTextID() != "previousQuest" && slot->GetTextID() != "listOfQuest")
+		{
+			slot->SetIsVisible(false);
 		}
 	}
 }

@@ -41,21 +41,24 @@ void QuestManager::RemoveAllQuests()
 {
 	for (auto& quest : m_questsNotStartedVector)
 	{
-		delete quest;
+		if (quest)
+			delete quest;
 	}
 	m_questsNotStartedVector.clear();
 	m_questsNotStarted.clear();
 
 	for (auto& quest : m_questsInProcessVector)
 	{
-		delete quest;
+		if (quest)
+			delete quest;
 	}
 	m_questsInProcessVector.clear();
 	m_questsInProcess.clear();
 
 	for (auto& quest : m_questsFinishedVector)
 	{
-		delete quest;
+		if (quest)
+			delete quest;
 	}
 	m_questsFinishedVector.clear();
 	m_questsFinished.clear();

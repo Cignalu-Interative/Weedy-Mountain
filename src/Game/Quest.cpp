@@ -23,8 +23,10 @@ Quest::Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimensio
 
 Quest::~Quest()
 {
-
-
+	for (auto& [index, req] : m_requirements)
+		delete req;
+	for (auto& [index, rew] : m_rewards)
+		delete rew;
 }
 
 void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTexture, int p_requiredAmount)

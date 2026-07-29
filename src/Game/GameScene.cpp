@@ -181,6 +181,10 @@ void GameScene::OnInitialize()
 	QuestManager::Get()->CreateQuest("Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 	QuestManager::Get()->CreateQuest("KAKA Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 	QuestManager::Get()->CreateQuest(" KAKA Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" KAKOU Quest KAKI", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" KAKIKOU LE CAILLOU", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 }
 
 

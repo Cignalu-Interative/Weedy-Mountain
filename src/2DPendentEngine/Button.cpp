@@ -6,6 +6,7 @@
 
 Button::~Button()
 {
+	m_text = nullptr;
 	GetScene()->RemoveGeometry(m_textID);
 }
 

@@ -101,6 +101,8 @@ private:
 
 	bool m_rewardclaimed = false;
 
+	std::string m_historyDescription;
+
 public:
 
 	Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner, Scene* p_scene);
@@ -136,4 +138,13 @@ public:
 	Scene* GetScene() const { return m_scene; }
 
 	bool IsQuestCompleted() const { return m_QuestIsCompleted; }
+
+	void SetHistoryDescription(const std::string& p_description) { m_historyDescription = p_description; }
+
+	std::string GetRewardDescription();
+
+	std::string GetHistoryDescription();
+
+	std::string GetRequiquementsDescription();
+
 };

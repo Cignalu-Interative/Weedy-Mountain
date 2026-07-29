@@ -176,6 +176,7 @@ void GameScene::OnInitialize()
 	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Wood", 1);
 	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Fiber", 5);
 	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 67);
+	QuestManager::Get()->GetQuestOnNotStarted("Quest")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to collect 1 wood and you will be rewarded with 67 eggs.");
 
 	QuestManager::Get()->CreateQuest("Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 	QuestManager::Get()->CreateQuest("KAKA Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);

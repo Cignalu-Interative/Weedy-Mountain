@@ -168,3 +168,28 @@ void Quest::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 {
 
 }
+
+std::string Quest::GetRewardDescription()
+{
+	std::string rewardDescription;
+	for (auto& [index, reward] : m_rewards)
+	{
+		rewardDescription += reward->GetItemData()->GetName() + " x" + std::to_string(reward->GetAmount()) + "\n";
+	}
+	return rewardDescription;
+}
+
+std::string Quest::GetHistoryDescription()
+{
+	return m_historyDescription;
+}
+
+std::string Quest::GetRequiquementsDescription()
+{
+	std::string requirementsDescription;
+	for (auto& [index, requirement] : m_requirements)
+	{
+		requirementsDescription += requirement->GetItemData()->GetName() + " x" + std::to_string(requirement->s_requiredAmount) + "\n";
+	}
+	return requirementsDescription;
+}

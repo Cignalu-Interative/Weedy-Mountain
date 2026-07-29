@@ -17,7 +17,7 @@ private:
 
 public:
 
-	QuestMenu(int p_slotCount = 6);
+	QuestMenu(int p_slotCount = 9);
 	~QuestMenu();
 
 	void OnInitialize() override;

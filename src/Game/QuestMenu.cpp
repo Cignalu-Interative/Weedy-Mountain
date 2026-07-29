@@ -176,6 +176,33 @@ void QuestMenu::Close()
 	m_isOpen = false;
 	SetVisible(false);
 	m_selectedQuest = nullptr;
+	
+	for (QuestMenuSlot* slot : m_slots)
+	{
+		Text* text = slot->GetButtonText();
+		if (slot->GetTextID() == "title")
+		{
+			text->SetText(" ");
+			text->SetPosition(slot->GetPosition());
+		}
+		if (slot->GetTextID() == "reward")
+		{
+			text->SetText(" ");
+			text->SetPosition(slot->GetPosition());
+		}
+		if (slot->GetTextID() == "history")
+		{
+			text->SetText(" ");
+			text->SetPosition(slot->GetPosition());
+		}
+		if (slot->GetTextID() == "requiquement")
+		{
+			text->SetText(" ");
+			text->SetPosition(slot->GetPosition());
+		}
+	}
+
+
 }
 void QuestMenu::Toggle(std::vector<Quest*>* p_quest)
 {
@@ -216,6 +243,41 @@ void QuestMenu::DisplayQuest(QuestMenuSlot* p_quest)
 		if (quest->GetName() == p_quest->GetTextID())
 		{
 			m_selectedQuest = quest;
+			for (QuestMenuSlot* slot : m_slots)
+			{
+				Text* text = slot->GetButtonText();
+				if (slot->GetTextID() == "title")
+				{
+					text->SetColor(ColorsNamed::Black);
+					text->SetFontSize(42);
+					text->SetFontStyle(false, true);
+					text->SetText(quest->GetName());
+					text->SetPosition(slot->GetPosition());
+				}
+				if (slot->GetTextID() == "reward")
+				{
+					text->SetColor(ColorsNamed::Black);
+					text->SetFontSize(32);
+					text->SetText(quest->GetRewardDescription());
+					text->SetPosition(slot->GetPosition());
+				}
+				if (slot->GetTextID() == "history")
+				{
+					text->SetColor(ColorsNamed::Black);
+					text->SetFontSize(26);
+					text->SetWrapWidth(slot->GetDimension().GetX() - 20);
+					text->HorizontalAlignText(Center);
+					text->SetText(quest->GetHistoryDescription());
+					text->SetPosition(slot->GetPosition());
+				}
+				if (slot->GetTextID() == "requiquement")
+				{
+					text->SetColor(ColorsNamed::Black);
+					text->SetFontSize(32);
+					text->SetText(quest->GetRequiquementsDescription());
+					text->SetPosition(slot->GetPosition());
+				}
+			}
 			break;
 		}
 	}

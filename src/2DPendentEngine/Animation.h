@@ -67,5 +67,4 @@ public:
 	std::string GetNameCurrentAnimation() const { return m_nameAnimation; }
 
 	void SetHasAnimation(bool p_hasAnimation) { m_hasAnimation = p_hasAnimation; }
-
 };

@@ -1,24 +1,12 @@
 {
     "animations": {
         "default": {
-            "frame_time": 0.11999999731779099,
+            "frame_time": 0.5,
             "frames": [
+                0,
                 15,
-                14,
-                13,
-                12,
                 11,
-                10,
-                9,
-                8,
-                7,
-                6,
-                5,
-                4,
-                3,
-                2,
-                1,
-                0
+                6
             ],
             "loop": true
         },
@@ -34,5 +22,5 @@
         "height": 16,
         "width": 32
     },
-    "texture": "C:\\Users\\grandon\\Documents\\GitHub\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Furnace_progresBar.png"
+    "texture": "E:\\GitHubRepos\\Weedy-Mountain\\res\\Game\\Assets\\Textures\\Furnace_progresBar.png"
 }

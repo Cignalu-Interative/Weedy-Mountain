@@ -23,6 +23,7 @@ void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool 
     m_currentTimer = m_frameTime;
         //m_sprite->GetSpriteRect() = new SDL_Rect();
 		//m_infoAnimation = m_parser->GetInfoAnimationByName(p_nameAnimation);
+
 }
 
 void Animation::Update(float p_deltaTime)
@@ -35,7 +36,7 @@ void Animation::Update(float p_deltaTime)
     //std::cout << m_frameTime << std::endl;
     if (m_currentTimer <= 0.f)
     {
-        m_currentTimer = m_frameTime;
+        m_currentTimer += m_frameTime;
         m_currentFrame = (m_currentFrame + 1) % m_totalFrames;
 
  		int spriteColumns = m_sprite->GetDimension().GetX() / m_frameSize.GetX();

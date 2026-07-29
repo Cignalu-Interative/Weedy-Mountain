@@ -18,6 +18,8 @@ void FurnaceUi::OnInitialize()
 	GetSprite("BackgroundFurnace")->ResizeStretched(GetDimension());
 	SyncSprites();
 
+	AddSprite("EmptyProgressBar", "EmptyProgressBar", { 100,25 }, 1, { 0, -165 }, true);
+	GetSprite("EmptyProgressBar")->SetIsVisible(true);
 /*	AddSprite("MeltedEmpty", "emptyHorizontal", { 90,25 }, 1, {0, -165 }, true);
 	AddSprite("MeltedFull", "fullHorizontalRed", { 90,25 }, 2, {0, -165 }, true);
 	GetSprite("MeltedFull")->SetDimension({})*/;
@@ -49,6 +51,7 @@ void FurnaceUi::OnInitialize()
 	m_meltedOres->InitText("slot" + std::to_string(1), "");
 
 	SpriteContainer* progressBar = AddSprite("ProgressBarSpriteSheet", "Furnace_progresBar", {100,25}, 1, {0, -165}, true);
+	GetSprite("ProgressBarSpriteSheet")->SetIsVisible(false);
 	m_progressBarAnimation = new Animation();
 	m_progressBarAnimation->Init(progressBar->m_sprite, "default", true, "../../res/Game/progressBarAnimation.json");
 
@@ -56,15 +59,26 @@ void FurnaceUi::OnInitialize()
 	//m_flameAnimation = new Animation();
 	//m_flameAnimation->Init(flame->m_sprite, "default", true, "../../res/Game/progressBarAnimation.json");
 	//m_flameAnimation->SetDuration(m_fuelTime);
-
+	
 }
 
 void FurnaceUi::OnUpdate()
 {	
 	float dt = GetDeltaTime();
 
-	if ( m_currentfuelTime > 0)
-		m_progressBarAnimation->Update(dt);
+	//if ( m_currentfuelTime > 0)
+	//	m_progressBarAnimation->Update(dt);
+
+	if (m_rawOres->IsEmpty())
+	{
+		GetSprite("EmptyProgressBar")->SetIsVisible(true);
+		//m_progressBarAnimation->SetAnimationByName("idle");
+		m_currentHeatingTime = m_heatingTimeRequired;
+		return;
+	}
+
+	GetSprite("EmptyProgressBar")->SetIsVisible(false);
+	GetSprite("ProgressBarSpriteSheet")->SetIsVisible(true);
 
 	ItemData* data = ItemDataBase::Get()->GetItem(m_rawOres->GetStack().GetID());
 	if (data == nullptr)
@@ -88,12 +102,6 @@ void FurnaceUi::OnUpdate()
 	//int height = GetSprite("MeltedEmpty")->GetDimension().GetY();
 	//GetSprite("MeltedFull")->SetDimension({ int(maxWidth * progress), height });
 
-	if (m_rawOres->IsEmpty())
-	{
-		m_progressBarAnimation->SetAnimationByName("idle");
-		m_currentHeatingTime = m_heatingTimeRequired;
-		return;
-	}
 
 	if (m_currentfuelTime <= 0)
 	{
@@ -110,6 +118,7 @@ void FurnaceUi::OnUpdate()
 	{
 		m_currentfuelTime -= dt;
 		m_currentHeatingTime -= dt;
+		m_progressBarAnimation->Update(dt);
 
 		ItemStack& meltedStack = m_meltedOres->GetStack();
 

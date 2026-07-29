@@ -38,6 +38,7 @@
 
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
+#include "Chest.h"
 
 void GameScene::OnInitialize()
 {
@@ -161,6 +162,8 @@ void GameScene::OnInitialize()
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
 // 	m_textBox->SetBackgroundFilled(true);
+
+	Chest* c = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
 }
 
 
@@ -168,11 +171,11 @@ void GameScene::OnEvent()
 {
 	InputManager* im = InputManager::Get();
 
-	if (im->IsKeyboardDown(K_A))
-		GetCamera()->SetZoom(5);
+	//if (im->IsKeyboardDown(K_A))
+	//	GetCamera()->SetZoom(5);
 
-	if (im->IsKeyboardDown(K_E))
-		GetCamera()->SetZoom(1);
+	//if (im->IsKeyboardDown(K_E))
+	//	GetCamera()->SetZoom(1);
 
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{

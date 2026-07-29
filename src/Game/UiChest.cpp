@@ -29,7 +29,8 @@ void UiChest::OnInitialize()
 
 void UiChest::OnEvent()
 {
-	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+
+	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_isVisible)
 	{
 		AddItemInChest();
 		AddItemInPlayerInventory();
@@ -75,6 +76,7 @@ void UiChest::AddItemInPlayerInventory()
 
 void UiChest::Open()
 {
+	SetIsVisible(true);
 	Vector2f pos = GetPosition();
 
 	float offsetY = pos.GetY() + 90;
@@ -99,8 +101,11 @@ void UiChest::Close()
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
 	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
 
+	m_playerInventory->GetInventory()->SetVisible(false);
 	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
 
 	Debug::Get()->GetText("Chest")->SetIsVisible(false);
 	Debug::Get()->GetText("InventoryText")->SetIsVisible(false);
+
+	std::cout <<m_playerInventory->GetInventory()->GetSlot(0)->GetIsVisible() << std::endl;
 }

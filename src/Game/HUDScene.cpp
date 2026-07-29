@@ -44,13 +44,10 @@ void HUDScene::OnInitialize()
 	Hotbar* hot = CreateEntity<Hotbar>(hotbarPos, { 636, 96 }, "Hotbar", Shape::Rectangle);
 
 	m_playerInventory = new PlayerInventory(inv, hot);
-	m_playerInventory->AddItem("ITEM_WOOD", 128, false);
+	m_playerInventory->AddItem("ITEM_WOOD", 1028, false);
 
 	GameData::Get().SetInventory(m_playerInventory);
 	SceneManager::Get()->SetPersistentScene(this);
-
-	UiChest* c = CreateEntity<UiChest>(GetWindowCenter(), { 800,700 }, "", Shape::Rectangle, true);
-	c->Open();
 }
 
 void HUDScene::OnEvent()

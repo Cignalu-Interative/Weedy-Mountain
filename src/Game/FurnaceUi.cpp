@@ -14,15 +14,15 @@ void FurnaceUi::OnInitialize()
 	RemoveCollider("default");
 	Scene* scene = GetScene();
 
-	AddSprite("BackgroundFurnace", "InventoryWeedyMountain", GetDimension(), 0, {}, true);
+	AddSprite("BackgroundFurnace", "Furnace_BackGround", GetDimension(), 0, {}, true);
 	GetSprite("BackgroundFurnace")->ResizeStretched(GetDimension());
 	SyncSprites();
 
 	AddSprite("EmptyProgressBar", "EmptyProgressBar", { 100,25 }, 1, { 0, -165 }, true);
 	GetSprite("EmptyProgressBar")->SetIsVisible(true);
-/*	AddSprite("MeltedEmpty", "emptyHorizontal", { 90,25 }, 1, {0, -165 }, true);
+	/*AddSprite("MeltedEmpty", "emptyHorizontal", { 90,25 }, 1, {0, -165 }, true);
 	AddSprite("MeltedFull", "fullHorizontalRed", { 90,25 }, 2, {0, -165 }, true);
-	GetSprite("MeltedFull")->SetDimension({})*/;
+	GetSprite("MeltedFull")->SetDimension({});*/
 
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 
@@ -55,10 +55,10 @@ void FurnaceUi::OnInitialize()
 	m_progressBarAnimation = new Animation();
 	m_progressBarAnimation->Init(progressBar->m_sprite, "default", true, "../../res/Game/progressBarAnimation.json");
 
-	//SpriteContainer* flame = AddSprite("FlameSpriteSheet", "Furnace_Fuel", { 100,25 }, 1, { 0, -165 }, true);
-	//m_flameAnimation = new Animation();
-	//m_flameAnimation->Init(flame->m_sprite, "default", true, "../../res/Game/progressBarAnimation.json");
-	//m_flameAnimation->SetDuration(m_fuelTime);
+	SpriteContainer* flame = AddSprite("FlameSpriteSheet", "Furnace_Fuel", { 32,32 }, 1, { -75, -165 }, true);
+	m_flameAnimation = new Animation();
+	m_flameAnimation->Init(flame->m_sprite, "default", true, "../../res/Game/fuelAnimation.json");
+	m_flameAnimation->SetDuration(m_fuelTime / m_flameAnimation->GetTotalFrames());
 	
 }
 
@@ -71,8 +71,7 @@ void FurnaceUi::OnUpdate()
 
 	if (m_rawOres->IsEmpty())
 	{
-		GetSprite("EmptyProgressBar")->SetIsVisible(true);
-		//m_progressBarAnimation->SetAnimationByName("idle");
+		GetSprite("EmptyProgressBar")->SetIsVisible(false);
 		m_currentHeatingTime = m_heatingTimeRequired;
 		return;
 	}
@@ -119,6 +118,7 @@ void FurnaceUi::OnUpdate()
 		m_currentfuelTime -= dt;
 		m_currentHeatingTime -= dt;
 		m_progressBarAnimation->Update(dt);
+		m_flameAnimation->Update(dt);
 
 		ItemStack& meltedStack = m_meltedOres->GetStack();
 

@@ -45,7 +45,9 @@ void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTextur
 	requirement->s_requiredText->SetDrawLayer(200);
 	requirement->s_harvestedText->SetDrawLayer(200);
 	m_requirements[m_requirements.size()] = requirement;
-	ResizeGrid();
+	// La ligne de dessous a remettre après les tests de positionnement des icones et du texte
+	//ResizeGrid();
+	SetVisible(GetVisible());
 }
 
 QuestRequirement* Quest::GetRequirement(size_t p_emplacement) const
@@ -89,7 +91,42 @@ QuestReward* Quest::GetReward(size_t p_emplacement) const
 void Quest::UpdateQuest()
 {
 	SetTextQuest();
+
+	std::cerr << "\n";
+	std::cerr << "BEFORE RESIZE GRID" << std::endl;
+	std::cerr << "dimension zone : " << m_zone->GetDimension().GetX() << " x " << m_zone->GetDimension().GetY() << std::endl;
+	std::cerr << "dimension icone : " << m_icone->GetDimension().GetX() << " x " << m_icone->GetDimension().GetY() << std::endl;
+	std::cerr << "\n";
+	std::cerr << "position zone : " << m_zone->GetPosition().GetX() << " x " << m_zone->GetPosition().GetY() << std::endl;
+	std::cerr << "position icone : " << m_icone->GetPosition().GetX() << " x " << m_icone->GetPosition().GetY() << std::endl;
+	std::cerr << "\n";
+	int i = 1;
+	for (SpriteContainer* sprite : m_icone->GetAllSprites())
+	{
+		std::cerr << "position sprite " + std::to_string(i) + ": " << sprite->m_sprite->GetPosition().GetX() << " x " << sprite->m_sprite->GetPosition().GetY() << std::endl;
+		i++;
+	}
+	std::cerr << "BEFORE RESIZE GRID" << std::endl;
+	std::cerr << "\n";
+
 	ResizeGrid();
+
+	std::cerr << "AFTER RESIZE GRID" << std::endl;
+	std::cerr << "dimension zone : " << m_zone->GetDimension().GetX() << " x " << m_zone->GetDimension().GetY() << std::endl;
+	std::cerr << "dimension icone : " << m_icone->GetDimension().GetX() << " x " << m_icone->GetDimension().GetY() << std::endl;
+	std::cerr << "\n";
+	std::cerr << "position zone : " << m_zone->GetPosition().GetX() << " x " << m_zone->GetPosition().GetY() << std::endl;
+	std::cerr << "position icone : " << m_icone->GetPosition().GetX() << " x " << m_icone->GetPosition().GetY() << std::endl;
+	std::cerr << "\n";
+	int j = 1;
+	for (SpriteContainer* sprite : m_icone->GetAllSprites())
+	{
+		std::cerr << "position sprite " + std::to_string(j) + ": " << sprite->m_sprite->GetPosition().GetX() << " x " << sprite->m_sprite->GetPosition().GetY() << std::endl;
+		j++;
+	}
+	std::cerr << "AFTER RESIZE GRID" << std::endl;
+	std::cerr << "\n";
+
 
 	for (auto& [index, requirement] : m_requirements)
 	{
@@ -134,15 +171,19 @@ void Quest::ResizeGrid()
 	float widthUsed = columnsUsed * dimSprite.GetX(); // largeur totale utilisée pour afficher tous les éléments
 	float heightUsed = nbRows * dimSprite.GetY(); // hauteur totale utilisée pour afficher tous les éléments
 
+	Vector2f posWantedForZone = m_zone->GetPosition();
 	m_zone->Transformable::SetDimension({ (int)widthUsed, (int)heightUsed });
 	m_icone->Transformable::SetDimension({ (int)widthUsed, (int)heightUsed });
-
-	float startX = -(columnsUsed - 1) * 0.5f * dimSprite.GetX();
-	float startY = -(nbRows - 1) * 0.5f * dimSprite.GetY();
+	m_zone->SetPosition(posWantedForZone);
 
 	int spacing = 32; // Espace entre les icônes
 
-	startX -= spacing;
+	float stepX = dimSprite.GetX() + spacing;
+	float startX = -(columnsUsed - 1) * 0.5f * stepX;
+
+	float startY = -(nbRows - 1) * 0.5f * dimSprite.GetY();
+
+	//startX -= spacing;
 
 	for (int i = 0; i < NBElement; ++i)
 	{
@@ -176,7 +217,7 @@ std::string Quest::GetRewardDescription()
 	std::string rewardDescription;
 	for (auto& [index, reward] : m_rewards)
 	{
-		rewardDescription += reward->GetItemData()->GetName() + " x" + std::to_string(reward->GetAmount()) + "\n";
+		rewardDescription += reward->GetItemData()->GetName() + " x" + std::to_string(reward->GetAmount()) + "       ";
 	}
 	return rewardDescription;
 }
@@ -191,7 +232,18 @@ std::string Quest::GetRequiquementsDescription()
 	std::string requirementsDescription;
 	for (auto& [index, requirement] : m_requirements)
 	{
-		requirementsDescription += requirement->GetItemData()->GetName() + " x" + std::to_string(requirement->s_requiredAmount) + "\n";
+		requirementsDescription += requirement->GetItemData()->GetName() + " x" + std::to_string(requirement->s_requiredAmount) + "             ";
 	}
 	return requirementsDescription;
+}
+
+void Quest::SetVisible(bool p_visible)
+{
+	m_zone->SetIsVisible(p_visible);
+	m_icone->SetIsVisible(p_visible);
+	for (auto& [index, requirement] : m_requirements)
+	{
+		requirement->SetVisible(p_visible);
+	}
+	m_zone->GetCollider()->SetShow(p_visible);
 }

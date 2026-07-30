@@ -57,7 +57,7 @@ void HUDScene::OnEvent()
 	InputManager* input = InputManager::Get();
 	if (input->IsKeyboardDown(KeyboardKeycodeKeys::K_SUPERSCRIPT_TWO))
 	{
-		m_questMenu->Toggle(&QuestManager::Get()->GetAllQuests());
+		m_questMenu->Toggle(&QuestManager::Get()->GetQuestsInProcess());
 	}
 }
 
@@ -65,6 +65,7 @@ void HUDScene::OnUpdate()
 {
 	m_playerInventory->OnUpdate();
 	QuestManager::Get()->UpdateQuests();
+	m_questMenu->OnUpdate();
 }
 
 void HUDScene::OnDestroy()

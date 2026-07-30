@@ -74,5 +74,7 @@ public:
 
 	void SetActiveQuest(const std::string& p_id);
 	Quest* GetActiveQuest() const { return m_activeQuest; }
+
+	void RemoveActiveQuest(Quest* p_quest);
 };
 

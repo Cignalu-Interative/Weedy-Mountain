@@ -34,6 +34,7 @@ void QuestManager::CreateQuest(const std::string& p_name, Vector2f p_position, V
 
 	Quest* quest = new Quest(p_name, p_position, p_dimension, p_owner, m_scene);
 
+	quest->GetZone()->GetCollider()->SetShow(false);
 	quest->SetVisible(false);
 
 	AddQuestToNotStarted(quest);
@@ -219,7 +220,9 @@ void QuestManager::AddQuestToInProcess(Quest* p_quest)
 	m_questsInProcessVector.push_back(p_quest);
 	if (m_activeQuest == nullptr)
 	{
+		// A mettre en commentaire après test ces deux lignes
 		m_activeQuest = p_quest;
+		m_activeQuest->SetVisible(true);
 	}
 	else
 	{
@@ -306,6 +309,13 @@ void QuestManager::UpdateQuests()
 	{
 		m_activeQuest->UpdateQuest();
 	}
+
+	//suprimer a apres test le if
+	if (m_activeQuest == nullptr)
+	{
+		AddQuestToInProcess(GetQuestOnNotStarted("Quest"));
+	}
+
 	/*for (Quest* quest : m_questsInProcessVector)
 	{
 		if (quest)
@@ -405,17 +415,16 @@ void QuestManager::SetActiveQuest(const std::string& p_id)
 	GetQuestOnInProcess(p_id) ? m_activeQuest = GetQuestOnInProcess(p_id) : m_activeQuest = nullptr;
 	if (m_activeQuest)
 	{
-		for (Quest* quest : m_questsInProcessVector)
-		{
-			if (quest != m_activeQuest)
-			{
-				quest->SetVisible(false);
-			}
-			else
-			{
-				quest->SetVisible(true);
-			}
-		}
+		m_activeQuest->SetVisible(true);
+	}
+}
+
+void QuestManager::RemoveActiveQuest(Quest* p_quest)
+{
+	if (m_activeQuest && m_activeQuest == p_quest)
+	{
+		m_activeQuest->SetVisible(false);
+		m_activeQuest = nullptr;
 	}
 }
 

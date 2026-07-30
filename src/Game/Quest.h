@@ -56,6 +56,8 @@ struct QuestRequirement
 	ItemData* GetItemData() const { return s_itemData; }
 
 	bool IsCompleted() const { return s_isCompleted; }
+
+	void SetVisible(bool p_visible) { s_requiredText->SetIsVisible(p_visible); s_harvestedText->SetIsVisible(p_visible); }
 };
 
 struct QuestReward
@@ -147,6 +149,10 @@ public:
 
 	std::string GetRequiquementsDescription();
 
-	void SetVisible(bool p_visible) { m_zone->SetIsVisible(p_visible); m_icone->SetIsVisible(p_visible); }
+	void SetVisible(bool p_visible);
+
+	bool GetVisible() const { return (m_zone->GetIsVisible() || m_icone->GetIsVisible()); }
+
+	Entity* GetZone() const { return m_zone; }
 
 };

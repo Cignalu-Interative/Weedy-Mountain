@@ -50,5 +50,8 @@ public:
 
 	int GetNBPages() const { return m_NBPages; }
 	int GetCurrentPage() const { return m_currentPage; }
+
+	void FollowQuest(Quest* p_quest);
+	void UnfollowQuest(Quest* p_quest);
 };
 

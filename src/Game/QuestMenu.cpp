@@ -2,7 +2,7 @@
 #include "QuestMenu.h"
 #include "Application.h"
 #include "2DPendentLib/Utils.h"
-
+#include "QuestManager.h"
 
 QuestMenu::QuestMenu(int p_slotCount)
 {
@@ -113,6 +113,7 @@ void QuestMenu::OnInitialize()
 	followQuest->GetButtonText()->SetPosition(followQuest->GetPosition());
 	followQuest->GetButtonText()->SetColor(ColorsNamed::Black);
 	followQuest->GetCollider()->SetIsTrigger(true);
+	followQuest->SetOnLeftClick([this] {FollowQuest(m_selectedQuest); });
 	//followQuest->GetCollider()->SetShow(true);
 	m_slots.push_back(followQuest);
 
@@ -124,6 +125,7 @@ void QuestMenu::OnInitialize()
 	unfollowQuest->GetButtonText()->SetPosition(unfollowQuest->GetPosition());
 	unfollowQuest->GetButtonText()->SetColor(ColorsNamed::Black);
 	unfollowQuest->GetCollider()->SetIsTrigger(true);
+	unfollowQuest->SetOnLeftClick([this] {UnfollowQuest(m_selectedQuest); });
 	//unfollowQuest->GetCollider()->SetShow(true);
 	m_slots.push_back(unfollowQuest);
 
@@ -183,7 +185,14 @@ void QuestMenu::SyncQuests(const std::vector<Quest*>* p_questVector)
 		questSlot->GetSprite()->ResizeStretched(questSlot->GetDimension());
 		questSlot->SyncSprites();
 		questSlot->SetPosition(listOfQuest->GetPosition({0.5f, 0.075f}) + Vector2f{ 0.0f, margin + (questSlot->GetDimension().GetY() * count)}, {0.5f, 0.0f});
-		questSlot->GetButtonText()->SetColor(ColorsNamed::DarkIndigo);
+		if (QuestManager::Get()->GetActiveQuest() == quest)
+		{
+			questSlot->GetButtonText()->SetColor(ColorsNamed::Orange);
+		}
+		else
+		{
+			questSlot->GetButtonText()->SetColor(ColorsNamed::DarkIndigo);
+		}
 		questSlot->GetButtonText()->SetFontSize(24);
 		questSlot->GetButtonText()->SetPosition(questSlot->GetPosition());
 		questSlot->GetCollider()->SetIsTrigger(true);
@@ -281,6 +290,10 @@ void QuestMenu::OnUpdate()
 		GetSlot("listOfQuest")->GetButtonText()->SetText("No Quest");
 		GetSlot("listOfQuest")->GetButtonText()->SetPosition(GetSlot("listOfQuest")->GetPosition());
 	}
+	else
+	{
+		GetSlot("listOfQuest")->GetButtonText()->SetText(" ");
+	}
 }
 
 QuestMenuSlot* QuestMenu::GetSlot(const std::string& p_id)
@@ -307,6 +320,8 @@ void QuestMenu::DisplayQuest(QuestMenuSlot* p_quest)
 				{
 					text->SetColor(ColorsNamed::Black);
 					text->SetFontSize(42);
+					text->SetWrapWidth(slot->GetDimension().GetX() - 20);
+					text->HorizontalAlignText(Center);
 					text->SetFontStyle(false, true);
 					text->SetText(quest->GetName());
 					text->SetPosition(slot->GetPosition());
@@ -315,6 +330,8 @@ void QuestMenu::DisplayQuest(QuestMenuSlot* p_quest)
 				{
 					text->SetColor(ColorsNamed::Black);
 					text->SetFontSize(32);
+					text->SetWrapWidth(slot->GetDimension().GetX() - 20);
+					text->HorizontalAlignText(Center);
 					text->SetText(quest->GetRewardDescription());
 					text->SetPosition(slot->GetPosition());
 				}
@@ -331,6 +348,8 @@ void QuestMenu::DisplayQuest(QuestMenuSlot* p_quest)
 				{
 					text->SetColor(ColorsNamed::Black);
 					text->SetFontSize(32);
+					text->SetWrapWidth(slot->GetDimension().GetX() - 20);
+					text->HorizontalAlignText(Center);
 					text->SetText(quest->GetRequiquementsDescription());
 					text->SetPosition(slot->GetPosition());
 				}
@@ -356,4 +375,28 @@ void QuestMenu::DisplayPage(int p_page)
 			slot->SetIsVisible(false);
 		}
 	}
+}
+
+void QuestMenu::FollowQuest(Quest* p_quest)
+{
+	QuestManager::Get()->SetActiveQuest(p_quest->GetName());
+	for (QuestMenuSlot* slot : m_slots)
+	{
+		if (slot->GetTextID() == p_quest->GetName())
+		{
+			slot->GetButtonText()->SetColor(ColorsNamed::Orange);
+		}
+	}
+}
+
+void QuestMenu::UnfollowQuest(Quest* p_quest)
+{
+	for (QuestMenuSlot* slot : m_slots)
+	{
+		if (slot->GetTextID() == p_quest->GetName())
+		{
+			slot->GetButtonText()->SetColor(ColorsNamed::DarkIndigo);
+		}
+	}
+	QuestManager::Get()->RemoveActiveQuest(p_quest);
 }

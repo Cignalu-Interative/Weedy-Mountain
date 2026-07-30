@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include <string>
 #include "PlayerData.h"
+#include "PlayerCollection.h"
 
 class GameData
 {
@@ -19,6 +20,7 @@ private:
 	GameData() = default;
 
 	PlayerData m_playerData;
+	PlayerCollection m_playerCollection;
 
 public:
 
@@ -45,6 +47,7 @@ public:
 	void Sleep();
 
 	PlayerData& GetPlayerData() { return m_playerData; }
+	PlayerCollection& GetPlayerCollection() { return m_playerCollection; }
 
 	void SetInventory(PlayerInventory* inv);
 
@@ -52,6 +55,4 @@ public:
 	bool IsRecipeUnlocked(const std::string& recipeID);
 
 	const std::vector<std::string>& GetUnlockedRecipes();
-
-	void UnlockItems();
 };

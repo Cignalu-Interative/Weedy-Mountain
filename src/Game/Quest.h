@@ -147,4 +147,6 @@ public:
 
 	std::string GetRequiquementsDescription();
 
+	void SetVisible(bool p_visible) { m_zone->SetIsVisible(p_visible); m_icone->SetIsVisible(p_visible); }
+
 };

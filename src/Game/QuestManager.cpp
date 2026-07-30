@@ -32,9 +32,11 @@ void QuestManager::CreateQuest(const std::string& p_name, Vector2f p_position, V
 		return;
 	}
 
-	Quest* p_quest = new Quest(p_name, p_position, p_dimension, p_owner, m_scene);
+	Quest* quest = new Quest(p_name, p_position, p_dimension, p_owner, m_scene);
 
-	AddQuestToNotStarted(p_quest);
+	quest->SetVisible(false);
+
+	AddQuestToNotStarted(quest);
 }
 
 void QuestManager::RemoveAllQuests()
@@ -215,6 +217,14 @@ void QuestManager::AddQuestToInProcess(Quest* p_quest)
 
 	m_questsInProcess[p_quest->GetName()] = m_questsInProcessVector.size();
 	m_questsInProcessVector.push_back(p_quest);
+	if (m_activeQuest == nullptr)
+	{
+		m_activeQuest = p_quest;
+	}
+	else
+	{
+		p_quest->SetVisible(false);
+	}
 }
 
 void QuestManager::AddQuestToFinished(Quest* p_quest)
@@ -292,13 +302,17 @@ std::vector<Quest*>& QuestManager::GetAllQuests()
 
 void QuestManager::UpdateQuests()
 {
-	for (Quest* quest : m_questsInProcessVector)
+	if (m_activeQuest)
+	{
+		m_activeQuest->UpdateQuest();
+	}
+	/*for (Quest* quest : m_questsInProcessVector)
 	{
 		if (quest)
 		{
 			quest->UpdateQuest();
 		}
-	}
+	}*/
 }
 
 void QuestManager::DrawQuests()
@@ -385,4 +399,24 @@ void QuestManager::GiveReward(Quest* p_quest)
 		}
 	}
 }
+
+void QuestManager::SetActiveQuest(const std::string& p_id)
+{
+	GetQuestOnInProcess(p_id) ? m_activeQuest = GetQuestOnInProcess(p_id) : m_activeQuest = nullptr;
+	if (m_activeQuest)
+	{
+		for (Quest* quest : m_questsInProcessVector)
+		{
+			if (quest != m_activeQuest)
+			{
+				quest->SetVisible(false);
+			}
+			else
+			{
+				quest->SetVisible(true);
+			}
+		}
+	}
+}
+
 

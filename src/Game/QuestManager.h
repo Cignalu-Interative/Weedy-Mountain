@@ -23,6 +23,8 @@ private:
 
 	Scene* m_scene = nullptr;
 
+	Quest* m_activeQuest = nullptr;
+
 	void RemoveQuestFromNotStarted(Quest* p_quest);
 	void RemoveQuestFromInProcess(Quest* p_quest);
 	void RemoveQuestFromFinished(Quest* p_quest);
@@ -70,5 +72,7 @@ public:
 
 	void GiveReward(Quest* p_quest);
 
+	void SetActiveQuest(const std::string& p_id);
+	Quest* GetActiveQuest() const { return m_activeQuest; }
 };
 

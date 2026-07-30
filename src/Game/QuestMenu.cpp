@@ -102,8 +102,8 @@ void QuestMenu::OnInitialize()
 	//Text Requiquement
 	scene->CreateText("textRequiquement", requiquement->GetPosition({ 0.5f, 0.0f }), "REQUIREMENTS", ColorsNamed::Black, true);
 	m_requirementText = scene->GetGeometry<Text>("textRequiquement");
-	m_rewardText->SetFontSize(36);
-	m_rewardText->SetPosition(requiquement->GetPosition({ 0.5f, 0.2f }));
+	m_requirementText->SetFontSize(36);
+	m_requirementText->SetPosition(requiquement->GetPosition({ 0.5f, 0.2f }));
 
 	//Follow Quest
 	QuestMenuSlot* followQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 160, 69 }, "button", "followQuest", "follow Quest", true);
@@ -212,6 +212,8 @@ void QuestMenu::SetVisible(bool p_visible)
 	{
 		slot->SetIsVisible(p_visible);
 	}
+	m_requirementText->SetIsVisible(p_visible);
+	m_rewardText->SetIsVisible(p_visible);
 
 }
 

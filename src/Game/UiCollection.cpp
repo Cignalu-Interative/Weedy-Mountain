@@ -34,7 +34,7 @@ void UiCollection::OnInitialize()
 	m_itemPageDescription = Debug::Get()->CreateText("ItemNameDescription", {GetPosition({0.10f,0.60f})}, "", ColorsNamed::Black, true);
 	m_itemPageDescription->SetIsVisible(false);
 
-	m_itemPageRecipies = Debug::Get()->CreateText("ItemNameRecipies", {GetPosition({0.50f,0.60f})}, "", ColorsNamed::Black, true);
+	m_itemPageRecipies = Debug::Get()->CreateText("ItemNameRecipies", {GetPosition({0.50f,0.20f})}, " Crafts : \n", ColorsNamed::Black, true);
 	m_itemPageRecipies->SetIsVisible(false);
 
 	m_prevPageButton = GetScene()->CreateButton(prevPos, { 50,50 }, "previousButton", "collectionPrevPage", "", true);
@@ -57,6 +57,11 @@ void UiCollection::OnInitialize()
 			GetSprite("itemPageIcon")->ChangeTexture("");
 			m_itemPageName->SetIsVisible(false);
 			m_itemPageDescription->SetIsVisible(false);
+
+			m_prevPageButton->SetIsVisible(true);
+			m_nextPageButton->SetIsVisible(true);
+
+			m_itemPageRecipies->SetIsVisible(false);
 
 			RefreshPage();
 		});
@@ -172,12 +177,18 @@ void UiCollection::OnItemClick(ItemBlock* block)
 	std::string path =ItemDataBase::Get()->GetItem(block->GetItemID())->GetPath();
 	std::string name =ItemDataBase::Get()->GetItem(block->GetItemID())->GetName();
 	std::string description =ItemDataBase::Get()->GetItem(block->GetItemID())->GetDescription();
-	std::string recipies;
+	std::string recipies = " Used in following crafts : \n\n";
 
-	for (int i = 0; i < RecipeDataBase::Get()->GetRecipesNameForItem(block->GetItemID()).size(); i++)
+
+	std::vector <std::string> temp = RecipeDataBase::Get()->GetRecipesNameForItem(block->GetItemID());
+
+	for (int i = 0; i < temp.size(); i++)
 	{
-		recipies += RecipeDataBase::Get()->GetRecipesNameForItem(block->GetItemID())[i] + "\n";
+		recipies += " -" + RecipeDataBase::Get()->GetRecipesNameForItem(block->GetItemID())[i] + "\n";
 	}
+
+	m_prevPageButton->SetIsVisible(false);
+	m_nextPageButton->SetIsVisible(false);
 	
 	AddSprite("itemPageIcon", path, { 200,200 }, 1, {-325,-150}, true);
 

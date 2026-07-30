@@ -28,7 +28,18 @@
         "imagePath": "..\\Textures\\Item_Fiber.png",
         "maxStack": 64,
         "name": "Fiber",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 2
+                    }
+                ],
+                "recipeID": "fiber",
+                "resultQuantity": 2
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -39,7 +50,26 @@
         "imagePath": "..\\Textures\\Item_Rock.png",
         "maxStack": 64,
         "name": "Rock",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 4,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 8,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "rock",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 2,
         "useActionID": ""
     },
@@ -50,7 +80,18 @@
         "imagePath": "..\\Textures\\Egg.png",
         "maxStack": 64,
         "name": "Egg",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "egg",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -61,7 +102,30 @@
         "imagePath": "..\\Textures\\Items\\Plant\\1\\potato_05.png",
         "maxStack": 64,
         "name": "Potatoe",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 2,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 3,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 5,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "potato",
+                "resultQuantity": 2
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },

@@ -28,7 +28,6 @@ void GameData::Initialize()
 void GameData::Update()
 {
 	m_timeSpent += m_timer.GetElapsed() * m_timeScale;
-	UnlockItems();
 	//m_playerData.m_playerInventory.OnUpdate();
 }
 
@@ -178,20 +177,3 @@ const std::vector<std::string>& GameData::GetUnlockedRecipes()
 	return m_unlockedRecipes;
 }
 
-void GameData::UnlockItems()
-{
-	for (InventorySlot* slot : m_playerData.m_playerInventory->GetInventory()->GetSlots())
-	{
-		if (slot->IsEmpty())
-			continue;
-
-		for (std::string id : m_playerData.m_unlockedItemsId)
-		{
-			if (id == slot->GetStack().GetID())
-				continue;
-
-			else
-				m_playerData.m_unlockedItemsId.push_back(slot->GetStack().GetID());
-		}
-	}
-}

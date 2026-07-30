@@ -2,10 +2,12 @@
 #include "2DPendentEngine\Scene.h"
 
 class PlayerInventory;
+class UiCollection;
 class HUDScene : public Scene
 {
 private:
 	PlayerInventory* m_playerInventory = nullptr;
+	UiCollection* m_collectionUi = nullptr;
 protected:
 
 	void OnInitialize() override;

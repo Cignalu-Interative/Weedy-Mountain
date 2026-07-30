@@ -14,10 +14,15 @@
 #include "GameData.h"
 #include "PlayerInventory.h"
 #include "2DPendentLib/InputManager.h"
+#include "ItemDataBase.h"
+#include "RecipeDataBase.h"
 
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
@@ -26,7 +31,6 @@ void HUDScene::OnInitialize()
 	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiCollection* collectionUi = CreateEntity<UiCollection>(GetWindowCenter(), {892,957}, "", Shape::Rectangle, true);
 
 	statsUi->RemoveCollider("default");
 	moneyUi->RemoveCollider("default");
@@ -46,12 +50,18 @@ void HUDScene::OnInitialize()
 	m_playerInventory = new PlayerInventory(inv, hot);
 
 	GameData::Get().SetInventory(m_playerInventory);
+	m_collectionUi = CreateEntity<UiCollection>(GetWindowCenter(), {1000,600}, "", Shape::Rectangle, true);
+
 	SceneManager::Get()->SetPersistentScene(this);
 }
 
 void HUDScene::OnEvent()
 {
+	if (InputManager::Get()->IsKeyboardDown(K_KP_8))
+		m_collectionUi->Open();
 
+	if (InputManager::Get()->IsKeyboardDown(K_KP_7))
+		m_collectionUi->Close();
 }
 
 void HUDScene::OnUpdate()

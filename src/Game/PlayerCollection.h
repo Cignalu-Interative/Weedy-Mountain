@@ -7,7 +7,8 @@ struct ItemDisplayInfo
     std::string m_name;
     std::string m_description;
     std::string m_iconPath;
-    bool        m_unlocked = false;
+    std::string m_texturePath;
+    bool m_unlocked = false;
 };
 
 class PlayerCollection

@@ -29,8 +29,9 @@ ItemDisplayInfo PlayerCollection::GetDisplayInfo(const std::string& itemID) cons
     ItemData* item = ItemDataBase::Get()->GetItem(itemID);
     if (!item)
     {
-        info.m_name = "???";
+        info.m_name = "";
         info.m_iconPath = "lockedItem";
+        info.m_texturePath = "LockedRecipe";
         return info;
     }
 
@@ -39,12 +40,14 @@ ItemDisplayInfo PlayerCollection::GetDisplayInfo(const std::string& itemID) cons
         info.m_name = item->GetName();
         info.m_description = item->GetDescription();
         info.m_iconPath = item->GetPath();
+        info.m_texturePath = "InventoryWeedyMountain";
     }
     else
     {
-        info.m_name = "???";
+        info.m_name = "";
         info.m_description = "Not Discovered";
         info.m_iconPath = "lockedItem";
+        info.m_texturePath = "LockedRecipe";
     }
     return info;
 }

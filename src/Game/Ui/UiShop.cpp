@@ -115,8 +115,6 @@ void UiShop::OnEvent()
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_slot->IsMouseIn())
 		m_slot->Clear();
 
-	if (InputManager::Get()->IsKeyboardDown(K_N))
-		SetIsVisible(!GetIsVisible());
 }
 
 void UiShop::OnUpdate()

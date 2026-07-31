@@ -123,6 +123,11 @@ void HUDScene::OnEvent()
 	
 	if (InputManager::Get()->IsKeyboardDown(K_P))
 		m_recipe->Open();
+
+	if (InputManager::Get()->IsKeyboardDown(K_KP_0))
+	{
+		GameData::Get().UnlockRecipe("a");
+	}
 }
 
 void HUDScene::OnUpdate()

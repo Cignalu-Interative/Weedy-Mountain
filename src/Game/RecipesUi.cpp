@@ -108,7 +108,7 @@ void RecipesUi::OnEvent()
 	{
 		im->StopTextInput();
 	}
-	if (im->IsTextInputActive() == true && im->IsKeyboardDown(K_DELETE))
+	if (im->IsTextInputActive() == true && im->IsKeyboardDown(K_BACKSPACE))
 	{
 		im->DeleteLastCharInFinalTextInput();
 	}
@@ -116,6 +116,10 @@ void RecipesUi::OnEvent()
 	{
 		m_searchText = im->GetfinalTextInput();
 		m_textBox->SetTextInBox(m_searchText);
+	}
+	if (im->IsKeyboardDown(K_ESCAPE))
+	{
+		Close();
 	}
 }
 

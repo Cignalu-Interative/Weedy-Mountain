@@ -19,6 +19,7 @@ void UiCollection::OnInitialize()
 	GetSprite("background")->SetDimension(GetDimension());
 	GetSprite("background")->SetPosition(GetPosition());
 
+
 	for (const auto& [id, data] : ItemDataBase::Get()->GetAll())
 		m_allItemIDs.push_back(id);
 
@@ -34,7 +35,7 @@ void UiCollection::OnInitialize()
 	m_itemPageDescription = Debug::Get()->CreateText("ItemNameDescription", {GetPosition({0.10f,0.60f})}, "", ColorsNamed::Black, true);
 	m_itemPageDescription->SetIsVisible(false);
 
-	m_itemPageRecipies = Debug::Get()->CreateText("ItemNameRecipies", {GetPosition({0.50f,0.20f})}, " Crafts : \n", ColorsNamed::Black, true);
+	m_itemPageRecipies = Debug::Get()->CreateText("ItemNameRecipies", {GetPosition({0.50f,0.20f})}, "", ColorsNamed::Black, true);
 	m_itemPageRecipies->SetIsVisible(false);
 
 	m_prevPageButton = GetScene()->CreateButton(prevPos, { 50,50 }, "previousButton", "collectionPrevPage", "", true);
@@ -54,7 +55,7 @@ void UiCollection::OnInitialize()
 			m_backButton->SetIsVisible(false);
 			m_isItemSelected = false;
 
-			GetSprite("itemPageIcon")->ChangeTexture("");
+			RemoveSprite("itemPageIcon");
 			m_itemPageName->SetIsVisible(false);
 			m_itemPageDescription->SetIsVisible(false);
 
@@ -184,18 +185,22 @@ void UiCollection::OnItemClick(ItemBlock* block)
 
 	for (int i = 0; i < temp.size(); i++)
 	{
+		if (RecipeDataBase::Get()->GetRecipesNameForItem(block->GetItemID()).empty())
+			break;
+
 		recipies += " -" + RecipeDataBase::Get()->GetRecipesNameForItem(block->GetItemID())[i] + "\n";
 	}
 
 	m_prevPageButton->SetIsVisible(false);
 	m_nextPageButton->SetIsVisible(false);
 	
-	AddSprite("itemPageIcon", path, { 200,200 }, 1, {-325,-150}, true);
+	AddSprite("itemPageIcon", path, { 200,200 }, 1, { -325,-150 }, true);
 
 	m_itemPageName->SetText(name);
 	m_itemPageName->SetIsVisible(true);
 
 	m_itemPageRecipies->SetText(recipies);
+	m_itemPageRecipies->SetPosition(GetPosition({ 0.50f,0.20f }) ,{0.5, 0});
 	m_itemPageRecipies->SetIsVisible(true);
 
 	m_itemPageDescription->SetText(description);
@@ -207,9 +212,9 @@ void UiCollection::SetIsVisible(bool p_isVisible)
 {
 	Entity::SetIsVisible(p_isVisible);
 
-
 	m_prevPageButton->SetIsVisible(p_isVisible);
 	m_nextPageButton->SetIsVisible(p_isVisible);
+
 }
 
 void UiCollection::Open()
@@ -228,6 +233,8 @@ void UiCollection::Close()
 
 	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(true);
 	SetIsVisible(false);
+	m_itemPageDescription->SetIsVisible(false);
+	m_itemPageRecipies->SetIsVisible(false);
 
 	m_isOpen = false;
 	

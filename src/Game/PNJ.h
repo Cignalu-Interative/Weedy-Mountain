@@ -44,7 +44,6 @@ public :
 	void OnCollisionStay(Collider* _self, Collider* _other, CollisionSide _side) override;
 	void OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side) override;
 
-
 	void SetDialogPath(std::string p_path) { m_dialogPath = p_path; }
 	void SetOnFinishFunction(std::function<void()> p_onFinish) { m_onFinish = p_onFinish; }
 

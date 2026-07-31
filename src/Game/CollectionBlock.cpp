@@ -22,7 +22,9 @@ void ItemBlock::SetItem(const std::string& itemID)
 	m_unlocked = info.m_unlocked;
 
 	GetSprite("icon" + std::to_string(m_index))->ChangeTexture(info.m_iconPath);
+	GetSprite()->ChangeTexture(info.m_texturePath);
 	SetText(info.m_name);
+	GetScene()->GetGeometry<Text>(GetTextID())->SetPosition(GetPosition({ 0.5f,0.60f }));
 }
 
 void ItemBlock::SetIndex(int p_index)

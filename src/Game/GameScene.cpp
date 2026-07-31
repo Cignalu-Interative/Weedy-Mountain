@@ -58,15 +58,15 @@ void GameScene::OnInitialize()
 
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
-	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	//mm->SetCurrentMap("Farm");
+	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	mm->SetCurrentMap("Farm");
 
-	//std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
+	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
 
-	//for (ObjectTiled* o : a)
-	//{
-	//	m_spawnPoint = o->GetObjectPosition();
-	//}
+	for (ObjectTiled* o : a)
+	{
+		m_spawnPoint = o->GetObjectPosition();
+	}
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
@@ -97,26 +97,26 @@ void GameScene::OnInitialize()
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
-	//Application::Get()->SetClampCameraToCurrentMap(true);
+	Application::Get()->SetClampCameraToCurrentMap(true);
 
-	//MapTiled* map = mm->GetCurrentMap();
+	MapTiled* map = mm->GetCurrentMap();
 
-	//std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
+	std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
 
-	//for (ObjectTiled* obj : objectGroup)
-	//{
-	//	Vector2f dim = obj->GetObjectDimension();
-	//	Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
-	//}
+	for (ObjectTiled* obj : objectGroup)
+	{
+		Vector2f dim = obj->GetObjectDimension();
+		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
+	}
 
-	//objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
+	objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
 
-	//for (ObjectTiled* obj : objectGroup)
-	//{
-	//	Vector2f dim = obj->GetObjectDimension();
-	//	Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
-	//	ent->SetTag(5);
-	//}
+	for (ObjectTiled* obj : objectGroup)
+	{
+		Vector2f dim = obj->GetObjectDimension();
+		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
+		ent->SetTag(5);
+	}
 
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();
@@ -207,11 +207,11 @@ void GameScene::OnEvent()
 	//	m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
 	//}
 
-	//if (im->IsKeyboardDown(K_R))
-	//{
-	//	
-	//	SceneManager::Get()->PushScene("village");
-	//}
+	if (im->IsKeyboardDown(K_R))
+	{
+		
+		SceneManager::Get()->PushScene("village");
+	}
 
 	if (im->IsKeyboardDown(K_C))
 	{

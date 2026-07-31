@@ -7654,6 +7654,9 @@
       "path": "../../res/Game/Assets/Textures/Items/Weapon/Medieval/weapons.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/LockedRecipe.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Oak_Shrub.png"
     },
     {
@@ -7670,6 +7673,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/Raw_Iron.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/RecipeSelected.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Rock.png"

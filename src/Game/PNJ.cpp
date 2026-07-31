@@ -19,7 +19,7 @@ void PNJ::OnInitialize()
 	m_dialogBox->GetSprite()->SetDimension(m_dialogBox->GetDimension());
 	m_dialogBox->SyncSprites();
 	m_dialogBox->SetIsVisible(false);
-	
+
 
 
 	m_dialogBoxPos = m_dialogBox->GetPosition({ 0,0 });
@@ -38,11 +38,11 @@ void PNJ::OnInitialize()
 	m_scene->GetGeometry<Text>("dialog")->SetFontSize(22);
 	m_scene->GetGeometry<Text>("dialog")->SetIsVisible(false);
 	m_scene->GetGeometry<Text>("dialog")->SetIsWrapped(true);
-	m_scene->GetGeometry<Text>("dialog")->SetWrapWidth( m_dialogBoxDim.GetX() * 0.9);
+	m_scene->GetGeometry<Text>("dialog")->SetWrapWidth(m_dialogBoxDim.GetX() * 0.9);
 
 	m_scene->CreateText("pressSpace", Vector2f(m_pressSpacePos.GetX() - 10, m_pressSpacePos.GetY() - 12), "Press SPACE to continue", Color(0, 0, 0, 200), true);
 	m_scene->GetGeometry<Text>("pressSpace")->SetFontSize(17);
-	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ m_pressSpacePos.GetX() - 15, m_pressSpacePos.GetY()- 12}, { 1,1 });
+	m_scene->GetGeometry<Text>("pressSpace")->SetPosition({ m_pressSpacePos.GetX() - 15, m_pressSpacePos.GetY() - 12 }, { 1,1 });
 	m_scene->GetGeometry<Text>("pressSpace")->SetIsVisible(false);
 
 }
@@ -50,26 +50,16 @@ void PNJ::OnInitialize()
 void PNJ::OnEvent()
 {
 	bool spacePressed = InputManager::Get()->IsKeyboardDown(K_SPACE);
-	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_isInPlayerZone && m_isFinished && m_isTalking) {
-		EndTalk();
-	}
-	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_index < m_initial.size())
-	{
-		m_scene->GetGeometry<Text>("dialog")->SetText(m_initial);
-		m_scene->GetGeometry<Text>("dialog")->SetPosition({ m_textX,m_textY, }, { 0,0 });
-
-		m_isFinished = true;
-	}
 
 	if (!spacePressed || !m_isInPlayerZone || !m_isTalking)
 		return;
-	
+
 	if (m_isFinished)
 	{
 		EndTalk();
 		return;
 	}
-	
+
 	if (m_isPageFull)
 	{
 		m_toSay.clear();
@@ -79,6 +69,7 @@ void PNJ::OnEvent()
 	}
 
 	SkipTalk();
+
 }
 
 void PNJ::OnUpdate()
@@ -206,7 +197,7 @@ void PNJ::SkipTalk()
 			dialogText->SetText(m_toSay);
 			dialogText->SetPosition({ m_textX, m_textY }, { 0,0 });
 			m_isPageFull = true;
-			return; 
+			return;
 		}
 
 		m_toSay = testText;
@@ -226,9 +217,9 @@ void PNJ::UpdateDialog()
 	if (m_timer > 0.f)
 		return;
 	m_timer = m_interval;
-	
+
 	if (m_isPageFull)
-		return; 
+		return;
 
 	if (m_index >= m_initial.size())
 	{
@@ -236,7 +227,7 @@ void PNJ::UpdateDialog()
 		return;
 	}
 
-	
+
 	std::string testText = m_toSay + m_initial[m_index];
 
 	Text* dialogText = m_scene->GetGeometry<Text>("dialog");
@@ -248,7 +239,7 @@ void PNJ::UpdateDialog()
 		dialogText->SetText(m_toSay);
 		dialogText->SetPosition({ m_textX, m_textY }, { 0,0 });
 		m_isPageFull = true;
-		return; 
+		return;
 	}
 
 	m_toSay = testText;

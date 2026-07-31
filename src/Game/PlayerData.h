@@ -87,6 +87,10 @@ struct PlayerData
 	std::vector<PlayerJob> m_jobs;
 
 	int m_money = 200000;
-	int m_cash = 0;
+	int m_cash = 20000;
+
+	int m_todayDepositCount = 0;
+	int m_maxDepositPerDay = 200;
+
 
 };

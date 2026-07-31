@@ -130,5 +130,6 @@ public:
 
 	Vector2f GetFacingDirection() { return m_facingDirection; }
 	Collider* GetActionBoxCollider() { return GetCollider("actionBox"); }
+	bool AreInputLocked() { return m_inputBlocker; }
 };
 

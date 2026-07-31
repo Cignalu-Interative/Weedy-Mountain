@@ -34,7 +34,8 @@ public:
 	void SetBackgroundFilled(bool p_isFilled) { m_rectangle->SetFilled(p_isFilled); }
 
 	void SetTextInBox(const std::string& p_text);
-	const std::string& GetText() const { return m_textToDraw->GetText(); }
+	Text* GetText() const { return m_textToDraw; }
+	Rectangle* GetRectangle() const { return m_rectangle; }
 
 	void OnDraw(Render* f_render, Window* f_window) override;
 

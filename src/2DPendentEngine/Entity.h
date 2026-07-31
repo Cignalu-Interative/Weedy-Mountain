@@ -203,6 +203,8 @@ public:
 
 	void SetAnimationByName(const std::string& p_nameAnimation);
 
+	bool GetSpriteTextBox() const; 
+
 	//Liste des class amie avec la class Entity
 	friend class CollisionManager;
 	friend class Application;

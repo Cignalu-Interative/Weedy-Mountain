@@ -5,6 +5,8 @@
 class PNJ : public Entity
 {
 private : 
+
+	Entity* m_dialogBox = nullptr;
 	Scene* m_scene = nullptr;
 	Button* m_button = nullptr;
 
@@ -15,11 +17,14 @@ private :
 	bool m_isInPlayerZone = false;
 	bool m_isTalking = false;
 	bool m_isFinished = true;
+	bool m_isPageFull = false;
 
-	float m_interval = 0.1f;
+	float m_interval = 0.015f;
 	float m_timer = m_interval;
 	float m_textX;
 	float m_textY;
+
+	float m_maxTextHeight = 0.f;
 
 	int m_index = 0;
 
@@ -46,6 +51,7 @@ public :
 	void Talk(const std::string& p_say);
 	void Talk(int p_dialogueID);
 	void EndTalk();
+	void SkipTalk();
 	void OnFinish();
 	void UpdateDialog();
 

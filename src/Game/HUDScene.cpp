@@ -92,6 +92,8 @@ void HUDScene::OnEvent()
 
 void HUDScene::OnUpdate()
 {
+	GameData& gm = GameData::Get();
+	gm.Update();
 	m_playerInventory->OnUpdate();
 	QuestManager::Get()->UpdateQuests();
 	m_questMenu->OnUpdate();

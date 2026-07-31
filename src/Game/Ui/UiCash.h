@@ -3,8 +3,8 @@
 
 class UiCash : public Ui
 {
-
 	void OnInitialize() override;
 	void OnUpdate() override;
+
 };
 

@@ -2,11 +2,13 @@
 #include "TextBox.h"
 #include "Debug.h"
 #include "Window.h"
+#include "SpriteContainer.h"
 
 TextBox::TextBox()
 {
 	m_textToDraw = new Text();
 	m_rectangle = new Rectangle();
+	
 }
 
 TextBox::~TextBox()
@@ -17,10 +19,13 @@ TextBox::~TextBox()
 
 void TextBox::InitTextBox(const std::string& p_id, Color p_color, bool p_isGUI)
 {
+	AddSprite("textbox", "", GetDimension(), 15);
+	//RemoveSprite("default");
 	Vector2f position = GetPosition();
 	Vector2i dimension = GetDimension();
 	m_rectangle->Initialize(position, dimension, p_color);
 	m_rectangle->SetIsGUI(GetIsGUI());
+	m_rectangle->SetDrawLayer(INT_MAX - 100);
 
 	m_BoxText = new SDLEncapsulation::S_Rect();
 
@@ -35,7 +40,9 @@ void TextBox::InitTextBox(const std::string& p_id, Color p_color, bool p_isGUI)
 	m_textToDraw->Initialize(GetPosition({0.0f, 0.5f}), "", ColorsNamed::LightPink);
 	m_textToDraw->SetIsGUI(GetIsGUI());
 	m_textToDraw->SetIsGUI(p_isGUI);
+	m_textToDraw->SetDrawLayer(INT_MAX);
 	m_textToDraw->SetWrapWidth(dimension.GetX() - m_textOffset.GetX());
+	SetIsVisible(true);
 }
 
 void TextBox::SetTextInBox(const std::string& p_text)
@@ -46,7 +53,7 @@ void TextBox::SetTextInBox(const std::string& p_text)
 
 void TextBox::OnDraw(Render* f_render, Window* f_window)
 {
-	if (m_isVisible = false)
+	if (m_isVisible == false)
 	{
 		return;
 	}

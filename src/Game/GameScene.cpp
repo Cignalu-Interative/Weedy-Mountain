@@ -132,6 +132,7 @@ void GameScene::OnInitialize()
 	
 	Furnace* f = CreateEntity<Furnace>({ m_spawnPoint + Vector2f{0, 200} }, { 16,32 }, "", Shape::Rectangle);
 
+
 	// CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	// Text* t = Debug::Get()->GetText("KAKA");
 	// t->SetFont("Gameplay", 55);
@@ -243,11 +244,11 @@ void GameScene::OnEvent()
 	// {
 	// 	im->DeleteLastCharInFinalTextInput();
 	// }
-	// if (im->IsTextInputActive() == true)
-	// {
-	// 	//m_textBox->SetText(im->GetfinalTextInput());
-	// 	m_textBox->SetTextInBox(im->GetfinalTextInput());
-	// }
+	 //if (im->IsTextInputActive() == true)
+	 //{
+	 //	//m_textBox->SetText(im->GetfinalTextInput());
+	 //	m_textBox->SetTextInBox(im->GetfinalTextInput());
+	 //}
 	// std::string t = im->GetfinalTextInput();
 	//std::cerr << "TextInput : " << t << std::endl;
 }

@@ -379,6 +379,10 @@ void QuestMenu::DisplayPage(int p_page)
 
 void QuestMenu::FollowQuest(Quest* p_quest)
 {
+	if (p_quest == nullptr)
+	{
+		return;
+	}
 	QuestManager::Get()->SetActiveQuest(p_quest->GetName());
 	for (QuestMenuSlot* slot : m_slots)
 	{

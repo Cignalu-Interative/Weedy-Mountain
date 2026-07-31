@@ -28,7 +28,7 @@ private:
 
 	StateMachine<Policeman> m_stateMachine;
 	
-	std::vector<Tile*> m_path;
+	std::vector<NavTile*> m_path;
 	int m_pathIndex = 0;
 
 	Pathfinder m_pathfinder;
@@ -70,11 +70,11 @@ public:
 	bool IsInVisionCone(Vector2f p_goalPos);
 
 	int GetPathIndex() { return m_pathIndex; }
-	std::vector<Tile*> GetPath() { return m_path; }
+	std::vector<NavTile*> GetPath() { return m_path; }
 	Vector2f GetPlayerPos() { return m_playerPos; }
 
 	void SetPathIndex(int p_newPathIndex) { m_pathIndex = p_newPathIndex; }
-	void SetPath(std::vector<Tile*> p_newPath) { m_path = p_newPath; }
+	void SetPath(std::vector<NavTile*> p_newPath) { m_path = p_newPath; }
 
 	void SetState(PolicemanState p_state);
 

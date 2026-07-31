@@ -48,10 +48,6 @@ public:
 
 	Player* GetPlayer() { return m_player; }
 
-	Player* GetPlayer2() { return m_player2; }
-
-	NavigationGrid* GetNavigationGrid() { return m_navigationGrid; }
-
 	int NewDay();
 };
 

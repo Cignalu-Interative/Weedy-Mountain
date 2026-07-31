@@ -8,7 +8,7 @@
 #include "ItemOnGround.h"
 #include "ItemDataBase.h"
 #include "FarmManager.h"
-
+#include "ItemType.h"
 
 void EnviroProps::OnInitialize()
 {
@@ -159,7 +159,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 2;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWIRON",1)), 1,3 };
 		m_loots.push_back(loot1);
@@ -170,7 +170,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 2;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWGOLD",1)), 1,3 };
 		m_loots.push_back(loot1);
@@ -180,7 +180,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 	{
 		m_name = p_name;
 		m_stats.m_hitToDestroy = 2;
-		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
 		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_DIAMOND",1)), 1,3 };
 		m_loots.push_back(loot1);

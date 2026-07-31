@@ -53,7 +53,7 @@ void GameScene::OnInitialize()
 	SoundManager::Get()->AddSound("../../res/Game/Assets/Sounds/Sounds_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Village");
+	mm->SetCurrentMap("Farm");
 
 	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
 

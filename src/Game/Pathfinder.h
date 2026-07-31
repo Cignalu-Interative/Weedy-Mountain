@@ -22,7 +22,7 @@ private:
 
 public:
 
-	std::vector<Tile*> FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal);
+	std::vector<NavTile*> FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal);
 
 	void GetNeighborPos(Vector2i p_gridDimension, Vector2i p_startPos);
 

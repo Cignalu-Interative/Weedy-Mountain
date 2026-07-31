@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <queue>
 
-std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal)
+std::vector<NavTile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector2i p_start, Vector2i p_goal)
 {
 	m_nodePool.clear();
 	m_nodePool.reserve(p_navigationGrid.GetGridDimension().GetX() * p_navigationGrid.GetGridDimension().GetY());
@@ -15,7 +15,7 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 		return {};
 	}
 
-	std::vector<Tile*> path;
+	std::vector<NavTile*> path;
 
 	auto comparator = [this](int a, int b) { return m_nodePool[a].s_f > m_nodePool[b].s_f; };
 	std::priority_queue<int, std::vector<int>, decltype(comparator)> toExplore(comparator);
@@ -78,7 +78,7 @@ std::vector<Tile*> Pathfinder::FindPath(NavigationGrid& p_navigationGrid, Vector
 
 		for (Vector2i pos : m_neighborPos)
 		{
-			Tile* tile = p_navigationGrid.GetTileByGridPos(pos);
+			NavTile* tile = p_navigationGrid.GetTileByGridPos(pos);
 
 			if (tile == nullptr)
 			{

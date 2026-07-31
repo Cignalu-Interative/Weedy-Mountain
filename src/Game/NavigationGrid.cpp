@@ -25,9 +25,9 @@ NavigationGrid::NavigationGrid()
 	}
 }
 
-Tile* NavigationGrid::InitializeTile(TileInfo p_infos)
+NavTile* NavigationGrid::InitializeTile(TileInfo p_infos)
 {
-	Tile* tile = new Tile;
+	NavTile* tile = new NavTile;
 
 	tile->pos = p_infos.worldPos;
 	tile->gridPos = p_infos.gridPos;
@@ -73,7 +73,7 @@ Tile* NavigationGrid::InitializeTile(TileInfo p_infos)
 
 void NavigationGrid::SetTileCrossedByType(TileType p_type, bool p_value)
 {
-	for (Tile* tile : m_mapTiles)
+	for (NavTile* tile : m_mapTiles)
 	{
 		if (tile == nullptr)
 		{
@@ -87,16 +87,16 @@ void NavigationGrid::SetTileCrossedByType(TileType p_type, bool p_value)
 	}
 }
 
-Tile* NavigationGrid::GetTileByGridPos(Vector2i p_gridPos)
+NavTile* NavigationGrid::GetTileByGridPos(Vector2i p_gridPos)
 {
 	return m_mapTiles[p_gridPos.GetX() * m_gridDimension.GetY() + p_gridPos.GetY()];
 }
 
-std::vector<Tile*> NavigationGrid::GetTilesByType(TileType p_type)
+std::vector<NavTile*> NavigationGrid::GetTilesByType(TileType p_type)
 {
-	std::vector<Tile*> tiles;
+	std::vector<NavTile*> tiles;
 
-	for (Tile* tile : m_mapTiles)
+	for (NavTile* tile : m_mapTiles)
 	{
 		if (tile == nullptr)
 		{

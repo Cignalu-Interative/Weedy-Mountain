@@ -14,7 +14,7 @@ enum class TileType
 	COUNT
 };
 
-struct Tile
+struct NavTile
 {
 	Vector2f pos;
 	Vector2i gridPos;
@@ -28,20 +28,20 @@ private:
 
 	Vector2i m_gridDimension;
 
-	std::vector<Tile*> m_mapTiles;
+	std::vector<NavTile*> m_mapTiles;
 
-	Tile* InitializeTile(TileInfo p_infos);
+	NavTile* InitializeTile(TileInfo p_infos);
 
 public:
 
 	NavigationGrid();
 
-	std::vector<Tile*> GetMapTiles() { return m_mapTiles; }
+	std::vector<NavTile*> GetMapTiles() { return m_mapTiles; }
 
 	void SetTileCrossedByType(TileType p_type, bool p_value);
 
-	Tile* GetTileByGridPos(Vector2i p_gridPos);
-	std::vector<Tile*> GetTilesByType(TileType p_type);
+	NavTile* GetTileByGridPos(Vector2i p_gridPos);
+	std::vector<NavTile*> GetTilesByType(TileType p_type);
 
 	Vector2i GetGridDimension() { return m_gridDimension; }
 

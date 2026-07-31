@@ -137,7 +137,7 @@ void Policeman::SetupStateMachine()
 
 void Policeman::StartChase()
 {
-	NavigationGrid* navigationGrid = GetScene<GameScene>()->GetNavigationGrid();
+	NavigationGrid* navigationGrid = nullptr;//GetScene<GameScene>()->GetNavigationGrid();
 
 	navigationGrid->SetTileCrossedByType(TileType::GRASS, true);
 
@@ -151,7 +151,7 @@ void Policeman::StartChase()
 
 void Policeman::StartPatrol()
 {
-	NavigationGrid* navigationGrid = GetScene<GameScene>()->GetNavigationGrid();
+	NavigationGrid* navigationGrid = nullptr;//GetScene<GameScene>()->GetNavigationGrid();
 
 	m_pathIndex = 0;
 

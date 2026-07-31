@@ -625,6 +625,9 @@
       "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Rocks/Tileset_RockSlope_Simple.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Rocks/tiles_cave.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Environment/Tilesets/Traps/fire_trap.png"
     },
     {
@@ -829,6 +832,9 @@
       "path": "../../res/Game/Assets/Textures/Furnace_progresBar.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Gold.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Gold_Ingot.png"
     },
     {
@@ -854,6 +860,12 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Iron.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Iron_Ingot.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Iron_Ore.png"
@@ -7730,6 +7742,12 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/Wheat seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/WhiteBackground.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Wooden_Chest.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/button.png"

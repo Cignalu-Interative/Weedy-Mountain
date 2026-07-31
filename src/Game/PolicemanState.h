@@ -66,7 +66,7 @@ class PolicemanPatrolState : public StateBase<Policeman>
 			p_policeman->SetAnimationByName("WalkUp");*/
 
 		int pathIndex = p_policeman->GetPathIndex();
-		std::vector<Tile*> path = p_policeman->GetPath();
+		std::vector<NavTile*> path = p_policeman->GetPath();
 
 		if (pathIndex >= path.size())
 		{
@@ -140,11 +140,12 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 		int pathIndex = p_policeman->GetPathIndex();
 
-		std::vector<Tile*> path = p_policeman->GetPath();
+		std::vector<NavTile*> path = p_policeman->GetPath();
 
 		if (pathIndex >= path.size())
 		{
-			path = pathfinder.FindPath(*gs->GetNavigationGrid(), policemanGridPos, playerGridPos);
+			NavigationGrid nav; // A ENLEVER
+			path = pathfinder.FindPath(nav/**gs->GetNavigationGrid()*/, policemanGridPos, playerGridPos);
 			
 			if (path.size() == 0)
 			{
@@ -174,7 +175,8 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 			if (pathIndex % 2 == 0)
 			{
-				p_policeman->SetPath(pathfinder.FindPath(*gs->GetNavigationGrid(),
+				NavigationGrid nav; // A ENLEVER
+				p_policeman->SetPath(pathfinder.FindPath(nav/**gs->GetNavigationGrid()*/,
 					policemanGridPos, playerGridPos));
 
 				p_policeman->SetPathIndex(0);

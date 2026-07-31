@@ -16,7 +16,8 @@ class UiJobs : public Ui
 
 	void OnInitialize() override;
 
-	void SetIsVisible(bool p_isVisible);
-
+public : 
+	void Toggle();
+	void SetIsVisible(bool p_visible);
 };
 

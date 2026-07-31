@@ -66,6 +66,15 @@ public:
 	PlayerData& GetPlayerData() { return m_playerData; }
 	PlayerCollection& GetPlayerCollection() { return m_playerCollection; }
 
+	PlayerJob* GetJobByName(JobType p_type)
+	{
+		for (PlayerJob* job : m_playerData.m_jobs)
+		{
+			if (job->m_name == p_type)
+				return job;
+		}
+	}
+
 	void SetInventory(PlayerInventory* inv);
 
 	void UnlockRecipe(const std::string& recipeID);

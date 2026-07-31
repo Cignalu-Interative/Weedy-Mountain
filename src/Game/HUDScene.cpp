@@ -32,6 +32,18 @@ void HUDScene::OnInitialize()
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
+	PlayerJob* gatherer = new PlayerJob();
+	gatherer->m_name = JobType::Gatherer;
+	GameData::Get().GetPlayerData().m_jobs.push_back(gatherer);
+
+	PlayerJob* farmer = new PlayerJob();
+	farmer->m_name = JobType::Farmer;
+	GameData::Get().GetPlayerData().m_jobs.push_back(farmer);
+
+	PlayerJob* miner = new PlayerJob();
+	miner->m_name = JobType::Miner;
+	GameData::Get().GetPlayerData().m_jobs.push_back(miner);
+
 	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
@@ -43,6 +55,7 @@ void HUDScene::OnInitialize()
 	cashUi->RemoveCollider("default");
 	timeUi->RemoveCollider("default");
 	dateUi->RemoveCollider("default");
+	m_jobsUi = CreateEntity<UiJobs>(GetWindowCenter(), { 1000, 600 }, "", Shape::Rectangle, true);
 
 	Inventory* inv = CreateEntity<Inventory>(GetWindowCenter(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle);
 	inv->GetSprite()->ResizeStretched(inv->GetDimension());
@@ -55,6 +68,7 @@ void HUDScene::OnInitialize()
 
 	m_playerInventory = new PlayerInventory(inv, hot);
 	m_playerInventory->AddItem("ITEM_WOOD", 1028, false);
+	m_jobsUi->SetIsVisible(false);
 
 	GameData::Get().SetInventory(m_playerInventory);
 	m_collectionUi = CreateEntity<UiCollection>(GetWindowCenter(), {1000,600}, "", Shape::Rectangle, true);
@@ -88,6 +102,11 @@ void HUDScene::OnEvent()
 	{
 		m_questMenu->Toggle(&QuestManager::Get()->GetQuestsInProcess());
 	}
+	if (InputManager::Get()->IsKeyboardDown(K_J))
+		m_jobsUi->Toggle();
+
+	if (InputManager::Get()->IsKeyboardHeld(K_L))
+		GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer, 5.f);
 }
 
 void HUDScene::OnUpdate()

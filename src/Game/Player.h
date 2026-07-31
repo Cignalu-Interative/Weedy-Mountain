@@ -85,10 +85,10 @@ protected:
 	void OnDestroy() override;
 
 public:
-	std::vector<PlayerJob>& GetJobs() { return gm.GetPlayerData().m_jobs; }
+	std::vector<PlayerJob*>& GetJobs() { return gm.GetPlayerData().m_jobs; }
 	PlayerStats GetStats() { return gm.GetPlayerData().m_stats; }
 
-	PlayerJob GetJobByName(JobType p_name);
+	PlayerJob* GetJobByName(JobType p_name);
 
 	void UpdateJobs();
 	void SetupStateMachine();

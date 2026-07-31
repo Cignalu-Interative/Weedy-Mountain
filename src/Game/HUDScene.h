@@ -4,6 +4,7 @@
 class PlayerInventory;
 class UiCollection;
 class QuestMenu;
+class UiJobs;
 class HUDScene : public Scene
 {
 private:
@@ -11,6 +12,7 @@ private:
 	UiCollection* m_collectionUi = nullptr;
 	QuestMenu* m_questMenu = nullptr;
 
+	UiJobs* m_jobsUi = nullptr;
 protected:
 
 	void OnInitialize() override;

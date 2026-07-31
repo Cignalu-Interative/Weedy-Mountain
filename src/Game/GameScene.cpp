@@ -146,6 +146,7 @@ void GameScene::OnInitialize()
 	// t->SetLineSpacing(50);
 	// t->HorizontalAlignText(HorizontalAlignment::Center);
 
+
 	EnviroSpawn::Get()->InitEnviroSpawn();
 
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
@@ -255,10 +256,12 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
+
 	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 
+	gm.Update();
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 
 	SoundManager* sm = SoundManager::Get();

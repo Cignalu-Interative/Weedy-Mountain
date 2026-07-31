@@ -50,6 +50,15 @@ void PNJ::OnInitialize()
 void PNJ::OnEvent()
 {
 	bool spacePressed = InputManager::Get()->IsKeyboardDown(K_SPACE);
+	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_isInPlayerZone && m_isFinished && m_isTalking) {
+		EndTalk();
+	}
+	if (InputManager::Get()->IsKeyboardDown(K_SPACE) && m_index < m_initial.size())
+	{
+		m_scene->GetGeometry<Text>("dialog")->SetText(m_initial);
+		m_scene->GetGeometry<Text>("dialog")->SetPosition({ m_textX,m_textY, }, { 0,0 });
+
+		m_isFinished = true;
 
 	if (!spacePressed || !m_isInPlayerZone || !m_isTalking)
 		return;
@@ -102,6 +111,9 @@ void PNJ::OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side
 void PNJ::Talk(const std::string& p_say)
 {
 	m_toSay.clear();
+	if (m_isTalking)
+		return;
+
 	m_scene->GetGeometry<Text>("dialog")->SetText("");
 
 	m_isPageFull = false;
@@ -119,6 +131,9 @@ void PNJ::Talk(const std::string& p_say)
 void PNJ::Talk(int p_dialogID)
 {
 	m_toSay.clear();
+	if (m_isTalking)
+		return;
+
 	m_scene->GetGeometry<Text>("dialog")->SetText("");
 
 	m_isPageFull = false;

@@ -7,7 +7,6 @@ private:
 
 	int m_pagesquest = 0;
 
-
 public:
 
 	void SetPagesQuest(int p_pagesquest) { m_pagesquest = p_pagesquest; }

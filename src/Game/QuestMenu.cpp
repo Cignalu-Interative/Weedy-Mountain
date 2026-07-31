@@ -27,14 +27,14 @@ QuestMenu::~QuestMenu()
 		}
 	}*/
 
-	if (m_slots.empty() == false)
-	{
-		m_slots.clear();
-	}
-	if (m_quests.empty() == false)
-	{
-		m_quests.clear();
-	}
+	//if (m_slots.empty() == false)
+	//{
+	//	m_slots.clear();
+	//}
+	//if (m_quests.empty() == false)
+	//{
+	//	m_quests.clear();
+	//}
 }
 
 void QuestMenu::OnInitialize()
@@ -53,7 +53,7 @@ void QuestMenu::OnInitialize()
 	Scene* scene = GetScene();
 
 	//Title
-	QuestMenuSlot* title = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 380, 100 }, "button", "title", "", true);
+	QuestMenuSlot* title = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 380, 100 }, "button", "title", "", true);
 	title->GetSprite()->ResizeStretched(title->GetDimension());
 	title->SyncSprites();
 	title->SetPosition(GetPosition({ 0.0f, 0.0f }) + Vector2f{ marginOut * 1.5f, marginOut * 2.5f }, { 0.0f, 0.0f });
@@ -63,7 +63,7 @@ void QuestMenu::OnInitialize()
 	m_slots.push_back(title);
 
 	//Reward
-	QuestMenuSlot* reward = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 380, 120 }, "button", "reward", "", true);
+	QuestMenuSlot* reward = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 380, 120 }, "button", "reward", "", true);
 	reward->GetSprite()->ResizeStretched(reward->GetDimension());
 	reward->SyncSprites();
 	reward->SetPosition(title->GetPosition({ 0.5f, 1.0f }) + Vector2f{ 0.0f, (float)marginOut / 2 }, { 0.5f, 0.0f });
@@ -80,7 +80,7 @@ void QuestMenu::OnInitialize()
 	m_rewardText->SetPosition(reward->GetPosition({ 0.5f, 0.2f }));
 
 	//History
-	QuestMenuSlot* history = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 380, (int)std::ceil(reward->GetPosition({0.5f, 1.0f}).GetY() - title->GetPosition({0.5f, 0.0f}).GetY()) + 6 }, "button", "history", "", true);
+	QuestMenuSlot* history = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 380, (int)std::ceil(reward->GetPosition({0.5f, 1.0f}).GetY() - title->GetPosition({0.5f, 0.0f}).GetY()) + 6 }, "button", "history", "", true);
 	history->GetSprite()->ResizeStretched(history->GetDimension());
 	history->SyncSprites();
 	history->SetPosition(title->GetPosition({ 1.0f, 0.0f }) + Vector2f{ (float)marginOut, 0.0f }, { 0.0f, 0.0f });
@@ -90,7 +90,7 @@ void QuestMenu::OnInitialize()
 	m_slots.push_back(history);
 
 	//Requiquement
-	QuestMenuSlot* requiquement = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 780, 160 }, "button", "requiquement", "", true);
+	QuestMenuSlot* requiquement = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 780, 160 }, "button", "requiquement", "", true);
 	requiquement->GetSprite()->ResizeStretched(requiquement->GetDimension());
 	requiquement->SyncSprites();
 	requiquement->SetPosition({ history->GetPosition({1.0f, 0.5f}).GetX() - 390, history->GetPosition({0.5f, 1.0f}).GetY() + marginOut * 0.34f }, { 0.5f, 0.0f });
@@ -106,7 +106,7 @@ void QuestMenu::OnInitialize()
 	m_requirementText->SetPosition(requiquement->GetPosition({ 0.5f, 0.2f }));
 
 	//Follow Quest
-	QuestMenuSlot* followQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 160, 69 }, "button", "followQuest", "follow Quest", true);
+	QuestMenuSlot* followQuest = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 160, 69 }, "button", "followQuest", "follow Quest", true);
 	followQuest->GetSprite()->ResizeStretched(followQuest->GetDimension());
 	followQuest->SyncSprites();
 	followQuest->SetPosition(requiquement->GetPosition({ 0.25f, 1.f }) + Vector2f{ 0.0f, (float)marginOut }, { 0.0f, 0.0f });
@@ -118,7 +118,7 @@ void QuestMenu::OnInitialize()
 	m_slots.push_back(followQuest);
 
 	//Unfollow Quest
-	QuestMenuSlot* unfollowQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 160, 69 }, "button", "unfollowQuest", "unfollow Quest", true);
+	QuestMenuSlot* unfollowQuest = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 160, 69 }, "button", "unfollowQuest", "unfollow Quest", true);
 	unfollowQuest->GetSprite()->ResizeStretched(unfollowQuest->GetDimension());
 	unfollowQuest->SyncSprites();
 	unfollowQuest->SetPosition(requiquement->GetPosition({ 0.75f, 1.0f }) + Vector2f{ 0.0f,(float)marginOut }, { 1.0f, 0.0f });
@@ -130,7 +130,7 @@ void QuestMenu::OnInitialize()
 	m_slots.push_back(unfollowQuest);
 
 	//Next Quest
-	QuestMenuSlot* nextQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 100, 67 }, "button", "nextQuest", "->", true);
+	QuestMenuSlot* nextQuest = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 100, 67 }, "button", "nextQuest", "->", true);
 	nextQuest->GetSprite()->ResizeStretched(nextQuest->GetDimension());
 	nextQuest->SyncSprites();
 	nextQuest->SetPosition({ GetPosition({ 1.0f, 0.5f }).GetX() + -(float)marginOut * 2, unfollowQuest->GetPosition({0.5f, 1.0f}).GetY()}, {1.0f, 1.0f});
@@ -143,7 +143,7 @@ void QuestMenu::OnInitialize()
 	m_slots.push_back(nextQuest);
 
 	//Previous Quest
-	QuestMenuSlot* previousQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 100, 67 }, "button", "previousQuest", "<-", true);
+	QuestMenuSlot* previousQuest = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 100, 67 }, "button", "previousQuest", "<-", true);
 	previousQuest->GetSprite()->ResizeStretched(previousQuest->GetDimension());
 	previousQuest->SyncSprites();
 	previousQuest->SetPosition({ requiquement->GetPosition({1.0f, 0.5f}).GetX() + marginOut, nextQuest->GetPosition({0.5f, 0.0f}).GetY() }, { 0.0f, 0.0f });
@@ -156,7 +156,7 @@ void QuestMenu::OnInitialize()
 	m_slots.push_back(previousQuest);
 
 	//List of Quest
-	QuestMenuSlot* listOfQuest = (QuestMenuSlot*)scene->CreateButton({ 0.0f, 0.0f }, { 220, ((int)(requiquement->GetPosition({0.5f, 1.0f}).GetY() - history->GetPosition({0.5f, 0.0f}).GetY())) + 11 }, "buttonHover", "listOfQuest", "", true);
+	QuestMenuSlot* listOfQuest = scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 220, ((int)(requiquement->GetPosition({0.5f, 1.0f}).GetY() - history->GetPosition({0.5f, 0.0f}).GetY())) + 11 }, "buttonHover", "listOfQuest", "", true);
 	listOfQuest->GetSprite()->ResizeStretched(listOfQuest->GetDimension());
 	listOfQuest->SyncSprites();
 	listOfQuest->SetPosition(history->GetPosition({1.0f, 0.0f}) + Vector2f{(float)marginOut, 0.0f}, {0.0f, 0.0f});
@@ -181,7 +181,7 @@ void QuestMenu::SyncQuests(const std::vector<Quest*>* p_questVector)
 
 	for (Quest* quest : *p_questVector)
 	{
-		QuestMenuSlot* questSlot = (QuestMenuSlot*)m_scene->CreateButton({ 0.0f, 0.0f }, { 180, sizeelement }, "button", quest->GetName(), quest->GetName(), true);
+		QuestMenuSlot* questSlot = m_scene->CreateButton<QuestMenuSlot>({ 0.0f, 0.0f }, { 180, sizeelement }, "button", quest->GetName(), quest->GetName(), true);
 		questSlot->GetSprite()->ResizeStretched(questSlot->GetDimension());
 		questSlot->SyncSprites();
 		questSlot->SetPosition(listOfQuest->GetPosition({0.5f, 0.075f}) + Vector2f{ 0.0f, margin + (questSlot->GetDimension().GetY() * count)}, {0.5f, 0.0f});

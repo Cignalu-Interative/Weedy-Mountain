@@ -169,6 +169,8 @@ void FurnaceUi::PlaceItemInConsumablesSlot()
 
 void FurnaceUi::PlaceItemInFurnaceSlot( InventorySlot* p_slot)
 {
+	if (m_isVisible == false)
+		return;
 	// take item with p_idToTest in inventory and place in slot
 	std::vector<InventorySlot*> slots = m_playerInventory->GetHotbar()->GetSlots(); // replace by GetAllSlots
 	for (InventorySlot* slot : slots)
@@ -217,6 +219,8 @@ void FurnaceUi::PlaceItemInFurnaceSlot( InventorySlot* p_slot)
 
 void FurnaceUi::PlaceItemInFurnaceSlot(const std::string& p_idToTest, InventorySlot* p_slot)
 {
+	if (m_isVisible == false)
+		return;
 	// take item with p_idToTest in inventory and place in slot
 	std::vector<InventorySlot*> slots = m_playerInventory->GetHotbar()->GetSlots(); // replace by GetAllSlots
 	for (InventorySlot* slot : slots)

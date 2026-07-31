@@ -85,19 +85,6 @@ Weather GameData::GetWeather()
 	return Weather::Clear;
 }
 
-TimeOfDay GameData::GetTimeOfDay()
-{
-	if (GetHour() < 5 || GetHour() > 20)
-		return TimeOfDay::Night;
-
-	return TimeOfDay::Day;
-}
-
-Season GameData::GetSeason()
-{
-	return (Season)(GetMonth() - 1);
-}
-
 std::string GameData::GetMonthName()
 {
 	static const char* seasons[MONTHS_PER_YEAR] =

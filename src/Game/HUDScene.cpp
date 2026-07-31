@@ -72,7 +72,6 @@ void HUDScene::OnInitialize()
 	hot->SetIsVisible(false);
 
 	m_playerInventory = new PlayerInventory(inv, hot);
-	m_playerInventory->AddItem("ITEM_WOOD", 1028, false);
 	m_jobsUi->SetIsVisible(false);
 
 	GameData::Get().SetInventory(m_playerInventory);
@@ -87,12 +86,12 @@ void HUDScene::OnInitialize()
 	questMenu->GetCollider()->SetIsTrigger(true);
 	//questMenu->GetCollider()->SetShow(true);
 	m_questMenu = questMenu;
-	m_playerInventory->AddItem("ITEM_WOOD", 25, false);
 	m_playerInventory->AddItem("ITEM_WOOD", 64, false);
 	m_playerInventory->AddItem("ITEM_RAW_GOLD", 64, false);
 	m_playerInventory->AddItem("ITEM_RAW_GOLD", 64, false);
-	m_playerInventory->AddItem("ITEM_FIBER", 25, false);
-
+	m_playerInventory->AddItem("ITEM_DIAMOND_AXE", 1, false);
+	m_playerInventory->AddItem("ITEM_DIAMOND_PICKAXE", 1, false);
+	m_playerInventory->AddItem("ITEM_WOODEN_PICKAXE", 1, false);
 }
 
 void HUDScene::OnEvent()

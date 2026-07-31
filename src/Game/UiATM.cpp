@@ -149,7 +149,7 @@ void UiATM::Open()
 	SceneManager::Get()->GetScene("HUD")->SetSleepDraw(true);
 	Debug::Get()->GetText("UiCashText")->SetIsVisible(false);
 	Debug::Get()->GetText("Date")->SetIsVisible(false);
-	Debug::Get()->GetText("Time")->SetIsVisible(false);
+	Debug::Get()->GetText("time")->SetIsVisible(false);
 	Debug::Get()->GetText("Money")->SetIsVisible(false);
 	SetIsVisible(true);
 
@@ -176,7 +176,7 @@ void UiATM::Close()
 	SceneManager::Get()->GetScene("HUD")->SetSleepDraw(false);
 	Debug::Get()->GetText("UiCashText")->SetIsVisible(true);
 	Debug::Get()->GetText("Date")->SetIsVisible(true);
-	Debug::Get()->GetText("Time")->SetIsVisible(true);
+	Debug::Get()->GetText("time")->SetIsVisible(true);
 	Debug::Get()->GetText("Money")->SetIsVisible(true);
 	SetIsVisible(false);
 

@@ -65,6 +65,29 @@ void VillageScene::OnInitialize()
 	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,-100} }, { 8,32 }, "player", Shape::Rectangle);
 	m_drugDealer = CreateEntity<shopPNJ>({ m_spawnPoint + Vector2f{200,-200} }, { 8,32 }, "player", Shape::Rectangle);
 
+	m_PNJ->SetOnFinishFunction([this]
+		{
+			m_player->UnlockInputs();
+			if (QuestManager::Get()->GetQuestOnNotStarted("Quest") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("Quest");
+			}
+			Quest* quest = QuestManager::Get()->GetQuestOnInProcess("Quest");
+			if (quest != nullptr)
+			{
+				if (quest->IsQuestCompleted() == true)
+				{
+					QuestManager::Get()->SetStateQuestFinished("Quest");
+					std::cerr << "Quest finished" << std::endl;
+					//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
+				}
+				else
+				{
+					//m_PNJ->Talk("Tu n'as pas encore terminé la quête, continue à chercher les objets dont j'ai besoin !");
+				}
+			}
+		});
+
 	m_drugDealer->SetOnFinishFunction([this] {
 		if (GameData::Get().GetHour() < 18)
 		{
@@ -82,10 +105,6 @@ void VillageScene::OnInitialize()
 	);
 	m_shopPNJ->SetOnFinishFunction([this] {
 		m_shop->Open(); 
-		}
-	);
-	m_PNJ->SetOnFinishFunction([this] {
-		m_player->UnlockInputs();
 		}
 	);
 

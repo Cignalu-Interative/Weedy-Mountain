@@ -101,6 +101,9 @@ void RecipesUi::OnUpdate()
 
 void RecipesUi::OnEvent()
 {
+	if(m_isVisible == false)
+		return;
+
 	InputManager* im = InputManager::Get();
 
 	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())

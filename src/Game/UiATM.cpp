@@ -210,6 +210,9 @@ void UiATM::OnUpdate()
 
 void UiATM::OnEvent()
 {
+	if(m_isVisible == false)
+		return;
+
 	InputManager* im = InputManager::Get();
 
 	if (im->IsMouseDown(BUTTON_LEFT) && m_amountBox->IsMouseIn())

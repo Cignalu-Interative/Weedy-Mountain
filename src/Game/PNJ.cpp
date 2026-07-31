@@ -59,6 +59,7 @@ void PNJ::OnEvent()
 		m_scene->GetGeometry<Text>("dialog")->SetPosition({ m_textX,m_textY, }, { 0,0 });
 
 		m_isFinished = true;
+	}
 
 	if (!spacePressed || !m_isInPlayerZone || !m_isTalking)
 		return;

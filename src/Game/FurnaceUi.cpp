@@ -172,7 +172,7 @@ void FurnaceUi::PlaceItemInFurnaceSlot( InventorySlot* p_slot)
 	if (m_isVisible == false)
 		return;
 	// take item with p_idToTest in inventory and place in slot
-	std::vector<InventorySlot*> slots = m_playerInventory->GetHotbar()->GetSlots(); // replace by GetAllSlots
+	std::vector<InventorySlot*> slots = m_playerInventory->GetAllSlots(); // replace by GetAllSlots
 	for (InventorySlot* slot : slots)
 	{
 		if (slot->IsMouseIn() == false)
@@ -222,7 +222,7 @@ void FurnaceUi::PlaceItemInFurnaceSlot(const std::string& p_idToTest, InventoryS
 	if (m_isVisible == false)
 		return;
 	// take item with p_idToTest in inventory and place in slot
-	std::vector<InventorySlot*> slots = m_playerInventory->GetHotbar()->GetSlots(); // replace by GetAllSlots
+	std::vector<InventorySlot*> slots = m_playerInventory->GetAllSlots(); // replace by GetAllSlots
 	for (InventorySlot* slot : slots)
 	{
 		if (slot->IsMouseIn() == false)
@@ -284,7 +284,6 @@ void FurnaceUi::PlaceItemInInventory(InventorySlot* p_slot)
 void FurnaceUi::Open()
 {
 	Vector2f pos = GetPosition() + Vector2f{0,50};
-
 	m_playerInventory->GetInventory()->SetPosition(pos);
 	m_playerInventory->GetInventory()->SetVisible(true);
 

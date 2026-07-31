@@ -391,12 +391,12 @@ void Player::OnDestroy()
 
 PlayerJob* Player::GetJobByName(JobType p_type)
 {
-	gm.GetPlayerData().GetJobByName(p_type);
+	return gm.GetPlayerData().GetJobByName(p_type);
 }
 
 void Player::UpdateJobs()
 {
-	/*
+	
 	for (int i = 0; i < gm.GetPlayerData().m_jobs.size(); i++) {
 		gm.GetPlayerData().m_jobs[i]->levelUp();
 		switch (gm.GetPlayerData().m_jobs[i]->m_name)
@@ -404,19 +404,19 @@ void Player::UpdateJobs()
 		case JobType::Gatherer:
 			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) { 
 			case 2:
-				UnlockRecipe(Recipes::BandageL1);
+				//UnlockRecipe(Recipes::BandageL1);
 				break;
 			case 3:
-				UnlockRecipe(Recipes::EnergizingL1);
+				//UnlockRecipe(Recipes::EnergizingL1);
 				break;
 			case 4:
 				gm.GetPlayerData().m_stats.m_harvestEffiency *= 1.067f;
 				break;
 			case 5:
-				UnlockRecipe(Recipes::BandageL2);
+				//UnlockRecipe(Recipes::BandageL2);
 				break;
 			case 6:
-				UnlockRecipe(Recipes::EnergizingL2);
+				//UnlockRecipe(Recipes::EnergizingL2);
 				break;
 			}
 			break;
@@ -424,21 +424,21 @@ void Player::UpdateJobs()
 		case JobType::Farmer:
 			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
-				UnlockRecipe(Recipes::FertilizerL1);
+				//UnlockRecipe(Recipes::FertilizerL1);
 				break;
 			case 3:
-				UnlockRecipe(Recipes::AutoWateringL1);
+				//UnlockRecipe(Recipes::AutoWateringL1);
 
 				break;
 			case 4:
 				gm.GetPlayerData().m_stats.m_farmerSpeed *= 1.067f;
 				break;
 			case 5:
-				UnlockRecipe(Recipes::FertilizerL2);
+				//UnlockRecipe(Recipes::FertilizerL2);
 
 				break;
 			case 6:
-				UnlockRecipe(Recipes::AutoWateringL2);
+				//UnlockRecipe(Recipes::AutoWateringL2);
 				break;
 			}
 			break;
@@ -446,22 +446,22 @@ void Player::UpdateJobs()
 		case JobType::Miner:
 			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
-				UnlockRecipe(Recipes::StoneTools);
+				//UnlockRecipe(Recipes::StoneTools);
 
 				break;
 			case 3:
-				UnlockRecipe(Recipes::IronTools);
+				//UnlockRecipe(Recipes::IronTools);
 
 				break;
 			case 4:
 				gm.GetPlayerData().m_stats.m_miningSpeed *= 1.067f;
 				break;
 			case 5:
-				UnlockRecipe(Recipes::GoldTools);
+				//UnlockRecipe(Recipes::GoldTools);
 
 				break;
 			case 6:
-				UnlockRecipe(Recipes::DiamondTools);
+				//UnlockRecipe(Recipes::DiamondTools);
 
 				break;
 			}
@@ -473,7 +473,7 @@ void Player::UpdateJobs()
 				gm.GetPlayerData().m_stats.m_drugsSellQuantity += 15;
 				break;
 			case 3:
-				UnlockRecipe(Recipes::WeedSeed);
+				//UnlockRecipe(Recipes::WeedSeed);
 				break;
 			case 4:
 				gm.GetPlayerData().m_stats.m_drugSellEfficency *= 1.067f;
@@ -482,7 +482,7 @@ void Player::UpdateJobs()
 				gm.GetPlayerData().m_stats.m_drugsSellQuantity += 40;
 				break;
 			case 6:
-				UnlockRecipe(Recipes::CannabisSeed);
+				//UnlockRecipe(Recipes::CannabisSeed);
 				break;
 			}
 			break;
@@ -490,25 +490,25 @@ void Player::UpdateJobs()
 		case JobType::Killer:
 			switch (gm.GetPlayerData().m_jobs[i]->m_lvl) {
 			case 2:
-				UnlockRecipe(Recipes::Knife);
+				//UnlockRecipe(Recipes::Knife);
 				break;
 			case 3:
-				UnlockRecipe(Recipes::Sword);
+				//UnlockRecipe(Recipes::Sword);
 				break;
 			case 4:
 				gm.GetPlayerData().m_stats.m_playerSpeed *= 1.067f;
 				break;
 			case 5:
-				UnlockRecipe(Recipes::Glock);
+				//UnlockRecipe(Recipes::Glock);
 				break;
 			case 6:
-				UnlockRecipe(Recipes::Rifle);
+				//UnlockRecipe(Recipes::Rifle);
 				break;
 			}
 			break;
 		}
 	}
-	*/
+
 }
 
 void Player::SetupStateMachine()

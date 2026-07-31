@@ -21,6 +21,8 @@ private:
 
 	Uint8 m_oppacity = 255; //Opacité du sprite, de 0 (transparent) à 255 (opaque)
 
+	Vector2i m_textureDimension;
+
 	//SDL_FPoint m_rotationCenter = { 0, 0 }; //Point autour duquel le sprite tourne
 
 	//Vector2i m_frameSize; // Taille d'une frame
@@ -59,6 +61,8 @@ public:
 
 	SDL_FRect* GetSpriteRect() { return m_srcRect; }
 	void SetSourceRectSprite(SDL_FRect p_SDLrect);
+
+	Vector2i GetTextureDimension() const { return m_textureDimension; }
 
 	//Fonction pour dessinner le sprite à l'écran
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;

@@ -19,6 +19,7 @@
 
 #include "QuestManager.h"
 #include "QuestMenu.h"
+#include "Furnace.h"
 
 void HUDScene::OnInitialize()
 {
@@ -65,6 +66,12 @@ void HUDScene::OnInitialize()
 	questMenu->GetCollider()->SetIsTrigger(true);
 	//questMenu->GetCollider()->SetShow(true);
 	m_questMenu = questMenu;
+	m_playerInventory->AddItem("ITEM_WOOD", 25, false);
+	m_playerInventory->AddItem("ITEM_WOOD", 64, false);
+	m_playerInventory->AddItem("ITEM_RAW_GOLD", 64, false);
+	m_playerInventory->AddItem("ITEM_RAW_GOLD", 64, false);
+	m_playerInventory->AddItem("ITEM_FIBER", 25, false);
+
 }
 
 void HUDScene::OnEvent()

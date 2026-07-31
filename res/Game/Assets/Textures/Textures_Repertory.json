@@ -25,6 +25,9 @@
       "path": "../../res/Game/Assets/Textures/Egg.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/EmptyProgressBar.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Energy.png"
     },
     {
@@ -815,6 +818,18 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/FishingRod.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Furnace_BackGround.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Furnace_Fuel.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Furnace_progresBar.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Gold_Ingot.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Gold_Ore.png"
@@ -7630,6 +7645,12 @@
       "path": "../../res/Game/Assets/Textures/Potatoe.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Raw_Gold.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Raw_Iron.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Rock.png"
     },
     {
@@ -7757,6 +7778,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/fullHorizontalWhite.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/furnace.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/inventory.png"

@@ -73,6 +73,8 @@
     },
     {
         "buyPrice": 30,
+        "cookResultItemID": 58,
+        "cookTime": 20.0,
         "description": "T'as vu de l'eau quelque part ???",
         "id": 7,
         "imagePath": "..\\Textures\\Items\\Tools\\item189.png",
@@ -787,6 +789,32 @@
         "name": "Orange King Fish",
         "recipes": [],
         "sellPrice": 350,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "cookResultItemID": 66,
+        "cookTime": 3.0,
+        "description": "",
+        "id": 65,
+        "imagePath": "..\\Textures\\Raw_Gold.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Raw Gold",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 66,
+        "imagePath": "..\\Textures\\Gold_Ingot.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Gold Ingot",
+        "recipes": [],
+        "sellPrice": 0,
         "useActionID": ""
     }
 ]

@@ -38,6 +38,7 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"	
 
+#include "Furnace.h"
 #include "ItemActions.h"
 #include "SoundManager.h"
 
@@ -125,19 +126,8 @@ void GameScene::OnInitialize()
 		//tile->ShowCollider(true);
 		FarmManager::Get()->RegisterTile(tile);
 	}
-
-
-	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);*/
-	UiMoney* f = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50}, {120,64}, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiCash* g = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	//f->ShowCollider(true);
-	UiTime* h = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* i = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
-
-	/*UiJobs* j = CreateEntity<UiJobs>(m_player->GetPosition(), { 1000, 600 }, "", Shape::Rectangle, true);
-	j->ShowCollider(true);*/
+	
+	Furnace* f = CreateEntity<Furnace>({ m_spawnPoint + Vector2f{0, 200} }, { 16,32 }, "", Shape::Rectangle);
 
 	// CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
 	// Text* t = Debug::Get()->GetText("KAKA");
@@ -152,18 +142,7 @@ void GameScene::OnInitialize()
 	// t->SetLineSpacing(50);
 	// t->HorizontalAlignText(HorizontalAlignment::Center);
 
-	//m_player2 = CreateEntity<Player>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 16,32 }, "player", Shape::Rectangle);
-	//m_player2->GetInventory()->AddItem("ITEM_WOOD", 300, false);
-	//m_player2->GetInventory()->AddItem("ITEM_FIBER", 30, false);
-
-	//UiShop* a = CreateEntity<UiShop>({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
-	//a->GetSprite()->SetDimension(a->GetDimension());
-	//a->SyncSprites();
-	////a->ShowCollider(true);
-	CreateText("time", { 200, 50 }, std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()), { 255, 255, 255, 255 }, true);
-
 	EnviroSpawn::Get()->InitEnviroSpawn();
-	//EnviroSpawn::Get()->InitEnviroSpawn();
 
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
@@ -201,11 +180,11 @@ void GameScene::OnEvent()
 {
 	InputManager* im = InputManager::Get();
 
-	if (im->IsKeyboardDown(K_A))
-		GetCamera()->SetZoom(5);
+	//if (im->IsKeyboardDown(K_A))
+	//	GetCamera()->SetZoom(5);
 
-	if (im->IsKeyboardDown(K_E))
-		GetCamera()->SetZoom(1);
+	//if (im->IsKeyboardDown(K_E))
+	//	GetCamera()->SetZoom(1);
 
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{
@@ -268,9 +247,7 @@ void GameScene::OnUpdate()
 	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
-	gm.Update();
-	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
-	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
+
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 
 	SoundManager* sm = SoundManager::Get();

@@ -33,6 +33,7 @@ void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p
 		return;
     }
     Vector2i spriteDimention = { static_cast<int>(textureWidth), static_cast<int>(textureHeight) };
+    m_textureDimension = spriteDimention;
     SetDimension(spriteDimention);
     //AutoDetectFrameSize(spriteDimention);
 

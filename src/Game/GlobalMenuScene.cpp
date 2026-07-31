@@ -47,6 +47,7 @@ void GlobalMenuScene::OnInitialize()
 		m_startButton->SyncSprites();
 		m_startButton->SetOnHoverStay([this] {m_startButton->SetSprite("button2"); });
 		m_startButton->SetOnHoverExit([this] {m_startButton->SetSprite("button"); });
+		m_startButton->SetOnLeftClick([this] {SceneManager::Get()->PushScene("HUD"); SceneManager::Get()->PushScene("game");});
 		Debug::Get()->GetText(m_startButton->GetTextID())->SetFontSize(50);
 		Debug::Get()->GetText(m_startButton->GetTextID())->SetPosition(m_startButton->GetPosition());
 	}
@@ -89,6 +90,23 @@ void GlobalMenuScene::OnDestroy()
 
 void GlobalMenuScene::OnSleep()
 {
+	SetSleepDraw(true);
+	SetSleepEvent(true);
+	SetSleepUpdate(true);
+
+	Debug::Get()->GetText("GameTitle")->SetIsVisible(false);
+
+	if (m_startButton)
+		m_startButton->SetIsVisible(false);
+
+	if (m_continueButton)
+		m_continueButton->SetIsVisible(false);
+	if(m_newGameButton)
+		m_newGameButton->SetIsVisible(false);
+
+	m_settingsButton->SetIsVisible(false);
+	m_quitButton->SetIsVisible(false);
+
 }
 
 void GlobalMenuScene::OnWake()

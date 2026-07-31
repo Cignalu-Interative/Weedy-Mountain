@@ -13,7 +13,7 @@ private :
 	Button* m_settingsButton = nullptr;
 	Button* m_quitButton = nullptr;
 
-	bool m_hasSave = true;
+	bool m_hasSave = false;
 
 	void OnInitialize() override;
 

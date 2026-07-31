@@ -56,4 +56,15 @@ public:
 	SDL_DisplayMode GetDisplayMode() const { return m_displayMode; }
 	//Obtention du mixer
 	MIX_Mixer* GetMixer() const { return m_mixer; }
+
+	void SetWindowAlwaysOnTop(bool p_alwaysOnTop);
+	bool GetIsAlwaysOnTop() const { return SDL_GetWindowFlags(m_window) & SDL_WINDOW_ALWAYS_ON_TOP; }
+
+	void SetWindowOpacity(float p_opacity);
+	float GetWindowOpacity() const { return SDL_GetWindowOpacity(m_window); }
+
+	// 0 = arrete le clignotement, 1 = une fois, 2 = jusqu'a ce que l'utilisateur revienne sur la window
+	void SetFlashWindow(int p_flash);
+
+
 };

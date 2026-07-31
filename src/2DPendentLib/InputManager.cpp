@@ -534,6 +534,16 @@ void InputManager::StopTextInput()
 	std::cerr << "InputManager : SDL_StopTextInput" << std::endl;
 }
 
+KeyboardKeycodeKeys InputManager::GetKeyFromScancode(KeyboardScancodeKeys p_scancode) const
+{
+	return static_cast<KeyboardKeycodeKeys>(SDL_GetKeyFromScancode((SDL_Scancode)p_scancode, SDL_KMOD_NONE, false));
+}
+
+KeyboardScancodeKeys InputManager::GetScancodeFromKey(KeyboardKeycodeKeys p_key) const
+{
+	return static_cast<KeyboardScancodeKeys>(SDL_GetScancodeFromKey((SDL_Keycode)p_key, SDL_KMOD_NONE));
+}
+
 void InputManager::SetWindow(Window* p_window)
 {
 	m_window = p_window;

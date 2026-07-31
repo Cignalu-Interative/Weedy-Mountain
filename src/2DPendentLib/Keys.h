@@ -14,6 +14,7 @@ enum KeyboardKeycodeKeys : Uint32
     K_SPACE = 0x00000020u, // Espace
     K_EXCLAIM = 0x00000021u, // !
     K_DBLAPOSTROPHE = 0x00000022u, // "
+    K_SUPERSCRIPT_TWO = 0x000000b2u, //²
     K_HASH = 0x00000023u, // #
     K_DOLLAR = 0x00000024u, // $
     K_PERCENT = 0x00000025u, // %

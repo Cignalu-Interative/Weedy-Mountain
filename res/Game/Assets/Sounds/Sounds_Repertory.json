@@ -1,3 +1,55 @@
 {
-  "sounds": []
+  "sounds": [
+    {
+      "path": "../../res/Game/Assets/Sounds/Musics/L_Automne (Jour) - OST from Weedy Mountain v1.mp3"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/Musics/L_Automne (Nuit) - OST from Weedy Mountain v1.mp3"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/Musics/L_hiver (Jour) - OST from Weedy Mountain v1.mp3"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/Musics/La Grotte - OST from Weedy Mountain v1.mp3"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/bêche/snd_digging.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/dans les airs/snd_whoosh1.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/dans les airs/snd_whoosh2.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/dans les airs/snd_whoosh3.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/dans les airs/snd_whoosh4.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/hache/snd_chop1.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/hache/snd_chop2.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/hache/snd_chop3.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/pioche/snd_mining1.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/pioche/snd_mining2.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/pioche/snd_mining3.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/pioche/snd_mining4.wav"
+    },
+    {
+      "path": "../../res/Game/Assets/Sounds/SFXs/outils/pioche/snd_rockBreaking.wav"
+    }
+  ]
 }

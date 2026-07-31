@@ -50,10 +50,12 @@ void Application::Init()
 	m_targetFPS = m_window.V_Sync();
 	m_targetDeltaTime = 1.0f / m_targetFPS;
 	Debug::Get()->SetRenderer(m_render.GetRenderer());
+	Debug::Get()->SetRender(&m_render);
 	Debug::Get()->CreateTextEngineProperties();
 	Debug::SetDeltaTimeCallback([this]() {
 		return m_deltaTime;
 		});
+	SoundManager::Get()->SetMixer(m_window.GetMixer());
 	InputManager::Get()->SetWindow(&m_window);
 	InputManager::Get()->SetQuitCallback([this]()
 		{ m_isRunning = false; });
@@ -85,11 +87,6 @@ void Application::Run()
 			continue;
 		}
 
-		/*if (CapFPS() == false)
-		{
-			continue;
-		}*/
-
 		FPSDeltaTime();
 
 		UpdateFPSCounter();
@@ -99,8 +96,6 @@ void Application::Run()
 		Update();
 
 		Draw();
-
-		//SceneManager::Get()->ChangeCurrentScene();
 	}
 }
 

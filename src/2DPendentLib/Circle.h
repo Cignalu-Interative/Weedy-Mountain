@@ -19,8 +19,6 @@ private:
 
 	bool m_isFilled = false; // Si true, le cercle sera dessiné rempli, sinon il sera dessiné en contour
 
-	bool m_clampToScreen = false; // Si true, la geometry sera dessiné à la position la plus proche sur l'écran si sa position dépasse les limites de l'écran
-
 public:
 
 	//Constructeur de cercle par défaut
@@ -37,9 +35,6 @@ public:
 	void SetFilled(bool p_filled) { m_isFilled = p_filled; }
 
 	bool GetFilled() const { return m_isFilled; }
-
-	void SetIsClamp(bool p_isClamp) { m_clampToScreen = p_isClamp; }
-	bool GetIsClamp() { return m_clampToScreen; }
 
 	void RebuildCache(float p_rx, float p_ry);
 

@@ -142,6 +142,8 @@ public:
 	Sprite* GetSprite(const std::string& p_id) const;
 	Sprite* GetSprite() const; // retourne le sprite "default"
 
+	std::vector<SpriteContainer*> GetAllSprites() const { return m_sprites; }
+
 	void SetSpriteVisible(const std::string& p_id, bool p_visible);
 	void SetAllSpritesVisible(bool p_visible);
 

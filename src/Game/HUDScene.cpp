@@ -17,16 +17,20 @@
 #include "ItemDataBase.h"
 #include "RecipeDataBase.h"
 
+#include "QuestManager.h"
+#include "QuestMenu.h"
+
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 
+	QuestManager::Get()->SetScene(this);
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
-	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	//UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
@@ -38,7 +42,6 @@ void HUDScene::OnInitialize()
 	timeUi->RemoveCollider("default");
 	dateUi->RemoveCollider("default");
 
-
 	Inventory* inv = CreateEntity<Inventory>(GetWindowCenter(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle);
 	inv->GetSprite()->ResizeStretched(inv->GetDimension());
 	inv->SyncSprites();
@@ -46,6 +49,7 @@ void HUDScene::OnInitialize()
 
 	Vector2f hotbarPos = { inv->GetPosition().GetX(), inv->GetPosition().GetY() + 300 };
 	Hotbar* hot = CreateEntity<Hotbar>(hotbarPos, { 636, 96 }, "Hotbar", Shape::Rectangle);
+	hot->SetIsVisible(false);
 
 	m_playerInventory = new PlayerInventory(inv, hot);
 
@@ -53,6 +57,14 @@ void HUDScene::OnInitialize()
 	m_collectionUi = CreateEntity<UiCollection>(GetWindowCenter(), {1000,600}, "", Shape::Rectangle, true);
 
 	SceneManager::Get()->SetPersistentScene(this);
+
+	QuestMenu* questMenu = CreateEntity<QuestMenu>({ (float)GetWindowWidth() / 2.0f, (float)GetWindowHeight() / 2.0f }, { (int)(GetWindowWidth() * 0.85f), (int)(GetWindowHeight() * 0.85f) }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	questMenu->GetSprite()->ResizeStretched(questMenu->GetDimension());
+	questMenu->SyncSprites();
+	questMenu->SetDrawLayer(INT_MAX - 20);
+	questMenu->GetCollider()->SetIsTrigger(true);
+	//questMenu->GetCollider()->SetShow(true);
+	m_questMenu = questMenu;
 }
 
 void HUDScene::OnEvent()
@@ -62,12 +74,18 @@ void HUDScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardDown(K_KP_7))
 		m_collectionUi->Close();
+	InputManager* input = InputManager::Get();
+	if (input->IsKeyboardDown(KeyboardKeycodeKeys::K_SUPERSCRIPT_TWO))
+	{
+		m_questMenu->Toggle(&QuestManager::Get()->GetQuestsInProcess());
+	}
 }
 
 void HUDScene::OnUpdate()
 {
 	m_playerInventory->OnUpdate();
-
+	QuestManager::Get()->UpdateQuests();
+	m_questMenu->OnUpdate();
 }
 
 void HUDScene::OnDestroy()

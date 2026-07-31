@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include "QuestManager.h"
+
 PlayerInventory::PlayerInventory(Inventory* inv, Hotbar* hot)
 {
 	m_inventory = inv;
@@ -97,6 +99,7 @@ int PlayerInventory::AddItem(const std::string& ID, int amount, bool requireFull
 	if (requireFull && CanAdd(ID, amount) == false)
 		return 0;
 
+	QuestManager::Get()->CheckAddItem(ID, amount);
 
 	int remaining = amount;
 

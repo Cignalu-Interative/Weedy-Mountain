@@ -24,6 +24,8 @@
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
 
+#include "QuestManager.h"
+
 void VillageScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -56,13 +58,32 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
-	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,-100} }, { 8,32 }, "player", Shape::Rectangle);
+	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{50,100} }, { 8,32 }, "player", Shape::Rectangle);
 	m_shopPNJ->SetOnFinishFunction([this] {
 		/*m_shop->SetIsVisible(true)*/m_shop->Open(); }
 	);
 
-	m_PNJ->SetOnFinishFunction([this] {
-		m_player->UnlockInputs();
+	m_PNJ->SetOnFinishFunction([this]
+		{
+			m_player->UnlockInputs();
+			if (QuestManager::Get()->GetQuestOnNotStarted("Quest") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("Quest");
+			}
+			Quest* quest = QuestManager::Get()->GetQuestOnInProcess("Quest");
+			if (quest != nullptr)
+			{
+				if (quest->IsQuestCompleted() == true)
+				{
+					QuestManager::Get()->SetStateQuestFinished("Quest");
+					std::cerr << "Quest finished" << std::endl;
+					//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
+				}
+				else
+				{
+					//m_PNJ->Talk("Tu n'as pas encore terminé la quête, continue à chercher les objets dont j'ai besoin !");
+				}
+			}
 		});
 
 	Inventory* shopInventory = CreateEntity<Inventory>({ m_spawnPoint + Vector2f{200,0} }, { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle, true);
@@ -90,6 +111,12 @@ void VillageScene::OnEvent()
 	{
 		SceneManager::Get()->PushScene("game");
 	}
+
+	if (im->IsKeyboardDown(K_A))
+		GetCamera()->SetZoom(5);
+
+	if (im->IsKeyboardDown(K_E) && (!m_shopPNJ->IsInPlayerZone() && !m_PNJ->IsInPlayerZone()))
+		GetCamera()->SetZoom(1);
 
 	if (im->IsKeyboardDown(K_M))
 		m_player->TakeDamage(5);

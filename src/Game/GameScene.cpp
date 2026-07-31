@@ -39,10 +39,16 @@
 #include "2DPendentLib/ObjectTiled.h"	
 
 #include "ItemActions.h"
+#include "SoundManager.h"
+
+#include "Aleatory.h"
+
+#include "QuestManager.h"
 
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+	SoundManager::Get()->AddSound("../../res/Game/Assets/Sounds/Sounds_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Farm");
@@ -170,6 +176,24 @@ void GameScene::OnInitialize()
 	pi->AddItem("ITEM_DIAMOND_SHOVEL", 1, false);
 
 	pi->AddItem("ITEM_FISHING_ROD", 1, false);
+	//Application::Get()->GetWindow()->SetWindowAlwaysOnTop(true);
+
+	QuestManager::Get()->CreateQuest("Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Wood", 1);
+	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 67);
+	QuestManager::Get()->GetQuestOnNotStarted("Quest")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to collect 1 wood and you will be rewarded with 67 eggs.");
+	
+	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Rock", 1);
+	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Fiber", 5);
+
+	QuestManager::Get()->CreateQuest("Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("KAKA Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" KAKA Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" KAKOU Quest KAKI", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" KAKIKOU LE CAILLOU", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest(" CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+
 }
 
 
@@ -248,6 +272,107 @@ void GameScene::OnUpdate()
 	CreateText("money", { 500, 10 }, "Money : " + std::to_string(m_player->GetMoney()), ColorsNamed::White, true);
 	Debug::Get()->GetText("time")->SetText(std::to_string(gm.GetHour()) + ":" + std::to_string(gm.GetMinute()));
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
+
+	SoundManager* sm = SoundManager::Get();
+
+	switch (gm.GetMonth())
+	{
+	case 1:
+	{
+		sm->GetSound("L_hiver (Jour) - OST from Weedy Mountain v1")->Stop();
+
+		if (gm.GetHour() > 20 || gm.GetHour() < 6)
+		{
+			Sound* sound = sm->GetSound("L_Automne (Nuit) - OST from Weedy Mountain v1");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				sm->GetSound("L_Automne (Jour) - OST from Weedy Mountain v1")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
+				sound->Play();
+			}
+		}
+		else
+		{
+			Sound* sound = sm->GetSound("L_Automne (Jour) - OST from Weedy Mountain v1");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				sm->GetSound("L_Automne (Nuit) - OST from Weedy Mountain v1")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
+				sound->Play();
+			}
+		}
+		break;
+	}
+	case 2:
+	{
+
+		break;
+	}
+	case 3:
+	{
+		
+		break;
+	}
+	case 4:
+	{
+		sm->GetSound("L_Automne (Jour) - OST from Weedy Mountain v1")->Stop();
+		sm->GetSound("L_Automne (Nuit) - OST from Weedy Mountain v1")->Stop();
+
+		if (gm.GetHour() > 20 || gm.GetHour() < 6)
+		{
+			/*Sound* sound = sm->GetSound("");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				sm->GetSound("L_hiver (Jour) - OST from Weedy Mountain v1")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 30));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
+				sound->Play();
+			}*/
+		}
+		else
+		{
+			Sound* sound = sm->GetSound("L_hiver (Jour) - OST from Weedy Mountain v1");
+			if (sound->IsPlaying())
+			{
+				return;
+			}
+			else
+			{
+				//sm->GetSound("")->Stop();
+				sound->SetLoopCount(-1);
+				sound->SetStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetLoopStartAtTime(Aleatory::GetInt(0, 60));
+				sound->SetVolumeFadeIn(2, 10);
+				sound->SetSpacializationEnabled(false);
+				sound->Play();
+			}
+		}
+		break;
+	}
+	}
 }
 
 void GameScene::OnDestroy()

@@ -291,11 +291,17 @@ void Sound::Play(const Vector2f& p_listenerPosition)
 			return;
 		}
 	}
+	m_isPlaying = true;
+	m_isPaused = false;
+	m_isStopped = false;
 }
 
 void Sound::Stop()
 {
-
+	if (m_isStopped)
+	{
+		return;
+	}
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
 		Sint64 MsInFrame = MIX_TrackMSToFrames(m_pisteMusique, m_fadeOutMs);
@@ -328,10 +334,17 @@ void Sound::Stop()
 			}
 		}
 	}
+	m_isPlaying = false;
+	m_isPaused = false;
+	m_isStopped = true;
 }
 
-void Sound::Pause() const
+void Sound::Pause()
 {
+	if (m_isPaused)
+	{
+		return;
+	}
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
 		if (MIX_PauseTrack(m_pisteMusique) == false)
@@ -342,19 +355,32 @@ void Sound::Pause() const
 	}
 	else if (m_audioFormat == AudioFormat::WAV)
 	{
-		for (MIX_Track* piste : m_pistesSFX)
+		if (MIX_PauseAllTracks(m_mixer) == false)
+		{
+			SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseAllTracks WAV failed: %s", SDL_GetError());
+			return;
+		}
+
+		/*for (MIX_Track* piste : m_pistesSFX)
 		{
 			if (MIX_PauseTrack(piste) == false)
 			{
 				SDL_Log("Lib/Sound.cpp/Pause: MIX_PauseTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
-		}
+		}*/
 	}
+	m_isPlaying = false;
+	m_isPaused = true;
+	m_isStopped = false;
 }
 
-void Sound::Resume() const
+void Sound::Resume()
 {
+	if (m_isPlaying)
+	{
+		return;
+	}
 	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
 	{
 		if (MIX_ResumeTrack(m_pisteMusique) == false)
@@ -365,14 +391,54 @@ void Sound::Resume() const
 	}
 	else if (m_audioFormat == AudioFormat::WAV)
 	{
-		for (MIX_Track* piste : m_pistesSFX)
+		if (MIX_ResumeAllTracks(m_mixer) == false)
+		{
+			SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeAllTracks WAV failed: %s", SDL_GetError());
+			return;
+		}
+
+		/*for (MIX_Track* piste : m_pistesSFX)
 		{
 			if (MIX_ResumeTrack(piste) == false)
 			{
 				SDL_Log("Lib/Sound.cpp/Resume: MIX_ResumeTrack WAV failed: %s", SDL_GetError());
 				return;
 			}
+		}*/
+	}
+	m_isPlaying = true;
+	m_isPaused = false;
+	m_isStopped = false;
+}
+
+bool Sound::IsPlaying() const
+{
+	return m_isPlaying;
+}
+bool Sound::IsPaused() const
+{
+	return m_isPaused;
+}
+bool Sound::IsStopped() const
+{
+	return m_isStopped;
+}
+bool Sound::IsFinished() const
+{
+	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
+	{
+		return MIX_TrackPlaying(m_pisteMusique) == false;
+	}
+	else if (m_audioFormat == AudioFormat::WAV)
+	{
+		for (MIX_Track* piste : m_pistesSFX)
+		{
+			if (MIX_TrackPlaying(piste))
+			{
+				return false;
+			}
 		}
+		return true;
 	}
 }
 
@@ -641,4 +707,52 @@ void Sound::ComputeSpatialization(MIX_Point3D& p_outPosition, float& p_outGain) 
 	float naturalAttenuation = invertedRatio * invertedRatio;
 
 	p_outGain = m_relativeVolume * naturalAttenuation;
+}
+
+double Sound::GetSoundDuration() const
+{
+	Sint64 durationFrames = MIX_GetAudioDuration(m_audio);
+	Sint64 durationMS = MIX_AudioFramesToMS(m_audio, durationFrames);
+
+	return static_cast<double>(durationMS) / 1000.0; // Convertir en secondes
+
+	//if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
+	//{
+	//	Sint64 durationFrames = MIX_GetAudioDuration(m_audio);
+	//	Sint64 durationMS = MIX_AudioFramesToMS(m_audio, durationFrames);
+
+	//	return static_cast<double>(durationMS) / 1000.0; // Convertir en secondes
+	//}
+	//else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	//{
+	//	Sint64 durationFrames = MIX_GetAudioDuration(m_audio);
+	//	Sint64 durationMS = MIX_AudioFramesToMS(m_audio, durationFrames);
+
+	//	return static_cast<double>(durationMS) / 1000.0; // Convertir en secondes
+	//}
+}
+
+double Sound::GetSoundDurationRemaining() const
+{
+	if (m_audioFormat == AudioFormat::MP3 && m_pisteMusique)
+	{
+		Sint64 remainingFrames = MIX_GetTrackRemaining(m_pisteMusique);
+		Sint64 remainingMS = MIX_AudioFramesToMS(m_audio, remainingFrames);
+
+		return static_cast<double>(remainingMS) / 1000.0; // Convertir en secondes
+	}
+	else if (m_audioFormat == AudioFormat::WAV && !m_pistesSFX.empty())
+	{
+		Sint64 remainingFrames = 0;
+		int count = 0;
+		for (MIX_Track* piste : m_pistesSFX)
+		{
+			remainingFrames += MIX_GetTrackRemaining(piste);
+			count++;
+		}
+		Sint64 averageRemainingFrames = remainingFrames / count;
+		Sint64 remainingMS = MIX_AudioFramesToMS(m_audio, averageRemainingFrames);
+
+		return static_cast<double>(remainingMS) / 1000.0; // Convertir en secondes
+	}
 }

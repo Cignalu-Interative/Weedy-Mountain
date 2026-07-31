@@ -131,3 +131,17 @@ std::vector<RecipeData*> RecipeDataBase::GetRecipesForItem(const std::string& it
 
     return result;
 }
+
+std::vector<std::string> RecipeDataBase::GetRecipesNameForItem(const std::string& itemID)
+{
+    std::vector<std::string> result;
+
+    for (auto& pair : m_recipes)
+    {
+        for (RecipeIngredientData data : pair.second.GetIngredients())
+            if (data.itemID == itemID)
+                result.push_back(pair.first);
+    }
+
+    return result;
+}

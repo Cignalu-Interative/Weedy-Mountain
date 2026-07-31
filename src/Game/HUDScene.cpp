@@ -9,14 +9,20 @@
 #include "Ui/UiDate.h"
 #include "Ui/UiTime.h"
 #include "Ui/UiJobs.h"
+#include "UiCollection.h"
 
 #include "GameData.h"
 #include "PlayerInventory.h"
 #include "2DPendentLib/InputManager.h"
+#include "ItemDataBase.h"
+#include "RecipeDataBase.h"
 
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
@@ -44,12 +50,18 @@ void HUDScene::OnInitialize()
 	m_playerInventory = new PlayerInventory(inv, hot);
 
 	GameData::Get().SetInventory(m_playerInventory);
+	m_collectionUi = CreateEntity<UiCollection>(GetWindowCenter(), {1000,600}, "", Shape::Rectangle, true);
+
 	SceneManager::Get()->SetPersistentScene(this);
 }
 
 void HUDScene::OnEvent()
 {
+	if (InputManager::Get()->IsKeyboardDown(K_KP_8))
+		m_collectionUi->Open();
 
+	if (InputManager::Get()->IsKeyboardDown(K_KP_7))
+		m_collectionUi->Close();
 }
 
 void HUDScene::OnUpdate()

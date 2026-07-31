@@ -3,6 +3,7 @@
 #include "Timer.h"
 #include <string>
 #include "PlayerData.h"
+#include "PlayerCollection.h"
 
 enum class Weather : uint8_t { Clear, Rain, Storm };
 enum class TimeOfDay : uint8_t { Day, Night };
@@ -23,6 +24,7 @@ private:
 	GameData() = default;
 
 	PlayerData m_playerData;
+	PlayerCollection m_playerCollection;
 
 public:
 
@@ -53,6 +55,7 @@ public:
 	void Sleep();
 
 	PlayerData& GetPlayerData() { return m_playerData; }
+	PlayerCollection& GetPlayerCollection() { return m_playerCollection; }
 
 	void SetInventory(PlayerInventory* inv);
 

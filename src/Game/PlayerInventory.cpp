@@ -5,6 +5,7 @@
 #include "InventorySlot.h"
 #include "ItemDataBase.h"
 #include "2DPendentLib/InputManager.h"
+#include "GameData.h"
 #include "SpriteContainer.h"
 
 #include <iostream>
@@ -104,6 +105,13 @@ int PlayerInventory::AddItem(const std::string& ID, int amount, bool requireFull
 
 	int addedInventory = m_inventory->AddItem(ID, remaining, false);
 	remaining -= addedInventory;
+
+	int totalAdded = amount - remaining;
+
+	if (totalAdded > 0)
+	{
+		GameData::Get().GetPlayerCollection().UnlockItem(ID);
+	}
 
 	return amount - remaining;
 }

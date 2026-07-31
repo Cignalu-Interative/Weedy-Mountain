@@ -24,4 +24,8 @@ public:
     const std::vector<RecipeData*> GetAllRecipes();
 
     std::vector<RecipeData*> GetRecipesForItem(const std::string& itemID);
+
+    std::vector<std::string> GetRecipesNameForItem(const std::string& itemID);
+
+   
 };

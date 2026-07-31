@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "GameData.h"
 #include "RecipeDataBase.h"
+#include "InventorySlot.h"
 
 //Trucs qu'on peut changer si on veut changer la dur�e plus tard
 
@@ -191,3 +192,4 @@ const std::vector<std::string>& GameData::GetUnlockedRecipes()
 {
 	return m_unlockedRecipes;
 }
+

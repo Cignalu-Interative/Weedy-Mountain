@@ -57,6 +57,8 @@ void Player::OnEvent()
 	if (m_isVisible == false)
 		return;
 
+	if (InputManager::Get()->IsKeyboardDown(K_KP_PLUS))
+		GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 10, false);
 
 	if (InputManager::Get()->IsKeyboardHeld(K_LSHIFT)) {
 		SetSpeed(gm.GetPlayerData().m_stats.m_playerSpeed * 2);

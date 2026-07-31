@@ -58,7 +58,7 @@ void VillageScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 
 	m_shopPNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{200,0} }, { 8,32 }, "player", Shape::Rectangle);
-	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{50,100} }, { 8,32 }, "player", Shape::Rectangle);
+	m_PNJ = CreateEntity<PNJ>({ m_spawnPoint + Vector2f{50,0} }, { 8,32 }, "player", Shape::Rectangle);
 	m_shopPNJ->SetOnFinishFunction([this] {
 		/*m_shop->SetIsVisible(true)*/m_shop->Open(); }
 	);

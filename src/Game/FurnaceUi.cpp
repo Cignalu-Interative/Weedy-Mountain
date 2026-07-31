@@ -65,11 +65,7 @@ void FurnaceUi::OnInitialize()
 void FurnaceUi::OnUpdate()
 {	
 	float dt = GetDeltaTime();
-	if (m_currentfuelTime > 0)
-	{
-		m_currentfuelTime -= dt;
-		m_flameAnimation->Update(dt);
-	}
+
 	//if ( m_currentfuelTime > 0)
 	//	m_progressBarAnimation->Update(dt);
 

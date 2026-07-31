@@ -16,6 +16,9 @@ enum class CurrentScene
 	CAVE
 };
 
+enum class Season { Spring, Summer, Autumn, Winter };
+enum class TimeOfDay : uint8_t { Day, Night };
+
 class GameData
 {
 private:
@@ -57,6 +60,9 @@ public:
 
 	std::string GetMonthName();
 	std::string GetDayName();
+
+	Season GetSeason();
+	TimeOfDay GetTimeOfDay();
 
 	float GetTimeScale();
 	void SetTimeScale(float newScale);

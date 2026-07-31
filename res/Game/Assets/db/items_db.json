@@ -19,7 +19,18 @@
         "itemType": "Default",
         "maxStack": 64,
         "name": "Fiber",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 3,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "b",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -31,7 +42,22 @@
         "itemType": "Default",
         "maxStack": 64,
         "name": "Rock",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 2,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "c",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 2,
         "useActionID": ""
     },
@@ -43,7 +69,26 @@
         "itemType": "Default",
         "maxStack": 64,
         "name": "Egg",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 3,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 5,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "ffff",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -55,7 +100,18 @@
         "itemType": "Default",
         "maxStack": 64,
         "name": "Potatoe",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "a",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -67,7 +123,22 @@
         "itemType": "Default",
         "maxStack": 64,
         "name": "Sun Flower",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 8,
+                        "quantity": 6
+                    },
+                    {
+                        "itemID": 7,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "ff",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 1,
         "useActionID": ""
     },
@@ -81,7 +152,22 @@
         "itemType": "Default",
         "maxStack": 1,
         "name": "Fishing Rod",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 5
+                    },
+                    {
+                        "itemID": 3,
+                        "quantity": 3
+                    }
+                ],
+                "recipeID": "f",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 5,
         "useActionID": "USE_FISHING_ROD"
     },
@@ -93,7 +179,22 @@
         "itemType": "Default",
         "maxStack": 1,
         "name": "Helmet",
-        "recipes": [],
+        "recipes": [
+            {
+                "ingredients": [
+                    {
+                        "itemID": 1,
+                        "quantity": 1
+                    },
+                    {
+                        "itemID": 2,
+                        "quantity": 1
+                    }
+                ],
+                "recipeID": "test",
+                "resultQuantity": 1
+            }
+        ],
         "sellPrice": 5,
         "useActionID": ""
     },

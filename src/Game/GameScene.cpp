@@ -46,21 +46,27 @@
 
 #include "QuestManager.h"
 #include "Chest.h"
+#include "RecipeDataBase.h"
+#include "RecipeBlock.h"
+#include "RecipesUi.h"
 
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 	SoundManager::Get()->AddSound("../../res/Game/Assets/Sounds/Sounds_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
-	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Farm");
 
-	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
+	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
+	//mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
+	//mm->SetCurrentMap("Farm");
 
-	for (ObjectTiled* o : a)
-	{
-		m_spawnPoint = o->GetObjectPosition();
-	}
+	//std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
+
+	//for (ObjectTiled* o : a)
+	//{
+	//	m_spawnPoint = o->GetObjectPosition();
+	//}
 
 	GameData& gm = GameData::Get();
 	gm.SetTimeScale(100);
@@ -91,26 +97,26 @@ void GameScene::OnInitialize()
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
-	Application::Get()->SetClampCameraToCurrentMap(true);
+	//Application::Get()->SetClampCameraToCurrentMap(true);
 
-	MapTiled* map = mm->GetCurrentMap();
+	//MapTiled* map = mm->GetCurrentMap();
 
-	std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
+	//std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
 
-	for (ObjectTiled* obj : objectGroup)
-	{
-		Vector2f dim = obj->GetObjectDimension();
-		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
-	}
+	//for (ObjectTiled* obj : objectGroup)
+	//{
+	//	Vector2f dim = obj->GetObjectDimension();
+	//	Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim/2, (Vector2i)dim, "", Shape::Rectangle); 
+	//}
 
-	objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
+	//objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Water");
 
-	for (ObjectTiled* obj : objectGroup)
-	{
-		Vector2f dim = obj->GetObjectDimension();
-		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
-		ent->SetTag(5);
-	}
+	//for (ObjectTiled* obj : objectGroup)
+	//{
+	//	Vector2f dim = obj->GetObjectDimension();
+	//	Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
+	//	ent->SetTag(5);
+	//}
 
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();
@@ -132,19 +138,6 @@ void GameScene::OnInitialize()
 	
 	Furnace* f = CreateEntity<Furnace>({ m_spawnPoint + Vector2f{0, 200} }, { 16,32 }, "", Shape::Rectangle);
 
-
-	// CreateText("KAKA", { 500, 500 }, "KAKA KAKA KAKA KAKA KAKA", ColorsNamed::LightIndigo, true);
-	// Text* t = Debug::Get()->GetText("KAKA");
-	// t->SetFont("Gameplay", 55);
-	// t->SetText("KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU KAKOU");
-	// t->SetFontSize(60);
-	// t->SetColor(ColorsNamed::Violet);
-	// t->SetWrapWidth(600);
-	// t->SetFontStyle(false, true);
-	// t->SetOutlineSize(2);
-	// t->SetOutLineColor(ColorsNamed::White);
-	// t->SetLineSpacing(50);
-	// t->HorizontalAlignText(HorizontalAlignment::Center);
 
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
@@ -214,23 +207,19 @@ void GameScene::OnEvent()
 	//	m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
 	//}
 
-	if (im->IsKeyboardDown(K_R))
-	{
-		
-		SceneManager::Get()->PushScene("village");
-	}
+	//if (im->IsKeyboardDown(K_R))
+	//{
+	//	
+	//	SceneManager::Get()->PushScene("village");
+	//}
 
 	if (im->IsKeyboardDown(K_C))
 	{
 
 		SceneManager::Get()->PushScene("cave");
 	}
-
-	if (im->IsKeyboardDown(K_M))
-		m_player->TakeDamage(5);
-
-	if (im->IsKeyboardDown(K_O))
-		GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
+	//if (im->IsKeyboardDown(K_O))
+	//	GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
 
 
 	// if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
@@ -401,7 +390,6 @@ void GameScene::OnWake()
 	m_player->SetIsVisible(true);
 	GetCamera()->SetPosition(m_player->GetPosition());
 	GetCamera()->SetFollowedEntity(m_player);
-
 
 	//m_player->SetPosition(m_spawnPoint);
 	//GetCamera()->SetPosition(m_spawnPoint);

@@ -24,6 +24,11 @@
 #include "Furnace.h"
 #include "UiChest.h"
 
+#include "RecipesUi.h"
+#include "RecipeDataBase.h"
+#include "ItemDataBase.h"
+#include "Ui/UiShop.h"
+
 void HUDScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -92,6 +97,10 @@ void HUDScene::OnInitialize()
 	m_playerInventory->AddItem("ITEM_DIAMOND_AXE", 1, false);
 	m_playerInventory->AddItem("ITEM_DIAMOND_PICKAXE", 1, false);
 	m_playerInventory->AddItem("ITEM_WOODEN_PICKAXE", 1, false);
+	m_recipe = CreateEntity<RecipesUi>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
+	m_recipe->SetDrawLayer(INT_MAX - 200);
+	m_recipe->Close();
+;
 }
 
 void HUDScene::OnEvent()
@@ -111,6 +120,9 @@ void HUDScene::OnEvent()
 
 	if (InputManager::Get()->IsKeyboardHeld(K_L))
 		GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer, 5.f);
+	
+	if (InputManager::Get()->IsKeyboardDown(K_P))
+		m_recipe->Open();
 }
 
 void HUDScene::OnUpdate()
@@ -125,4 +137,22 @@ void HUDScene::OnUpdate()
 void HUDScene::OnDestroy()
 {
 
+}
+
+void HUDScene::HideUi()
+{
+	m_statsUi->SetIsVisible(false);
+	m_moneyUi->SetIsVisible(false);
+	m_timeUi->SetIsVisible(false);
+	m_cashUi->SetIsVisible(false);
+	m_dateUi->SetIsVisible(false);
+}
+
+void HUDScene::ShowUi()
+{
+	m_statsUi->SetIsVisible(true);
+	m_moneyUi->SetIsVisible(true);
+	m_timeUi->SetIsVisible(true);
+	m_cashUi->SetIsVisible(true);
+	m_dateUi->SetIsVisible(true);
 }

@@ -233,13 +233,15 @@ void UiShop::ChoosePlayerInventoryButtonClicked()
 	m_sellButton->SetIsVisible(true);
 	m_sellAllButton->SetIsVisible(true);
 	m_buyButton->SetIsVisible(false);
-	m_shopInventory->SetVisible(false);
+	if (m_shopInventory)
+		m_shopInventory->SetVisible(false);
 	m_slot->Clear();
 }
 
 void UiShop::ChooseShopInventoryButtonClicked()
 {
-	PlaceInventory(m_shopInventory);
+	if (m_shopInventory)
+		PlaceInventory(m_shopInventory);
 	m_buyButton->SetIsVisible(true);
 	m_sellButton->SetIsVisible(false);
 	m_sellAllButton->SetIsVisible(false);
@@ -330,7 +332,8 @@ void UiShop::SetIsVisible(bool p_isVisible)
 	m_buyButton->SetIsVisible(false);
 	m_slot->SetIsVisible(p_isVisible);
 	m_playerInventory->GetInventory()->SetVisible(false);
-	m_shopInventory->SetVisible(false);
+	if(m_shopInventory)
+		m_shopInventory->SetVisible(false);
 
 	//m_textBox->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("itemAmount")->SetIsVisible(p_isVisible);

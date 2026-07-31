@@ -3,6 +3,7 @@
 #include "RecipeDataBase.h"
 #include "InventorySlot.h"
 #include "UiChest.h"
+#include "RecipesMenu.h"
 
 //Trucs qu'on peut changer si on veut changer la dur�e plus tard
 
@@ -32,14 +33,10 @@ void GameData::Update()
 	//m_playerData.m_playerInventory.OnUpdate();
 }
 
-
-
 float GameData::GetTimeSpent()
 {
 	return m_timeSpent;
 }
-
-
 
 int GameData::GetYear()
 {
@@ -196,7 +193,7 @@ void GameData::SetInventory(PlayerInventory* inv)
 }
 void GameData::UnlockRecipe(const std::string& recipeID)
 {
-	if (IsRecipeUnlocked(recipeID) || RecipeDataBase::Get()->GetRecipe(recipeID) != nullptr)
+	if (IsRecipeUnlocked(recipeID) || RecipeDataBase::Get()->GetRecipe(recipeID) == nullptr)
 		return;
 
 	m_unlockedRecipes.push_back(recipeID);

@@ -18,6 +18,7 @@ public:
     bool LoadFromJSON(const std::string& filePath);
 
     RecipeData* GetRecipe(const std::string& recipeID);
+    std::vector<RecipeData*> GetRecipeForChar(const std::string& chain);
 
     const std::unordered_map<std::string, RecipeData>& GetAll() const;
 

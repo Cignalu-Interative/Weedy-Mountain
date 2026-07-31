@@ -1,0 +1,40 @@
+#pragma once
+#include "Button.h"
+
+struct RecipeIngredientData;
+class RecipeBlock : public Button
+{
+
+private :
+
+	uint32_t m_myID = 0;
+
+	std::string m_recipeName;
+	std::string m_resultItemName;
+	int m_amountItem = 0;
+
+	std::vector<RecipeIngredientData> m_ingredients;
+
+	bool m_isUnlocked = false;
+
+	//Text* m_amountText = nullptr;
+
+	void OnInitialize() override;
+	void OnUpdate() override;
+
+public :
+	RecipeBlock();
+
+	void Initialize(std::string p_recipeName);
+	void SetIsVisible(bool p_isVisible);
+
+	std::vector<RecipeIngredientData> GetIngredients() { return m_ingredients; }
+	bool GetIsUnlocked() const { return m_isUnlocked; }
+	void SetIsUnlocked(bool p_isUnlocked) { m_isUnlocked = p_isUnlocked; }
+
+	const std::string& GetItemName() { return m_resultItemName; }
+	int GetAmountItem() const{ return m_amountItem; }
+	std::string GetRecipeName() const { return m_recipeName; }
+
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5,0.5 });
+};

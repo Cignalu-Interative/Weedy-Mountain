@@ -17,6 +17,7 @@
 #include "2DPendentLib/Camera.h"
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
+#include "2DPendentLib/Particules.h"
 
 #include "FarmTile.h"
 #include "FarmManager.h"
@@ -163,6 +164,7 @@ void GameScene::OnInitialize()
 // 	m_textBox = CreateTextBox("TextBox", { 150, 150 }, { 250, 200 }, ColorsNamed::DarkBlue, true);
 // 	m_textBox->GetCollider()->SetIsTrigger(true);
 // 	m_textBox->SetBackgroundFilled(true);
+
 }
 
 
@@ -209,7 +211,11 @@ void GameScene::OnEvent()
 
 	if (im->IsKeyboardDown(K_O))
 		GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
-
+	if (im->IsKeyboardDown(K_SPACE)) {
+		Particles* particles = CreateParticle("carrot_04", "ParticuleExemple.comp", { 400.0f, 122.0f });
+		particles->AddParticles(400, { 0.0f, 0.0f }, { 30.0f, 30.0f }, 1, 100, 1, 1);
+		particles->SetScale({ 3.0f, 3.0f });
+	}
 
 	// if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
 	// {

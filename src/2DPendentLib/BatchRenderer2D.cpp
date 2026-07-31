@@ -11,8 +11,8 @@ BatchRenderer2D* BatchRenderer2D::Get()
 
 BatchRenderer2D::BatchRenderer2D()
 {
-	m_commands.reserve(10000); // Réserve de l'espace pour 1000 commandes de rendu
-	m_batches.reserve(100); // Réserve de l'espace pour 100 batches
+	m_commands.reserve(10000); // Rï¿½serve de l'espace pour 1000 commandes de rendu
+	m_batches.reserve(100); // Rï¿½serve de l'espace pour 100 batches
 }
 
 BatchRenderer2D::~BatchRenderer2D()

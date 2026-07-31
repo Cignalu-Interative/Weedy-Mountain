@@ -1,0 +1,36 @@
+struct Particule {
+    float2 pos;
+    float rotation;
+    int id1;
+    int id2;
+    float life;
+};
+
+RWStructuredBuffer<Particule> particles : register(u0, space1);
+
+cbuffer Params : register(b0, space2)
+{
+    float deltaTime;
+    uint particleCount;
+};
+
+[numthreads(64, 1, 1)]
+void main(uint3 dispatchThreadID : SV_DispatchThreadID)
+{
+    uint index = dispatchThreadID.x;
+
+    if (index >= particleCount) {
+        return;
+    }
+
+    Particule p = particles[index];
+    p.pos += float2(1000.f - (20.0f * p.id1), 1000.f - (20.0f * p.id2)) * deltaTime;
+    
+
+
+    p.life -= 1.0f * deltaTime;
+
+    //p.rotation = 0.0f;
+
+    particles[index] = p;
+}

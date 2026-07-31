@@ -10,13 +10,13 @@
 
 SceneManager::SceneManager()
 {
-	m_scenes.reserve(12); // Réserver de la mémoire pour 12 scènes afin d'éviter les reallocations fréquentes lors de l'ajout de scènes
-	m_scenesVector.reserve(12); // Réserver de la mémoire pour 12 scènes afin d'éviter les reallocations fréquentes lors de l'ajout de scènes
+	m_scenes.reserve(12); // Rï¿½server de la mï¿½moire pour 12 scï¿½nes afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de scï¿½nes
+	m_scenesVector.reserve(12); // Rï¿½server de la mï¿½moire pour 12 scï¿½nes afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de scï¿½nes
 
-	m_scenesInStack.reserve(12); // Réserver de la mémoire pour 12 scènes afin d'éviter les reallocations fréquentes lors de l'ajout de scènes
-	m_scenesInStackVector.reserve(12); // Réserver de la mémoire pour 12 scènes afin d'éviter les reallocations fréquentes lors de l'ajout de scènes
+	m_scenesInStack.reserve(12); // Rï¿½server de la mï¿½moire pour 12 scï¿½nes afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de scï¿½nes
+	m_scenesInStackVector.reserve(12); // Rï¿½server de la mï¿½moire pour 12 scï¿½nes afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de scï¿½nes
 
-	m_entToDraw.reserve(4000); // Réserver de la mémoire pour 1000 entités afin d'éviter les reallocations fréquentes lors de l'ajout d'entités
+	m_entToDraw.reserve(4000); // Rï¿½server de la mï¿½moire pour 1000 entitï¿½s afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout d'entitï¿½s
 }
 
 SceneManager::~SceneManager()
@@ -227,13 +227,13 @@ void SceneManager::DrawScenesInStack(Render* f_render, Window* f_window, Camera*
 	for (const auto& batch : batches)
 	{
 		if (batch.s_vertices.empty())
-			continue; // sécurité : un slot recyclé mais pas réutilisé cette frame
+			continue; // sï¿½curitï¿½ : un slot recyclï¿½ mais pas rï¿½utilisï¿½ cette frame
 
 		if (SDL_RenderGeometry(f_render->GetRenderer(), batch.s_texture,
 			batch.s_vertices.data(), static_cast<int>(batch.s_vertices.size()),
 			batch.s_indices.data(), static_cast<int>(batch.s_indices.size())) == false)
 		{
-			SDL_Log("Engine/SceneManager.cpp/DrawScenesInStack/SDL_RenderGeometry/cela na pas fonctionné : %s", SDL_GetError());
+			SDL_Log("Engine/SceneManager.cpp/DrawScenesInStack/SDL_RenderGeometry/cela na pas fonctionnï¿½ : %s", SDL_GetError());
 		}
 	}
 

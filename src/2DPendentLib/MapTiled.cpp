@@ -376,12 +376,12 @@ void MapTiled::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 
 		float zoom = p_camera->GetZoom();
 
-        // Parcours de chaque ligne de la layer
+        // Parcours de chaque ligne du layer
         for (int y = yMin; y < yMax; y++)
         {
             posTileY = y * m_TileDimension.GetY();
 
-            // Parcours de chaque colonne de la layer
+            // Parcours de chaque colonne du layer
             for (int x = xMin; x < xMax; x++)
             {
                 posTileX = x * m_TileDimension.GetX();

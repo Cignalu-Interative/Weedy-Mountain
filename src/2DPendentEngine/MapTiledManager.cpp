@@ -3,14 +3,14 @@
 
 MapTiledManager::MapTiledManager()
 {
-	m_maps.reserve(16); // Réserver de la mémoire pour 16 maps afin d'éviter les reallocations fréquentes lors de l'ajout de maps
-	m_mapsVector.reserve(16); // Réserver de la mémoire pour 16 maps afin d'éviter les reallocations fréquentes lors de l'ajout de maps
-	m_mapsIdsVector.reserve(16); // Réserver de la mémoire pour 16 maps afin d'éviter les reallocations fréquentes lors de l'ajout de maps
+	m_maps.reserve(16); // Rï¿½server de la mï¿½moire pour 16 maps afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de maps
+	m_mapsVector.reserve(16); // Rï¿½server de la mï¿½moire pour 16 maps afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de maps
+	m_mapsIdsVector.reserve(16); // Rï¿½server de la mï¿½moire pour 16 maps afin d'ï¿½viter les reallocations frï¿½quentes lors de l'ajout de maps
 }
 
 MapTiledManager::~MapTiledManager()
 {
-	// Libérer les maps chargées
+	// Libï¿½rer les maps chargï¿½es
 	for (MapTiled* map : m_mapsVector)
 	{
 		delete map;
@@ -44,7 +44,7 @@ void MapTiledManager::AddMaps(const std::string& p_pathMaps)
 
 		if (m_maps.find(m_infoMapToLoad.s_MapName) != m_maps.end())
 		{
-			// La map est déjà chargée, ignorer le chargement
+			// La map est dï¿½jï¿½ chargï¿½e, ignorer le chargement
 			std::cerr << "MapTiledManager.cpp/AddMaps/GetNameFromPath/Map already loaded with name : " << m_infoMapToLoad.s_MapName << std::endl;
 			continue;
 		}

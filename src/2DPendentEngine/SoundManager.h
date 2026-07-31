@@ -12,20 +12,20 @@ class SoundManager
 {
 private:
 
-	MIX_Mixer* m_mixer = nullptr; //Pointeur vers le mixer, utilisé pour gérer les sons et la musique
+	MIX_Mixer* m_mixer = nullptr; //Pointeur vers le mixer, utilisï¿½ pour gï¿½rer les sons et la musique
 
-	//Map pour stocker les sons, avec l'identifiant du son (extrait du nom du fichier) comme clé et un pointeur vers l'objet Sound comme valeur
+	//Map pour stocker les sons, avec l'identifiant du son (extrait du nom du fichier) comme clï¿½ et un pointeur vers l'objet Sound comme valeur
 	std::unordered_map<std::string, size_t> m_sounds;
 
-	//Vector pour stocker les sons, utilisé pour itérer plus rapidement lors de la mise à jour des positions des sons et de la gestion de la spatialisation
+	//Vector pour stocker les sons, utilisï¿½ pour itï¿½rer plus rapidement lors de la mise ï¿½ jour des positions des sons et de la gestion de la spatialisation
 	std::vector<Sound*> m_soundsVector;
 
-	Entity* m_listener = nullptr; //Pointeur vers l'entité qui est le "listener" pour la spatialisation des sons, généralement le joueur
+	Entity* m_listener = nullptr; //Pointeur vers l'entitï¿½ qui est le "listener" pour la spatialisation des sons, gï¿½nï¿½ralement le joueur
 
 	bool m_isPausedMusic = false; //Bool pour savoir si les MUSIC sont actuellement en pause, utile pour la fonction PauseAll() et ResumeAll()
 	bool m_isPausedSFX = false; //Bool pour savoir si les SFX sont actuellement en pause, utile pour la fonction PauseAll() et ResumeAll()
 
-	//Bool pour savoir si la spatialisation est activée ou non, utile pour la fonction Play() pour décider d'appliquer ou non les paramètres de spatialisation
+	//Bool pour savoir si la spatialisation est activï¿½e ou non, utile pour la fonction Play() pour dï¿½cider d'appliquer ou non les paramï¿½tres de spatialisation
 	bool m_isSpatializationEnabled = true;
 
 	float m_MusiqueVolume = 1.0f; //Volume global pour les MUSIC, compris entre 0.0f (silencieux) et 1.0f (volume maximum)
@@ -33,12 +33,12 @@ private:
 
 public:
 
-	//Constructeur par défaut de SoundManager
+	//Constructeur par dï¿½faut de SoundManager
 	SoundManager();
 	//Destructeur de SoundManager
 	~SoundManager();
 
-	//Singleton pour accéder à SoundManager
+	//Singleton pour accï¿½der ï¿½ SoundManager
 	static SoundManager* Get();
 
 	void SetMixer(MIX_Mixer* p_mixer) { m_mixer = p_mixer; }
@@ -47,7 +47,7 @@ public:
 
 	void AddSound(const std::string& p_path);
 
-	//Ajouter un son à la map de SoundManager en utilisant le chemin du fichier audio et sa position dans le monde
+	//Ajouter un son ï¿½ la map de SoundManager en utilisant le chemin du fichier audio et sa position dans le monde
 	void AddSound(const std::string& p_path, Vector2f p_position);
 
 	void RemoveSound(const std::string& p_id);
@@ -58,12 +58,12 @@ public:
 
 	//Fonction pour appller la fonction Play() de Sound en utilisant l'identifiant du son,
 	// avec une option pour le faire en boucle (-1 = boucle infinie, 0 = pas de boucle, NB > 0 = nombre de boucles)
-	// /////////////////// La spatialisation est appliquée uniquement aux SFX (WAV) et non aux MUSIC (MP3) \\\\\\\\\\\\\\\\\\
-	// et des paramètres pour la spatialisation (angle et distance)
-	//Pour les angles les principale directions sont définies comme suit :
-	//NORTH est définie à 0 degrés, NORTHEAST est définie à 45 degrés, EAST est définie à 90 degrés,
-	//SOUTHEAST est définie à 135 degrés, SOUTH est définie à 180 degrés, SOUTHWEST est définie à 225 degrés,
-	//WEST est définie à 270 degrés, NORTHWEST est définie à 315 degrés
+	// /////////////////// La spatialisation est appliquï¿½e uniquement aux SFX (WAV) et non aux MUSIC (MP3) \\\\\\\\\\\\\\\\\\
+	// et des paramï¿½tres pour la spatialisation (angle et distance)
+	//Pour les angles les principale directions sont dï¿½finies comme suit :
+	//NORTH est dï¿½finie ï¿½ 0 degrï¿½s, NORTHEAST est dï¿½finie ï¿½ 45 degrï¿½s, EAST est dï¿½finie ï¿½ 90 degrï¿½s,
+	//SOUTHEAST est dï¿½finie ï¿½ 135 degrï¿½s, SOUTH est dï¿½finie ï¿½ 180 degrï¿½s, SOUTHWEST est dï¿½finie ï¿½ 225 degrï¿½s,
+	//WEST est dï¿½finie ï¿½ 270 degrï¿½s, NORTHWEST est dï¿½finie ï¿½ 315 degrï¿½s
 	//distance est la distance entre le son et le joueur, en pourcentage (0 = proche, 255 = loin)
 	void Play(const std::string& p_id);
 	//Fonction pour appeler la fonction Stop() de Sound en utilisant l'identifiant du son
@@ -80,9 +80,9 @@ public:
 	//Fonctions pour appeler les fonctions Stop() de tous les sons dans la map de SoundManager
 	void StopAll();
 
-	//Fonctions pour définir le volume global des MUSIC, compris entre 0 (silencieux) et 100 (volume maximum)
+	//Fonctions pour dï¿½finir le volume global des MUSIC, compris entre 0 (silencieux) et 100 (volume maximum)
 	void SetMusicVolume(int p_volume);
-	//Fonctions pour définir le volume global des SFX, compris entre 0 (silencieux) et 100 (volume maximum)
+	//Fonctions pour dï¿½finir le volume global des SFX, compris entre 0 (silencieux) et 100 (volume maximum)
 	void SetSFXVolume(int p_volume);
 
 	//Fonctions pour augmenter le volume global des MUSIC, compris entre 0 (silencieux) et 100 (volume maximum)
@@ -107,32 +107,32 @@ public:
 	void DebugListenerPosition() const;
 #endif
 
-	//Fonction pour mettre à jour la position d'un son spécifique dans la map de SoundManager en utilisant la fonction UpdatePosition() de Sound,
+	//Fonction pour mettre ï¿½ jour la position d'un son spï¿½cifique dans la map de SoundManager en utilisant la fonction UpdatePosition() de Sound,
 	// en fonction de la position du joueur pour la spatialisation
 	void SetSoundPosition(const std::string& p_id, Vector2f p_pos);
-	//Fonction pour obtenir la position d'un son spécifique dans la map de SoundManager
+	//Fonction pour obtenir la position d'un son spï¿½cifique dans la map de SoundManager
 	Vector2f GetSoundPosition(const std::string& p_id) const;
 
-	//Fonction template pour obtenir la distance entre un son et une entité spécifique, en utilisant la position de l'entité et du son pour calculer la distance euclidienne
+	//Fonction template pour obtenir la distance entre un son et une entitï¿½ spï¿½cifique, en utilisant la position de l'entitï¿½ et du son pour calculer la distance euclidienne
 	template<typename T>
 	float GetDistanceTo(Sound* p_sound, T* p_entity);
 
-	//Fonction template pour définir une entité spécifique comme listener pour la spatialisation des sons, en stockant un pointeur vers l'entité dans SoundManager
+	//Fonction template pour dï¿½finir une entitï¿½ spï¿½cifique comme listener pour la spatialisation des sons, en stockant un pointeur vers l'entitï¿½ dans SoundManager
 	template<typename T>
 	void SetListener(T* p_entity);
 
-	//Fonction pour obtenir le pointeur vers l'entité qui est le listener pour la spatialisation des sons
+	//Fonction pour obtenir le pointeur vers l'entitï¿½ qui est le listener pour la spatialisation des sons
 	Entity* GetListener() const { return m_listener; }
 
-	//Fonction pour mettre en pause ou reprendre un son spécifique en utilisant son identifiant
+	//Fonction pour mettre en pause ou reprendre un son spï¿½cifique en utilisant son identifiant
 	void SetPause_Resume_Sound(const std::string& p_id);
 
-	//Fonction pour activer ou désactiver la spatialisation des sons, en inversant la valeur du bool m_isSpatializationEnabled
+	//Fonction pour activer ou dï¿½sactiver la spatialisation des sons, en inversant la valeur du bool m_isSpatializationEnabled
 	void SetSpatializationEnabled_Disable();
-	//Fonction pour obtenir le bool pour savoir si la spatialisation des sons est activée ou non
+	//Fonction pour obtenir le bool pour savoir si la spatialisation des sons est activï¿½e ou non
 	bool IsSpatializationEnabled() const { return m_isSpatializationEnabled; }
 
-	//Fonction pour appliquer la spatialisation à un son spécifique en utilisant la position du son et du listener pour calculer l'angle et la distance,
+	//Fonction pour appliquer la spatialisation ï¿½ un son spï¿½cifique en utilisant la position du son et du listener pour calculer l'angle et la distance,
 	void ApplySpatialization(Sound* p_sound, float p_deltaTime);
 };
 

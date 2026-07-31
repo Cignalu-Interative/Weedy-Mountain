@@ -1,0 +1,38 @@
+#include <metal_stdlib>
+#include <simd/simd.h>
+
+using namespace metal;
+
+struct Particule
+{
+    float2 pos;
+    float rotation;
+    int id1;
+    int id2;
+    float life;
+};
+
+struct type_RWStructuredBuffer_Particule
+{
+    Particule _m0[1];
+};
+
+struct type_Params
+{
+    float deltaTime;
+    uint particleCount;
+};
+
+kernel void main0(constant type_Params& Params [[buffer(0)]], device type_RWStructuredBuffer_Particule& particles [[buffer(1)]], uint3 gl_GlobalInvocationID [[thread_position_in_grid]])
+{
+    do
+    {
+        if (gl_GlobalInvocationID.x >= Params.particleCount)
+        {
+            break;
+        }
+        particles._m0[gl_GlobalInvocationID.x] = Particule{ particles._m0[gl_GlobalInvocationID.x].pos + (float2(1000.0 - (20.0 * float(particles._m0[gl_GlobalInvocationID.x].id1)), 1000.0 - (20.0 * float(particles._m0[gl_GlobalInvocationID.x].id2))) * Params.deltaTime), particles._m0[gl_GlobalInvocationID.x].rotation, particles._m0[gl_GlobalInvocationID.x].id1, particles._m0[gl_GlobalInvocationID.x].id2, particles._m0[gl_GlobalInvocationID.x].life - Params.deltaTime };
+        break;
+    } while(false);
+}
+

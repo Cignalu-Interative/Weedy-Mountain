@@ -39,27 +39,27 @@ Shader* GPUDevice::LoadShader(const std::string& p_filename, int16_t p_sampleCou
 
 	if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) {
 #ifndef _DEBUG
-		path = "../../../../shaders/Compiled/spirv/" + p_filename + ".spv";
+		path = "../../../../res/shaders/Compiled/spirv/" + p_filename + ".spv";
 #else
-		path = "../../shaders/Compiled/spirv/" + p_filename + ".spv";
+		path = "../../res/shaders/Compiled/spirv/" + p_filename + ".spv";
 #endif // !_DEBUG
 		format = SDL_GPU_SHADERFORMAT_SPIRV;
 		entrypoint = "main";
 	}
 	else if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) {
 #ifndef _DEBUG
-		path = "../../../../shaders/Compiled/dxil/" + p_filename + ".dxil";
+		path = "../../../../res/shaders/Compiled/dxil/" + p_filename + ".dxil";
 #else
-		path = "../../shaders/Compiled/dxil/" + p_filename + ".dxil";
+		path = "../../res/shaders/Compiled/dxil/" + p_filename + ".dxil";
 #endif // !_DEBUG
 		format = SDL_GPU_SHADERFORMAT_DXIL;
 		entrypoint = "main";
 	}
 	else if (backendFormats & SDL_GPU_SHADERFORMAT_MSL) {
 #ifndef _DEBUG
-		path = "../../../../shaders/Compiled/msl/" + p_filename + ".msl";
+		path = "../../../../res/shaders/Compiled/msl/" + p_filename + ".msl";
 #else
-		path = "../../shaders/Compiled/msl/" + p_filename + ".msl";
+		path = "../../res/shaders/Compiled/msl/" + p_filename + ".msl";
 #endif // !_DEBUG		format = SDL_GPU_SHADERFORMAT_MSL;
 		entrypoint = "main";
 	}
@@ -122,27 +122,27 @@ SDL_GPUComputePipeline* GPUDevice::LoadComputeShader(const std::string& p_filena
 	
 	if (backendFormats & SDL_GPU_SHADERFORMAT_SPIRV) {
 #ifndef _DEBUG
-		path = "../../../../shaders/Compiled/spirv/" + p_filename + ".spv";
+		path = "../../../../res/shaders/Compiled/spirv/" + p_filename + ".spv";
 #else
-		path = "../../shaders/Compiled/spirv/" + p_filename + ".spv";
+		path = "../../res/shaders/Compiled/spirv/" + p_filename + ".spv";
 #endif // !_DEBUG
 		format = SDL_GPU_SHADERFORMAT_SPIRV;
 		entrypoint = "main";
 	}
 	else if (backendFormats & SDL_GPU_SHADERFORMAT_DXIL) {
 #ifndef _DEBUG
-		path = "../../../../shaders/Compiled/dxil/" + p_filename + ".dxil";
+		path = "../../../../res/shaders/Compiled/dxil/" + p_filename + ".dxil";
 #else
-		path = "../../shaders/Compiled/dxil/" + p_filename + ".dxil";
+		path = "../../res/shaders/Compiled/dxil/" + p_filename + ".dxil";
 #endif // !_DEBUG
 		format = SDL_GPU_SHADERFORMAT_DXIL;
 		entrypoint = "main";
 	}
 	else if (backendFormats & SDL_GPU_SHADERFORMAT_MSL) {
 #ifndef _DEBUG
-		path = "../../../../shaders/Compiled/msl/" + p_filename + ".msl";
+		path = "../../../../res/shaders/Compiled/msl/" + p_filename + ".msl";
 #else
-		path = "../../shaders/Compiled/msl/" + p_filename + ".msl";
+		path = "../../res/shaders/Compiled/msl/" + p_filename + ".msl";
 #endif // !_DEBUG		format = SDL_GPU_SHADERFORMAT_MSL;
 		entrypoint = "main";
 	}
@@ -226,6 +226,12 @@ GPUDevice::~GPUDevice(){
 }
 
 SDL_GPUComputePipeline* GPUDevice::GetComputePipeline(const std::string& p_filename){
+	if (m_computeShaderPipelines.contains(p_filename)) {
+		return m_computeShaderPipelines[p_filename];
+	}
+	else {
+		LoadComputeShader(p_filename);
+	}
 	return (m_computeShaderPipelines.contains(p_filename)) ? m_computeShaderPipelines[p_filename] : nullptr;
 }
 

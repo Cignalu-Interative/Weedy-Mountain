@@ -32,6 +32,7 @@ private:
 	SDL_GPUComputePipeline* GetComputePipeline(const std::string& p_filename);
 
 	friend class Window;
+	friend class Particles;
 
 public:
 	Shader* GetShader(const std::string& p_filename);

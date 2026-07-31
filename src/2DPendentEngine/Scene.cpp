@@ -13,6 +13,8 @@
 #include "Button.h"
 #include "Slider.h"
 #include "TextBox.h"
+#include "Particules.h"
+#include "GPUDevice.h";
 
 void Scene::Initialize()
 {
@@ -38,6 +40,9 @@ void Scene::Update()
 	if (m_isSleepUpdate)
 	{
 		return;
+	}
+	for (auto& p : m_particles) {	
+		p->Update(GetDeltaTime());
 	}
 	OnUpdate();
 }
@@ -138,6 +143,9 @@ void Scene::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 	{
 		entity->Draw(f_render, f_window);
 	}*/
+	for (auto& p : m_particles) {
+		p->Draw(f_render, f_window, p_camera);
+	}
 
 	OnDraw();
 }
@@ -197,6 +205,13 @@ TextBox* Scene::CreateTextBox(const std::string& p_id, Vector2f p_position, Vect
 	return textBox;
 }
 
+Particles* Scene::CreateParticle(const std::string& m_texturePath, const std::string& p_computeShaderName, Vector2f p_spawnerPos){
+	SDL_Texture* texture = AssetManager::Get()->GetTexture(m_texturePath);
+	Particles* particles = new Particles(p_computeShaderName, Application::Get()->GetWindow(), texture, p_spawnerPos);
+	m_particles.push_back(particles);
+	return particles;
+}
+
 int Scene::GetWindowWidth() const
 {
 	return m_application->m_window.GetWindowSize().GetX();
@@ -216,8 +231,7 @@ Vector2f Scene::GetWindowCenter() const
 {
 	return (Vector2f)m_application->m_window.GetWindowSize()/2;
 }
-
-
+	
 float Scene::GetDeltaTime() const
 {
 	return m_application->m_deltaTime;
@@ -385,6 +399,7 @@ Entity* Scene::GetEntityByTag(int p_tag)
 		}
 	}
 }
+
 std::vector<Entity*> Scene::GetEntitiesByTag(int p_tag)
 {
 	std::vector<Entity*> entities;
@@ -402,6 +417,7 @@ void Scene::DestroyEntityByTag(int p_tag)
 {
 	GetEntityByTag(p_tag)->Destroy();
 }
+
 void Scene::DestroyEntitiesByTag(int p_tag)
 {
 	for (Entity* ent : GetEntitiesByTag(p_tag))

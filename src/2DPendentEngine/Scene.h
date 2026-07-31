@@ -18,6 +18,7 @@ class Geometry;
 class Button;
 class Slider;
 class TextBox;
+class Particles;
 
 class Scene : public Drawable
 {
@@ -43,6 +44,7 @@ private:
 
 	std::list<Entity*> m_entities; //Vector de pointeurs vers les entités présentes dans la scène
 	std::list<Geometry*> m_geometries; //Vector de pointeurs vers les géometries présentes dans la scène, utilisé pour les éléments de décor et les éléments de l'interface utilisateur
+	std::list<Particles*> m_particles;
 
 	// TO DO faire la meme chose pour les map tiled
 
@@ -98,6 +100,8 @@ public:
 
 	TextBox* CreateTextBox(const std::string& p_id, Vector2f p_position, Vector2i p_dimension, Color p_color, bool p_isGUI = true);
 
+
+	Particles* CreateParticle(const std::string& m_texturePath, const std::string& p_computeShaderName, Vector2f p_spawnerPos);
 	//Fonction pour obtenir la largeur de la fenêtre de jeu en utilisant la fonction GetWindowSize() de l'application
 	int GetWindowWidth() const; 
 	//Fonction pour obtenir la hauteur de la fenêtre de jeu en utilisant la fonction GetWindowSize() de l'application

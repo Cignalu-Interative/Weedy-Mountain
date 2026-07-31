@@ -105,7 +105,7 @@ void VillageScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_PNJ->IsInPlayerZone())
 	{
 		m_player->LockInputs();
-		m_PNJ->Talk("Salut ! Moi c'est Richard, ça fait maintenant un moment que j'habite ici et j'ai entendu dire que tu venais d'arriver dans le village, je voulais te souhaiter la bienvenue. Surtout si tu as besoin de quoi que ce soit n'hesite pas ! ");
+		m_PNJ->Talk("Salut ! Moi c'est Richard, ï¿½a fait maintenant un moment que j'habite ici et j'ai entendu dire que tu venais d'arriver dans le village, je voulais te souhaiter la bienvenue. Surtout si tu as besoin de quoi que ce soit n'hesite pas ! ");
 	}
 
 	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE) && m_shop->GetIsVisible())

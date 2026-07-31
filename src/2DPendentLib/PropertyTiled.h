@@ -24,10 +24,10 @@ class PropertyTiled
 {
 private:
 
-	std::string m_PropertyName; // Le nom de la propriété
-	std::string m_PropertyType; // Le type de la propriété (bool, color, float, int, object, string)
+	std::string m_PropertyName; // Le nom de la propriï¿½tï¿½
+	std::string m_PropertyType; // Le type de la propriï¿½tï¿½ (bool, color, float, int, object, string)
 
-	PropertyValue m_PropertyValue; // La valeur de la propriété, qui peut être de différents types grâce à std::variant
+	PropertyValue m_PropertyValue; // La valeur de la propriï¿½tï¿½, qui peut ï¿½tre de diffï¿½rents types grï¿½ce ï¿½ std::variant
 
 public:
 

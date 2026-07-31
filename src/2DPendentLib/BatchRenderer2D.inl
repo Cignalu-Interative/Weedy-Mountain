@@ -7,7 +7,7 @@ template<typename T>
 inline void BatchRenderer2D::AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, const T& p_Command)
 {
 	
-		// Définition des 4 coins du rectangle (x, y)
+		// Dï¿½finition des 4 coins du rectangle (x, y)
 		float x1 = p_Command.s_dstRect.x;
 		float y1 = p_Command.s_dstRect.y;
 		float x2 = p_Command.s_dstRect.x + p_Command.s_dstRect.w;
@@ -26,7 +26,7 @@ inline void BatchRenderer2D::AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, 
 		float tX = m_lastTexW;
 		float tY = m_lastTexH;
 
-		// Coordonnées de texture (u, v) - Normalisées entre 0 et 1
+		// Coordonnï¿½es de texture (u, v) - Normalisï¿½es entre 0 et 1
 		// Note : Tu dois diviser par la taille de la texture totale
 		float u1 = p_Command.s_srcRect.x / tX;
 		float v1 = p_Command.s_srcRect.y / tY;
@@ -40,7 +40,7 @@ inline void BatchRenderer2D::AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, 
 		SDL_FPoint p3 = {}; // Bottom-Left
 		SDL_FPoint p4 = {}; // Bottom-Right
 
-		if constexpr (std::is_same_v<T, TileTiledCommand>) // Pour ajouter un traitement spécifique pour TileTiledCommand si nécessaire
+		if constexpr (std::is_same_v<T, TileTiledCommand>) // Pour ajouter un traitement spï¿½cifique pour TileTiledCommand si nï¿½cessaire
 		{
 			color = { 1, 1, 1, 1 };
 
@@ -49,7 +49,7 @@ inline void BatchRenderer2D::AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, 
 			p3 = { x1, y2 }; // Bottom-Left
 			p4 = { x2, y2 }; // Bottom-Right
 		}
-		else if constexpr (std::is_same_v<T, SpriteCommand>) // Pour ajouter un traitement spécifique pour SpriteCommand si nécessaire
+		else if constexpr (std::is_same_v<T, SpriteCommand>) // Pour ajouter un traitement spï¿½cifique pour SpriteCommand si nï¿½cessaire
 		{
 			color = p_Command.s_color;
 
@@ -72,7 +72,7 @@ inline void BatchRenderer2D::AddQuadToBuffer(std::vector<SDL_Vertex>& vertices, 
 		SDL_Vertex V3 = { p3, color, {u1, v2} };
 		SDL_Vertex V4 = { p4, color, {u2, v2} };
 
-		// Création des 4 sommets (pour un rendu en triangle strip)
+		// Crï¿½ation des 4 sommets (pour un rendu en triangle strip)
 		vertices.push_back(V1); // Top-Left
 		vertices.push_back(V2); // Top-Right
 		vertices.push_back(V3); // Bottom-Left

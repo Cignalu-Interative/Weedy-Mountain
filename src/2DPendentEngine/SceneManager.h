@@ -14,15 +14,15 @@ class SceneManager
 {
 private:
 	Scene* m_persistentScene = nullptr;
-	//std::map pour stocker les scènes, indexées par un identifiant unique (string)
+	//std::map pour stocker les scï¿½nes, indexï¿½es par un identifiant unique (string)
 	std::unordered_map<std::string, size_t> m_scenes;
-	//vector pour stocker les pointeurs vers les scènes, utilisé pour itérer plus rapidement lors de la mise à jour et de la destruction des scènes
+	//vector pour stocker les pointeurs vers les scï¿½nes, utilisï¿½ pour itï¿½rer plus rapidement lors de la mise ï¿½ jour et de la destruction des scï¿½nes
 	std::vector<Scene*> m_scenesVector;
 
-	//Pointeur vers la scène actuellement active
+	//Pointeur vers la scï¿½ne actuellement active
 	//Scene* m_currentScene = nullptr;
 	std::unordered_map<std::string, size_t> m_scenesInStack;
-	std::vector<Scene*> m_scenesInStackVector; //Vector pour stocker les scènes actuellement update, utilisé pour itérer plus rapidement lors de la mise à jour des scènes
+	std::vector<Scene*> m_scenesInStackVector; //Vector pour stocker les scï¿½nes actuellement update, utilisï¿½ pour itï¿½rer plus rapidement lors de la mise ï¿½ jour des scï¿½nes
 
 	std::vector<Entity*> m_entToDraw;
 
@@ -34,32 +34,32 @@ public:
 
 	friend class Application;
 	
-	//Constructeur par défaut de SceneManager
+	//Constructeur par dï¿½faut de SceneManager
 	SceneManager();
-	//Destructeur de SceneManager, il est responsable de la destruction de toutes les scènes stockées dans m_scenes pour éviter les fuites de mémoire
+	//Destructeur de SceneManager, il est responsable de la destruction de toutes les scï¿½nes stockï¿½es dans m_scenes pour ï¿½viter les fuites de mï¿½moire
 	~SceneManager();
 
 	//Singleton du SceneManager
 	static SceneManager* Get();
 
-	//Fonction template pour ajouter une scène de type T à m_scenes, où T doit être une classe qui hérite de Scene
+	//Fonction template pour ajouter une scï¿½ne de type T ï¿½ m_scenes, oï¿½ T doit ï¿½tre une classe qui hï¿½rite de Scene
 	template<typename T>
 	void AddScene(const std::string& p_id);
 
 	void SetPersistentScene(Scene* p_scene) { m_persistentScene = p_scene; }
 
-	//Fonction pour supprimer une scène de m_scenes en utilisant son identifiant unique (string)
+	//Fonction pour supprimer une scï¿½ne de m_scenes en utilisant son identifiant unique (string)
 	void RemoveScene(const std::string& p_id);
-	//Fonction pour supprimer toutes les scènes de m_scenes
+	//Fonction pour supprimer toutes les scï¿½nes de m_scenes
 	void ClearScenes();
 
-	//Fonction pour mettre à jour la scène actuellement active
+	//Fonction pour mettre ï¿½ jour la scï¿½ne actuellement active
 	//void UpdateCurrentScene();
 
-	//Fonction pour définir la scène actuellement active en utilisant son identifiant unique (string)
+	//Fonction pour dï¿½finir la scï¿½ne actuellement active en utilisant son identifiant unique (string)
 	//void SetCurrentScene(const std::string& p_id);
 
-	//Fonction pour obtenir un pointeur vers la scène actuellement active
+	//Fonction pour obtenir un pointeur vers la scï¿½ne actuellement active
 	//Scene* GetCurrentScene() const { return m_currentScene; }
 
 	void PushScene(const std::string& p_id);

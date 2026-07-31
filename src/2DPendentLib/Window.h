@@ -21,7 +21,7 @@ private:
 
 	Vector2i m_windowDimension; //Dimention de la window
 
-	bool m_isFullScreen; //Boll pour savoir si la window est en plein écran
+	bool m_isFullScreen; //Bool pour savoir si la window est en plein écran
 
 	static constexpr float SCREEN_SCALE = 1.5f; // Taille de la window au lancement du jeu, elle est multiplié par la taille de l'écran pour obtenir la taille de la window
 

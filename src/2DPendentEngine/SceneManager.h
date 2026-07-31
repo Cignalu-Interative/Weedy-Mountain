@@ -78,6 +78,7 @@ public:
 
 	Scene* GetScene(const std::string& p_id) const;
 
+	//std::string GetNameScene(Scene* p_scene) const;
 };
 
 #include "SceneManager.inl"

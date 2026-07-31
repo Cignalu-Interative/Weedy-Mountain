@@ -6,14 +6,17 @@
 #include "GameScene.h"
 #include "VillageScene.h"
 #include "HUDScene.h"
+#include "EscapeMenu.h"
 
 namespace Launcher
 {
 	void Launch()
 	{
+		SceneManager::Get()->AddScene<EscapeMenu>("Escape");
+		SceneManager::Get()->PushScene("Escape");
 		SceneManager::Get()->AddScene<HUDScene>("HUD");
 		SceneManager::Get()->AddScene<GameScene>("game");
-		SceneManager::Get()->PushScene("game");
+		//SceneManager::Get()->PushScene("game");
 		SceneManager::Get()->AddScene<VillageScene>("village");
 		//SceneManager::Get()->AddScene<DemoScene>("demo");
 		//SceneManager::Get()->AddScene<TestScene>("test");

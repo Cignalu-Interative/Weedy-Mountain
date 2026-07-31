@@ -257,3 +257,8 @@ Scene* SceneManager::GetScene(const std::string& p_id) const
 	}
 	return nullptr;
 }
+
+//std::string SceneManager::GetNameScene(Scene* p_scene)
+//{
+//	return "";
+//}

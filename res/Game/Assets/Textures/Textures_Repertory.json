@@ -13,6 +13,9 @@
       "path": "../../res/Game/Assets/Textures/Clock.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Diamond_Ore.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Drugs.png"
     },
     {
@@ -23,6 +26,12 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/Environment/Backgrounds/Harvest BG.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Effects/NightEffect.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Environment/Effects/NightEffect2.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Bridge_Wood.png"
@@ -700,6 +709,9 @@
       "path": "../../res/Game/Assets/Textures/FishingRod.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Gold_Ore.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Grass.png"
     },
     {
@@ -719,6 +731,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/InventoryWeedyMountain.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Iron_Ore.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Item_Fiber.png"

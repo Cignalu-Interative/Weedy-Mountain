@@ -3,6 +3,8 @@
 
 #include "2DPendentLib/AssetManager.h"
 
+#include "NightEffect.h"
+
 #include "Ui/UiStats.h"
 #include "Ui/UiMoney.h"
 #include "Ui/UiCash.h"
@@ -20,11 +22,15 @@ void HUDScene::OnInitialize()
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
+	NightEffect* nightEffect = CreateEntity<NightEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
+
 	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
 	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+
+	nightEffect->RemoveCollider("default");
 
 	statsUi->RemoveCollider("default");
 	moneyUi->RemoveCollider("default");

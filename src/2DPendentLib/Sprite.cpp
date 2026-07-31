@@ -48,9 +48,9 @@ void Sprite::Initialise(const std::string& p_id, Vector2f p_position, Vector2i p
 
     SetPosition(p_position);
 }
-void Sprite::SetOpacity(Uint8 p_oppacity)
+void Sprite::SetOpacity(int p_oppacity)
 {
-	m_oppacity = Utils::Clamp(p_oppacity, (Uint8)0, (Uint8)255);
+	m_oppacity = Utils::Clamp(p_oppacity, 0, 255);
 }
 
 void Sprite::ChangeTexture(const std::string& p_texturePath)

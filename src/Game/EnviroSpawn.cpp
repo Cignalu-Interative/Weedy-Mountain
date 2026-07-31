@@ -92,7 +92,7 @@ void EnviroSpawn::SpawnEnviroProps()
 int EnviroSpawn::GetEnviroDay()
 {
 	constexpr float IRL_SECONDS_PER_GAME_HOUR = 40.0f;
-	constexpr float HOURS_PER_DAY = 24.f;
+	constexpr float HOURS_PER_DAY = 24.f;	
 	constexpr float SIX_HOURS = 6.f * IRL_SECONDS_PER_GAME_HOUR;
 
 	float secPerDay = HOURS_PER_DAY * IRL_SECONDS_PER_GAME_HOUR;

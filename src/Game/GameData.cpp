@@ -113,7 +113,38 @@ std::string GameData::GetDayName()
 	return days[totalDay % DAYS_PER_WEEK];
 }
 
+Season GameData::GetSeason()
+{
+	return (Season)(GetMonth() - 1);
+}
 
+TimeOfDay GameData::GetTimeOfDay()
+{
+	if (GetSeason() == Season::Spring)
+	{
+		if (GetHour() > 20 && GetHour() < 7)
+			return TimeOfDay::Night;
+	}
+
+	else if (GetSeason() == Season::Summer)
+	{
+		if (GetHour() > 21 && GetHour() < 6)
+			return TimeOfDay::Night;
+	}
+
+	else if (GetSeason() == Season::Autumn)
+	{
+		if (GetHour() > 20 && GetHour() < 7)
+			return TimeOfDay::Night;
+	}
+
+	else if (GetSeason() == Season::Winter)
+	{
+		if (GetHour() > 19 && GetHour() < 8)
+			return TimeOfDay::Night;
+	}
+	return TimeOfDay::Day;
+}
 
 float GameData::GetTimeScale()
 {

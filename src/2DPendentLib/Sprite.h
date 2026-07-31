@@ -19,7 +19,7 @@ private:
 
 	bool m_isVisible = true; //Bool pour savoir si le sprite doit être dessiné à l'écran
 
-	Uint8 m_oppacity = 255; //Opacité du sprite, de 0 (transparent) à 255 (opaque)
+	int m_oppacity = 255; //Opacité du sprite, de 0 (transparent) à 255 (opaque)
 
 	//SDL_FPoint m_rotationCenter = { 0, 0 }; //Point autour duquel le sprite tourne
 
@@ -54,7 +54,7 @@ public:
 
 	void ChangeTexture(const std::string& p_texturePath);
 
-	void SetOpacity(Uint8 p_oppacity);
+	void SetOpacity(int p_oppacity);
 	Uint8 GetOpacity() const { return m_oppacity; }
 
 	SDL_FRect* GetSpriteRect() { return m_srcRect; }

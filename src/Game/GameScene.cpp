@@ -218,6 +218,12 @@ void GameScene::OnEvent()
 		SceneManager::Get()->PushScene("village");
 	}
 
+	if (im->IsKeyboardDown(K_C))
+	{
+
+		SceneManager::Get()->PushScene("cave");
+	}
+
 	if (im->IsKeyboardDown(K_M))
 		m_player->TakeDamage(5);
 
@@ -383,6 +389,8 @@ void GameScene::OnSleep()
 
 void GameScene::OnWake()
 {
+	GameData::Get().SetCurrentScene(CurrentScene::FARM);
+
 	SetSleepDraw(false);
 	SetSleepEvent(false);
 	SetSleepUpdate(false);

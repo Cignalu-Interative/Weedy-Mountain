@@ -35,7 +35,9 @@ void EnviroProps::OnUpdate()
 		Destroy();
 	}
 
-	SetPosition(m_stats.m_position->GetPosition());
+	if (TileUtils::IsSet(m_stats.m_position)) {
+		SetPosition(TileUtils::GetPosition(m_stats.m_position));
+	}
 	SetDrawLayer(200 + GetCollider()->GetPosition({ 1.f,1.f }).GetY());
 }
 
@@ -58,19 +60,21 @@ void EnviroProps::OnDestroy()
 		}
 	}
 
-	if (m_stats.m_position != NULL) {
-		m_stats.m_position->SetCanGrow(true);
+	if (!TileUtils::IsSet(m_stats.m_position)) {
+		return;
 	}
+	TileUtils::SetCanGrow(m_stats.m_position, true);
 
 	if (m_name == EnviroSpawnName::Stone) {
 		std::vector<FarmTile*> m_farmTiles = FarmManager::Get()->GetAllFarmTiles();
 		float radius = 23.f;
 		float radiusSqr = radius * radius;
+		Vector2f tilePos = TileUtils::GetPosition(m_stats.m_position);
+
 		for (int tile = 0; tile < m_farmTiles.size(); tile++) {
-
-			float dx = m_farmTiles[tile]->GetPosition().GetX() - m_stats.m_position->GetPosition().GetX();
-			float dy = m_farmTiles[tile]->GetPosition().GetY() - m_stats.m_position->GetPosition().GetY();
-
+			float dx = m_farmTiles[tile]->GetPosition().GetX() - tilePos.GetX();
+			float dy = m_farmTiles[tile]->GetPosition().GetY() - tilePos.GetY();
+			
 			if ((dx * dx + dy * dy) <= radiusSqr) {
 				m_farmTiles[tile]->SetCanGrow(true);
 			}
@@ -151,6 +155,39 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_loots.push_back(loot1);
 		break;
 	}
+	case EnviroSpawnName::IronOre:
+	{
+		m_name = p_name;
+		m_stats.m_hitToDestroy = 2;
+		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_toolType = { ToolType::Pickaxe };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWIRON",1)), 1,3 };
+		m_loots.push_back(loot1);
+		break;
+
+	}
+	case EnviroSpawnName::GoldOre:
+	{
+		m_name = p_name;
+		m_stats.m_hitToDestroy = 2;
+		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_toolType = { ToolType::Pickaxe };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWGOLD",1)), 1,3 };
+		m_loots.push_back(loot1);
+		break;
+	}
+	case EnviroSpawnName::DiamondOre:
+	{
+		m_name = p_name;
+		m_stats.m_hitToDestroy = 2;
+		m_stats.m_minToolsRarity = Rarity::Wooden;
+		m_stats.m_toolType = { ToolType::Pickaxe };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_DIAMOND",1)), 1,3 };
+		m_loots.push_back(loot1);
+		break;
+	}
+	default:
+		break;
 	}
 }
 

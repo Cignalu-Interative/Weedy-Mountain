@@ -26,8 +26,8 @@ private:
     int m_daysGrown = 0;
     int m_growthStage = 0; 
     int m_dayLastWatered = -1; 
-    int m_daysWithoutWater = 0;  
-    int m_dayTilled = -1; 
+    int m_daysWithoutWater = 0;
+    int m_dayTilled = -1;
 
     bool m_wateredToday = false;
 

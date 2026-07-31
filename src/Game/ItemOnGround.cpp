@@ -28,7 +28,6 @@ void ItemOnGround::OnUpdate()
 	if (m_timer > 0) {
 		m_timer -= GetDeltaTime();
 	}
-
 	else MoveKinematic();
 
 	m_timeToDestroy -= GetDeltaTime();
@@ -75,12 +74,16 @@ void ItemOnGround::OnCollisionStay(Collider* _self, Collider* _other, CollisionS
 		float diffY = _other->GetPosition().GetY() - GetPosition().GetY();
 		SetDirection({ diffX / Utils::Distance(GetPosition(),_other->GetPosition()), diffY / Utils::Distance(GetPosition(),_other->GetPosition()) });
 
-		Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
-		if (text) {
-			text->SetPosition(this->GetPosition({1,1}));
+		//Text* text = GetScene()->GetGeometry<Text>("item_" + std::to_string(m_myID));
+		//if (text) {
+		//	text->SetPosition(this->GetPosition({1,1}));
+		//}
+		// Source du lag quand les objets se déplacent vers le joueur.
+
+		if (GetResetDirection() == true) {
+			SetResetDirection(false);
+			SetSpeed(15);
 		}
-		SetResetDirection(false);
-		SetSpeed(15);
 	}
 
 

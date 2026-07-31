@@ -7,6 +7,7 @@
 #include "VillageScene.h"
 #include "HUDScene.h"
 #include "GlobalMenuScene.h"
+#include "CaveScene.h"
 
 namespace Launcher
 {
@@ -18,6 +19,7 @@ namespace Launcher
 		SceneManager::Get()->AddScene<GameScene>("game");
 		//SceneManager::Get()->PushScene("game");
 		SceneManager::Get()->AddScene<VillageScene>("village");
+		SceneManager::Get()->AddScene<CaveScene>("cave");
 		//SceneManager::Get()->AddScene<DemoScene>("demo");
 		//SceneManager::Get()->AddScene<TestScene>("test");
 	}

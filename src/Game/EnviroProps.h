@@ -2,15 +2,17 @@
 #include "2DPendentEngine/Entity.h"
 #include "2DPendentEngine/Button.h"
 #include "ItemType.h"
+#include "Tool.h"
+#include <variant>
 #include "EnviroSpawn.h"
 #include "ItemStack.h"
-#include "FarmTile.h"
+#include "Tile.h"
 
 struct EnviroStats {
 	int m_hitToDestroy = 1;
 	ToolRarity m_minToolsRarity = ToolRarity::Wooden;
 	std::vector<ToolType> m_toolType;
-	FarmTile* m_position;
+	Tile m_position;
 };
 
 struct EnviroLoots {
@@ -48,14 +50,13 @@ public:
 
 	EnviroSpawnName GetType() { return m_name; }
 
-	void SetFarmTile(FarmTile* position) { m_stats.m_position = position; }
-
-	FarmTile* GetFarmTile() { return m_stats.m_position; }
+	void SetTile(const Tile& tile) { m_stats.m_position = tile; }
 
 	EnviroStats* GetStats() { return &m_stats; }
 
 	bool CanBeHitBy(ToolType toolType, ToolRarity toolRarity);
 
 	bool TryHit(ToolType toolType, ToolRarity toolRarity);
+	const Tile& GetTile() const { return m_stats.m_position; }
 };
 

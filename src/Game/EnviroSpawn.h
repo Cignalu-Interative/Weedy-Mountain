@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "FarmTile.h"
+#include "CaveTile.h"
+#include "Tile.h"
 
 enum class EnviroSpawnName
 {
@@ -33,7 +35,9 @@ class EnviroSpawn
 	int m_numOfEnviro = 0;
 	std::vector<EnviroInfo*> m_farmEnviroList;
 	std::vector<EnviroInfo*> m_caveEnviroList;
-	std::vector<FarmTile*> m_freeFarmTiles;
+	std::vector<Tile> m_freeTiles;
+	int m_farmDayCounter = 0;
+	int m_caveDayCounter = 0;
 
 	int m_lastDay = -1;
 protected:
@@ -46,7 +50,9 @@ protected:
 
 	void NewGameEnviroSpawn();
 
-	void UpdateFreeFarmTiles();
+	void UpdateFreeTiles();
+
+	std::vector<Tile> GetFreeTiles(bool isCave) const;
 
 public:
 

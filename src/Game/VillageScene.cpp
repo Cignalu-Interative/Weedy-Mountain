@@ -161,6 +161,8 @@ void VillageScene::OnSleep()
 
 void VillageScene::OnWake()
 {
+	GameData::Get().SetCurrentScene(CurrentScene::VILLAGE);
+
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->SetCurrentMap("Village");
 

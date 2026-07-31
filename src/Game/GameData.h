@@ -9,6 +9,13 @@ enum class Weather : uint8_t { Clear, Rain, Storm };
 enum class TimeOfDay : uint8_t { Day, Night };
 enum class Season : uint8_t { Spring, Summer, Autumn, Winter };
 
+enum class CurrentScene
+{
+	FARM,
+	VILLAGE,
+	CAVE
+};
+
 class GameData
 {
 private:
@@ -25,6 +32,8 @@ private:
 
 	PlayerData m_playerData;
 	PlayerCollection m_playerCollection;
+
+	CurrentScene m_currentScene = CurrentScene::FARM;
 
 public:
 
@@ -63,4 +72,7 @@ public:
 	bool IsRecipeUnlocked(const std::string& recipeID);
 
 	const std::vector<std::string>& GetUnlockedRecipes();
+
+	void SetCurrentScene(CurrentScene p_currentScene) { m_currentScene = p_currentScene; }
+	const CurrentScene GetCurrentScene() const { return m_currentScene; }
 };

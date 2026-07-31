@@ -179,13 +179,13 @@ void GameScene::OnInitialize()
 	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Rock", 1);
 	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Fiber", 5);
 
-	QuestManager::Get()->CreateQuest("Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest("KAKA Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKA Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKOU Quest KAKI", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKIKOU LE CAILLOU", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("Quest 2", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("Quest 3", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("Quest 4", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("Quest 5", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("KAYOU LE CAILLOU", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	QuestManager::Get()->CreateQuest("CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 
 }
 

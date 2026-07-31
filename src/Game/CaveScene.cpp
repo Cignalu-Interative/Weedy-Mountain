@@ -95,6 +95,7 @@ void CaveScene::OnEvent()
 
 void CaveScene::OnUpdate()
 {
+	EnviroSpawn::Get()->Update();
 }
 
 void CaveScene::OnDestroy()

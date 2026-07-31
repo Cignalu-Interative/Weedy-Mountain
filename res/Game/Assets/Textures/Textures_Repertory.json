@@ -1,6 +1,9 @@
 {
   "textures": [
     {
+      "path": "../../res/Game/Assets/Textures/ATM.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Calendar.png"
     },
     {

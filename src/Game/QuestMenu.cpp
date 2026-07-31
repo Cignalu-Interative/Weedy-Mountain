@@ -27,14 +27,14 @@ QuestMenu::~QuestMenu()
 		}
 	}*/
 
-	//if (m_slots.empty() == false)
-	//{
-	//	m_slots.clear();
-	//}
-	//if (m_quests.empty() == false)
-	//{
-	//	m_quests.clear();
-	//}
+	if (m_slots.empty() == false)
+	{
+		m_slots.clear();
+	}
+	if (m_quests.empty() == false)
+	{
+		m_quests.clear();
+	}
 }
 
 void QuestMenu::OnInitialize()

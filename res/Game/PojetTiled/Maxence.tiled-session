@@ -1,0 +1,95 @@
+{
+    "activeFile": "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "Tous les Fichiers (*)",
+    "fileStates": {
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 352,
+                "y": 384.3333333333333
+            }
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 397,
+                "y": 713
+            }
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Bridges.tsx": {
+            "dynamicWrapping": false,
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Buildings.tsx": {
+            "dynamicWrapping": true,
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.0.tsx": {
+            "scaleInDock": 3
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Tileset_Road.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/Village.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/farm objects free.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/props.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx": {
+            "scaleInDock": 2
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Bridges.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Buildings.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/RockSlope.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Set 1.0.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Set 1.1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Tileset_Road.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/Village.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/farm objects free.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/props.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/res/Game/Assets/Maps/tsx/spring farm tilemap.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "openFiles": [
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx",
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx"
+    ],
+    "project": "Maxence.tiled-project",
+    "recentFiles": [
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx",
+        "C:/ProjetGamingCampus/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx"
+    ]
+}

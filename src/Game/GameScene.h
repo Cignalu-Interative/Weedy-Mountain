@@ -1,6 +1,8 @@
 #pragma once
 #include "2DPendentEngine/Scene.h"
 #include "Player.h"
+#include "Policeman.h"
+#include "NavigationGrid.h"
 
 enum CollisionLayers : uint32_t
 {
@@ -49,5 +51,9 @@ public:
 	Player* GetPlayer() { return m_player; }
 
 	Player* GetPlayer2() { return m_player2; }
+
+	NavigationGrid* GetNavigationGrid() { return m_navigationGrid; }
+
+	int NewDay();
 };
 

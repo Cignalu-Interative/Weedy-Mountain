@@ -53,7 +53,7 @@ void GameScene::OnInitialize()
 	SoundManager::Get()->AddSound("../../res/Game/Assets/Sounds/Sounds_Repertory.json");
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
-	mm->SetCurrentMap("Farm");
+	mm->SetCurrentMap("Village");
 
 	std::vector<ObjectTiled*> a = mm->GetCurrentMap()->GetObjectGroupByName("Object")->GetObjectTiledByName("Player Spawn");
 
@@ -87,6 +87,7 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetGravityEnabled(false);
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
+	
 	GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
@@ -114,6 +115,7 @@ void GameScene::OnInitialize()
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();
 	Vector2i tileDim = map->GetTileDimension();
+	
 
 	for (const TileInfo& info : canGrowTiles)
 	{
@@ -398,4 +400,21 @@ void GameScene::OnWake()
 
 void GameScene::OnDraw()
 {
+}
+
+int GameScene::NewDay()
+{
+	constexpr float IRL_SECONDS_PER_GAME_HOUR = 40.0f;
+	constexpr float HOURS_PER_DAY = 24.f;
+	constexpr float SIX_HOURS = 6.f * IRL_SECONDS_PER_GAME_HOUR;
+
+	float secPerDay = HOURS_PER_DAY * IRL_SECONDS_PER_GAME_HOUR;
+	float timeSpent = GameData::Get().GetTimeSpent();
+
+	float shifted = timeSpent - SIX_HOURS;
+
+	if (shifted < 0.f)
+		shifted = 0.f;
+
+	return static_cast<int>(shifted / secPerDay);
 }

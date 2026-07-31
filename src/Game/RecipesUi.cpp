@@ -91,6 +91,9 @@ void RecipesUi::OnInitialize()
 
 void RecipesUi::OnUpdate()
 {
+	if (m_isVisible == false)
+		return;
+
 	ChangeSelectedRecipe();
 	SortUnlockedRecipe();
 	SortRecipeSearchBox();

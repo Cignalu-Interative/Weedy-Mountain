@@ -46,7 +46,7 @@ void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTextur
 	requirement->s_harvestedText->SetDrawLayer(200);
 	m_requirements[m_requirements.size()] = requirement;
 	// La ligne de dessous a remettre après les tests de positionnement des icones et du texte
-	//ResizeGrid();
+	ResizeGrid();
 	SetVisible(GetVisible());
 }
 
@@ -92,7 +92,7 @@ void Quest::UpdateQuest()
 {
 	SetTextQuest();
 
-	std::cerr << "\n";
+	/*std::cerr << "\n";
 	std::cerr << "BEFORE RESIZE GRID" << std::endl;
 	std::cerr << "dimension zone : " << m_zone->GetDimension().GetX() << " x " << m_zone->GetDimension().GetY() << std::endl;
 	std::cerr << "dimension icone : " << m_icone->GetDimension().GetX() << " x " << m_icone->GetDimension().GetY() << std::endl;
@@ -125,7 +125,7 @@ void Quest::UpdateQuest()
 		j++;
 	}
 	std::cerr << "AFTER RESIZE GRID" << std::endl;
-	std::cerr << "\n";
+	std::cerr << "\n";*/
 
 
 	for (auto& [index, requirement] : m_requirements)

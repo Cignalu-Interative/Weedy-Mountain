@@ -391,6 +391,10 @@ void QuestMenu::FollowQuest(Quest* p_quest)
 
 void QuestMenu::UnfollowQuest(Quest* p_quest)
 {
+	if (p_quest == nullptr)
+	{
+		return;
+	}
 	for (QuestMenuSlot* slot : m_slots)
 	{
 		if (slot->GetTextID() == p_quest->GetName())

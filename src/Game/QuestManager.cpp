@@ -192,29 +192,34 @@ void QuestManager::RemoveQuestFromFinished(Quest* p_quest)
 
 void QuestManager::AddQuestToNotStarted(Quest* p_quest)
 {
+	if (p_quest == nullptr)
+	{
+		return;
+	}
 	if (GetQuestOnNotStarted(p_quest->GetName()))
 	{
 		SDL_Log("QuestManager::AddQuestToNotStarted/Quest with name '%s' already exists in Not Started", p_quest->GetName().c_str());
 		return;
 	}
 
-	RemoveQuestFromInProcess(p_quest);
-	RemoveQuestFromFinished(p_quest);
-
 	m_questsNotStarted[p_quest->GetName()] = m_questsNotStartedVector.size();
 	m_questsNotStartedVector.push_back(p_quest);
+
+	RemoveQuestFromInProcess(p_quest);
+	RemoveQuestFromFinished(p_quest);
 }
 
 void QuestManager::AddQuestToInProcess(Quest* p_quest)
 {
+	if (p_quest == nullptr)
+	{
+		return;
+	}
 	if (GetQuestOnInProcess(p_quest->GetName()))
 	{
 		SDL_Log("QuestManager::AddQuestToInProcess/Quest with name '%s' already exists in In Process", p_quest->GetName().c_str());
 		return;
 	}
-
-	RemoveQuestFromNotStarted(p_quest);
-	RemoveQuestFromFinished(p_quest);
 
 	m_questsInProcess[p_quest->GetName()] = m_questsInProcessVector.size();
 	m_questsInProcessVector.push_back(p_quest);
@@ -228,21 +233,28 @@ void QuestManager::AddQuestToInProcess(Quest* p_quest)
 	{
 		p_quest->SetVisible(false);
 	}
+
+	RemoveQuestFromNotStarted(p_quest);
+	RemoveQuestFromFinished(p_quest);
 }
 
 void QuestManager::AddQuestToFinished(Quest* p_quest)
 {
+	if (p_quest == nullptr)
+	{
+		return;
+	}
 	if (GetQuestOnFinished(p_quest->GetName()))
 	{
 		SDL_Log("QuestManager::AddQuestToFinished/Quest with name '%s' already exists in Finished", p_quest->GetName().c_str());
 		return;
 	}
 
-	RemoveQuestFromNotStarted(p_quest);
-	RemoveQuestFromInProcess(p_quest);
-
 	m_questsFinished[p_quest->GetName()] = m_questsFinishedVector.size();
 	m_questsFinishedVector.push_back(p_quest);
+
+	RemoveQuestFromNotStarted(p_quest);
+	RemoveQuestFromInProcess(p_quest);
 }
 
 Quest* QuestManager::GetQuestOnNotStarted(const std::string& p_name) const
@@ -421,7 +433,11 @@ void QuestManager::SetActiveQuest(const std::string& p_id)
 
 void QuestManager::RemoveActiveQuest(Quest* p_quest)
 {
-	if (m_activeQuest && m_activeQuest == p_quest)
+	if (m_activeQuest == nullptr)
+	{
+		return;
+	}
+	if (m_activeQuest->GetName() == p_quest->GetName())
 	{
 		m_activeQuest->SetVisible(false);
 		m_activeQuest = nullptr;

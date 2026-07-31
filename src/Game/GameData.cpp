@@ -2,6 +2,7 @@
 #include "GameData.h"
 #include "RecipeDataBase.h"
 #include "InventorySlot.h"
+#include "UiChest.h"
 
 //Trucs qu'on peut changer si on veut changer la dur�e plus tard
 

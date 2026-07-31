@@ -20,6 +20,7 @@
 #include "QuestManager.h"
 #include "QuestMenu.h"
 #include "Furnace.h"
+#include "UiChest.h"
 
 void HUDScene::OnInitialize()
 {
@@ -53,6 +54,7 @@ void HUDScene::OnInitialize()
 	hot->SetIsVisible(false);
 
 	m_playerInventory = new PlayerInventory(inv, hot);
+	m_playerInventory->AddItem("ITEM_WOOD", 1028, false);
 
 	GameData::Get().SetInventory(m_playerInventory);
 	m_collectionUi = CreateEntity<UiCollection>(GetWindowCenter(), {1000,600}, "", Shape::Rectangle, true);

@@ -45,6 +45,7 @@
 #include "Aleatory.h"
 
 #include "QuestManager.h"
+#include "Chest.h"
 
 void GameScene::OnInitialize()
 {
@@ -173,6 +174,7 @@ void GameScene::OnInitialize()
 	QuestManager::Get()->CreateQuest(" ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 	QuestManager::Get()->CreateQuest(" CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 
+	Chest* c = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
 }
 
 

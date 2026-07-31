@@ -41,9 +41,19 @@ void Scene::Update()
 	{
 		return;
 	}
-	for (auto& p : m_particles) {	
-		p->Update(GetDeltaTime());
+	
+	for (auto it = m_particles.begin(); it != m_particles.end();) {
+		Particles* particles = *it;
+		if (particles->IsEmpty()) {
+			it = m_particles.erase(it);
+			delete particles;
+			continue;
+		}
+		it++;
+		particles->Update(GetDeltaTime());
 	}
+
+
 	OnUpdate();
 }
 

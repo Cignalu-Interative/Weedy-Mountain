@@ -288,4 +288,3 @@ void Particles::SetScale(Vector2f p_scale) {
 bool Particles::IsEmpty() {
 	return m_particles.size() == 0;
 }
-

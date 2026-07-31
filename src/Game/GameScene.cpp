@@ -212,9 +212,9 @@ void GameScene::OnEvent()
 	if (im->IsKeyboardDown(K_O))
 		GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
 	if (im->IsKeyboardDown(K_SPACE)) {
-		Particles* particles = CreateParticle("carrot_04", "ParticuleExemple.comp", { 400.0f, 122.0f });
+		Particles* particles = CreateParticle("Drugs", "ParticuleExemple.comp", GetCamera()->ScreenToWorld(InputManager::Get()->GetMousePosition()));
 		particles->AddParticles(400, { 0.0f, 0.0f }, { 30.0f, 30.0f }, 1, 100, 1, 1);
-		particles->SetScale({ 3.0f, 3.0f });
+		particles->SetScale({ 0.1f, 0.1f });
 	}
 
 	// if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())

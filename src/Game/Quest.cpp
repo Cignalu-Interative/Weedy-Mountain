@@ -39,11 +39,15 @@ void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTextur
 		[](unsigned char c) { return std::toupper(c); }
 	);
 	requirement->SetItemData(ItemDataBase::Get()->GetItem(NameItem));
+
 	m_icone->AddSprite("requirementSprite_" + std::to_string(m_requirements.size()), p_idTexture, m_dimSpriteRequirement, 0, { 0,0 }, true);
+	
 	requirement->s_harvestedText = Debug::Get()->CreateText("requirementTextHarvested_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_harvestedAmount), ColorsNamed::Green, true, true);
 	requirement->s_requiredText = Debug::Get()->CreateText("requirementText_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_requiredAmount), ColorsNamed::Red, true, true);
+	
 	requirement->s_requiredText->SetDrawLayer(200);
 	requirement->s_harvestedText->SetDrawLayer(200);
+
 	m_requirements[m_requirements.size()] = requirement;
 	// La ligne de dessous a remettre après les tests de positionnement des icones et du texte
 	ResizeGrid();

@@ -12,6 +12,8 @@ class UiTime;
 class UiDate;
 class RecipesUi;
 class UiShop;
+template <typename T>
+class DataStorage;
 class HUDScene : public Scene
 {
 private:
@@ -29,6 +31,8 @@ private:
 
 	RecipesUi* m_recipe = nullptr;
 	UiShop* m_shop = nullptr;
+
+	DataStorage<int>* m_dataStorage = nullptr;
 
 protected:
 

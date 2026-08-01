@@ -25,9 +25,9 @@
 #include "UiChest.h"
 
 #include "RecipesUi.h"
-#include "RecipeDataBase.h"
-#include "ItemDataBase.h"
 #include "Ui/UiShop.h"
+
+#include "2DPendentEngine/DataStorage.h"
 
 void HUDScene::OnInitialize()
 {

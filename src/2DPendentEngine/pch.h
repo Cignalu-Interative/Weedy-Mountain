@@ -34,4 +34,6 @@
 
 #include <set>
 
+#include <stdexcept>
+
 #endif

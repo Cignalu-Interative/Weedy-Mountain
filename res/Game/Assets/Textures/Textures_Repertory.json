@@ -7819,6 +7819,9 @@
       "path": "../../res/Game/Assets/Textures/inventory.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/lockedItem.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/nextButton.png"
     },
     {

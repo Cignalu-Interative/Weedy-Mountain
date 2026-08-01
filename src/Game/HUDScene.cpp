@@ -105,13 +105,13 @@ void HUDScene::OnInitialize()
 
 void HUDScene::OnEvent()
 {
-	if (InputManager::Get()->IsKeyboardDown(K_KP_8))
+	if (InputManager::Get()->IsKeyboardDown(K_I))
 		m_collectionUi->Open();
 
-	if (InputManager::Get()->IsKeyboardDown(K_KP_7))
+	if (InputManager::Get()->IsKeyboardDown(K_O))
 		m_collectionUi->Close();
 	InputManager* input = InputManager::Get();
-	if (input->IsKeyboardDown(KeyboardKeycodeKeys::K_SUPERSCRIPT_TWO))
+	if (input->IsKeyboardDown(K_W))
 	{
 		m_questMenu->Toggle(&QuestManager::Get()->GetQuestsInProcess());
 	}
@@ -136,7 +136,7 @@ void HUDScene::OnUpdate()
 	gm.Update();
 	m_playerInventory->OnUpdate();
 	QuestManager::Get()->UpdateQuests();
-	m_questMenu->OnUpdate();
+	//m_questMenu->OnUpdate();
 }
 
 void HUDScene::OnDestroy()

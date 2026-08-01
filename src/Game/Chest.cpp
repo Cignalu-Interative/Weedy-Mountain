@@ -11,6 +11,7 @@ void Chest::OnInitialize()
 
 void Chest::OnEvent()
 {
+
 	if (m_isColliding && InputManager::Get()->IsKeyboardDown(K_E))
 		m_uiChest->Open();
 

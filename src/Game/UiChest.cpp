@@ -29,6 +29,8 @@ void UiChest::OnInitialize()
 
 void UiChest::OnEvent()
 {
+	if (m_isVisible == false)
+		return;
 
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_isVisible)
 	{

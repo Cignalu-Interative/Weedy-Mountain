@@ -179,12 +179,6 @@ void GameScene::OnEvent()
 {
 	InputManager* im = InputManager::Get();
 
-	//if (im->IsKeyboardDown(K_A))
-	//	GetCamera()->SetZoom(5);
-
-	//if (im->IsKeyboardDown(K_E))
-	//	GetCamera()->SetZoom(1);
-
 	if (InputManager::Get()->IsKeyboardDown(K_KP_1))
 	{
 		Application::Get()->SetIsAutoFPS(false);
@@ -193,19 +187,6 @@ void GameScene::OnEvent()
 	{
 		Application::Get()->SetIsAutoFPS(true);
 	}
-	//if (im->IsKeyboardDown(K_K))
-	//{
-	//	m_player->GetJobByName(JobType::Gatherer)->m_exp += 5;
-	//	m_player->GetJobByName(JobType::Miner)->m_exp += 5;
-	//	m_player->GetJobByName(JobType::Farmer)->m_exp += 5;
-	//}
-
-	//if (im->IsKeyboardDown(K_O))
-	//{
-	//	m_player->GetJobByName(JobType::Gatherer)->m_exp -= 5;
-	//	m_player->GetJobByName(JobType::Miner)->m_exp -= 5;
-	//	m_player->GetJobByName(JobType::Farmer)->m_exp -= 5;
-	//}
 
 	if (im->IsKeyboardDown(K_R))
 	{
@@ -250,7 +231,7 @@ void GameScene::OnUpdate()
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 
-	gm.Update();
+	//gm.Update();
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
 
 	SoundManager* sm = SoundManager::Get();
@@ -367,16 +348,6 @@ void GameScene::OnSleep()
 	SetSleepUpdate(true);
 	m_player->SetIsVisible(false);
 	
-	//for (Entity* e : GetEntities())
-	//{
-	//	e->SetIsVisible(false);
-	//}
-
-	//e->SetIsVisible(true);
-	//f->SetIsVisible(true);
-	//g->SetIsVisible(true);
-	//h->SetIsVisible(true);
-	//i->SetIsVisible(true);
 
 }
 

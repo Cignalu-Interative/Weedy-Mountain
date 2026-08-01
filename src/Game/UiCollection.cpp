@@ -74,6 +74,9 @@ void UiCollection::OnInitialize()
 
 void UiCollection::OnUpdate()
 {
+	if(m_isOpen == false)
+		return;
+
 	if (m_isItemSelected)
 		return;
 

@@ -66,12 +66,9 @@ void FurnaceUi::OnUpdate()
 {	
 	float dt = GetDeltaTime();
 
-	//if ( m_currentfuelTime > 0)
-	//	m_progressBarAnimation->Update(dt);
-
 	if (m_rawOres->IsEmpty())
 	{
-		GetSprite("EmptyProgressBar")->SetIsVisible(false);
+		GetSprite("EmptyProgressBar")->SetIsVisible(true);
 		m_currentHeatingTime = m_heatingTimeRequired;
 		return;
 	}
@@ -95,12 +92,6 @@ void FurnaceUi::OnUpdate()
 
 	if (m_meltedOres->GetStack().GetAmount() == 64)
 		return;
-	//float progress = 1.f - (m_currentHeatingTime / m_heatingTimeRequired);
-	//progress = Utils::Clamp(progress, 0.f, 1.f);
-	//int maxWidth = GetSprite("MeltedEmpty")->GetDimension().GetX();
-	//int height = GetSprite("MeltedEmpty")->GetDimension().GetY();
-	//GetSprite("MeltedFull")->SetDimension({ int(maxWidth * progress), height });
-
 
 	if (m_currentfuelTime <= 0)
 	{
@@ -142,15 +133,13 @@ void FurnaceUi::OnUpdate()
 			m_currentHeatingTime = heatingTime;
 		}
 	}
-	//if (m_currentfuelTime < 0)
-	//{
-	//	GetSprite("MeltedFull")->SetDimension({});
-
-	//}
 }
 
 void FurnaceUi::OnEvent()
 {
+	if(m_isVisible == false)
+		return;
+
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
 		PlaceItemInRawOresSlot();
 	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) )

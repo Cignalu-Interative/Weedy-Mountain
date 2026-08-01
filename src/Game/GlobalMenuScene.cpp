@@ -47,7 +47,7 @@ void GlobalMenuScene::OnInitialize()
 		m_startButton->SyncSprites();
 		m_startButton->SetOnHoverStay([this] {m_startButton->SetSprite("button2"); });
 		m_startButton->SetOnHoverExit([this] {m_startButton->SetSprite("button"); });
-		m_startButton->SetOnLeftClick([this] {SceneManager::Get()->PushScene("HUD"); SceneManager::Get()->PushScene("game");});
+		m_startButton->SetOnLeftClick([this] {SceneManager::Get()->PushScene("HUD"); SceneManager::Get()->PushScene("game"); });
 		Debug::Get()->GetText(m_startButton->GetTextID())->SetFontSize(50);
 		Debug::Get()->GetText(m_startButton->GetTextID())->SetPosition(m_startButton->GetPosition());
 	}
@@ -71,9 +71,6 @@ void GlobalMenuScene::OnInitialize()
 	Debug::Get()->GetText(m_quitButton->GetTextID())->SetFontSize(50);
 	Debug::Get()->GetText(m_quitButton->GetTextID())->SetPosition(m_quitButton->GetPosition());
 
-	//if hasSave == false hide NewGame
-
-	//if hasSave m_startButton replace by continue
 }
 
 void GlobalMenuScene::OnEvent()

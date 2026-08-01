@@ -20,7 +20,7 @@ void UiATM::OnInitialize()
 	GetSprite()->ResizeStretched(GetDimension());
 	SyncSprites();
 
-	m_title = Debug::Get()->CreateText("title", GetPosition({ 0.5f, 0 }) + Vector2f(0, 75), "ATM", ColorsNamed::Black, true);
+	m_title = Debug::Get()->CreateText("ATMtitle", GetPosition({ 0.5f, 0 }) + Vector2f(0, 75), "ATM", ColorsNamed::Black, true);
 	m_title->SetFontStyle(true);
 	m_title->SetFontSize(35);
 

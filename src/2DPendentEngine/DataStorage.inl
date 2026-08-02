@@ -2,88 +2,69 @@
 #include "DataStorage.h"
 
 template<typename T>
-inline DataStorage<T>::DataStorage()
+inline void DataStorage::AddDataToUnorderedMap(const size_t& p_id, const T& data)
 {
+	auto range = dataMap.equal_range(p_id);
 
-
-}
-
-template<typename T>
-inline DataStorage<T>::~DataStorage()
-{
-
-
-}
-
-template<typename T>
-inline void DataStorage<T>::AddDataToUnorderedMap(const size_t& p_id, const T& data)
-{
-	/*if (auto it = hashIdMap.find(p_id); it == hashIdMap.end())
+	for (auto it = range.first; it != range.second; ++it)
 	{
-		std::cerr << "Error: L'identifiant n'existe pas dans le hashIdMap. size_t: " << p_id << std::endl;
-		return;
+		if (it->second.type() != typeid(T))
+		{
+			std::cerr << "Error: Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
+			return;
+		}
+
+		if (const T* storedData = std::any_cast<T>(&it->second))
+		{
+			if (*storedData == data)
+			{
+				std::cerr << "Error: Les données existent déjà pour l'identifiant haché fourni. size_t: " << p_id << std::endl;
+				return;
+			}
+		}
 	}
-
-	dataMap[p_id] = data;*/
+	dataMap.insert({ p_id, data });
 }
 
 template<typename T>
-inline size_t DataStorage<T>::CreateIdByHaching(const std::string& p_id)
+inline bool DataStorage::IsDataExist(const size_t& p_id, const T& data)
 {
-	size_t hashId = std::hash<std::string>{} (p_id);
+	auto range = dataMap.equal_range(p_id);
 
-	return hashId;
-}
-
-template<typename T>
-inline const std::string& DataStorage<T>::GetStrId(const size_t& p_id)
-{
-	/*static const std::string emptyString = "";
-
-	if (auto it = hashIdMap.find(p_id); it != hashIdMap.end())
+	for (auto it = range.first; it != range.second; ++it)
 	{
-		return it->second;
+		if (const T* storedData = std::any_cast<T>(&it->second))
+		{
+			if (*storedData == data)
+			{
+				return true;
+			}
+		}
 	}
-	return emptyString;*/
+	return false;
 }
 
 template<typename T>
-inline const size_t& DataStorage<T>::GetHashId(const std::string& p_id)
-{
-	/*static const size_t emptyId = 0;
-	size_t hashId = std::hash<std::string>{}(p_id);
-
-	if (auto it = hashIdMap.find(hashId); it != hashIdMap.end())
-	{
-		return hashId;
-	}
-	return emptyId;*/
-}
-
-template<typename T>
-inline void DataStorage<T>::CreateDataByStrId(const std::string& p_id, const T& data)
+inline void DataStorage::CreateDataByStrId(const std::string& p_id, const T& data)
 {
 	if (p_id.empty() || data == T())
 	{
 		std::cerr << "Error: L'identifiant ou les données sont vides. p_id: " << p_id << std::endl;
 		return;
 	}
-	size_t hashId = GetHashId(p_id);
+	size_t hashId = ConvertIdByHaching(p_id);
 
-	if (hashId == 0)
-	{
-		std::cerr << "Error: L'identifiant n'existe pas. p_id: " << p_id << std::endl;
-		return;
-	}
-
-
-
+	AddDataToUnorderedMap(hashId, data);
 }
 
 template<typename T>
-inline void DataStorage<T>::CreateDataByHashId(const size_t& p_id, const T& data)
+inline void DataStorage::CreateDataByHashId(const size_t& p_id, const T& data)
 {
-
+	if (p_id == 0 || data == T())
+	{
+		std::cerr << "Error: L'identifiant ou les données sont vides. p_id: " << p_id << std::endl;
+		return;
+	}
 
 
 }

@@ -111,7 +111,7 @@ void HUDScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_O))
 		m_collectionUi->Close();
 	InputManager* input = InputManager::Get();
-	if (input->IsKeyboardDown(K_W))
+	if (input->IsKeyboardDown(K_SUPERSCRIPT_TWO))
 	{
 		m_questMenu->Toggle(&QuestManager::Get()->GetQuestsInProcess());
 	}

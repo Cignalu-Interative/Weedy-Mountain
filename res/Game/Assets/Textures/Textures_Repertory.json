@@ -4,6 +4,18 @@
       "path": "../../res/Game/Assets/Textures/ATM.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/ATM_BackGround.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Bouton_ATM.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Bouton_ATM_Bank.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Bouton_ATM_Cash.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Calendar.png"
     },
     {

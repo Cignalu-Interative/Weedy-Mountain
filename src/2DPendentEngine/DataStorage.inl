@@ -4,7 +4,7 @@
 template<typename T>
 inline void DataStorage::AddDataToUnorderedMap(const size_t& p_id, const T& data)
 {
-	auto range = dataMap.equal_range(p_id);
+	auto range = m_dataMap.equal_range(p_id);
 
 	for (auto it = range.first; it != range.second; ++it)
 	{
@@ -23,13 +23,13 @@ inline void DataStorage::AddDataToUnorderedMap(const size_t& p_id, const T& data
 			}
 		}
 	}
-	dataMap.insert({ p_id, data });
+	m_dataMap.insert({ p_id, data });
 }
 
 template<typename T>
 inline bool DataStorage::IsDataExist(const size_t& p_id, const T& data)
 {
-	auto range = dataMap.equal_range(p_id);
+	auto range = m_dataMap.equal_range(p_id);
 
 	for (auto it = range.first; it != range.second; ++it)
 	{
@@ -45,19 +45,6 @@ inline bool DataStorage::IsDataExist(const size_t& p_id, const T& data)
 }
 
 template<typename T>
-inline void DataStorage::CreateDataByStrId(const std::string& p_id, const T& data)
-{
-	if (p_id.empty() || data == T())
-	{
-		std::cerr << "Error: L'identifiant ou les données sont vides. p_id: " << p_id << std::endl;
-		return;
-	}
-	size_t hashId = ConvertIdByHaching(p_id);
-
-	AddDataToUnorderedMap(hashId, data);
-}
-
-template<typename T>
 inline void DataStorage::CreateDataByHashId(const size_t& p_id, const T& data)
 {
 	if (p_id == 0 || data == T())
@@ -66,5 +53,5 @@ inline void DataStorage::CreateDataByHashId(const size_t& p_id, const T& data)
 		return;
 	}
 
-
+	AddDataToUnorderedMap(p_id, data);
 }

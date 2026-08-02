@@ -4,13 +4,11 @@
 
 DataStorage::DataStorage()
 {
-	
-
+	m_dataMap.reserve(100); // Réserve de l'espace pour 100 éléments pour éviter les réallocations fréquentes
 }
 
 DataStorage::~DataStorage()
 {
-
 
 }
 
@@ -48,4 +46,9 @@ bool DataStorage::IsIdExist(const std::string& p_id)
 		}
 	}
 	return false;
+}
+
+std::vector<std::any> DataStorage::GetAllData(const size_t& p_id)
+{
+	return std::vector<std::any>();
 }

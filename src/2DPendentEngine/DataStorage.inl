@@ -45,13 +45,28 @@ inline bool DataStorage::IsDataExist(const size_t& p_id, const T& data)
 }
 
 template<typename T>
-inline void DataStorage::CreateDataByHashId(const size_t& p_id, const T& data)
+inline void DataStorage::CreateData(const size_t& p_id, const T& data)
 {
-	if (p_id == 0 || data == T())
+	if (p_id == 0)
 	{
-		std::cerr << "Error: L'identifiant ou les données sont vides. p_id: " << p_id << std::endl;
+		std::cerr << "Error: L'identifiant est vide. p_id: " << p_id << std::endl;
 		return;
 	}
 
 	AddDataToUnorderedMap(p_id, data);
+}
+
+template<typename T>
+inline T* DataStorage::GetData(const size_t& p_id)
+{
+	auto range = m_dataMap.equal_range(p_id);
+
+	for (auto it = range.first; it != range.second; ++it)
+	{
+		if (T* storedData = std::any_cast<T>(&it->second))
+		{
+			return storedData;
+		}
+	}
+	return nullptr;
 }

@@ -102,34 +102,39 @@ void HUDScene::OnInitialize()
 	m_recipe->Close();
 
 	m_dataStorage = new DataStorage();
-	m_dataStorage->CreateDataByHashId<int>(m_dataStorage->ConvertIdByHaching("Test"), 69);
-;
+	m_dataStorage->CreateData<int>(m_dataStorage->ConvertIdByHaching("Test"), 69);
 }
 
 void HUDScene::OnEvent()
 {
-	if (InputManager::Get()->IsKeyboardDown(K_I))
+	InputManager* input = InputManager::Get();
+
+	if (input->IsKeyboardDown(K_I))
 		m_collectionUi->Open();
 
-	if (InputManager::Get()->IsKeyboardDown(K_O))
+	if (input->IsKeyboardDown(K_O))
 		m_collectionUi->Close();
-	InputManager* input = InputManager::Get();
 	if (input->IsKeyboardDown(K_SUPERSCRIPT_TWO))
 	{
 		m_questMenu->Toggle(&QuestManager::Get()->GetQuestsInProcess());
 	}
-	if (InputManager::Get()->IsKeyboardDown(K_J))
+	if (input->IsKeyboardDown(K_J))
 		m_jobsUi->Toggle();
 
-	if (InputManager::Get()->IsKeyboardHeld(K_L))
+	if (input->IsKeyboardHeld(K_L))
 		GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer, 5.f);
 	
-	if (InputManager::Get()->IsKeyboardDown(K_P))
+	if (input->IsKeyboardDown(K_P))
 		m_recipe->Open();
 
-	if (InputManager::Get()->IsKeyboardDown(K_KP_0))
+	if (input->IsKeyboardDown(K_KP_0))
 	{
 		GameData::Get().UnlockRecipe("a");
+	}
+
+	if (input->IsKeyboardDown(K_RCTRL))
+	{
+		std::cerr << m_dataStorage->IsDataExist<int>(m_dataStorage->ConvertIdByHaching("Test"), 69) << std::endl;
 	}
 }
 

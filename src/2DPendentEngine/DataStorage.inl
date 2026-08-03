@@ -258,7 +258,6 @@ bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 
 	m_dataMap.erase(it);
 	return true;
-
 }
 
 template<typename T>

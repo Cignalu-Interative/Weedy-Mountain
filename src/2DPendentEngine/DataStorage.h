@@ -42,7 +42,7 @@ public:
 	// Constructeur de la classe DataStorage.
 	DataStorage();
 	// Destructeur de la classe DataStorage.
-	~DataStorage();
+	~DataStorage() = default;
 
 	// Crée un identifiant haché à partir de la chaîne de caractères fournie.
 	size_t ConvertIdByHaching(const std::string& p_id);
@@ -119,10 +119,10 @@ public:
 	// Set = met à jour toutes les données associées à l'identifiant haché.
 	template <typename T>
 	bool SetDataById(const size_t& p_id, const T& data, size_t p_index = 0);
-	// Add = ajoute une seule donnée associée à l'identifiant haché.
+	// Add += ajoute une seule donnée associée à l'identifiant haché.
 	template <typename T>
 	bool AddDataById(const size_t& p_id, const T& data, size_t p_index = 0);
-	// Decrease = diminue une seule donnée associée à l'identifiant haché.
+	// Decrease -= diminue une seule donnée associée à l'identifiant haché.
 	template <typename T>
 	bool DecreaseDataById(const size_t& p_id, const T& data, size_t p_index = 0);
 

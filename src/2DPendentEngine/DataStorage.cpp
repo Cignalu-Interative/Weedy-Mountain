@@ -7,11 +7,6 @@ DataStorage::DataStorage()
 	m_dataMap.reserve(100); // Réserve de l'espace pour 100 éléments pour éviter les réallocations fréquentes
 }
 
-DataStorage::~DataStorage()
-{
-
-}
-
 size_t DataStorage::ConvertIdByHaching(const std::string& p_id)
 {
 	size_t hashId = std::hash<std::string>{} (p_id);
@@ -53,7 +48,6 @@ const std::any* DataStorage::GetFirstData(const size_t& p_id)
 		std::cerr << "Engine/DataStorage.cpp/GetFirstData/ Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
 		return nullptr;
 	}
-
 	return &range.first->second;
 }
 
@@ -213,4 +207,3 @@ void DataStorage::Reserve(size_t p_capacity)
 {
 	m_dataMap.reserve(p_capacity);
 }
-

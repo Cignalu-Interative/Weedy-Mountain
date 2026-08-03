@@ -12,6 +12,7 @@
 #include "GameData.h"
 #include "PNJ.h"
 #include "shopPNJ.h"
+#include "Policeman.h"
 
 #include "GameScene.h"
 #include "Ui/UiStats.h"
@@ -130,6 +131,8 @@ void VillageScene::OnInitialize()
 	
 	m_atm = CreateEntity<ATM>(m_spawnPoint + Vector2f(350, -100), { 32, 46 }, "ATM", Shape::Rectangle);
 
+	m_policeman = CreateEntity<Policeman>({ 500, 500 }, { 16, 32 }, "player", Shape::Rectangle);
+	m_policeman->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
 
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);

@@ -8,6 +8,7 @@ class shopPNJ;
 class UiShop;
 class UiDealerShop;
 class ATM;
+class Policeman;
 class VillageScene : public Scene
 {
 private :
@@ -19,6 +20,7 @@ private :
 	UiShop* m_shop = nullptr;
 	UiDealerShop* m_dealerShop = nullptr;
 	Vector2f m_spawnPoint;
+	Policeman* m_policeman = nullptr;
 
 protected :
 

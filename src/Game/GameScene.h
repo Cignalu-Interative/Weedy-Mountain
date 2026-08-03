@@ -2,7 +2,6 @@
 #include "2DPendentEngine/Scene.h"
 #include "Player.h"
 #include "Policeman.h"
-#include "NavigationGrid.h"
 
 enum CollisionLayers : uint32_t
 {

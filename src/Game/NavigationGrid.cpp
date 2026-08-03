@@ -2,7 +2,7 @@
 #include "NavigationGrid.h"
 
 
-NavigationGrid::NavigationGrid()
+void NavigationGrid::Initialize()
 {
 	MapTiledManager* mm = MapTiledManager::Get();
 

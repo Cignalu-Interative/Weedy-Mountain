@@ -28,13 +28,13 @@ private:
 
 	Vector2i m_gridDimension;
 
-	std::vector<NavTile*> m_mapTiles;
+	std::vector<NavTile*> m_mapTiles = {};
 
 	NavTile* InitializeTile(TileInfo p_infos);
 
 public:
 
-	NavigationGrid();
+	void Initialize();
 
 	std::vector<NavTile*> GetMapTiles() { return m_mapTiles; }
 

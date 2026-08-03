@@ -1,6 +1,7 @@
 #pragma once
 #include "2DPendentEngine/Entity.h"
 #include "Dialogue.h"
+#include "NavigationGrid.h"
 
 class PNJ : public Entity
 {
@@ -36,6 +37,11 @@ private :
 	std::string m_dialogPath = "";
 
 	std::function<void()> m_onFinish; 
+
+protected:
+
+	NavigationGrid* m_navigationGrid = nullptr;
+
 public : 
 
 	void OnInitialize() override;
@@ -59,5 +65,7 @@ public :
 	bool IsFinished() { return m_isFinished; }
 
 	std::vector<Dialogue::Choice> GetChoices() { return m_choices; }
+
+	NavigationGrid* GetNavigationGrid() { return m_navigationGrid; }
 };
 

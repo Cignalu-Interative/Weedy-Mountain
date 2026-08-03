@@ -17,11 +17,18 @@ void Policeman::OnInitialize()
 
 	SetSpeed(50);
 
+	m_navigationGrid = new NavigationGrid;
+
 	SetupStateMachine();
 }
 
 void Policeman::OnUpdate()
 {
+	if (m_navigationGrid->GetMapTiles().size() <= 0)
+	{
+		m_navigationGrid->Initialize();
+	}
+
 	m_stateMachine.Update(this, GetDeltaTime());
 	MoveKinematic();
 }
@@ -137,49 +144,45 @@ void Policeman::SetupStateMachine()
 
 void Policeman::StartChase()
 {
-	NavigationGrid* navigationGrid = nullptr;//GetScene<GameScene>()->GetNavigationGrid();
-
-	navigationGrid->SetTileCrossedByType(TileType::GRASS, true);
+	m_navigationGrid->SetTileCrossedByType(TileType::GRASS, true);
 
 	m_pathIndex = 0;
 
 	Vector2i start = { (int)(m_position.GetX() / 16), (int)(m_position.GetY() / 16) };
 	Vector2i goal = { (int)m_playerPos.GetX() / 16, (int)m_playerPos.GetY() / 16 };
 
-	m_path = m_pathfinder.FindPath(*navigationGrid, start, goal);
+	m_path = m_pathfinder.FindPath(*m_navigationGrid, start, goal);
 }
 
 void Policeman::StartPatrol()
 {
-	NavigationGrid* navigationGrid = nullptr;//GetScene<GameScene>()->GetNavigationGrid();
-
 	m_pathIndex = 0;
 
 	Vector2i start = { (int)(m_position.GetX() / 16), (int)(m_position.GetY() / 16) };
-	int goalIndex = Aleatory::GetInt(0, navigationGrid->GetTilesByType(TileType::PATH).size());
-	Vector2i goalPos = navigationGrid->GetTilesByType(TileType::PATH)[goalIndex]->gridPos;
+	int goalIndex = Aleatory::GetInt(0, m_navigationGrid->GetTilesByType(TileType::PATH).size());
+	Vector2i goalPos = m_navigationGrid->GetTilesByType(TileType::PATH)[goalIndex]->gridPos;
 
-	if (navigationGrid->GetTileByGridPos(start)->type == TileType::PATH)
+	if (m_navigationGrid->GetTileByGridPos(start)->type == TileType::PATH)
 	{
-		navigationGrid->SetTileCrossedByType(TileType::GRASS, false);
+		m_navigationGrid->SetTileCrossedByType(TileType::GRASS, false);
 	}
 
-	m_path = m_pathfinder.FindPath(*navigationGrid, start, goalPos);
+	m_path = m_pathfinder.FindPath(*m_navigationGrid, start, goalPos);
 
 	int maxAttempts = 10;
 	int attempts = 0;
 
 	do
 	{
-		int goalIndex = Aleatory::GetInt(0, navigationGrid->GetTilesByType(TileType::PATH).size());
-		Vector2i goalPos = navigationGrid->GetTilesByType(TileType::PATH)[goalIndex]->gridPos;
+		int goalIndex = Aleatory::GetInt(0, m_navigationGrid->GetTilesByType(TileType::PATH).size());
+		Vector2i goalPos = m_navigationGrid->GetTilesByType(TileType::PATH)[goalIndex]->gridPos;
 
-		m_path = m_pathfinder.FindPath(*navigationGrid, start, goalPos);
+		m_path = m_pathfinder.FindPath(*m_navigationGrid, start, goalPos);
 
 		attempts++;
 	} while (m_path.size() == 0 && attempts < maxAttempts);
 
-	navigationGrid->SetTileCrossedByType(TileType::GRASS, false);
+	m_navigationGrid->SetTileCrossedByType(TileType::GRASS, false);
 }
 
 bool Policeman::IsInVisionCone(Vector2f p_goalPos)

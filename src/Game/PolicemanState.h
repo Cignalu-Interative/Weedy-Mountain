@@ -144,8 +144,7 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 		if (pathIndex >= path.size())
 		{
-			NavigationGrid nav; // A ENLEVER
-			path = pathfinder.FindPath(nav/**gs->GetNavigationGrid()*/, policemanGridPos, playerGridPos);
+			path = pathfinder.FindPath(*p_policeman->GetNavigationGrid(), policemanGridPos, playerGridPos);
 			
 			if (path.size() == 0)
 			{

@@ -26,6 +26,7 @@ bool DataStorage::IsIdExist(const size_t& p_id)
 	{
 		return true;
 	}
+	std::cerr << "Engine/DataStorage.cpp/IsIdExist(const size_t& p_id)/ ID pas trouvé : " << p_id << std::endl;
 	return false;
 }
 
@@ -39,6 +40,7 @@ bool DataStorage::IsIdExist(const std::string& p_id)
 	{
 		return true;
 	}
+	std::cerr << "Engine/DataStorage.cpp/IsIdExist(const std::string& p_id)/ ID pas trouvé : " << p_id << std::endl;
 	return false;
 }
 
@@ -48,7 +50,8 @@ const std::any* DataStorage::GetFirstData(const size_t& p_id)
 
 	if (range.first == range.second)
 	{
-		return nullptr; // Aucun élément trouvé pour l'identifiant donné
+		std::cerr << "Engine/DataStorage.cpp/GetFirstData/ Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return nullptr;
 	}
 
 	return &range.first->second;
@@ -60,7 +63,8 @@ const std::any* DataStorage::GetLastData(const size_t& p_id)
 	
 	if (range.first == range.second)
 	{
-		return nullptr; // Aucun élément trouvé pour l'identifiant donné
+		std::cerr << "Engine/DataStorage.cpp/GetLastData/ Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return nullptr;
 	}
 
 	auto it = range.second;
@@ -72,10 +76,16 @@ const std::any* DataStorage::GetDataAtIndex(const size_t& p_id, size_t p_index)
 {
 	if (p_index >= m_dataMap.count(p_id))
 	{
-		std::cerr << "Error: Index out of range. p_index: " << p_index << ", count: " << m_dataMap.count(p_id) << std::endl;
+		std::cerr << "Engine/DataStorage.cpp/GetDataAtIndex/ Index hors limites. p_index: " << p_index << ", count: " << m_dataMap.count(p_id) << std::endl;
 		return nullptr;
 	}
 	auto range = m_dataMap.equal_range(p_id);
+
+	if (range.first == range.second)
+	{
+		std::cerr << "Engine/DataStorage.cpp/GetDataAtIndex/ Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return nullptr;
+	}
 
 	auto it = range.first;
 	std::advance(it, p_index);
@@ -98,7 +108,7 @@ std::vector<const std::any*> DataStorage::GetAllDataById(const size_t& p_id)
 		}
 		if (typeCheck.type() != it->second.type())
 		{
-			std::cerr << "Error: les valeur ne sont pas du même type pour l'ID: " << p_id << std::endl;
+			std::cerr << "Engine/DataStorage.cpp/GetAllDataById/ les valeur ne sont pas du même type pour l'ID: " << p_id << std::endl;
 			continue;
 		}
 		dataList.push_back(&it->second);
@@ -116,7 +126,7 @@ bool DataStorage::ClearDataById(const size_t& p_id)
 	size_t count = m_dataMap.count(p_id);
 	if (count == 0)
 	{
-		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		std::cerr << "Engine/DataStorage.cpp/ClearDataById/ pas de données trouvées pour l'ID: " << p_id << std::endl;
 		return false;
 	}
 
@@ -124,7 +134,7 @@ bool DataStorage::ClearDataById(const size_t& p_id)
 
 	if (erasedCount != count)
 	{
-		std::cerr << "Error: le nombre de données supprimées (" << erasedCount << ") ne correspond pas au nombre attendu (" << count << ") pour l'ID: " << p_id << std::endl;
+		std::cerr << "Engine/DataStorage.cpp/ClearDataById/ le nombre de données supprimées (" << erasedCount << ") ne correspond pas au nombre attendu (" << count << ") pour l'ID: " << p_id << std::endl;
 		return false;
 	}
 	return true;
@@ -136,7 +146,7 @@ bool DataStorage::DeleteFirstData(const size_t& p_id)
 
 	if (range.first == range.second)
 	{
-		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		std::cerr << "Engine/DataStorage.cpp/DeleteFirstData/ pas de données trouvées pour l'ID: " << p_id << std::endl;
 		return false;
 	}
 
@@ -150,7 +160,7 @@ bool DataStorage::DeleteLastData(const size_t& p_id)
 
 	if (range.first == range.second)
 	{
-		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		std::cerr << "Engine/DataStorage.cpp/DeleteLastData/ pas de données trouvées pour l'ID: " << p_id << std::endl;
 		return false;
 	}
 
@@ -162,7 +172,7 @@ bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 {
 	if (p_index >= m_dataMap.count(p_id))
 	{
-		std::cerr << "Error: Index out of range. p_index: " << p_index << ", count: " << m_dataMap.count(p_id) << std::endl;
+		std::cerr << "Engine/DataStorage.cpp/DeleteDataAtIndex/ Index hors limites. p_index: " << p_index << ", count: " << m_dataMap.count(p_id) << std::endl;
 		return false;
 	}
 
@@ -170,7 +180,7 @@ bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 
 	if (range.first == range.second)
 	{
-		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		std::cerr << "Engine/DataStorage.cpp/DeleteDataAtIndex/ pas de données trouvées pour l'ID: " << p_id << std::endl;
 		return false;
 	}
 

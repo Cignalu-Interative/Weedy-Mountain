@@ -6,8 +6,14 @@
 // Un concept est une condition qui doit être remplie pour qu'un type soit considéré comme valide pour un certain usage.
 // Concept : vérifie que T supporte les opérateurs += et -=
 // pour les fonctions add et decrease
+
 template <typename T>
-concept Add_AND_Decrease = requires(T a, T b)
+concept CONSEPT_Set = requires(T a, T b)
+{
+	a = b;
+};
+template <typename T>
+concept CONSEPT_Add_AND_Decrease = requires(T a, T b)
 {
 	a += b;
 	a -= b;
@@ -101,9 +107,9 @@ public:
 	template <typename T>
 	bool DeleteDataAtIndex(const size_t& p_id, size_t p_index = 0);
 
-
-	// TODO: Ajouter une fonction pour mettre à jour les données associées à un identifiant haché.
 	// Set = met à jour toutes les données associées à l'identifiant haché.
+	template <typename T>
+	bool SetDataById(const size_t& p_id, const T& data, size_t p_index = 0);
 	// Add = ajoute une seule donnée associée à l'identifiant haché.
 	// Decrease = diminue une seule donnée associée à l'identifiant haché.
 

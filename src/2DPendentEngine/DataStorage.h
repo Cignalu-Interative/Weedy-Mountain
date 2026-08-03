@@ -51,15 +51,30 @@ public:
 	template <typename T>
 	void CreateData(const size_t& p_id, const T& data);
 
+	// Récupère la première donnée associée à l'identifiant haché fourni.
+	const std::any* GetData(const size_t& p_id);
+	// Récupère la donnée associée à l'identifiant haché fourni et à l'index fourni.
+	const std::any* GetData(const size_t& p_id, size_t p_index = 0);
+	// Récupère toutes les données associées à l'identifiant haché fourni.
+	std::vector<const std::any*> GetAllData(const size_t& p_id);
+
+	// Récupère la première donnée associée à l'identifiant haché fourni, avec le type de données spécifié.
 	template <typename T>
-	T* GetData(const size_t& p_id);
+	const T* GetData(const size_t& p_id);
+	// Récupère la donnée associée à l'identifiant haché fourni et à l'index fourni, avec le type de données spécifié.
+	template <typename T>
+	const T* GetData(const size_t& p_id, size_t p_index = 0);
+	// Récupère toutes les données associées à l'identifiant haché fourni, avec le type de données spécifié.
+	template <typename T>
+	std::vector<const T*> GetAllData(const size_t& p_id);
 
-	// TODO: Ajouter une fonction pour récupérer toutes les données associées à un identifiant haché.
-	std::vector<std::any> GetAllData(const size_t& p_id);
+	// Retourne le nombre de données associées à l'identifiant haché fourni.
+	size_t GetDataCount(const size_t& p_id);
 
-	// TODO: Ajouter une fonction pour supprimer des données associées à un identifiant haché.
 	// Clear = supprime toutes les données associées à l'identifiant haché.
+	void Clear(const size_t& p_id);
 	// Delete = supprime une seule donnée associée à l'identifiant haché.
+
 
 	// TODO: Ajouter une fonction pour mettre à jour les données associées à un identifiant haché.
 	// Set = met à jour toutes les données associées à l'identifiant haché.

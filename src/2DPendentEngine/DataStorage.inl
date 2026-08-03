@@ -2,7 +2,7 @@
 #include "DataStorage.h"
 
 template<typename T>
-inline void DataStorage::AddDataToUnorderedMap(const size_t& p_id, const T& data)
+inline bool DataStorage::AddDataToUnorderedMap(const size_t& p_id, const T& data)
 {
 	auto range = m_dataMap.equal_range(p_id);
 
@@ -11,17 +11,18 @@ inline void DataStorage::AddDataToUnorderedMap(const size_t& p_id, const T& data
 		if (it->second.type() != typeid(T))
 		{
 			std::cerr << "Error: Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
-			return;
+			return false;
 		}
 
 		const T* storedData = std::any_cast<T>(&it->second);
 		if (*storedData == data)
 		{
 			std::cerr << "Error: Les données existent déjà pour l'identifiant haché fourni. size_t: " << p_id << std::endl;
-			return;
+			return false;
 		}
 	}
 	m_dataMap.insert({ p_id, data });
+	return true;
 }
 
 template<typename T>
@@ -43,15 +44,15 @@ inline bool DataStorage::IsDataExist(const size_t& p_id, const T& data)
 }
 
 template<typename T>
-inline void DataStorage::CreateData(const size_t& p_id, const T& data)
+inline bool DataStorage::CreateData(const size_t& p_id, const T& data)
 {
 	if (p_id == 0)
 	{
 		std::cerr << "Error: L'identifiant est vide. p_id: " << p_id << std::endl;
-		return;
+		return false;
 	}
-
-	AddDataToUnorderedMap(p_id, data);
+	bool success = AddDataToUnorderedMap(p_id, data);
+	return success;
 }
 
 template <typename T>
@@ -127,30 +128,77 @@ std::vector<const T*> DataStorage::GetAllDataById(const size_t& p_id)
 template<typename T>
 inline size_t DataStorage::GetIndexOfData(const size_t& p_id, const T& data)
 {
+	auto range = m_dataMap.equal_range(p_id);
+	size_t index = 0;
 
-
-
-	return size_t();
+	for (auto it = range.first; it != range.second; ++it)
+	{
+		if (const T* storedData = std::any_cast<T>(&it->second))
+		{
+			if (*storedData == data)
+			{
+				return index;
+			}
+		}
+		++index;
+	}
+	return static_cast<size_t>(-1);; // Retourne -1 si la donnée n'est pas trouvée
 }
 
 template <typename T>
-void DataStorage::ClearDataById(const size_t& p_id)
+bool DataStorage::ClearDataById(const size_t& p_id)
+{
+	auto range = m_dataMap.equal_range(p_id);
+
+	if (range.first == range.second)
+	{
+		std::cerr << "Error: Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return false;
+	}
+
+	bool erasedAny = false;
+
+	for (auto it = range.first; it != range.second; )
+	{
+		if (it->second.type() == typeid(T))
+		{
+			it = m_dataMap.erase(it);
+			erasedAny = true;
+		}
+		else
+		{
+			++it;
+		}
+	}
+
+	if (!erasedAny)
+	{
+		std::cerr << "Warning: Aucune donnée du type demandé (" << typeid(T).name() << ") trouvée pour l'ID: " << p_id << std::endl;
+		return false;
+	}
+	return erasedAny;
+}
+
+template <typename T>
+bool DataStorage::DeleteFirstData(const size_t& p_id)
 {
 
 }
+
 template <typename T>
-void DataStorage::DeleteFirstData(const size_t& p_id)
+bool DataStorage::DeleteLastData(const size_t& p_id)
 {
 
 }
+
 template <typename T>
-void DataStorage::Delete(const size_t& p_id, size_t p_index)
+bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 {
 
 }
 
 template<typename T>
-inline void DataStorage::Delete(const size_t& p_id, const T& data)
+inline bool DataStorage::Delete(const size_t& p_id, const T& data)
 {
 
 }

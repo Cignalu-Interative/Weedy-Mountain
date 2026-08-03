@@ -111,34 +111,48 @@ size_t DataStorage::GetDataCount(const size_t& p_id)
 	return m_dataMap.count(p_id);
 }
 
-size_t DataStorage::GetIndexOfData(const size_t& p_id, const std::any& data)
+bool DataStorage::ClearDataById(const size_t& p_id)
 {
-	return size_t();
+	size_t count = m_dataMap.count(p_id);
+	if (count == 0)
+	{
+		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		return false;
+	}
+
+	size_t erasedCount = m_dataMap.erase(p_id);
+
+	if (erasedCount != count)
+	{
+		std::cerr << "Error: le nombre de données supprimées (" << erasedCount << ") ne correspond pas au nombre attendu (" << count << ") pour l'ID: " << p_id << std::endl;
+		return false;
+	}
+	return true;
 }
 
-void DataStorage::ClearDataById(const size_t& p_id)
-{
-	m_dataMap.erase(p_id);
-}
-
-void DataStorage::DeleteFirstData(const size_t& p_id)
+bool DataStorage::DeleteFirstData(const size_t& p_id)
 {
 	auto range = m_dataMap.equal_range(p_id);
 
+	if (range.first == range.second)
+	{
+		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		return false;
+	}
 
-
-
+	m_dataMap.erase(range.first);
+	return true;
 }
 
-void DataStorage::Delete(const size_t& p_id, size_t p_index)
+bool DataStorage::DeleteLastData(const size_t& p_id)
+{
+	return false;
+}
+
+bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 {
 
 
 
 }
 
-void DataStorage::Delete(const size_t& p_id, const std::any& data)
-{
-
-
-}

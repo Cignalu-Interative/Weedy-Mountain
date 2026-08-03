@@ -24,7 +24,7 @@ private:
 
 	// Ajoute des données à la map non ordonnée en utilisant l'identifiant haché fourni.
 	template <typename T>
-	void AddDataToUnorderedMap(const size_t& p_id, const T& data);
+	bool AddDataToUnorderedMap(const size_t& p_id, const T& data);
 
 public:
 
@@ -49,7 +49,7 @@ public:
 	// [PERFORMANCE] = plus rapide mais moins lisible.
 	// [TYPE] = id peut contenir n'importe quel type de données, mais un id ne peut contenir qu'un seul type de données.
 	template <typename T>
-	void CreateData(const size_t& p_id, const T& data);
+	bool CreateData(const size_t& p_id, const T& data);
 
 	// Récupère la première donnée associée à l'identifiant haché fourni.
 	const std::any* GetFirstData(const size_t& p_id);
@@ -75,33 +75,34 @@ public:
 
 	// Retourne le nombre de données associées à l'identifiant haché fourni.
 	size_t GetDataCount(const size_t& p_id);
-	// Retourne l'index de la donnée associée à l'identifiant haché fourni et à la donnée fournie.
-	size_t GetIndexOfData(const size_t& p_id, const std::any& data);
 	// Retourne l'index de la donnée associée à l'identifiant haché fourni et à la donnée fournie, avec le type et valeur spécifiés.
 	template <typename T>
 	size_t GetIndexOfData(const size_t& p_id, const T& data);
 
 	// Clear = supprime toutes les données associées à l'identifiant haché.
-	void ClearDataById(const size_t& p_id);
+	bool ClearDataById(const size_t& p_id);
 	// Delete = supprime la première donnée associée à l'identifiant haché.
-	void DeleteFirstData(const size_t& p_id);
+	bool DeleteFirstData(const size_t& p_id);
+	// Delete = supprime la dernière donnée associée à l'identifiant haché.
+	bool DeleteLastData(const size_t& p_id);
 	// Delete = supprime une seule donnée associée à l'identifiant haché et à l'index fourni.
-	void Delete(const size_t& p_id, size_t p_index = 0);
-	// Delete = supprime une seule donnée associée à l'identifiant haché et à la donnée fournie.
-	void Delete(const size_t& p_id, const std::any& data);
+	bool DeleteDataAtIndex(const size_t& p_id, size_t p_index = 0);
 
 	// Clear = supprime toutes les données associées à l'identifiant haché, avec le type de données spécifié.
 	template <typename T>
-	void ClearDataById(const size_t& p_id);
+	bool ClearDataById(const size_t& p_id);
 	// Delete = supprime la première donnée associée à l'identifiant haché, avec le type de données spécifié.
 	template <typename T>
-	void DeleteFirstData(const size_t& p_id);
+	bool DeleteFirstData(const size_t& p_id);
+	// Delete = supprime la dernière donnée associée à l'identifiant haché, avec le type de données spécifié.
+	template <typename T>
+	bool DeleteLastData(const size_t& p_id);
 	// Delete = supprime une seule donnée associée à l'identifiant haché et à l'index fourni, avec le type de données spécifié.
 	template <typename T>
-	void Delete(const size_t& p_id, size_t p_index = 0);
+	bool DeleteDataAtIndex(const size_t& p_id, size_t p_index = 0);
 	// Delete = supprime une seule donnée associée à l'identifiant haché et à la donnée fournie, avec le type de données spécifié.
 	template <typename T>
-	void Delete(const size_t& p_id, const T& data);
+	bool Delete(const size_t& p_id, const T& data);
 
 
 	// TODO: Ajouter une fonction pour mettre à jour les données associées à un identifiant haché.

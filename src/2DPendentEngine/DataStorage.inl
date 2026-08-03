@@ -182,23 +182,74 @@ bool DataStorage::ClearDataById(const size_t& p_id)
 template <typename T>
 bool DataStorage::DeleteFirstData(const size_t& p_id)
 {
+	auto range = m_dataMap.equal_range(p_id);
 
+	if (range.first == range.second)
+	{
+		std::cerr << "Error: Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return false;
+	}
+
+	auto it = range.first;
+	if (it->second.type() != typeid(T))
+	{
+		std::cerr << "Error: Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
+		return false;
+	}
+
+	m_dataMap.erase(it);
+	return true;
 }
 
 template <typename T>
 bool DataStorage::DeleteLastData(const size_t& p_id)
 {
+	auto range = m_dataMap.equal_range(p_id);
 
+	if (range.first == range.second)
+	{
+		std::cerr << "Error: Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return false;
+	}
+
+	auto it = --range.second;
+	if (it->second.type() != typeid(T))
+	{
+		std::cerr << "Error: Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
+		return false;
+	}
+
+	m_dataMap.erase(it);
+	return true;
 }
 
 template <typename T>
 bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 {
+	if (p_index >= m_dataMap.count(p_id))
+	{
+		std::cerr << "Error: Index out of range. p_index: " << p_index << ", count: " << m_dataMap.count(p_id) << std::endl;
+		return false;
+	}
 
-}
+	auto range = m_dataMap.equal_range(p_id);
 
-template<typename T>
-inline bool DataStorage::Delete(const size_t& p_id, const T& data)
-{
+	if (range.first == range.second)
+	{
+		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		return false;
+	}
+
+	auto it = range.first;
+	std::advance(it, p_index);
+
+	if (it->second.type() != typeid(T))
+	{
+		std::cerr << "Error: Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
+		return false;
+	}
+
+	m_dataMap.erase(it);
+	return true;
 
 }

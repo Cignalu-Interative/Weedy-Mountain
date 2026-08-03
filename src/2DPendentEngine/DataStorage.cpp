@@ -146,13 +146,38 @@ bool DataStorage::DeleteFirstData(const size_t& p_id)
 
 bool DataStorage::DeleteLastData(const size_t& p_id)
 {
-	return false;
+	auto range = m_dataMap.equal_range(p_id);
+
+	if (range.first == range.second)
+	{
+		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		return false;
+	}
+
+	m_dataMap.erase(--range.second);
+	return true;
 }
 
 bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 {
+	if (p_index >= m_dataMap.count(p_id))
+	{
+		std::cerr << "Error: Index out of range. p_index: " << p_index << ", count: " << m_dataMap.count(p_id) << std::endl;
+		return false;
+	}
 
+	auto range = m_dataMap.equal_range(p_id);
 
+	if (range.first == range.second)
+	{
+		std::cerr << "Error: pas de données trouvées pour l'ID: " << p_id << std::endl;
+		return false;
+	}
 
+	auto it = range.first;
+	std::advance(it, p_index);
+
+	m_dataMap.erase(it);
+	return true;
 }
 

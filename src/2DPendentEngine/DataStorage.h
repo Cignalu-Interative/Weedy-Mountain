@@ -100,9 +100,6 @@ public:
 	// Delete = supprime une seule donnée associée à l'identifiant haché et à l'index fourni, avec le type de données spécifié.
 	template <typename T>
 	bool DeleteDataAtIndex(const size_t& p_id, size_t p_index = 0);
-	// Delete = supprime une seule donnée associée à l'identifiant haché et à la donnée fournie, avec le type de données spécifié.
-	template <typename T>
-	bool Delete(const size_t& p_id, const T& data);
 
 
 	// TODO: Ajouter une fonction pour mettre à jour les données associées à un identifiant haché.

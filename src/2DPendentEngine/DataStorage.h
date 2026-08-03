@@ -2,6 +2,7 @@
 #include <string>
 #include <unordered_map>
 #include <any>
+#include <functional>
 
 // Un concept est une condition qui doit être remplie pour qu'un type soit considéré comme valide pour un certain usage.
 // Concept : vérifie que T supporte les opérateurs += et -=
@@ -13,9 +14,13 @@ concept CONSEPT_Set = requires(T a, T b)
 	a = b;
 };
 template <typename T>
-concept CONSEPT_Add_AND_Decrease = requires(T a, T b)
+concept CONSEPT_Add = requires(T a, T b)
 {
 	a += b;
+};
+template <typename T>
+concept CONSEPT_Decrease = requires(T a, T b)
+{
 	a -= b;
 };
 
@@ -85,6 +90,10 @@ public:
 	template <typename T>
 	size_t GetIndexOfData(const size_t& p_id, const T& data);
 
+	std::vector<size_t> GetAllIds();
+
+	void ClearAllData();
+
 	// Clear = supprime toutes les données associées à l'identifiant haché.
 	bool ClearDataById(const size_t& p_id);
 	// Delete = supprime la première donnée associée à l'identifiant haché.
@@ -111,8 +120,13 @@ public:
 	template <typename T>
 	bool SetDataById(const size_t& p_id, const T& data, size_t p_index = 0);
 	// Add = ajoute une seule donnée associée à l'identifiant haché.
+	template <typename T>
+	bool AddDataById(const size_t& p_id, const T& data, size_t p_index = 0);
 	// Decrease = diminue une seule donnée associée à l'identifiant haché.
+	template <typename T>
+	bool DecreaseDataById(const size_t& p_id, const T& data, size_t p_index = 0);
 
+	void Reserve(size_t p_capacity);
 };
 
 #include "DataStorage.inl"

@@ -264,8 +264,83 @@ bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 template<typename T>
 inline bool DataStorage::SetDataById(const size_t& p_id, const T& data, size_t p_index)
 {
-	
+	auto range = m_dataMap.equal_range(p_id);
 
+	if (range.first == range.second)
+	{
+		std::cerr << "Engine/DataStorage.inl/SetDataById/ Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return false;
+	}
 
-	return true;
+	auto it = range.first;
+	std::advance(it, p_index);
+
+	if (it->second.type() != typeid(T))
+	{
+		std::cerr << "Engine/DataStorage.inl/SetDataById/ Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
+		return false;
+	}
+
+	if constexpr (CONSEPT_Set<T>)
+	{
+		it->second = data;
+		return true;
+	}
+	return false;
+}
+
+template<typename T>
+inline bool DataStorage::AddDataById(const size_t& p_id, const T& data, size_t p_index)
+{
+	auto range = m_dataMap.equal_range(p_id);
+
+	if (range.first == range.second)
+	{
+		std::cerr << "Engine/DataStorage.inl/AddDataById/ Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return false;
+	}
+
+	auto it = range.first;
+	std::advance(it, p_index);
+
+	if (it->second.type() != typeid(T))
+	{
+		std::cerr << "Engine/DataStorage.inl/AddDataById/ Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
+		return false;
+	}
+
+	if constexpr (CONSEPT_Add<T>)
+	{
+		it->second += data;
+		return true;
+	}
+	return false;
+}
+
+template<typename T>
+inline bool DataStorage::DecreaseDataById(const size_t& p_id, const T& data, size_t p_index)
+{
+	auto range = m_dataMap.equal_range(p_id);
+
+	if (range.first == range.second)
+	{
+		std::cerr << "Engine/DataStorage.inl/DecreaseDataById/ Aucun élément trouvé pour l'identifiant donné. p_id: " << p_id << std::endl;
+		return false;
+	}
+
+	auto it = range.first;
+	std::advance(it, p_index);
+
+	if (it->second.type() != typeid(T))
+	{
+		std::cerr << "Engine/DataStorage.inl/DecreaseDataById/ Type incompatible (" << typeid(T).name() << ") pour l'ID " << p_id << " qui contient déjà du " << it->second.type().name() << std::endl;
+		return false;
+	}
+
+	if constexpr (CONSEPT_Decrease<T>)
+	{
+		it->second -= data;
+		return true;
+	}
+	return false;
 }

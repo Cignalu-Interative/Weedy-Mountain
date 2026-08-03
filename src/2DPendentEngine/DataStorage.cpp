@@ -121,6 +121,24 @@ size_t DataStorage::GetDataCount(const size_t& p_id)
 	return m_dataMap.count(p_id);
 }
 
+std::vector<size_t> DataStorage::GetAllIds()
+{
+	std::vector<size_t> ids;
+	for (const auto& pair : m_dataMap)
+	{
+		if (std::find(ids.begin(), ids.end(), pair.first) == ids.end())
+		{
+			ids.push_back(pair.first);
+		}
+	}
+	return ids;
+}
+
+void DataStorage::ClearAllData()
+{
+	m_dataMap.clear();
+}
+
 bool DataStorage::ClearDataById(const size_t& p_id)
 {
 	size_t count = m_dataMap.count(p_id);
@@ -189,5 +207,10 @@ bool DataStorage::DeleteDataAtIndex(const size_t& p_id, size_t p_index)
 
 	m_dataMap.erase(it);
 	return true;
+}
+
+void DataStorage::Reserve(size_t p_capacity)
+{
+	m_dataMap.reserve(p_capacity);
 }
 

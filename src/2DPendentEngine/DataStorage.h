@@ -52,28 +52,56 @@ public:
 	void CreateData(const size_t& p_id, const T& data);
 
 	// Récupère la première donnée associée à l'identifiant haché fourni.
-	const std::any* GetData(const size_t& p_id);
+	const std::any* GetFirstData(const size_t& p_id);
+	// Récupère la dernière donnée associée à l'identifiant haché fourni.
+	const std::any* GetLastData(const size_t& p_id);
 	// Récupère la donnée associée à l'identifiant haché fourni et à l'index fourni.
-	const std::any* GetData(const size_t& p_id, size_t p_index = 0);
+	const std::any* GetDataAtIndex(const size_t& p_id, size_t p_index = 0);
 	// Récupère toutes les données associées à l'identifiant haché fourni.
-	std::vector<const std::any*> GetAllData(const size_t& p_id);
+	std::vector<const std::any*> GetAllDataById(const size_t& p_id);
 
 	// Récupère la première donnée associée à l'identifiant haché fourni, avec le type de données spécifié.
 	template <typename T>
-	const T* GetData(const size_t& p_id);
+	const T* GetFirstData(const size_t& p_id);
+	// Récupère la dernière donnée associée à l'identifiant haché fourni, avec le type de données spécifié.
+	template <typename T>
+	const T* GetLastData(const size_t& p_id);
 	// Récupère la donnée associée à l'identifiant haché fourni et à l'index fourni, avec le type de données spécifié.
 	template <typename T>
-	const T* GetData(const size_t& p_id, size_t p_index = 0);
+	const T* GetDataAtIndex(const size_t& p_id, size_t p_index = 0);
 	// Récupère toutes les données associées à l'identifiant haché fourni, avec le type de données spécifié.
 	template <typename T>
-	std::vector<const T*> GetAllData(const size_t& p_id);
+	std::vector<const T*> GetAllDataById(const size_t& p_id);
 
 	// Retourne le nombre de données associées à l'identifiant haché fourni.
 	size_t GetDataCount(const size_t& p_id);
+	// Retourne l'index de la donnée associée à l'identifiant haché fourni et à la donnée fournie.
+	size_t GetIndexOfData(const size_t& p_id, const std::any& data);
+	// Retourne l'index de la donnée associée à l'identifiant haché fourni et à la donnée fournie, avec le type et valeur spécifiés.
+	template <typename T>
+	size_t GetIndexOfData(const size_t& p_id, const T& data);
 
 	// Clear = supprime toutes les données associées à l'identifiant haché.
-	void Clear(const size_t& p_id);
-	// Delete = supprime une seule donnée associée à l'identifiant haché.
+	void ClearDataById(const size_t& p_id);
+	// Delete = supprime la première donnée associée à l'identifiant haché.
+	void DeleteFirstData(const size_t& p_id);
+	// Delete = supprime une seule donnée associée à l'identifiant haché et à l'index fourni.
+	void Delete(const size_t& p_id, size_t p_index = 0);
+	// Delete = supprime une seule donnée associée à l'identifiant haché et à la donnée fournie.
+	void Delete(const size_t& p_id, const std::any& data);
+
+	// Clear = supprime toutes les données associées à l'identifiant haché, avec le type de données spécifié.
+	template <typename T>
+	void ClearDataById(const size_t& p_id);
+	// Delete = supprime la première donnée associée à l'identifiant haché, avec le type de données spécifié.
+	template <typename T>
+	void DeleteFirstData(const size_t& p_id);
+	// Delete = supprime une seule donnée associée à l'identifiant haché et à l'index fourni, avec le type de données spécifié.
+	template <typename T>
+	void Delete(const size_t& p_id, size_t p_index = 0);
+	// Delete = supprime une seule donnée associée à l'identifiant haché et à la donnée fournie, avec le type de données spécifié.
+	template <typename T>
+	void Delete(const size_t& p_id, const T& data);
 
 
 	// TODO: Ajouter une fonction pour mettre à jour les données associées à un identifiant haché.

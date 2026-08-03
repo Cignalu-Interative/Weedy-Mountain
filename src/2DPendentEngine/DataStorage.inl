@@ -55,22 +55,37 @@ inline void DataStorage::CreateData(const size_t& p_id, const T& data)
 }
 
 template <typename T>
-const T* DataStorage::GetData(const size_t& p_id)
+const T* DataStorage::GetFirstData(const size_t& p_id)
 {
 	auto range = m_dataMap.equal_range(p_id);
 
-	for (auto it = range.first; it != range.second; ++it)
+	if (range.first == range.second)
 	{
-		if (const T* storedData = std::any_cast<T>(&it->second))
-		{
-			return storedData;
-		}
+		return nullptr; // Aucun élément trouvé pour l'identifiant donné
 	}
-	return nullptr;
+
+	const T* storedData = std::any_cast<T>(&range.first->second);
+	
+	return storedData;
 }
 
 template <typename T>
-const T* GetData(const size_t& p_id, size_t p_index)
+const T* DataStorage::GetLastData(const size_t& p_id)
+{
+	auto range = m_dataMap.equal_range(p_id);
+
+	if (range.first == range.second)
+	{
+		return nullptr; // Aucun élément trouvé pour l'identifiant donné
+	}
+
+	const T* storedData = std::any_cast<T>(&(--range.second)->second);
+	
+	return storedData;
+}
+
+template <typename T>
+const T* DataStorage::GetDataAtIndex(const size_t& p_id, size_t p_index)
 {
 	if (p_index >= m_dataMap.count(p_id))
 	{
@@ -88,7 +103,7 @@ const T* GetData(const size_t& p_id, size_t p_index)
 }
 
 template <typename T>
-std::vector<const T*> DataStorage::GetAllData(const size_t& p_id)
+std::vector<const T*> DataStorage::GetAllDataById(const size_t& p_id)
 {
 	std::vector<const T*> dataList;
 	size_t count = m_dataMap.count(p_id);
@@ -107,4 +122,35 @@ std::vector<const T*> DataStorage::GetAllData(const size_t& p_id)
 		}
 	}
 	return dataList;
+}
+
+template<typename T>
+inline size_t DataStorage::GetIndexOfData(const size_t& p_id, const T& data)
+{
+
+
+
+	return size_t();
+}
+
+template <typename T>
+void DataStorage::ClearDataById(const size_t& p_id)
+{
+
+}
+template <typename T>
+void DataStorage::DeleteFirstData(const size_t& p_id)
+{
+
+}
+template <typename T>
+void DataStorage::Delete(const size_t& p_id, size_t p_index)
+{
+
+}
+
+template<typename T>
+inline void DataStorage::Delete(const size_t& p_id, const T& data)
+{
+
 }

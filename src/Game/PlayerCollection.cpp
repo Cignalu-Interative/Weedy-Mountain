@@ -3,6 +3,18 @@
 #include "ItemDataBase.h"
 #include <algorithm>
 
+#include "SaveManager.h"
+
+PlayerCollection::PlayerCollection()
+{
+	SaveManager::Get().RegisterProvider(this);
+}
+
+PlayerCollection::~PlayerCollection()
+{
+	SaveManager::Get().UnregisterProvider(this);
+}
+
 void PlayerCollection::UnlockItem(const std::string& itemID)
 {
     if (IsUnlocked(itemID))
@@ -50,4 +62,17 @@ ItemDisplayInfo PlayerCollection::GetDisplayInfo(const std::string& itemID) cons
         info.m_texturePath = "LockedRecipe";
     }
     return info;
+}
+
+void PlayerCollection::Save(json& p_out)
+{
+	p_out["unlockedItems"] = m_unlockedItems;
+}
+
+void PlayerCollection::Load(const json& p_in)
+{
+    if (p_in.contains("unlockedItems") && p_in["unlockedItems"].is_array())
+    {
+        m_unlockedItems = p_in["unlockedItems"].get<std::vector<std::string>>();
+	}
 }

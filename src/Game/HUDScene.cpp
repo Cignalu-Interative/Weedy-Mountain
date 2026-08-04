@@ -4,6 +4,7 @@
 #include "2DPendentLib/AssetManager.h"
 
 #include "NightEffect.h"
+#include "WinterEffect.h"
 
 #include "Ui/UiStats.h"
 #include "Ui/UiMoney.h"

@@ -37,10 +37,13 @@
       "path": "../../res/Game/Assets/Textures/Environment/Backgrounds/Harvest BG.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Environment/Effects/CaveEffect.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Environment/Effects/NightEffect.png"
     },
     {
-      "path": "../../res/Game/Assets/Textures/Environment/Effects/NightEffect2.png"
+      "path": "../../res/Game/Assets/Textures/Environment/Effects/WinterEffect.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Environment/Props/Batiments/Bridge_Wood.png"

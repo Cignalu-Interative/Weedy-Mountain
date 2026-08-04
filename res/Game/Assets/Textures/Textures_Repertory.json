@@ -28,6 +28,9 @@
       "path": "../../res/Game/Assets/Textures/Egg.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/EmptyFlame.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/EmptyProgressBar.png"
     },
     {
@@ -7679,6 +7682,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/Rock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Slot_Furnace.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Stone.png"

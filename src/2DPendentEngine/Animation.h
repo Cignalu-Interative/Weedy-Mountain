@@ -11,6 +11,7 @@ class Animation
 	Sprite* m_sprite = nullptr;
 
 	bool m_hasAnimation = true;
+	bool m_isStop = false;
 
 	int m_currentFrame = 0;
 
@@ -31,7 +32,7 @@ class Animation
 
 	ParserSpriteSheet* m_parser = nullptr;
 	//const InfoAnimation* m_infoAnimation = nullptr;
-
+	void DrawFrame();
 public:
 	Animation() = default;
 	~Animation() = default;
@@ -67,4 +68,10 @@ public:
 	std::string GetNameCurrentAnimation() const { return m_nameAnimation; }
 
 	void SetHasAnimation(bool p_hasAnimation) { m_hasAnimation = p_hasAnimation; }
+
+	void ResetAnimation(int p_frameIndex = 0) { m_currentFrame = p_frameIndex; m_currentTimer = m_frameTime;  DrawFrame();}
+
+	void Stop() { m_isStop = true; }
+
+	void Start() { m_isStop = false; }
 };

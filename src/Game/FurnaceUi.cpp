@@ -20,6 +20,9 @@ void FurnaceUi::OnInitialize()
 
 	AddSprite("EmptyProgressBar", "EmptyProgressBar", { 100,25 }, 1, { 0, -165 }, true);
 	GetSprite("EmptyProgressBar")->SetIsVisible(true);
+
+	AddSprite("EmptyFlame", "EmptyFlame", { 32,32 }, 1, { -75, -165 }, true);
+	GetSprite("EmptyFlame")->SetIsVisible(true);
 	/*AddSprite("MeltedEmpty", "emptyHorizontal", { 90,25 }, 1, {0, -165 }, true);
 	AddSprite("MeltedFull", "fullHorizontalRed", { 90,25 }, 2, {0, -165 }, true);
 	GetSprite("MeltedFull")->SetDimension({});*/
@@ -27,7 +30,7 @@ void FurnaceUi::OnInitialize()
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 
 	Vector2f rowOresSlotPos = scene->GetWindowCenter() + Vector2f { -75, -225 };
-	m_rawOres = scene->CreateEntity<InventorySlot>(rowOresSlotPos, { 50,50 }, "InventorySlot", Shape::Rectangle, true);
+	m_rawOres = scene->CreateEntity<InventorySlot>(rowOresSlotPos, { 50,50 }, "Slot_Furnace", Shape::Rectangle, true);
 	m_rawOres->SetOnLeftClick([this] { PlaceItemInInventory(m_rawOres); });
 	m_rawOres->GetCollider()->SetIsTrigger(true);
 	m_rawOres->AddSprite("item_texture", "", m_rawOres->GetDimension(), 1, { 0.0f, 0.0f }, true);
@@ -35,7 +38,7 @@ void FurnaceUi::OnInitialize()
 	m_rawOres->InitText("slot" + std::to_string(0), "");
 
 	Vector2f consumablesSlotPos = scene->GetWindowCenter() + Vector2f{ -75, -100 };
-	m_consumables = scene->CreateEntity<InventorySlot>(consumablesSlotPos, { 50,50 }, "InventorySlot", Shape::Rectangle, true);
+	m_consumables = scene->CreateEntity<InventorySlot>(consumablesSlotPos, { 50,50 }, "Slot_Furnace", Shape::Rectangle, true);
 	m_consumables->SetOnLeftClick([this] { PlaceItemInInventory(m_consumables); });
 	m_consumables->GetCollider()->SetIsTrigger(true);
 	m_consumables->AddSprite("item_texture", "", m_consumables->GetDimension(), 1, { 0.0f, 0.0f }, true);
@@ -43,7 +46,7 @@ void FurnaceUi::OnInitialize()
 	m_consumables->InitText("slot" + std::to_string(2), "");
 
 	Vector2f meltedOresSlotPos = scene->GetWindowCenter() + Vector2f{80, -165};
-	m_meltedOres = scene->CreateEntity<InventorySlot>(meltedOresSlotPos, { 50,50 }, "InventorySlot", Shape::Rectangle, true);
+	m_meltedOres = scene->CreateEntity<InventorySlot>(meltedOresSlotPos, { 50,50 }, "Slot_Furnace", Shape::Rectangle, true);
 	m_meltedOres->SetOnLeftClick([this] {GetMeltedOres(); });
 	m_meltedOres->GetCollider()->SetIsTrigger(true);
 	m_meltedOres->AddSprite("item_texture", "", m_meltedOres->GetDimension(), 1, { 0.0f, 0.0f }, true);
@@ -56,6 +59,7 @@ void FurnaceUi::OnInitialize()
 	m_progressBarAnimation->Init(progressBar->m_sprite, "default", true, "../../res/Game/progressBarAnimation.json");
 
 	SpriteContainer* flame = AddSprite("FlameSpriteSheet", "Furnace_Fuel", { 32,32 }, 1, { -75, -165 }, true);
+	GetSprite("FlameSpriteSheet")->SetIsVisible(false);
 	m_flameAnimation = new Animation();
 	m_flameAnimation->Init(flame->m_sprite, "default", true, "../../res/Game/fuelAnimation.json");
 	m_flameAnimation->SetDuration(m_fuelTime / m_flameAnimation->GetTotalFrames());
@@ -66,9 +70,26 @@ void FurnaceUi::OnUpdate()
 {	
 	float dt = GetDeltaTime();
 
+	if (m_currentfuelTime > 0)
+	{
+		m_currentfuelTime -= dt;
+		m_flameAnimation->Update(dt);
+		GetSprite("FlameSpriteSheet")->SetIsVisible(true);
+		GetSprite("EmptyFlame")->SetIsVisible(false);
+	}
+	else
+	{
+		// hide spriteSheet and reset animation
+		GetSprite("FlameSpriteSheet")->SetIsVisible(false);
+		GetSprite("EmptyFlame")->SetIsVisible(true);
+		m_flameAnimation->ResetAnimation();
+	}
+
 	if (m_rawOres->IsEmpty())
 	{
 		GetSprite("EmptyProgressBar")->SetIsVisible(true);
+		m_progressBarAnimation->ResetAnimation();
+		//GetSprite("ProgressBarSpriteSheet")->SetIsVisible(false);
 		m_currentHeatingTime = m_heatingTimeRequired;
 		return;
 	}
@@ -106,10 +127,9 @@ void FurnaceUi::OnUpdate()
 
 	if (m_currentfuelTime > 0)
 	{
-		m_currentfuelTime -= dt;
 		m_currentHeatingTime -= dt;
 		m_progressBarAnimation->Update(dt);
-		m_flameAnimation->Update(dt);
+		
 
 		ItemStack& meltedStack = m_meltedOres->GetStack();
 

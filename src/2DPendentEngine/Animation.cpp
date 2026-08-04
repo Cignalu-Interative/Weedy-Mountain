@@ -3,6 +3,7 @@
 #include "Sprite.h"
 #include "ParserSpriteSheet.h"
 
+
 void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool p_loop,const std::string& p_infoAnimationSpriteSheet)
 {
     m_sprite = p_sprite;
@@ -20,12 +21,45 @@ void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool 
     m_totalFrames = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_nbFrames.size();
     m_frameTime = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_frameTime;
     m_currentTimer = m_frameTime;
+    DrawFrame();
         //m_sprite->GetSpriteRect() = new SDL_Rect();
 		//m_infoAnimation = m_parser->GetInfoAnimationByName(p_nameAnimation);
+    //int spriteColumns = m_sprite->GetTextureDimension().GetX() / m_frameSize.GetX();
+
+    //// recuperer l emplacement de l image sur le sprite source, recup le int dans le vector du parser 
+    //int i  = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
+    //int frameInSprite = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
+
+    //float frameX = (frameInSprite % spriteColumns) * m_frameSize.GetX();
+    //float frameY = (frameInSprite / spriteColumns) * m_frameSize.GetY();
+    ////float frameX = m_currentFrame * m_frameSize.GetX();
+    ////float frameY = m_currentRow * m_frameSize.GetY();
+
+    //SDL_FRect* srcRect = m_sprite->GetSpriteRect();
+
+
+    //if (srcRect == nullptr)
+    //{
+    //    srcRect = new SDL_FRect();
+    //}
+
+    //srcRect->x = static_cast<int>(frameX);
+    //srcRect->y = static_cast<int>(frameY);
+    //srcRect->w = m_frameSize.GetX();
+    //srcRect->h = m_frameSize.GetY();
+
+    //m_sprite->SetSourceRectSprite(*srcRect);
+
+
+}
+
+
+void Animation::DrawFrame()
+{
     int spriteColumns = m_sprite->GetTextureDimension().GetX() / m_frameSize.GetX();
 
     // recuperer l emplacement de l image sur le sprite source, recup le int dans le vector du parser 
-    int i  = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
+    int i = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
     int frameInSprite = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
 
     float frameX = (frameInSprite % spriteColumns) * m_frameSize.GetX();
@@ -47,14 +81,16 @@ void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool 
     srcRect->h = m_frameSize.GetY();
 
     m_sprite->SetSourceRectSprite(*srcRect);
-
-
 }
 
 void Animation::Update(float p_deltaTime)
 {
+    if (m_isStop)
+        return;
+
     if (m_hasAnimation == false)
         return;
+
     if (m_totalFrames == 1)
         return;
 
@@ -66,31 +102,31 @@ void Animation::Update(float p_deltaTime)
 
         m_currentTimer += m_frameTime;
         m_currentFrame = (m_currentFrame + 1) % m_totalFrames;  
+        DrawFrame();
+ 	//	int spriteColumns = m_sprite->GetTextureDimension().GetX() / m_frameSize.GetX();
 
- 		int spriteColumns = m_sprite->GetTextureDimension().GetX() / m_frameSize.GetX();
+  //      // recuperer l emplacement de l image sur le sprite source, recup le int dans le vector du parser 
+  //      int frameInSprite = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
 
-        // recuperer l emplacement de l image sur le sprite source, recup le int dans le vector du parser 
-        int frameInSprite = m_parser->GetInfoAnimationByName(m_nameAnimation)->s_nbFrames[m_currentFrame];
+		//float frameX = (frameInSprite % spriteColumns) * m_frameSize.GetX();
+		//float frameY = (frameInSprite / spriteColumns) * m_frameSize.GetY();
+		////float frameX = m_currentFrame * m_frameSize.GetX();
+		////float frameY = m_currentRow * m_frameSize.GetY();
 
-		float frameX = (frameInSprite % spriteColumns) * m_frameSize.GetX();
-		float frameY = (frameInSprite / spriteColumns) * m_frameSize.GetY();
-		//float frameX = m_currentFrame * m_frameSize.GetX();
-		//float frameY = m_currentRow * m_frameSize.GetY();
+  //      SDL_FRect* srcRect = m_sprite->GetSpriteRect();
 
-        SDL_FRect* srcRect = m_sprite->GetSpriteRect();
+  //      
+  //      if (srcRect == nullptr)
+  //      {
+  //          srcRect = new SDL_FRect();
+  //      }
 
-        
-        if (srcRect == nullptr)
-        {
-            srcRect = new SDL_FRect();
-        }
+  //       srcRect->x = static_cast<int>(frameX);
+  //       srcRect->y = static_cast<int>(frameY);
+  //       srcRect->w = m_frameSize.GetX();
+  //       srcRect->h = m_frameSize.GetY();
 
-         srcRect->x = static_cast<int>(frameX);
-         srcRect->y = static_cast<int>(frameY);
-         srcRect->w = m_frameSize.GetX();
-         srcRect->h = m_frameSize.GetY();
-
-         m_sprite->SetSourceRectSprite(*srcRect); 
+  //       m_sprite->SetSourceRectSprite(*srcRect); 
 
     }
 }

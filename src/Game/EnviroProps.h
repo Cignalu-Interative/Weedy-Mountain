@@ -28,6 +28,7 @@ class EnviroProps: public Entity
 	std::vector<EnviroLoots*> m_loots;
 
 	bool m_isInPlayerZone = false;
+	bool m_silentDestroy = false;
 
 protected:
 	void OnInitialize() override;
@@ -58,5 +59,7 @@ public:
 
 	bool TryHit(ToolType toolType, ToolRarity toolRarity);
 	const Tile& GetTile() const { return m_stats.m_position; }
+
+	void DestroyWithoutLoot();
 };
 

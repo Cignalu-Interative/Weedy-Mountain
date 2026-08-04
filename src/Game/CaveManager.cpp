@@ -42,6 +42,27 @@ void CaveManager::RegisterTile(CaveTile* p_tile)
         m_caveTiles.push_back(p_tile);
 }
 
+CaveTile* CaveManager::GetNearestTile(Vector2f p_worldPos, float p_maxDistance) const
+{
+    CaveTile* nearest = nullptr;
+    float bestDist = p_maxDistance * p_maxDistance;
+
+    for (CaveTile* tile : m_caveTiles)
+    {
+        Vector2f tileCenter = tile->GetPosition({ 0.5f, 0.5f });
+        float dx = tileCenter.GetX() - p_worldPos.GetX();
+        float dy = tileCenter.GetY() - p_worldPos.GetY();
+        float distSq = dx * dx + dy * dy;
+
+        if (distSq < bestDist)
+        {
+            bestDist = distSq;
+            nearest = tile;
+        }
+    }
+    return nearest;
+}
+
 void CaveManager::Clear() {
 	m_caveTiles.clear();
 }

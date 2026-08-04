@@ -4,6 +4,10 @@
 #include "CaveTile.h"
 #include "Tile.h"
 
+#include "Savable.h"
+
+class EnviroProps;
+
 enum class EnviroSpawnName
 {
 	Tree,
@@ -29,7 +33,7 @@ struct EnviroInfo {
 	EnviroSpawnStats m_stats;
 };
 
-class EnviroSpawn
+class EnviroSpawn : public Savable
 {
 	int m_maxTiles = 100;
 	int m_numOfEnviro = 0;
@@ -40,6 +44,9 @@ class EnviroSpawn
 	int m_caveDayCounter = 0;
 
 	int m_lastDay = -1;
+
+	std::vector<EnviroProps*> m_liveEnviroProps;
+
 protected:
 
 	void CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _scene);
@@ -52,7 +59,13 @@ protected:
 
 	void UpdateFreeTiles();
 
-	std::vector<Tile> GetFreeTiles(bool isCave) const;
+	Tile FindBestStoneTile(const Tile& p_initialTile) const;
+
+	EnviroProps* CreateEnviroPropsAt(EnviroSpawnName p_name, const Tile& p_tile, Scene* p_scene);
+
+	void ConfigureEnviroPropsVisual(EnviroProps* p_props, EnviroSpawnName p_name);
+
+	void MarkTileOccupied(const Tile& p_tile, EnviroSpawnName p_name);
 
 public:
 
@@ -62,4 +75,10 @@ public:
 
 	void Update();
 
+	void RegisterProps(EnviroProps* p_props);
+	void UnregisterProps(EnviroProps* p_props);
+
+	std::string GetSaveID() const override { return "enviroSpawn"; }
+	void Save(nlohmann::json& p_out) override;
+	void Load(const nlohmann::json& p_in) override;
 };

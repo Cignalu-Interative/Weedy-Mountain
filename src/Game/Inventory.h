@@ -3,8 +3,9 @@
 #include "InventorySlot.h"
 #include <vector>
 #include "Entity.h"
+#include "Savable.h"
 
-class Inventory : public Entity
+class Inventory : public Entity, public Savable
 {
 private:
 
@@ -13,12 +14,16 @@ private:
 	int m_slotCount;
 
 	uint32_t m_myID;
+	std::string m_saveTag;
 
 public:
 
 	Inventory(int slotCount = 30);
 
 	void OnInitialize() override;
+	void OnDestroy() override;
+
+	void SetSaveTag(const std::string& p_tag) { m_saveTag = p_tag; }
 
 	bool CanAdd(const std::string& ID, int amount);
 	bool CanRemove(const std::string& ID, int amount);
@@ -39,4 +44,12 @@ public:
 	void SetScene(Scene* p_newScene);
 
 	bool HasAmountOfItem(const std::string & p_ID, int p_amount);
+
+	std::string GetSaveID() const override
+	{
+		return m_saveTag.empty() ? ("inventory_" + std::to_string(m_myID)) : m_saveTag;
+	}
+
+	void Save(nlohmann::json& p_out) override;
+	void Load(const nlohmann::json& p_in) override;
 };

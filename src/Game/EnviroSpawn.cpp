@@ -8,6 +8,8 @@
 #include "CaveManager.h"
 #include <variant>
 
+#include "SaveManager.h"
+
 EnviroSpawn* EnviroSpawn::Get() {
 	static EnviroSpawn instance;
 	return &instance;
@@ -65,6 +67,8 @@ void EnviroSpawn::InitEnviroSpawn()
 	UpdateFreeTiles();
 
 	NewGameEnviroSpawn();
+
+	SaveManager::Get().RegisterProvider(this);
 }
 
 void EnviroSpawn::SpawnEnviroProps()
@@ -169,31 +173,99 @@ void EnviroSpawn::UpdateFreeTiles()
 	}
 }
 
+Tile EnviroSpawn::FindBestStoneTile(const Tile& p_initialTile) const
+{
+	constexpr float radius = 23.f;
+	constexpr float radiusSqr = radius * radius;
+	constexpr int minNeighbors = 9;
+
+	auto countFreeNeighbors = [&](const Tile& p_center) -> int
+		{
+			Vector2f center = TileUtils::GetPosition(p_center);
+			int count = 0;
+
+			for (const Tile& tile : m_freeTiles)
+			{
+				Vector2f p = TileUtils::GetPosition(tile);
+				float dx = p.GetX() - center.GetX();
+				float dy = p.GetY() - center.GetY();
+
+				if ((dx * dx + dy * dy) <= radiusSqr && TileUtils::CanGrow(tile))
+					count++;
+			}
+			return count;
+		};
+
+	if (countFreeNeighbors(p_initialTile) > minNeighbors)
+		return p_initialTile;
+
+	for (const Tile& candidate : m_freeTiles)
+	{
+		if (TileUtils::GetPosition(candidate).GetX() >= 500)
+			continue;
+
+		if (countFreeNeighbors(candidate) >= minNeighbors)
+			return candidate;
+	}
+
+	return {};
+}
+
 void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _scene)
 {
+	UpdateFreeTiles();
+
+	if (m_freeTiles.empty())
+		return;
+
+	if (_tile < 0)
+		_tile = Aleatory::GetInt(0, m_freeTiles.size() - 1);
+
+	if (TileUtils::CanGrow(m_freeTiles[_tile]) == false)
+		return;
+
+	Tile targetTile = m_freeTiles[_tile];
+
+	if (_name == EnviroSpawnName::Stone)
+	{
+		targetTile = FindBestStoneTile(m_freeTiles[_tile]);
+
+		if (TileUtils::IsSet(targetTile) == false)
+			return; 
+	}
+
+	CreateEnviroPropsAt(_name, targetTile, _scene);
 
 	UpdateFreeTiles();
-	if (m_freeTiles.size() == 0) {
-		return;
-	}
+}
 
-	EnviroProps* Props;
-	if (_tile < 0) {
-		_tile = Aleatory::GetInt(0, m_freeTiles.size() - 1);
-	}
-	if (TileUtils::CanGrow(m_freeTiles[_tile]) == false) {
-		return;
-	}
+EnviroProps* EnviroSpawn::CreateEnviroPropsAt(EnviroSpawnName p_name, const Tile& p_tile, Scene* p_scene)
+{
+	if (p_scene == nullptr || TileUtils::IsSet(p_tile) == false)
+		return nullptr;
 
-	Props = _scene->CreateEntity<EnviroProps>(TileUtils::GetPosition(m_freeTiles[_tile]), { 128,128 }, "", Shape::Rectangle);
+	EnviroProps* Props = p_scene->CreateEntity<EnviroProps>(TileUtils::GetPosition(p_tile), { 128,128 }, "", Shape::Rectangle);
 
 	Props->RemoveSprite("default");
-	Props->SetType(_name);
+	Props->SetType(p_name);
 	Props->SetTag(2);
 	Props->ShowCollider(true);
 	Props->GetCollider()->SetLayer(ENVIRO);
 	Props->GetCollider()->SetMask(PLAYER);
 	Props->InitialisePhysicsBody(ShapeBodyPhysics::Static);
+
+	ConfigureEnviroPropsVisual(Props, p_name);
+
+	Props->SetTile(p_tile);
+	MarkTileOccupied(p_tile, p_name);
+
+	RegisterProps(Props);
+
+	return Props;
+}
+
+void EnviroSpawn::ConfigureEnviroPropsVisual(EnviroProps* Props, EnviroSpawnName _name)
+{
 	switch (_name)
 	{
 	case EnviroSpawnName::Tree:
@@ -232,71 +304,46 @@ void EnviroSpawn::CreateEnviroProps(EnviroSpawnName _name, int _tile, Scene* _sc
 	default:
 		break;
 	}
+}
 
-	if (Props->GetType() == EnviroSpawnName::Stone) {
-		float radius = 23.f;
-		float radiusSqr = radius * radius;
-		int posCheck = 0;
-		bool tileFound = false;
-
-		for (int tile = 0; tile < m_freeTiles.size(); tile++) {
-
-			float dx = TileUtils::GetPosition(m_freeTiles[tile]).GetX() - TileUtils::GetPosition(m_freeTiles[_tile]).GetX();
-			float dy = TileUtils::GetPosition(m_freeTiles[tile]).GetY() - TileUtils::GetPosition(m_freeTiles[_tile]).GetY();
-
-			if ((dx * dx + dy * dy) <= radiusSqr && TileUtils::CanGrow(m_freeTiles[tile]) == true) {
-				posCheck++;
-			}
-		}
-		if (posCheck <= 9) {
-			for (int pos = 0; pos < m_freeTiles.size(); pos++) {
-				if (TileUtils::GetPosition(m_freeTiles[pos]).GetX() >= 500) continue;
-				posCheck = 0;
-				for (int tile = 0; tile < m_freeTiles.size(); tile++) {
-
-					float dx = TileUtils::GetPosition(m_freeTiles[tile]).GetX() - TileUtils::GetPosition(m_freeTiles[pos]).GetX();
-					float dy = TileUtils::GetPosition(m_freeTiles[tile]).GetY() - TileUtils::GetPosition(m_freeTiles[pos]).GetY();
-
-					if ((dx * dx + dy * dy) <= radiusSqr && TileUtils::CanGrow(m_freeTiles[tile]) == true) {
-						posCheck++;
-					}
-				}
-				if (posCheck >= 9) {
-					Props->SetTile(m_freeTiles[pos]);
-					tileFound = true;
-					break;
-				}
-			}
-		}
-		else {
-			Props->SetTile(m_freeTiles[_tile]);
-		}
-
-		if (!tileFound) {
-			Props->Destroy();
-			return;
-		}
-
-		for (int tile = 0; tile < m_freeTiles.size(); tile++) {
-
-			Vector2f p = TileUtils::GetPosition(m_freeTiles[tile]);
-			float dx = p.GetX() - Props->GetPosition().GetX();
-			float dy = p.GetY() - Props->GetPosition().GetY();
-
-
-			
-			if ((dx * dx + dy * dy) <= radiusSqr) {
-				TileUtils::SetCanGrow(m_freeTiles[tile], false);
-			}
-		}
+void EnviroSpawn::MarkTileOccupied(const Tile& p_tile, EnviroSpawnName p_name)
+{
+	if (p_name != EnviroSpawnName::Stone)
+	{
+		TileUtils::SetCanGrow(p_tile, false);
+		return;
 	}
 
-	else {
-		Props->SetTile(m_freeTiles[_tile]);
-		TileUtils::SetCanGrow(m_freeTiles[_tile], false);
-	}
+	float radius = 23.f;
+	float radiusSqr = radius * radius;
+	Vector2f center = TileUtils::GetPosition(p_tile);
 
-	UpdateFreeTiles();
+	bool isCave = std::holds_alternative<CaveTile*>(p_tile);
+
+	if (isCave)
+	{
+		for (CaveTile* t : CaveManager::Get()->GetAllCaveTiles())
+		{
+			Vector2f p = t->GetPosition();
+			float dx = p.GetX() - center.GetX();
+			float dy = p.GetY() - center.GetY();
+
+			if ((dx * dx + dy * dy) <= radiusSqr)
+				t->SetCanGrow(false);
+		}
+	}
+	else
+	{
+		for (FarmTile* t : FarmManager::Get()->GetAllFarmTiles())
+		{
+			Vector2f p = t->GetPosition();
+			float dx = p.GetX() - center.GetX();
+			float dy = p.GetY() - center.GetY();
+
+			if ((dx * dx + dy * dy) <= radiusSqr)
+				t->SetCanGrow(false);
+		}
+	}
 }
 
 void EnviroSpawn::Update() {
@@ -339,4 +386,111 @@ void EnviroSpawn::Update() {
 
 
 	m_lastDay = curentDay;
+}
+
+void EnviroSpawn::RegisterProps(EnviroProps* p_props)
+{
+	if (p_props == nullptr) 
+		return;
+
+	auto it = std::find(m_liveEnviroProps.begin(), m_liveEnviroProps.end(), p_props);
+
+	if (it != m_liveEnviroProps.end()) 
+		return;
+	m_liveEnviroProps.push_back(p_props);
+}
+
+void EnviroSpawn::UnregisterProps(EnviroProps* p_props)
+{
+	auto it = std::find(m_liveEnviroProps.begin(), m_liveEnviroProps.end(), p_props);
+
+	if (it != m_liveEnviroProps.end())
+		m_liveEnviroProps.erase(it);
+}
+
+void EnviroSpawn::Save(nlohmann::json& out)
+{
+	json arr = json::array();
+
+	for (EnviroProps* props : m_liveEnviroProps)
+	{
+		const Tile& tile = props->GetTile();
+
+		if (TileUtils::IsSet(tile) == false)
+			continue;
+
+		bool isCave = std::holds_alternative<CaveTile*>(tile); 
+
+		arr.push_back({
+			{"type", (int)props->GetType()},
+			{"isCave", isCave},
+			{"posX", TileUtils::GetPosition(tile).GetX()},
+			{"posY", TileUtils::GetPosition(tile).GetY()},
+			{"hitLeft", props->GetStats()->m_hitToDestroy}
+			});
+	}
+
+	out["props"] = arr;
+	out["lastDay"] = m_lastDay;
+	out["farmDayCounter"] = m_farmDayCounter;
+	out["caveDayCounter"] = m_caveDayCounter;
+}
+
+void EnviroSpawn::Load(const nlohmann::json& in)
+{
+	Scene* farmScene = SceneManager::Get()->GetScene("game");
+	Scene* caveScene = SceneManager::Get()->GetScene("cave");
+
+	std::vector<EnviroProps*> toDestroy = m_liveEnviroProps;
+	for (EnviroProps* props : toDestroy)
+	{
+		props->DestroyWithoutLoot();
+	}
+	m_liveEnviroProps.clear();
+
+	for (auto& p : in.value("props", json::array()))
+	{
+		EnviroSpawnName type = (EnviroSpawnName)p.value("type", 0);
+		bool isCave = p.value("isCave", false);
+		Vector2f pos = { p.value("posX", 0.f), p.value("posY", 0.f) };
+
+		Tile tile;
+		Scene* targetScene = nullptr;
+
+		if (isCave)
+		{
+			if (caveScene == nullptr) 
+				continue;
+
+			CaveTile* ct = CaveManager::Get()->GetNearestTile(pos); 
+
+			if (ct == nullptr)
+				continue;
+
+			tile = ct;
+			targetScene = caveScene;
+		}
+		else
+		{
+			if (farmScene == nullptr) 
+				continue;
+
+			FarmTile* ft = FarmManager::Get()->GetNearestTile(pos);
+
+			if (ft == nullptr) 
+				continue;
+
+			tile = ft;
+			targetScene = farmScene;
+		}
+
+		EnviroProps* props = CreateEnviroPropsAt(type, tile, targetScene);
+
+		if (props)
+			props->GetStats()->m_hitToDestroy = p.value("hitLeft", 1);
+	}
+
+	m_lastDay = in.value("lastDay", -1);
+	m_farmDayCounter = in.value("farmDayCounter", 0);
+	m_caveDayCounter = in.value("caveDayCounter", 0);
 }

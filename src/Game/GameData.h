@@ -5,6 +5,8 @@
 #include "PlayerData.h"
 #include "PlayerCollection.h"
 
+#include "Savable.h"
+
 enum class Weather : uint8_t { Clear, Rain, Storm };
 enum class TimeOfDay : uint8_t { Day, Night };
 enum class Season : uint8_t { Spring, Summer, Autumn, Winter };
@@ -16,7 +18,7 @@ enum class CurrentScene
 	CAVE
 };
 
-class GameData
+class GameData : public Savable
 {
 private:
 
@@ -28,7 +30,7 @@ private:
 
 	std::vector<std::string> m_unlockedRecipes;
 
-	GameData() = default;
+	GameData();
 
 	PlayerData m_playerData;
 	PlayerCollection m_playerCollection;
@@ -68,11 +70,7 @@ public:
 
 	PlayerJob* GetJobByName(JobType p_type)
 	{
-		for (PlayerJob* job : m_playerData.m_jobs)
-		{
-			if (job->m_name == p_type)
-				return job;
-		}
+		return m_playerData.GetJobByName(p_type);
 	}
 
 	void SetInventory(PlayerInventory* inv);
@@ -84,4 +82,8 @@ public:
 
 	void SetCurrentScene(CurrentScene p_currentScene) { m_currentScene = p_currentScene; }
 	const CurrentScene GetCurrentScene() const { return m_currentScene; }
+
+	std::string GetSaveID() const override { return "gameData"; }
+	void Save(nlohmann::json& p_out) override;
+	void Load(const nlohmann::json& p_in) override;
 };

@@ -11,6 +11,8 @@ public:
 
 	void RegisterTile(CaveTile* p_tile);
 
+	CaveTile* GetNearestTile(Vector2f p_worldPos, float p_maxDistance = 9999.f) const;
+
 	std::vector<CaveTile*> GetAllCaveTiles() { return m_caveTiles; }
 	
 	void Clear();

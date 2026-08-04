@@ -4,7 +4,9 @@
 #include "InventorySlot.h"
 #include <vector>
 
-class Hotbar : public Entity
+#include "Savable.h"
+
+class Hotbar : public Entity, public Savable
 {
 	std::vector<InventorySlot*>  m_slots;
 
@@ -18,6 +20,7 @@ public:
 	Hotbar(int slotcount = 10, int invSlotCount = 30);
 
 	void OnInitialize() override;
+	void OnDestroy() override;
 	void OnUpdate() override;
 	void SetPosition(Vector2f p_newPos, Vector2f p_anchor = { 0.5f, 0.5f });
 	void SetScene(Scene* p_newScene);
@@ -40,4 +43,8 @@ public:
 	int GetSelectedIndex();
 	ItemStack& GetSelectedStack();
 	const std::string& GetSelectedItemID();
+
+	std::string GetSaveID() const override { return "player_hotbar"; }
+	void Save(nlohmann::json& p_out) override;
+	void Load(const nlohmann::json& p_in) override;
 };

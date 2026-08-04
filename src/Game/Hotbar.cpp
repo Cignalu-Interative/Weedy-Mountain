@@ -5,6 +5,7 @@
 
 #include <cassert>
 
+#include "SaveManager.h"
 
 Hotbar::Hotbar(int slotcount, int invSlotCount)
 {
@@ -41,6 +42,13 @@ void Hotbar::OnInitialize()
 	}
 	RemoveCollider("default");
 
+	SaveManager::Get().RegisterProvider(this);
+
+}
+
+void Hotbar::OnDestroy()
+{
+	SaveManager::Get().UnregisterProvider(this);
 }
 
 void Hotbar::OnUpdate()
@@ -330,4 +338,41 @@ const std::string& Hotbar::GetSelectedItemID()
 	auto& stack = GetSelectedStack();
 	
 	return stack.GetID();
+}
+
+void Hotbar::Save(nlohmann::json& out)
+{
+	json arr = json::array();
+	for (int i = 0; i < (int)m_slots.size(); i++)
+	{
+		if (m_slots[i]->IsEmpty()) 
+			continue;
+
+		arr.push_back({
+			{"index", i},
+			{"id", m_slots[i]->GetStack().GetID()},
+			{"amount", m_slots[i]->GetStack().GetAmount()}
+			});
+	}
+	out["selectedIndex"] = m_selectedIndex; 
+	out["slots"] = arr;
+}
+
+void Hotbar::Load(const nlohmann::json& in)
+{
+	for (InventorySlot* slot : m_slots)
+		slot->Clear();
+
+	for (auto& entry : in.value("slots", json::array()))
+	{
+		int index = entry.value("index", -1);
+
+		if (index < 0 || index >= (int)m_slots.size())
+			continue;
+
+		m_slots[index]->SetStack(ItemStack(entry.value("id", ""), entry.value("amount", 0)));
+		m_slots[index]->RefreshVisual();
+	}
+
+	m_selectedIndex = in.value("selectedIndex", 0);
 }

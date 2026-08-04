@@ -5,6 +5,8 @@
 #include "SpriteContainer.h"
 #include <cassert>
 
+#include "SaveManager.h"
+
 const int columns = 10;
 
 const float spacing = 60.f;
@@ -45,6 +47,12 @@ void Inventory::OnInitialize()
 	}
 	GetCollider()->SetIsTrigger(true);
 
+	SaveManager::Get().RegisterProvider(this);
+}
+
+void Inventory::OnDestroy()
+{
+	SaveManager::Get().UnregisterProvider(this);
 }
 
 bool Inventory::CanAdd(const std::string& ID, int amount)
@@ -290,4 +298,40 @@ bool Inventory::HasAmountOfItem(const std::string& p_ID, int p_amount)
 
 	if (amount >= p_amount)
 		return true;
+}
+
+void Inventory::Save(nlohmann::json& out)
+{
+	json arr = json::array();
+
+	for (int i = 0; i < (int)m_slots.size(); i++)
+	{
+		if (m_slots[i]->IsEmpty()) 
+			continue;
+
+		arr.push_back({
+			{"index", i},
+			{"id", m_slots[i]->GetStack().GetID()},
+			{"amount", m_slots[i]->GetStack().GetAmount()}
+			});
+	}
+
+	out["slots"] = arr;
+}
+
+void Inventory::Load(const nlohmann::json& in)
+{
+	for (InventorySlot* slot : m_slots)
+		slot->Clear();
+
+	for (auto& entry : in.value("slots", json::array()))
+	{
+		int index = entry.value("index", -1);
+
+		if (index < 0 || index >= (int)m_slots.size()) 
+			continue;
+
+		m_slots[index]->SetStack(ItemStack(entry.value("id", ""), entry.value("amount", 0)));
+		m_slots[index]->RefreshVisual();
+	}
 }

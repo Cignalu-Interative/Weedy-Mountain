@@ -51,12 +51,17 @@ void EnviroProps::OnCollisionExit(Collider* _self, Collider* _other, CollisionSi
 
 void EnviroProps::OnDestroy()
 {
-	for (int i = 0; i < m_loots.size(); i++) {
+	EnviroSpawn::Get()->UnregisterProps(this);
 
-		int numLoots = Aleatory::GetInt(m_loots[i]->m_minDrop, m_loots[i]->m_maxDrop);
+	if (m_silentDestroy == false) 
+	{
+		for (int i = 0; i < m_loots.size(); i++) {
 
-		for (int j = 0; j < numLoots; j++) {
-			CreateItem(i);
+			int numLoots = Aleatory::GetInt(m_loots[i]->m_minDrop, m_loots[i]->m_maxDrop);
+
+			for (int j = 0; j < numLoots; j++) {
+				CreateItem(i);
+			}
 		}
 	}
 
@@ -219,4 +224,10 @@ bool EnviroProps::TryHit(ToolType toolType, ToolRarity toolRarity)
 
 	m_stats.m_hitToDestroy--;
 	return true;
+}
+
+void EnviroProps::DestroyWithoutLoot()
+{
+	m_silentDestroy = true;
+	Destroy();
 }

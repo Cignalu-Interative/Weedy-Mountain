@@ -84,7 +84,6 @@ struct PlayerData
 	PlayerInventory* m_playerInventory;
 
 	std::vector<PlayerJob*> m_jobs;
-	std::vector<Recipes> m_unlockedRecipes;
 
 	void Heal(int p_amount);
 	void TakeDamage(int p_amount);

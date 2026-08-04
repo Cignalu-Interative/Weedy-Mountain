@@ -220,3 +220,46 @@ void FarmTile::OnNewDay(int p_currentDay)
 
     UpdateVisuals();
 }
+
+void FarmTile::Save(nlohmann::json& out) const
+{
+    out["posX"] = GetPosition().GetX();
+    out["posY"] = GetPosition().GetY();
+    out["state"] = (int)m_state;
+    out["cropID"] = m_crop.has_value() ? m_crop->m_name : "";
+    out["daysGrown"] = m_daysGrown;
+    out["growthStage"] = m_growthStage;
+    out["dayPlanted"] = m_dayPlanted;
+    out["dayLastWatered"] = m_dayLastWatered;
+    out["daysWithoutWater"] = m_daysWithoutWater;
+    out["dayTilled"] = m_dayTilled;
+    out["wateredToday"] = m_wateredToday;
+    out["canGrow"] = m_canGrow;
+}
+
+void FarmTile::Load(const nlohmann::json& in)
+{
+    m_state = (FarmTileState)in.value("state", (int)FarmTileState::IDLE);
+
+    std::string cropID = in.value("cropID", "");
+    if (cropID.empty() == false)
+    {
+        if (const CropDefinition* def = CropCatalog::Get(cropID))
+            m_crop = *def;
+    }
+    else
+    {
+        m_crop.reset();
+    }
+
+    m_daysGrown = in.value("daysGrown", 0);
+    m_growthStage = in.value("growthStage", 0);
+    m_dayPlanted = in.value("dayPlanted", 0);
+    m_dayLastWatered = in.value("dayLastWatered", -1);
+    m_daysWithoutWater = in.value("daysWithoutWater", 0);
+    m_dayTilled = in.value("dayTilled", -1);
+    m_wateredToday = in.value("wateredToday", false);
+    m_canGrow = in.value("canGrow", true);
+
+    UpdateVisuals();
+}

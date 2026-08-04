@@ -41,7 +41,7 @@ bool SaveManager::SaveToFile(const std::string& p_saveName)
 	std::filesystem::create_directories(m_saveFolder);
 	std::ofstream file(m_saveFolder + p_saveName + ".json");
 
-	if (file.is_open() == false);
+	if (file.is_open() == false)
 		return false;
 	
 	file << root.dump(4);
@@ -64,7 +64,7 @@ bool SaveManager::LoadFromFile(const std::string& p_saveName)
 	{
 		auto it = root.find(provider->GetSaveID());
 
-		if (it != root.end())
+		if (it == root.end())
 			continue;
 
 		provider->Load(*it);

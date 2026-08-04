@@ -105,6 +105,8 @@ private:
 
 	std::string m_historyDescription;
 
+	Vector2i m_refDimension = {}; // dimention de reference donné a la creation de la quest pour le redimensionnement de la grille d'affichage des requirements
+
 public:
 
 	Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner, Scene* p_scene);
@@ -155,4 +157,10 @@ public:
 
 	Entity* GetZone() const { return m_zone; }
 
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5f, 0.5f });
+	Vector2f GetPosition(Vector2f p_anchor = { 0.5f, 0.5f }) const;
+
+	// La dimention de la quest doit etre un multiple de 2 genre 32 64 ou 128 sinon c'est pas beau (la grille d'affichage sera bugger)
+	void SetRefDimension(Vector2i p_dimension) { m_refDimension = p_dimension; }
+	Vector2i GetRefDimension() const { return m_refDimension; }
 };

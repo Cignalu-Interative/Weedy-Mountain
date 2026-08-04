@@ -39,6 +39,7 @@ public:
 	QuestManager();
 	~QuestManager();	
 
+	// La dimention de la quest doit etre un multiple de 2 genre 32 64 ou 128 sinon c'est pas beau (la grille d'affichage sera bugger)
 	void CreateQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
 	void RemoveAllQuests();
 	

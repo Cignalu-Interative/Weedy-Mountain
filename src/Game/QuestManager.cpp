@@ -223,13 +223,8 @@ void QuestManager::AddQuestToInProcess(Quest* p_quest)
 
 	m_questsInProcess[p_quest->GetName()] = m_questsInProcessVector.size();
 	m_questsInProcessVector.push_back(p_quest);
-	if (m_activeQuest == nullptr)
-	{
-		// A mettre en commentaire après test ces deux lignes
-		/*m_activeQuest = p_quest;
-		m_activeQuest->SetVisible(true);*/
-	}
-	else
+
+	if (m_activeQuest != nullptr)
 	{
 		p_quest->SetVisible(false);
 	}
@@ -321,31 +316,11 @@ void QuestManager::UpdateQuests()
 	{
 		m_activeQuest->UpdateQuest();
 	}
-
-	//suprimer a apres test le if
-	/*if (m_activeQuest == nullptr)
-	{
-		AddQuestToInProcess(GetQuestOnNotStarted("Quest"));
-	}*/
-
-	/*for (Quest* quest : m_questsInProcessVector)
-	{
-		if (quest)
-		{
-			quest->UpdateQuest();
-		}
-	}*/
 }
 
 void QuestManager::DrawQuests()
 {
-	/*for (Quest* quest : m_questsVector)
-	{
-		if (quest)
-		{
-			quest->Draw(Application::Get()->GetRender(), Application::Get()->GetWindow(), Application::Get()->GetCamera());
-		}
-	}*/
+	
 }
 
 void QuestManager::CheckAddItem(const std::string& ID, int amount)

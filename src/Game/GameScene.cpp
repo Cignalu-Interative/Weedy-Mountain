@@ -160,22 +160,37 @@ void GameScene::OnInitialize()
 
 	//Application::Get()->GetWindow()->SetWindowAlwaysOnTop(true);
 
+	QuestManager* qm = QuestManager::Get();
 
-	QuestManager::Get()->CreateQuest("Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Wood", 1);
-	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 67);
-	QuestManager::Get()->GetQuestOnNotStarted("Quest")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to collect 1 wood and you will be rewarded with 67 eggs.");
+	qm->CreateQuest("Quest", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("Quest")->SetPosition({ (float)GetWindowWidth() - 20, 180.f }, {1.0f, 0.5f});
+	qm->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Wood", 1);
+	qm->GetQuestOnNotStarted("Quest")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 67);
+	qm->GetQuestOnNotStarted("Quest")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to collect 1 wood and you will be rewarded with 67 eggs.");
 	
-	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Rock", 1);
-	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Fiber", 5);
+	qm->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Rock", 1);
+	qm->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Fiber", 5);
 
-	QuestManager::Get()->CreateQuest("Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest("KAKA Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKA Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKOU Quest KAKI", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKIKOU LE CAILLOU", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	qm->CreateQuest("Quest2", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("Quest2")->SetPosition({ (float)GetWindowWidth() - 10, 180.f }, { 1.0f, 0.5f });
+
+	qm->CreateQuest("Quest3", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("Quest3")->SetPosition({ (float)GetWindowWidth() - 10, 180.f }, { 1.0f, 0.5f });
+
+	qm->CreateQuest("Quest4", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("Quest4")->SetPosition({ (float)GetWindowWidth() - 10, 180.f }, { 1.0f, 0.5f });
+
+	qm->CreateQuest("Quest KAKI", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("Quest KAKI")->SetPosition({ (float)GetWindowWidth() - 10, 180.f }, { 1.0f, 0.5f });
+
+	qm->CreateQuest("KAKIKOU LE CAILLOU", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("KAKIKOU LE CAILLOU")->SetPosition({ (float)GetWindowWidth() - 10, 180.f }, { 1.0f, 0.5f });
+
+	qm->CreateQuest("ROGER LE CASTOR", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("ROGER LE CASTOR")->SetPosition({ (float)GetWindowWidth() - 10, 180.f }, { 1.0f, 0.5f });
+
+	qm->CreateQuest("CASTOR-AMA", { 0.0f, 0.0f }, { 150, 69 }, m_player);
+	qm->GetQuestOnNotStarted("CASTOR-AMA")->SetPosition({ (float)GetWindowWidth() - 10, 180.f }, { 1.0f, 0.5f });
 
 	Chest* c = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
 }

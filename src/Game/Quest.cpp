@@ -11,10 +11,11 @@ Quest::Quest(const std::string& p_name, Vector2f p_position, Vector2i p_dimensio
 	SetScene(p_scene);
 	Debug* dg = Debug::Get();
 
-	m_zone = GetScene()->CreateEntity<Entity>(p_position, p_dimension, "", Shape::Rectangle, true);
+	m_refDimension = p_dimension;
+	m_zone = GetScene()->CreateEntity<Entity>(p_position, p_dimension, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_zone->GetCollider()->SetIsTrigger(true);
 	m_zone->SetDrawLayer(100);
-	m_zone->ShowCollider(true);
+	//m_zone->ShowCollider(true);
 	m_zone->GetSprite()->SetDimension(p_dimension);
 
 	m_icone = GetScene()->CreateEntity<Entity>(p_position, m_dimSpriteRequirement, "", Shape::Rectangle, true);
@@ -96,41 +97,7 @@ void Quest::UpdateQuest()
 {
 	SetTextQuest();
 
-	/*std::cerr << "\n";
-	std::cerr << "BEFORE RESIZE GRID" << std::endl;
-	std::cerr << "dimension zone : " << m_zone->GetDimension().GetX() << " x " << m_zone->GetDimension().GetY() << std::endl;
-	std::cerr << "dimension icone : " << m_icone->GetDimension().GetX() << " x " << m_icone->GetDimension().GetY() << std::endl;
-	std::cerr << "\n";
-	std::cerr << "position zone : " << m_zone->GetPosition().GetX() << " x " << m_zone->GetPosition().GetY() << std::endl;
-	std::cerr << "position icone : " << m_icone->GetPosition().GetX() << " x " << m_icone->GetPosition().GetY() << std::endl;
-	std::cerr << "\n";
-	int i = 1;
-	for (SpriteContainer* sprite : m_icone->GetAllSprites())
-	{
-		std::cerr << "position sprite " + std::to_string(i) + ": " << sprite->m_sprite->GetPosition().GetX() << " x " << sprite->m_sprite->GetPosition().GetY() << std::endl;
-		i++;
-	}
-	std::cerr << "BEFORE RESIZE GRID" << std::endl;
-	std::cerr << "\n";
-
-	ResizeGrid();
-
-	std::cerr << "AFTER RESIZE GRID" << std::endl;
-	std::cerr << "dimension zone : " << m_zone->GetDimension().GetX() << " x " << m_zone->GetDimension().GetY() << std::endl;
-	std::cerr << "dimension icone : " << m_icone->GetDimension().GetX() << " x " << m_icone->GetDimension().GetY() << std::endl;
-	std::cerr << "\n";
-	std::cerr << "position zone : " << m_zone->GetPosition().GetX() << " x " << m_zone->GetPosition().GetY() << std::endl;
-	std::cerr << "position icone : " << m_icone->GetPosition().GetX() << " x " << m_icone->GetPosition().GetY() << std::endl;
-	std::cerr << "\n";
-	int j = 1;
-	for (SpriteContainer* sprite : m_icone->GetAllSprites())
-	{
-		std::cerr << "position sprite " + std::to_string(j) + ": " << sprite->m_sprite->GetPosition().GetX() << " x " << sprite->m_sprite->GetPosition().GetY() << std::endl;
-		j++;
-	}
-	std::cerr << "AFTER RESIZE GRID" << std::endl;
-	std::cerr << "\n";*/
-
+	//ResizeGrid();
 
 	for (auto& [index, requirement] : m_requirements)
 	{
@@ -157,7 +124,7 @@ void Quest::SetTextQuest()
 
 void Quest::ResizeGrid()
 {
-	Vector2i maxSize = m_zone->GetDimension();
+	Vector2i maxSize = m_refDimension;
 	Vector2f posGrid = m_zone->GetPosition();
 	int NBElement = (int)m_requirements.size();
 	if (NBElement == 0)
@@ -167,20 +134,21 @@ void Quest::ResizeGrid()
 
 	Vector2f dimentionFinalIcone;
 
+	int spacing = 32; // Espace entre les icônes
+	int margin = 64; // marge de chaque côté
+
 	int maxColumns = maxSize.GetX() / dimSprite.GetX(); // soit exemple 128 / 32 = 4 colonnes max
 
 	int nbRows = std::ceil((float)NBElement / maxColumns); // nombre de lignes nécessaires pour afficher tous les éléments ceil pour arrondire au supérieur
-
 	int columnsUsed = std::min(NBElement, maxColumns); // nombre de colonnes utilisées pour afficher tous les éléments
-	float widthUsed = columnsUsed * dimSprite.GetX(); // largeur totale utilisée pour afficher tous les éléments
+	
+	float widthUsed = columnsUsed * dimSprite.GetX() + std::max(0, columnsUsed - 1) * spacing; // largeur totale utilisée pour afficher tous les éléments
 	float heightUsed = nbRows * dimSprite.GetY(); // hauteur totale utilisée pour afficher tous les éléments
 
 	Vector2f posWantedForZone = m_zone->GetPosition();
-	m_zone->Transformable::SetDimension({ (int)widthUsed, (int)heightUsed });
+	m_zone->SetDimension({ (int)widthUsed, m_zone->GetDimension().GetY() });
 	m_icone->Transformable::SetDimension({ (int)widthUsed, (int)heightUsed });
 	m_zone->SetPosition(posWantedForZone);
-
-	int spacing = 32; // Espace entre les icônes
 
 	float stepX = dimSprite.GetX() + spacing;
 	float startX = -(columnsUsed - 1) * 0.5f * stepX;
@@ -201,6 +169,9 @@ void Quest::ResizeGrid()
 	}
 	m_icone->SetPosition(m_zone->GetPosition());
 
+	// Positionner les textes de récolte et de quantité requise pour chaque exigence
+	float posFirst = 0;
+	float posLast = 0;
 	for (auto& [index, requirement] : m_requirements)
 	{
 		Sprite* sprite = m_icone->GetSprite("requirementSprite_" + std::to_string(index));
@@ -208,7 +179,23 @@ void Quest::ResizeGrid()
 		Vector2f spritePosRightDown = sprite->GetPosition({ 1.f, 1.f });
 		requirement->s_harvestedText->SetPosition({ spritePosLeftDown.GetX(), spritePosLeftDown.GetY() + 10 });
 		requirement->s_requiredText->SetPosition({ spritePosRightDown.GetX(), spritePosRightDown.GetY() - 10 });
+
+		if (index == 0)
+		{
+			posFirst = requirement->s_harvestedText->GetPosition({ 0.0f, 0.5f }).GetX();
+		}
+		else if (index == NBElement - 1)
+		{
+			posLast = requirement->s_requiredText->GetPosition({ 1.0f, 0.5f }).GetX();
+		}
 	}
+	Vector2f finalPosWantedForZone = m_zone->GetPosition();
+	if (posFirst > 0 && posLast > 0)
+	{
+		m_zone->SetDimension({ (int)(posLast - posFirst) + 8, m_zone->GetDimension().GetY() });
+	}
+	m_zone->SetPosition(finalPosWantedForZone);
+	m_icone->SetPosition(m_zone->GetPosition());
 }
 
 void Quest::Draw(Render* f_render, Window* f_window, Camera* p_camera)
@@ -249,5 +236,15 @@ void Quest::SetVisible(bool p_visible)
 	{
 		requirement->SetVisible(p_visible);
 	}
-	m_zone->GetCollider()->SetShow(p_visible);
+	//m_zone->GetCollider()->SetShow(p_visible);
+}
+
+void Quest::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	m_zone->SetPosition(p_position, p_anchor);
+	m_icone->SetPosition(m_zone->GetPosition());
+}
+Vector2f Quest::GetPosition(Vector2f p_anchor) const
+{
+	return m_zone->GetPosition(p_anchor);
 }

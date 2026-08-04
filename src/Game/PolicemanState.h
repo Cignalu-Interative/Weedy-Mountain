@@ -133,7 +133,6 @@ class PolicemanChaseState : public StateBase<Policeman>
 		}
 
 		Pathfinder pathfinder;
-		GameScene* gs = p_policeman->GetScene<GameScene>();
 
 		Vector2i policemanGridPos = { (int)p_policeman->GetPosition().GetX() / 16, (int)p_policeman->GetPosition().GetY() / 16 };
 		Vector2i playerGridPos = { (int)p_policeman->GetPlayerPos().GetX() / 16, (int)p_policeman->GetPlayerPos().GetY() / 16 };
@@ -174,8 +173,7 @@ class PolicemanChaseState : public StateBase<Policeman>
 
 			if (pathIndex % 2 == 0)
 			{
-				NavigationGrid nav; // A ENLEVER
-				p_policeman->SetPath(pathfinder.FindPath(nav/**gs->GetNavigationGrid()*/,
+				p_policeman->SetPath(pathfinder.FindPath(*p_policeman->GetNavigationGrid(),
 					policemanGridPos, playerGridPos));
 
 				p_policeman->SetPathIndex(0);

@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <unordered_map>
 
 struct CropDefinition
 {
@@ -45,6 +46,24 @@ namespace CropCatalog
 		def.m_dropCount = 2;
 
 		return def;
+	}
+
+	inline const std::unordered_map<std::string, CropDefinition>& GetAll()
+	{
+		static std::unordered_map<std::string, CropDefinition> all = 
+		{
+			{ "Wheat", Wheat() },
+			{ "Carrot", Carrot() }
+		};
+
+		return all;
+	}
+
+	inline const CropDefinition* Get(const std::string& p_name)
+	{
+		auto& all = GetAll();
+		auto it = all.find(p_name);
+		return it != all.end() ? &it->second : nullptr;
 	}
 }
 

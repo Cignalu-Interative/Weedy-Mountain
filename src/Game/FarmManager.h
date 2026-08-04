@@ -2,10 +2,12 @@
 #include <vector>
 #include "FarmTile.h"
 
+#include "Savable.h"
+
 class Render;
 class MapTiled;
 
-class FarmManager
+class FarmManager : public Savable
 {
 private:
     std::vector<FarmTile*> m_farmTiles;
@@ -14,7 +16,7 @@ private:
 
     int ComputeAgriDay() const;
 
-    FarmManager() = default;
+    FarmManager();
 
 public:
     static FarmManager* Get();
@@ -37,4 +39,8 @@ public:
     std::vector<FarmTile*> GetAllFarmTiles() { return m_farmTiles; }
 
     void Clear();
+
+	std::string GetSaveID() const override { return "farmManager"; }
+    void Save(nlohmann::json& p_out) override;
+	void Load(const nlohmann::json& p_in) override;
 };

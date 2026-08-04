@@ -8,6 +8,7 @@
 #include "HUDScene.h"
 #include "GlobalMenuScene.h"
 #include "CaveScene.h"
+#include "SaveManager.h"
 
 namespace Launcher
 {

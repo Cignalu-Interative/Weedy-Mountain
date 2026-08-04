@@ -50,6 +50,8 @@
 #include "RecipeBlock.h"
 #include "RecipesUi.h"
 
+#include "SaveManager.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -153,7 +155,11 @@ void GameScene::OnInitialize()
 	pi->AddItem("ITEM_DIAMOND_SHOVEL", 1, false);
 
 	pi->AddItem("ITEM_FISHING_ROD", 1, false);
+
+	pi->GetInventory()->SetSaveTag("player_inventory");
+
 	//Application::Get()->GetWindow()->SetWindowAlwaysOnTop(true);
+
 
 	QuestManager::Get()->CreateQuest("Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Wood", 1);
@@ -199,6 +205,16 @@ void GameScene::OnEvent()
 
 		SceneManager::Get()->PushScene("cave");
 	}
+
+	if (im->IsKeyboardDown(K_G))
+	{
+		SaveManager::Get().QuickSave();
+	}
+	if (im->IsKeyboardDown(K_H))
+	{
+		SaveManager::Get().LoadFromFile("save1");
+	}
+
 	//if (im->IsKeyboardDown(K_O))
 	//	GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
 

@@ -4,6 +4,9 @@
 #include "InventorySlot.h"
 #include "UiChest.h"
 #include "RecipesMenu.h"
+#include "PlayerData.h"
+
+#include "SaveManager.h"
 
 //Trucs qu'on peut changer si on veut changer la dur�e plus tard
 
@@ -14,6 +17,11 @@ constexpr int HOURS_PER_DAY = 24;
 constexpr int DAYS_PER_WEEK = 7;
 constexpr int DAYS_PER_MONTH = 30;
 constexpr int MONTHS_PER_YEAR = 4;
+
+GameData::GameData()
+{
+	SaveManager::Get().RegisterProvider(this);
+}
 
 GameData& GameData::Get()
 {
@@ -191,6 +199,7 @@ void GameData::SetInventory(PlayerInventory* inv)
 
 	m_playerData.m_playerInventory = inv;
 }
+
 void GameData::UnlockRecipe(const std::string& recipeID)
 {
 	if (IsRecipeUnlocked(recipeID) || RecipeDataBase::Get()->GetRecipe(recipeID) == nullptr)
@@ -209,3 +218,68 @@ const std::vector<std::string>& GameData::GetUnlockedRecipes()
 	return m_unlockedRecipes;
 }
 
+void GameData::Save(nlohmann::json& out)
+{
+	out["timeSpent"] = m_timeSpent;
+	out["timeScale"] = m_timeScale;
+	out["unlockedRecipes"] = m_unlockedRecipes;
+
+	auto& stats = m_playerData.m_stats;
+	out["stats"] = {
+		{"hp", stats.m_hp}, {"maxHp", stats.m_maxHp},
+		{"stamina", stats.m_stamina}, {"maxStamina", stats.m_maxStamina},
+		{"toxicity", stats.m_toxicity},
+		{"harvestEfficiency", stats.m_harvestEffiency},
+		{"farmerSpeed", stats.m_farmerSpeed},
+		{"miningSpeed", stats.m_miningSpeed}
+	};
+
+	out["money"] = m_playerData.m_money;
+	out["cash"] = m_playerData.m_cash;
+
+	json jobs = json::array();
+
+	for (PlayerJob* job : m_playerData.m_jobs)
+		jobs.push_back({ {"name", (int)job->m_name}, {"lvl", job->m_lvl}, {"exp", job->m_exp}, {"expNeeded", job->m_expNeeded} });
+	
+	out["jobs"] = jobs;
+}
+
+void GameData::Load(const nlohmann::json& in)
+{
+	m_timeSpent = in.value("timeSpent", 0.0f);
+	m_timeScale = in.value("timeScale", 1.0f);
+	m_unlockedRecipes = in.value("unlockedRecipes", std::vector<std::string>{});
+
+	if (in.contains("stats"))
+	{
+		auto& s = in["stats"];
+		auto& stats = m_playerData.m_stats;
+		stats.m_hp = s.value("hp", stats.m_maxHp);
+		stats.m_maxHp = s.value("maxHp", stats.m_maxHp);
+		stats.m_stamina = s.value("stamina", stats.m_maxStamina);
+		stats.m_maxStamina = s.value("maxStamina", stats.m_maxStamina);
+		stats.m_toxicity = s.value("toxicity", 0.f);
+		stats.m_harvestEffiency = s.value("harvestEfficiency", 1.f);
+		stats.m_farmerSpeed = s.value("farmerSpeed", 1.f);
+		stats.m_miningSpeed = s.value("miningSpeed", 1.f);
+	}
+
+	m_playerData.m_money = in.value("money", 200000);
+	m_playerData.m_cash = in.value("cash", 0);
+
+	for (PlayerJob* job : m_playerData.m_jobs)
+		delete job;
+
+	m_playerData.m_jobs.clear();
+
+	for (auto& j : in.value("jobs", json::array()))
+	{
+		PlayerJob* job = new PlayerJob();
+		job->m_name = (JobType)j.value("name", 0);
+		job->m_lvl = j.value("lvl", 1);
+		job->m_exp = j.value("exp", 0.f);
+		job->m_expNeeded = j.value("expNeeded", 100.f);
+		m_playerData.m_jobs.push_back(job);
+	}
+}

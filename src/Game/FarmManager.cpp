@@ -5,6 +5,8 @@
 #include "GameData.h"
 #include <algorithm>
 
+#include "SaveManager.h"
+
 FarmManager* FarmManager::Get()
 {
     static FarmManager instance;
@@ -59,6 +61,11 @@ int FarmManager::ComputeAgriDay() const
         shifted = 0.f;
 
     return static_cast<int>(shifted / secPerDay);
+}
+
+FarmManager::FarmManager()
+{
+    SaveManager::Get().RegisterProvider(this);
 }
 
 void FarmManager::Update()
@@ -142,4 +149,43 @@ FarmTile* FarmManager::GetTileInActionBox(Collider* p_actionBox) const
 void FarmManager::Clear()
 {
     m_farmTiles.clear();
+}
+
+void FarmManager::Save(nlohmann::json& out)
+{
+    json arr = json::array();
+
+    for (FarmTile* tile : m_farmTiles)
+    {
+        json t;
+        tile->Save(t);
+        arr.push_back(t);
+    }
+
+    out["tiles"] = arr;
+}
+
+void FarmManager::Load(const nlohmann::json& in) 
+{
+    for (auto& t : in.value("tiles", json::array()))
+    {
+        float x = t.value("posX", 0.f);
+        float y = t.value("posY", 0.f);
+
+        FarmTile* target = nullptr;
+
+        for (FarmTile* tile : m_farmTiles)
+        {
+            Vector2f p = tile->GetPosition();
+
+            if (std::abs(p.GetX() - x) < 0.1f && std::abs(p.GetY() - y) < 0.1f)
+            {
+                target = tile;
+                break;
+            }
+        }
+
+        if (target) 
+            target->Load(t);
+    }
 }

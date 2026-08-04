@@ -7,10 +7,22 @@ class SaveManager
 	std::vector<Savable*> m_providers;
 	std::string m_saveFolder = "../../save/";
 
-	SaveManager();
+	std::string m_activeSaveName = "save1";
+
+	SaveManager() = default;
 
 public:
 	static SaveManager& Get();
+
+	void SetActiveSaveName(const std::string& p_name) { m_activeSaveName = p_name; }
+	const std::string& GetActiveSaveName() const { return m_activeSaveName; }
+
+	bool QuickSave() { return SaveToFile(m_activeSaveName); }
+
+	bool SaveExists(const std::string& p_saveName) const
+	{
+		return std::filesystem::exists(m_saveFolder + p_saveName + ".json");
+	}
 
 	void RegisterProvider(Savable* p_provider);
 	void UnregisterProvider(Savable* p_provider);

@@ -2,6 +2,7 @@
 #include "2DPendentEngine/Entity.h"
 #include "GameData.h"
 
+
 class NightEffect : public Entity
 {
 private:

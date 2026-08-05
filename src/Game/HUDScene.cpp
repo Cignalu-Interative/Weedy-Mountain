@@ -48,17 +48,17 @@ void HUDScene::OnInitialize()
 	miner->m_name = JobType::Miner;
 	GameData::Get().GetPlayerData().m_jobs.push_back(miner);
 
-	NightEffect* nightEffect = CreateEntity<NightEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
-	nightEffect->RemoveCollider("default");
+	m_nightEffect = CreateEntity<NightEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
+	m_nightEffect->RemoveCollider("default");
 	
 	Vector2f timePos = { GetWindowCenter().GetX() - GetWindowWidth()/12 ,GetWindowCenter().GetY() - (GetWindowHeight() / 2)};
 	Vector2f backgroundPos = { GetWindowCenter().GetX(), GetWindowCenter().GetY() - (GetWindowHeight() / 2) };
 
-	m_backgroundUiTimeDate = CreateEntity<Entity>(backgroundPos, { 400,200 }, "spriteTimeDateUi", Shape::Rectangle, true);
+	m_backgroundUiTimeDate = CreateEntity<Entity>(backgroundPos, { 400,120 }, "Ui_Day", Shape::Rectangle, true);
+	m_backgroundUiTimeDate->RemoveCollider("default");
 	m_backgroundUiTimeDate->GetSprite()->ResizeStretched(m_backgroundUiTimeDate->GetDimension());
 	m_backgroundUiTimeDate->ShowCollider(true);
 	m_backgroundUiTimeDate->SetDrawLayer(INT_MAX - 1);
-	m_backgroundUiTimeDate->GetCollider()->SetIsTrigger(true);
 	m_backgroundUiTimeDate->SyncSprites();
 
 	m_statsUi = CreateEntity<UiStats>({}, {300,150}, "", Shape::Rectangle, true);
@@ -66,8 +66,6 @@ void HUDScene::OnInitialize()
 	m_cashUi = CreateEntity<UiCash>({}, { 160,64 }, "", Shape::Rectangle, true);
 	m_timeUi = CreateEntity<UiTime>({}, { 120,64 }, "", Shape::Rectangle, true);
 	m_dateUi = CreateEntity<UiDate>({}, { 120,64 }, "", Shape::Rectangle, true);
-
-
 
 	m_jobsUi = CreateEntity<UiJobs>(GetWindowCenter(), { 1000, 600 }, "", Shape::Rectangle, true);
 
@@ -105,8 +103,9 @@ void HUDScene::OnInitialize()
 	m_recipe->SetDrawLayer(INT_MAX - 200);
 	m_recipe->Close();
 
-	UiPos();
+
 	BarButtonInit();
+	UiPos();
 }
 
 void HUDScene::OnEvent()
@@ -185,6 +184,19 @@ void HUDScene::UiPos()
 	m_cashUi->SetPosition(cashPos);
 	m_timeUi->SetPosition(timePos);
 	m_dateUi->SetPosition(datePos);
+
+	Vector2f entityPos = { GetWindowCenter().GetX() - GetWindowWidth() / 2, GetWindowCenter().GetY() };
+	m_barButtonEntity->SetPosition(entityPos);
+	Vector2f topLeftPos = m_barButtonEntity->GetPosition({}) + Vector2f{ 16,22 };
+
+	m_jobsButton->SetPosition(topLeftPos);
+	m_questButton->SetPosition(topLeftPos + Vector2f{0,32});
+	m_recipiesButton->SetPosition(topLeftPos + Vector2f{ 0,64 });
+	m_collectionButton->SetPosition(topLeftPos + Vector2f{ 0,96 });
+
+	m_nightEffect->SetDimension({ GetWindowWidth(), GetWindowHeight() });
+
+	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetPosition({ GetWindowCenter().GetX(), GetWindowCenter().GetY() + GetWindowHeight() / 2 - 64});
 	//m_statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	//m_moneyUi = CreateEntity<UiMoney>(moneyPos, { 160,64 }, "", Shape::Rectangle, true);
 	//m_cashUi = CreateEntity<UiCash>(cashPos, { 160,64 }, "", Shape::Rectangle, true);
@@ -193,13 +205,13 @@ void HUDScene::UiPos()
 void HUDScene::BarButtonInit()
 {
 	Vector2f entityPos = { GetWindowCenter().GetX() - GetWindowWidth() / 2, GetWindowCenter().GetY()};
-	m_barButtonEntity = CreateEntity<Entity>(entityPos , {30,128}, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_barButtonEntity = CreateEntity<Entity>(entityPos , {32,140}, "InventoryWeedyMountain", Shape::Rectangle, true);
 	m_barButtonEntity->GetSprite()->ResizeStretched(m_barButtonEntity->GetDimension());
 	m_barButtonEntity->SyncSprites();
 	m_barButtonEntity->RemoveCollider("default");
-	m_barButtonEntity->SetDrawLayer(INT_MAX - 1);
+	//m_barButtonEntity->SetDrawLayer(INT_MAX);
 
-	Vector2i dim = { 64 ,32 };
+	Vector2i dim = { 96 ,32 };
 	Vector2f topLeftPos = m_barButtonEntity->GetPosition({}) + Vector2f{ 16,16 };
 	
 
@@ -208,38 +220,48 @@ void HUDScene::BarButtonInit()
 	m_jobsButton->GetSprite("jobsIcon")->ResizeStretched({ 64,32 });
 	m_jobsButton->GetSprite()->ResizeStretched(m_jobsButton->GetDimension());
 	m_jobsButton->SyncSprites();
-	m_jobsButton->SetOnHoverStay([this] {m_jobsButton->SetSprite("button2"); });
-	m_jobsButton->SetOnHoverExit([this] {m_jobsButton->SetSprite("button"); });
+	m_jobsButton->SetOnHoverEnter([this] {m_jobsButton->SetPosition(m_jobsButton->GetPosition() + Vector2f{ 20,0 }); });
+	m_jobsButton->SetOnHoverStay([this] {m_jobsButton->SetSprite("button2");  });
+	m_jobsButton->SetOnHoverExit([this] {m_jobsButton->SetSprite("button"); m_jobsButton->SetPosition(m_jobsButton->GetPosition() - Vector2f{ 20,0 }); });
 	m_jobsButton->SetOnLeftClick([this] {m_jobsUi->Toggle(); });
-	m_jobsButton->ShowCollider(true);
-
+	m_jobsButton->GetCollider()->SetIsTrigger(true);
+	m_jobsButton->SetDrawLayer(INT_MAX - 1);
 
 	m_questButton = CreateButton(topLeftPos + Vector2f{ 0,32 }, dim, "button", "", "");
 	m_questButton->AddSprite("questIcon", "parchment", { 16,16 }, 1, { 16,0 }, true);
 	m_questButton->GetSprite("questIcon")->ResizeStretched({ 32,32 });
 	m_questButton->GetSprite()->ResizeStretched(m_questButton->GetDimension());
 	m_questButton->SyncSprites();
+	m_questButton->SetOnHoverEnter([this] {m_questButton->SetPosition(m_questButton->GetPosition() + Vector2f{ 20,0 }); });
 	m_questButton->SetOnHoverStay([this] {m_questButton->SetSprite("button2"); });
-	m_questButton->SetOnHoverExit([this] {m_questButton->SetSprite("button"); });
+	m_questButton->SetOnHoverExit([this] {m_questButton->SetSprite("button"); m_questButton->SetPosition(m_questButton->GetPosition() - Vector2f{ 20,0 }); });
 	m_questButton->SetOnLeftClick([this] {m_questMenu->Open(&QuestManager::Get()->GetQuestsInProcess()); });
+	m_questButton->GetCollider()->SetIsTrigger(true);
+	m_questButton->SetDrawLayer(INT_MAX - 1);
 
 	m_recipiesButton = CreateButton(topLeftPos + Vector2f{ 0,64 }, dim, "button", "", "");
 	m_recipiesButton->GetSprite()->ResizeStretched(m_recipiesButton->GetDimension());
-	m_recipiesButton->AddSprite("recipiesIcon", "craftingTable", { 16,16 }, 1, { 16,0 }, true);
+	m_recipiesButton->AddSprite("recipiesIcon", "Craft_Icon", { 16,16 }, 1, { 16,0 }, true);
 	m_recipiesButton->GetSprite("recipiesIcon")->ResizeStretched({ 16,16 });
 	m_recipiesButton->SyncSprites();
+	m_recipiesButton->SetOnHoverEnter([this] {m_recipiesButton->SetPosition(m_recipiesButton->GetPosition() + Vector2f{ 20,0 }); });
 	m_recipiesButton->SetOnHoverStay([this] {m_recipiesButton->SetSprite("button2"); });
-	m_recipiesButton->SetOnHoverExit([this] {m_recipiesButton->SetSprite("button"); });
+	m_recipiesButton->SetOnHoverExit([this] {m_recipiesButton->SetSprite("button"); m_recipiesButton->SetPosition(m_recipiesButton->GetPosition() - Vector2f{ 20,0 }); });
 	m_recipiesButton->SetOnLeftClick([this] {m_recipe->Open(); });
+	m_recipiesButton->GetCollider()->SetIsTrigger(true);
+	m_recipiesButton->SetDrawLayer(INT_MAX - 1);
 
 	m_collectionButton = CreateButton(topLeftPos + Vector2f{ 0,96 }, dim, "button", "", "");
 	m_collectionButton->AddSprite("collectionIcon", "book", { 16,16 }, 1, { 16,0 }, true);
 	m_collectionButton->GetSprite("collectionIcon")->ResizeStretched({ 16,16 });
 	m_collectionButton->GetSprite()->ResizeStretched(m_collectionButton->GetDimension());
 	m_collectionButton->SyncSprites();
+	m_collectionButton->SetOnHoverEnter([this] {m_collectionButton->SetPosition(m_collectionButton->GetPosition() + Vector2f{ 20,0 }); });
 	m_collectionButton->SetOnHoverStay([this] {m_collectionButton->SetSprite("button2"); });
-	m_collectionButton->SetOnHoverExit([this] {m_collectionButton->SetSprite("button"); });
+	m_collectionButton->SetOnHoverExit([this] {m_collectionButton->SetSprite("button"); m_collectionButton->SetPosition(m_collectionButton->GetPosition() - Vector2f{ 20,0 }); });
 	m_collectionButton->SetOnLeftClick([this] {m_collectionUi->Open(); });
+	m_collectionButton->GetCollider()->SetIsTrigger(true);
+	m_collectionButton->SetDrawLayer(INT_MAX - 1);
 }
 
 void HUDScene::HideUi()

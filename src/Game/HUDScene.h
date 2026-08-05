@@ -12,6 +12,7 @@ class UiTime;
 class UiDate;
 class RecipesUi;
 class UiShop;
+class NightEffect;
 class HUDScene : public Scene
 {
 private:
@@ -20,6 +21,8 @@ private:
 	QuestMenu* m_questMenu = nullptr;
 
 	UiJobs* m_jobsUi = nullptr;
+
+	NightEffect* m_nightEffect = nullptr;
 
 	Entity* m_backgroundUiTimeDate = nullptr;
 	UiStats* m_statsUi = nullptr;

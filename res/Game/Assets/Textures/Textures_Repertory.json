@@ -25,6 +25,9 @@
       "path": "../../res/Game/Assets/Textures/Clock.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Craft_Icon.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Diamond_Ore.png"
     },
     {
@@ -7766,6 +7769,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/UiToxicityFull.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Ui_Day.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Wheat seed.png"

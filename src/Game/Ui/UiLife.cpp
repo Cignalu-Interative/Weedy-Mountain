@@ -49,4 +49,9 @@ void UiLife::OnUpdate()
 	GetSprite("LifeFull")->SetPosition(GetPosition({ 0,1 }), { 0,1 });
 }
 
+void UiLife::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+	GetSprite("Heart")->SetPosition(GetSprite("LifeEmpty")->GetPosition({ 0.5f,0 }), { 0.5f,1 });
+}
 

@@ -4,6 +4,12 @@
       "path": "../../res/Game/Assets/Textures/ATM.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Bouton_ATM_Bank.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Bouton_ATM_Cash.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Calendar.png"
     },
     {
@@ -7771,6 +7777,9 @@
       "path": "../../res/Game/Assets/Textures/Wooden_Chest.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/book.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/button.png"
     },
     {
@@ -7801,6 +7810,9 @@
       "path": "../../res/Game/Assets/Textures/collection1.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/craftingTable.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/crossButton.png"
     },
     {
@@ -7828,7 +7840,13 @@
       "path": "../../res/Game/Assets/Textures/nextButton.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/parchment.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/player.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/poleEmploi.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/previousButton.png"
@@ -7844,6 +7862,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/soil_watered.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/spriteTimeDateUi.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/wheat_01.png"

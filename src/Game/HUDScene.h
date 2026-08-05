@@ -21,6 +21,7 @@ private:
 
 	UiJobs* m_jobsUi = nullptr;
 
+	Entity* m_backgroundUiTimeDate = nullptr;
 	UiStats* m_statsUi = nullptr;
 	UiMoney* m_moneyUi = nullptr;
 	UiCash* m_cashUi = nullptr;
@@ -29,6 +30,14 @@ private:
 
 	RecipesUi* m_recipe = nullptr;
 	UiShop* m_shop = nullptr;
+
+	Vector2i m_lastWindowSize = {};
+
+	Button* m_jobsButton = nullptr;
+	Button* m_questButton = nullptr;
+	Button* m_recipiesButton = nullptr;
+	Button* m_collectionButton = nullptr;
+	Entity* m_barButtonEntity = nullptr;
 
 protected:
 
@@ -46,7 +55,9 @@ protected:
 
 	void OnDraw() override {};
 
+	void UiPos();
 
+	void BarButtonInit();
 public : 
 
 	void HideUi();

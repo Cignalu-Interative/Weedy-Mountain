@@ -25,9 +25,8 @@
 #include "UiChest.h"
 
 #include "RecipesUi.h"
-#include "RecipeDataBase.h"
-#include "ItemDataBase.h"
 #include "Ui/UiShop.h"
+#include "SpriteContainer.h"
 
 void HUDScene::OnInitialize()
 {
@@ -36,8 +35,6 @@ void HUDScene::OnInitialize()
 	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 
 	QuestManager::Get()->SetScene(this);
-
-	Vector2f uiStatsPos = { 1175, 600 };
 
 	PlayerJob* gatherer = new PlayerJob();
 	gatherer->m_name = JobType::Gatherer;
@@ -50,21 +47,28 @@ void HUDScene::OnInitialize()
 	PlayerJob* miner = new PlayerJob();
 	miner->m_name = JobType::Miner;
 	GameData::Get().GetPlayerData().m_jobs.push_back(miner);
+
 	NightEffect* nightEffect = CreateEntity<NightEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
-
-	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
-	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
-
 	nightEffect->RemoveCollider("default");
+	
+	Vector2f timePos = { GetWindowCenter().GetX() - GetWindowWidth()/12 ,GetWindowCenter().GetY() - (GetWindowHeight() / 2)};
+	Vector2f backgroundPos = { GetWindowCenter().GetX(), GetWindowCenter().GetY() - (GetWindowHeight() / 2) };
 
-	statsUi->RemoveCollider("default");
-	moneyUi->RemoveCollider("default");
-	cashUi->RemoveCollider("default");
-	timeUi->RemoveCollider("default");
-	dateUi->RemoveCollider("default");
+	m_backgroundUiTimeDate = CreateEntity<Entity>(backgroundPos, { 400,200 }, "spriteTimeDateUi", Shape::Rectangle, true);
+	m_backgroundUiTimeDate->GetSprite()->ResizeStretched(m_backgroundUiTimeDate->GetDimension());
+	m_backgroundUiTimeDate->ShowCollider(true);
+	m_backgroundUiTimeDate->SetDrawLayer(INT_MAX - 1);
+	m_backgroundUiTimeDate->GetCollider()->SetIsTrigger(true);
+	m_backgroundUiTimeDate->SyncSprites();
+
+	m_statsUi = CreateEntity<UiStats>({}, {300,150}, "", Shape::Rectangle, true);
+	m_moneyUi = CreateEntity<UiMoney>({}, { 160,64 }, "", Shape::Rectangle, true);
+	m_cashUi = CreateEntity<UiCash>({}, { 160,64 }, "", Shape::Rectangle, true);
+	m_timeUi = CreateEntity<UiTime>({}, { 120,64 }, "", Shape::Rectangle, true);
+	m_dateUi = CreateEntity<UiDate>({}, { 120,64 }, "", Shape::Rectangle, true);
+
+
+
 	m_jobsUi = CreateEntity<UiJobs>(GetWindowCenter(), { 1000, 600 }, "", Shape::Rectangle, true);
 
 	Inventory* inv = CreateEntity<Inventory>(GetWindowCenter(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle);
@@ -100,7 +104,9 @@ void HUDScene::OnInitialize()
 	m_recipe = CreateEntity<RecipesUi>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
 	m_recipe->SetDrawLayer(INT_MAX - 200);
 	m_recipe->Close();
-;
+
+	UiPos();
+	BarButtonInit();
 }
 
 void HUDScene::OnEvent()
@@ -132,6 +138,14 @@ void HUDScene::OnEvent()
 
 void HUDScene::OnUpdate()
 {
+	Vector2i newSize = GetWindowSize();
+
+	if(newSize != m_lastWindowSize)
+	{
+		m_lastWindowSize = newSize;
+		UiPos();
+	}
+
 	GameData& gm = GameData::Get();
 	gm.Update();
 	m_playerInventory->OnUpdate();
@@ -142,6 +156,90 @@ void HUDScene::OnUpdate()
 void HUDScene::OnDestroy()
 {
 
+}
+
+void HUDScene::UiPos()
+{
+
+	float topRightPos = (float)GetWindowWidth();
+	float bottomRightPos = (float)GetWindowHeight();
+
+	Vector2f uiStatsPos = { topRightPos - GetWindowWidth() / 12, bottomRightPos - GetWindowHeight() / 11 };
+
+	Vector2f moneyPos = { topRightPos - GetWindowWidth() / 12, 50 };
+	Vector2f cashPos = { topRightPos - GetWindowWidth() / 12, 100 };
+	Vector2f backgroundPos = { GetWindowCenter().GetX(), GetWindowCenter().GetY() - (GetWindowHeight() / 2) };
+	Vector2f timePos = { GetWindowCenter().GetX() - 106 ,GetWindowCenter().GetY() - (GetWindowHeight() / 2) };
+	Vector2f datePos = { GetWindowCenter().GetX() + 106 ,GetWindowCenter().GetY() - (GetWindowHeight() / 2) };
+
+	
+	//GameData::Get().GetPlayerData().m_playerInventory->GetInventory()->SetPosition(GetWindowCenter());
+	//Inventory* inv = GameData::Get().GetPlayerData().m_playerInventory->GetInventory();
+	//Vector2f hotbarPos = { GetWindowCenter().GetX(),(float)GetWindowHeight() / 2 };
+
+	//GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
+
+	m_backgroundUiTimeDate->SetPosition(backgroundPos);
+	m_statsUi->SetPosition(uiStatsPos);
+	m_moneyUi->SetPosition(moneyPos);
+	m_cashUi->SetPosition(cashPos);
+	m_timeUi->SetPosition(timePos);
+	m_dateUi->SetPosition(datePos);
+	//m_statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	//m_moneyUi = CreateEntity<UiMoney>(moneyPos, { 160,64 }, "", Shape::Rectangle, true);
+	//m_cashUi = CreateEntity<UiCash>(cashPos, { 160,64 }, "", Shape::Rectangle, true);
+}
+
+void HUDScene::BarButtonInit()
+{
+	Vector2f entityPos = { GetWindowCenter().GetX() - GetWindowWidth() / 2, GetWindowCenter().GetY()};
+	m_barButtonEntity = CreateEntity<Entity>(entityPos , {30,128}, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_barButtonEntity->GetSprite()->ResizeStretched(m_barButtonEntity->GetDimension());
+	m_barButtonEntity->SyncSprites();
+	m_barButtonEntity->RemoveCollider("default");
+	m_barButtonEntity->SetDrawLayer(INT_MAX - 1);
+
+	Vector2i dim = { 64 ,32 };
+	Vector2f topLeftPos = m_barButtonEntity->GetPosition({}) + Vector2f{ 16,16 };
+	
+
+	m_jobsButton = CreateButton(topLeftPos, dim, "button", "", "");
+	m_jobsButton->AddSprite("jobsIcon", "poleEmploi", {16,16}, 1, {16,0}, true);
+	m_jobsButton->GetSprite("jobsIcon")->ResizeStretched({ 64,32 });
+	m_jobsButton->GetSprite()->ResizeStretched(m_jobsButton->GetDimension());
+	m_jobsButton->SyncSprites();
+	m_jobsButton->SetOnHoverStay([this] {m_jobsButton->SetSprite("button2"); });
+	m_jobsButton->SetOnHoverExit([this] {m_jobsButton->SetSprite("button"); });
+	m_jobsButton->SetOnLeftClick([this] {m_jobsUi->Toggle(); });
+	m_jobsButton->ShowCollider(true);
+
+
+	m_questButton = CreateButton(topLeftPos + Vector2f{ 0,32 }, dim, "button", "", "");
+	m_questButton->AddSprite("questIcon", "parchment", { 16,16 }, 1, { 16,0 }, true);
+	m_questButton->GetSprite("questIcon")->ResizeStretched({ 32,32 });
+	m_questButton->GetSprite()->ResizeStretched(m_questButton->GetDimension());
+	m_questButton->SyncSprites();
+	m_questButton->SetOnHoverStay([this] {m_questButton->SetSprite("button2"); });
+	m_questButton->SetOnHoverExit([this] {m_questButton->SetSprite("button"); });
+	m_questButton->SetOnLeftClick([this] {m_questMenu->Open(&QuestManager::Get()->GetQuestsInProcess()); });
+
+	m_recipiesButton = CreateButton(topLeftPos + Vector2f{ 0,64 }, dim, "button", "", "");
+	m_recipiesButton->GetSprite()->ResizeStretched(m_recipiesButton->GetDimension());
+	m_recipiesButton->AddSprite("recipiesIcon", "craftingTable", { 16,16 }, 1, { 16,0 }, true);
+	m_recipiesButton->GetSprite("recipiesIcon")->ResizeStretched({ 16,16 });
+	m_recipiesButton->SyncSprites();
+	m_recipiesButton->SetOnHoverStay([this] {m_recipiesButton->SetSprite("button2"); });
+	m_recipiesButton->SetOnHoverExit([this] {m_recipiesButton->SetSprite("button"); });
+	m_recipiesButton->SetOnLeftClick([this] {m_recipe->Open(); });
+
+	m_collectionButton = CreateButton(topLeftPos + Vector2f{ 0,96 }, dim, "button", "", "");
+	m_collectionButton->AddSprite("collectionIcon", "book", { 16,16 }, 1, { 16,0 }, true);
+	m_collectionButton->GetSprite("collectionIcon")->ResizeStretched({ 16,16 });
+	m_collectionButton->GetSprite()->ResizeStretched(m_collectionButton->GetDimension());
+	m_collectionButton->SyncSprites();
+	m_collectionButton->SetOnHoverStay([this] {m_collectionButton->SetSprite("button2"); });
+	m_collectionButton->SetOnHoverExit([this] {m_collectionButton->SetSprite("button"); });
+	m_collectionButton->SetOnLeftClick([this] {m_collectionUi->Open(); });
 }
 
 void HUDScene::HideUi()

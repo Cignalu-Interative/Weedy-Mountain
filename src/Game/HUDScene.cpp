@@ -51,7 +51,9 @@ void HUDScene::OnInitialize()
 	PlayerJob* miner = new PlayerJob();
 	miner->m_name = JobType::Miner;
 	GameData::Get().GetPlayerData().m_jobs.push_back(miner);
+
 	NightEffect* nightEffect = CreateEntity<NightEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
+	WinterEffect* winterEffect = CreateEntity<WinterEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
 
 	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
@@ -60,6 +62,7 @@ void HUDScene::OnInitialize()
 	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 	nightEffect->RemoveCollider("default");
+	winterEffect->RemoveCollider("default");
 
 	statsUi->RemoveCollider("default");
 	moneyUi->RemoveCollider("default");

@@ -5,6 +5,7 @@
 
 #include "NightEffect.h"
 #include "WinterEffect.h"
+#include "SummerEffect.h"
 
 #include "Ui/UiStats.h"
 #include "Ui/UiMoney.h"
@@ -54,6 +55,7 @@ void HUDScene::OnInitialize()
 
 	NightEffect* nightEffect = CreateEntity<NightEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
 	WinterEffect* winterEffect = CreateEntity<WinterEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
+	SummerEffect* summerEffect = CreateEntity<SummerEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
 
 	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
@@ -63,6 +65,7 @@ void HUDScene::OnInitialize()
 
 	nightEffect->RemoveCollider("default");
 	winterEffect->RemoveCollider("default");
+	summerEffect->RemoveCollider("default");
 
 	statsUi->RemoveCollider("default");
 	moneyUi->RemoveCollider("default");

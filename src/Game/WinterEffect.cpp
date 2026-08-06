@@ -14,11 +14,11 @@ void WinterEffect::OnInitialize()
 
 void WinterEffect::OnUpdate()
 {
-	if (GameData::Get().GetSeason() == Season::Spring && GetSprite("WinterEffect")->GetOpacity() != 100)
+	if (GameData::Get().GetSeason() == Season::Winter && GetSprite("WinterEffect")->GetOpacity() != 70)
 	{
 		GetSprite("WinterEffect")->SetOpacity(70);
 	}
-	else if (GameData::Get().GetSeason() != Season::Spring && GetSprite("WinterEffect")->GetOpacity() != 0)
+	else if (GameData::Get().GetSeason() != Season::Winter && GetSprite("WinterEffect")->GetOpacity() != 0)
 	{
 		GetSprite("WinterEffect")->SetOpacity(0);
 	}

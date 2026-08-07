@@ -197,6 +197,9 @@ void HUDScene::UiPos()
 	m_nightEffect->SetDimension({ GetWindowWidth(), GetWindowHeight() });
 
 	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetPosition({ GetWindowCenter().GetX(), GetWindowCenter().GetY() + GetWindowHeight() / 2 - 64});
+	GameData::Get().GetPlayerData().m_playerInventory->GetInventory()->SetPosition(GetWindowCenter());
+	m_recipe->SetPosition(GetWindowCenter());
+
 	//m_statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	//m_moneyUi = CreateEntity<UiMoney>(moneyPos, { 160,64 }, "", Shape::Rectangle, true);
 	//m_cashUi = CreateEntity<UiCash>(cashPos, { 160,64 }, "", Shape::Rectangle, true);

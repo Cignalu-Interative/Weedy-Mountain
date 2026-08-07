@@ -13,7 +13,7 @@
 
 void RecipesUi::OnInitialize()
 {
-	AddSprite("RecipeUiBackground", "InventoryWeedyMountain", GetDimension(), 0, {}, true);
+	AddSprite("RecipeUiBackground", "Crafting_BackGround", GetDimension(), 0, {}, true);
 	GetSprite("RecipeUiBackground")->ResizeStretched(GetDimension());
 	SyncSprites();
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
@@ -354,4 +354,26 @@ void RecipesUi::ResetSelectedRecipe()
 		block->GetSprite()->ChangeTexture("InventoryWeedyMountain");
 	}
 	m_actualRecipeBlockSelected = nullptr;
+}
+
+void RecipesUi::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	int nextIndexToStart = 0;
+	for (RecipesMenu* menu : m_menus)
+	{
+		menu->SetPosition(GetPosition() + Vector2f{ +325, 0 });
+		nextIndexToStart = menu->PlaceRecipeBlock(m_recipes, nextIndexToStart);
+	}
+
+	Vector2f nextButtonPos = m_menus[0]->GetPosition({ 1,1 }) + Vector2f{ -50, 20 };
+	Vector2f previousButtonPos = m_menus[0]->GetPosition({ 0,1 }) + Vector2f{ 50, 20 };
+	Vector2f craftButtonPos = m_menus[0]->GetPosition({ 0.5,1 }) + Vector2f{ 0, 20 };
+	Vector2f textBoxPos = m_menus[0]->GetPosition({ 0.5,0 }) - Vector2f{ 0, 20 };
+
+	m_nextMenuButton->SetPosition(nextButtonPos);
+	m_previousMenuButton->SetPosition(previousButtonPos);
+	m_craftButton->SetPosition(craftButtonPos);
+	m_textBox->SetPosition(textBoxPos);
 }

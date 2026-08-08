@@ -16,9 +16,9 @@ enum class CheckQuest
 {
 	UNDEFINED,
 	AddItem,
+	SellItem,
 
 	Max
-
 };
 
 struct QuestRequirement
@@ -28,10 +28,10 @@ struct QuestRequirement
 	ItemData* s_itemData = nullptr;
 
 	int s_requiredAmount = 0;
-	int s_harvestedAmount = 0;
+	int s_collectedAmount = 0;
 
 	Text* s_requiredText = nullptr;
-	Text* s_harvestedText = nullptr;
+	Text* s_collectedText = nullptr;
 
 	bool s_isCompleted = false;
 
@@ -39,25 +39,25 @@ struct QuestRequirement
 	CheckQuest GetCheckType() const { return s_checkType; }
 
 	void SetRequiredAmount(int p_amount) { s_requiredAmount = p_amount; }
-	void AddHarvestedAmount(int p_amount)
+	void AddCollectedAmount(int p_amount)
 	{
-		s_harvestedAmount += p_amount;
-		if (s_harvestedAmount >= s_requiredAmount)
+		s_collectedAmount += p_amount;
+		if (s_collectedAmount >= s_requiredAmount)
 		{
 			s_isCompleted = true;
-			s_harvestedAmount = s_requiredAmount;
+			s_collectedAmount = s_requiredAmount;
 		}
 	}
 
 	int GetRequiredAmount() const { return s_requiredAmount; }
-	int GetHarvestedAmount() const { return s_harvestedAmount; }
+	int GetCollectedAmount() const { return s_collectedAmount; }
 
 	void SetItemData(ItemData* p_itemData) { s_itemData = p_itemData; }
 	ItemData* GetItemData() const { return s_itemData; }
 
 	bool IsCompleted() const { return s_isCompleted; }
 
-	void SetVisible(bool p_visible) { s_requiredText->SetIsVisible(p_visible); s_harvestedText->SetIsVisible(p_visible); }
+	void SetVisible(bool p_visible) { s_requiredText->SetIsVisible(p_visible); s_collectedText->SetIsVisible(p_visible); }
 };
 
 struct QuestReward

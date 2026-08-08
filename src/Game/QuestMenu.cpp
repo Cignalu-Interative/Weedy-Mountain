@@ -383,6 +383,10 @@ void QuestMenu::FollowQuest(Quest* p_quest)
 	{
 		return;
 	}
+	if (QuestManager::Get()->GetActiveQuest() != nullptr)
+	{
+		UnfollowQuest(QuestManager::Get()->GetActiveQuest());
+	}
 	QuestManager::Get()->SetActiveQuest(p_quest->GetName());
 	for (QuestMenuSlot* slot : m_slots)
 	{

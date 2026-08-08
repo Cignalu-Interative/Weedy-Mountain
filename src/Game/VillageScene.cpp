@@ -72,13 +72,31 @@ void VillageScene::OnInitialize()
 			{
 				QuestManager::Get()->SetStateQuestInProcess("Quest");
 			}
+			if (QuestManager::Get()->GetQuestOnNotStarted("CASTOR-AMA") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("CASTOR-AMA");
+			}
 			Quest* quest = QuestManager::Get()->GetQuestOnInProcess("Quest");
 			if (quest != nullptr)
 			{
 				if (quest->IsQuestCompleted() == true)
 				{
 					QuestManager::Get()->SetStateQuestFinished("Quest");
-					std::cerr << "Quest finished" << std::endl;
+					std::cerr << "Quest finished" << quest->GetName() << std::endl;
+					//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
+				}
+				else
+				{
+					//m_PNJ->Talk("Tu n'as pas encore terminé la quête, continue à chercher les objets dont j'ai besoin !");
+				}
+			}
+			Quest* CASTOR_AMA = QuestManager::Get()->GetQuestOnInProcess("CASTOR-AMA");
+			if (CASTOR_AMA != nullptr)
+			{
+				if (CASTOR_AMA->IsQuestCompleted() == true)
+				{
+					QuestManager::Get()->SetStateQuestFinished("CASTOR-AMA");
+					std::cerr << "Quest finished" << CASTOR_AMA->GetName() << std::endl;
 					//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
 				}
 				else

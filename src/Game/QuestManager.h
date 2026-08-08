@@ -67,6 +67,8 @@ public:
 
 	void CheckAddItem(const std::string& ID, int amount);
 
+	void CheckSellItem(const std::string& ID, int amount);
+
 	void SetStateQuestNotStarted(const std::string& p_name);
 	void SetStateQuestInProcess(const std::string& p_name);
 	void SetStateQuestFinished(const std::string& p_name);

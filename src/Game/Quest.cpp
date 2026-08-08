@@ -43,11 +43,11 @@ void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTextur
 
 	m_icone->AddSprite("requirementSprite_" + std::to_string(m_requirements.size()), p_idTexture, m_dimSpriteRequirement, 0, { 0,0 }, true);
 	
-	requirement->s_harvestedText = Debug::Get()->CreateText("requirementTextHarvested_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_harvestedAmount), ColorsNamed::Green, true, true);
+	requirement->s_collectedText = Debug::Get()->CreateText("requirementTextHarvested_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_collectedAmount), ColorsNamed::Green, true, true);
 	requirement->s_requiredText = Debug::Get()->CreateText("requirementText_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_requiredAmount), ColorsNamed::Red, true, true);
 	
 	requirement->s_requiredText->SetDrawLayer(200);
-	requirement->s_harvestedText->SetDrawLayer(200);
+	requirement->s_collectedText->SetDrawLayer(200);
 
 	m_requirements[m_requirements.size()] = requirement;
 	// La ligne de dessous a remettre après les tests de positionnement des icones et du texte
@@ -113,12 +113,12 @@ void Quest::SetTextQuest()
 {
 	for (auto& [index, requirement] : m_requirements)
 	{
-		requirement->s_harvestedText->SetText(std::to_string(requirement->s_harvestedAmount));
+		requirement->s_collectedText->SetText(std::to_string(requirement->s_collectedAmount));
 		requirement->s_requiredText->SetText(std::to_string(requirement->s_requiredAmount));
 	}
 	for (int i = 0; i < m_requirements.size(); ++i)
 	{
-		//std::cerr << "item : " << m_requirements[i]->GetItemData()->GetName() << " Harvested: " << m_requirements[i]->s_harvestedAmount << " / Required: " << m_requirements[i]->s_requiredAmount << std::endl;
+		//std::cerr << "item : " << m_requirements[i]->GetItemData()->GetName() << " Harvested: " << m_requirements[i]->s_collectedAmount << " / Required: " << m_requirements[i]->s_requiredAmount << std::endl;
 	}
 }
 
@@ -177,12 +177,12 @@ void Quest::ResizeGrid()
 		Sprite* sprite = m_icone->GetSprite("requirementSprite_" + std::to_string(index));
 		Vector2f spritePosLeftDown = sprite->GetPosition({ 0.f, 0.5f });
 		Vector2f spritePosRightDown = sprite->GetPosition({ 1.f, 1.f });
-		requirement->s_harvestedText->SetPosition({ spritePosLeftDown.GetX(), spritePosLeftDown.GetY() + 10 });
+		requirement->s_collectedText->SetPosition({ spritePosLeftDown.GetX(), spritePosLeftDown.GetY() + 10 });
 		requirement->s_requiredText->SetPosition({ spritePosRightDown.GetX(), spritePosRightDown.GetY() - 10 });
 
 		if (index == 0)
 		{
-			posFirst = requirement->s_harvestedText->GetPosition({ 0.0f, 0.5f }).GetX();
+			posFirst = requirement->s_collectedText->GetPosition({ 0.0f, 0.5f }).GetX();
 		}
 		else if (index == NBElement - 1)
 		{
@@ -206,9 +206,19 @@ void Quest::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 std::string Quest::GetRewardDescription()
 {
 	std::string rewardDescription;
+	bool empty = true;
 	for (auto& [index, reward] : m_rewards)
 	{
+		if (reward->GetItemData() == nullptr)
+		{
+			continue;
+		}
 		rewardDescription += reward->GetItemData()->GetName() + " x" + std::to_string(reward->GetAmount()) + "       ";
+		empty = false;
+	}
+	if (empty)
+	{
+		rewardDescription = "         ";
 	}
 	return rewardDescription;
 }
@@ -221,9 +231,19 @@ std::string Quest::GetHistoryDescription()
 std::string Quest::GetRequiquementsDescription()
 {
 	std::string requirementsDescription;
+	bool empty = true;
 	for (auto& [index, requirement] : m_requirements)
 	{
+		if (requirement->GetItemData() == nullptr)
+		{
+			continue;
+		}
 		requirementsDescription += requirement->GetItemData()->GetName() + " x" + std::to_string(requirement->s_requiredAmount) + "             ";
+		empty = false;
+	}
+	if (empty)
+	{
+		requirementsDescription = "         ";
 	}
 	return requirementsDescription;
 }

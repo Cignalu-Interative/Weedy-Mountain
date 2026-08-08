@@ -153,12 +153,16 @@ void QuestManager::RemoveQuestFromNotStarted(Quest* p_quest)
 	auto itNS = m_questsNotStarted.find(p_quest->GetName());
 	if (itNS != m_questsNotStarted.end())
 	{
+		size_t indexToDelete = itNS->second;
+		size_t lastIndex = m_questsNotStartedVector.size() - 1;
+
+		if (indexToDelete != lastIndex)
+		{
+			std::swap(m_questsNotStartedVector[indexToDelete], m_questsNotStartedVector[lastIndex]);
+			m_questsNotStarted[m_questsNotStartedVector[indexToDelete]->GetName()] = indexToDelete;
+		}
+		m_questsNotStartedVector.pop_back();
 		m_questsNotStarted.erase(itNS);
-	}
-	auto itNSV = std::find(m_questsNotStartedVector.begin(), m_questsNotStartedVector.end(), p_quest);
-	if (itNSV != m_questsNotStartedVector.end())
-	{
-		m_questsNotStartedVector.erase(itNSV);
 	}
 }
 
@@ -167,26 +171,34 @@ void QuestManager::RemoveQuestFromInProcess(Quest* p_quest)
 	auto itIP = m_questsInProcess.find(p_quest->GetName());
 	if (itIP != m_questsInProcess.end())
 	{
+		size_t indexToDelete = itIP->second;
+		size_t lastIndex = m_questsInProcessVector.size() - 1;
+
+		if (indexToDelete != lastIndex)
+		{
+			std::swap(m_questsInProcessVector[indexToDelete], m_questsInProcessVector[lastIndex]);
+			m_questsInProcess[m_questsInProcessVector[indexToDelete]->GetName()] = indexToDelete;
+		}
+		m_questsInProcessVector.pop_back();
 		m_questsInProcess.erase(itIP);
-	}
-	auto itIPV = std::find(m_questsInProcessVector.begin(), m_questsInProcessVector.end(), p_quest);
-	if (itIPV != m_questsInProcessVector.end())
-	{
-		m_questsInProcessVector.erase(itIPV);
 	}
 }
 
 void QuestManager::RemoveQuestFromFinished(Quest* p_quest)
 {
-	auto itNS = m_questsFinished.find(p_quest->GetName());
-	if (itNS != m_questsFinished.end())
+	auto itF = m_questsFinished.find(p_quest->GetName());
+	if (itF != m_questsFinished.end())
 	{
-		m_questsFinished.erase(itNS);
-	}
-	auto itNSV = std::find(m_questsFinishedVector.begin(), m_questsFinishedVector.end(), p_quest);
-	if (itNSV != m_questsFinishedVector.end())
-	{
-		m_questsFinishedVector.erase(itNSV);
+		size_t indexToDelete = itF->second;
+		size_t lastIndex = m_questsFinishedVector.size() - 1;
+
+		if (indexToDelete != lastIndex)
+		{
+			std::swap(m_questsFinishedVector[indexToDelete], m_questsFinishedVector[lastIndex]);
+			m_questsFinished[m_questsFinishedVector[indexToDelete]->GetName()] = indexToDelete;
+		}
+		m_questsFinishedVector.pop_back();
+		m_questsFinished.erase(itF);
 	}
 }
 
@@ -334,7 +346,25 @@ void QuestManager::CheckAddItem(const std::string& ID, int amount)
 			{
 				if (ItemDataBase::Get()->GetItem(ID) == requirement->GetItemData())
 				{
-					requirement->AddHarvestedAmount(amount);
+					requirement->AddCollectedAmount(amount);
+				}
+			}
+		}
+	}
+}
+
+void QuestManager::CheckSellItem(const std::string& ID, int amount)
+{
+	for (Quest* quest : m_questsInProcessVector)
+	{
+		for (size_t i = 0; i < quest->GetRequirementsCount(); ++i)
+		{
+			QuestRequirement* requirement = quest->GetRequirement(i);
+			if (requirement->GetCheckType() == CheckQuest::SellItem)
+			{
+				if (ItemDataBase::Get()->GetItem(ID) == requirement->GetItemData())
+				{
+					requirement->AddCollectedAmount(amount);
 				}
 			}
 		}

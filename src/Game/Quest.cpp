@@ -40,8 +40,9 @@ void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTextur
 		[](unsigned char c) { return std::toupper(c); }
 	);
 	requirement->SetItemData(ItemDataBase::Get()->GetItem(NameItem));
+	std::string texturename = Utils::GetNameFromPath(requirement->GetItemData()->GetPath());
 
-	m_icone->AddSprite("requirementSprite_" + std::to_string(m_requirements.size()), p_idTexture, m_dimSpriteRequirement, 0, { 0,0 }, true);
+	m_icone->AddSprite("requirementSprite_" + std::to_string(m_requirements.size()), texturename, m_dimSpriteRequirement, 0, {0,0}, true);
 	
 	requirement->s_collectedText = Debug::Get()->CreateText("requirementTextHarvested_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_collectedAmount), ColorsNamed::Green, true, true);
 	requirement->s_requiredText = Debug::Get()->CreateText("requirementText_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_requiredAmount), ColorsNamed::Red, true, true);
@@ -124,7 +125,6 @@ void Quest::SetTextQuest()
 
 void Quest::ResizeGrid()
 {
-	Vector2i maxSize = m_refDimension;
 	Vector2f posGrid = m_zone->GetPosition();
 	int NBElement = (int)m_requirements.size();
 	if (NBElement == 0)
@@ -137,7 +137,7 @@ void Quest::ResizeGrid()
 	int spacing = 32; // Espace entre les icônes
 	int margin = 64; // marge de chaque côté
 
-	int maxColumns = maxSize.GetX() / dimSprite.GetX(); // soit exemple 128 / 32 = 4 colonnes max
+	int maxColumns = m_refDimension.GetX() / dimSprite.GetX(); // soit exemple 128 / 32 = 4 colonnes max
 
 	int nbRows = std::ceil((float)NBElement / maxColumns); // nombre de lignes nécessaires pour afficher tous les éléments ceil pour arrondire au supérieur
 	int columnsUsed = std::min(NBElement, maxColumns); // nombre de colonnes utilisées pour afficher tous les éléments
@@ -146,7 +146,7 @@ void Quest::ResizeGrid()
 	float heightUsed = nbRows * dimSprite.GetY(); // hauteur totale utilisée pour afficher tous les éléments
 
 	Vector2f posWantedForZone = m_zone->GetPosition();
-	m_zone->SetDimension({ (int)widthUsed, m_zone->GetDimension().GetY() });
+	m_zone->SetDimension({ Utils::LimitMin(m_refDimension.GetX(), (int)widthUsed), m_zone->GetDimension().GetY() });
 	m_icone->Transformable::SetDimension({ (int)widthUsed, (int)heightUsed });
 	m_zone->SetPosition(posWantedForZone);
 
@@ -194,6 +194,7 @@ void Quest::ResizeGrid()
 	{
 		m_zone->SetDimension({ (int)(posLast - posFirst) + 8, m_zone->GetDimension().GetY() });
 	}
+	m_zone->SetDimension({ Utils::LimitMin(m_refDimension.GetX(), m_zone->GetDimension().GetX()), m_zone->GetDimension().GetY() });
 	m_zone->SetPosition(finalPosWantedForZone);
 	m_icone->SetPosition(m_zone->GetPosition());
 }

@@ -168,7 +168,8 @@ void GameScene::OnInitialize()
 	qm->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Wood", 1);
 	qm->GetQuestOnNotStarted("Quest")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 67);
 	qm->GetQuestOnNotStarted("Quest")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to collect 1 wood and you will be rewarded with 67 eggs.");
-	
+	qm->GetQuestOnNotStarted("Quest")->SetIsQuestLostItem(true);
+
 	qm->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Rock", 1);
 	qm->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Fiber", 5);
 

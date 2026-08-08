@@ -163,4 +163,7 @@ public:
 	// La dimention de la quest doit etre un multiple de 2 genre 32 64 ou 128 sinon c'est pas beau (la grille d'affichage sera bugger)
 	void SetRefDimension(Vector2i p_dimension) { m_refDimension = p_dimension; }
 	Vector2i GetRefDimension() const { return m_refDimension; }
+
+	void SetIsQuestLostItem(bool p_lostItem) { m_lostItem = p_lostItem; }
+	bool GetIsQuestLostItem() { return m_lostItem; }
 };

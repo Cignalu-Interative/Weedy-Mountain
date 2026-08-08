@@ -403,12 +403,36 @@ void QuestManager::SetStateQuestFinished(const std::string& p_name)
 {
 	if (Quest* quest = GetQuestOnNotStarted(p_name))
 	{
+		if (quest->GetIsQuestLostItem() == true)
+		{
+			for (size_t i = 0; i < quest->GetRequirementsCount(); ++i)
+			{
+				QuestRequirement* requirement = quest->GetRequirement(i);
+				if (requirement->GetCheckType() == CheckQuest::AddItem)
+				{
+					GameData::Get().GetPlayerData().m_playerInventory->RemoveItem(requirement->GetItemData()->GetID(), requirement->GetRequiredAmount(), false);
+				}
+			}
+		}
+		RemoveActiveQuest(quest);
 		quest->SetFinished();
 		AddQuestToFinished(quest);
 		GiveReward(quest);
 	}
 	else if (Quest* quest = GetQuestOnInProcess(p_name))
 	{
+		if (quest->GetIsQuestLostItem() == true)
+		{
+			for (size_t i = 0; i < quest->GetRequirementsCount(); ++i)
+			{
+				QuestRequirement* requirement = quest->GetRequirement(i);
+				if (requirement->GetCheckType() == CheckQuest::AddItem)
+				{
+					GameData::Get().GetPlayerData().m_playerInventory->RemoveItem(requirement->GetItemData()->GetID(), requirement->GetRequiredAmount(), false);
+				}
+			}
+		}
+		RemoveActiveQuest(quest);
 		quest->SetFinished();
 		AddQuestToFinished(quest);
 		GiveReward(quest);

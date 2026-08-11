@@ -14,11 +14,11 @@ void SummerEffect::OnInitialize()
 
 void SummerEffect::OnUpdate()
 {
-	if (GameData::Get().GetSeason() == Season::Spring && GetSprite("SummerEffect")->GetOpacity() != 70)
+	if (GameData::Get().GetSeason() == Season::Summer && GetSprite("SummerEffect")->GetOpacity() != 70)
 	{
 		GetSprite("SummerEffect")->SetOpacity(70);
 	}
-	else if (GameData::Get().GetSeason() != Season::Spring && GetSprite("SummerEffect")->GetOpacity() != 0)
+	else if (GameData::Get().GetSeason() != Season::Summer && GetSprite("SummerEffect")->GetOpacity() != 0)
 	{
 		GetSprite("SummerEffect")->SetOpacity(0);
 	}

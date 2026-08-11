@@ -4,6 +4,7 @@
 #include "InventorySlot.h"
 #include "UiChest.h"
 #include "RecipesMenu.h"
+#include "WeatherManager.h"
 
 //Trucs qu'on peut changer si on veut changer la dur�e plus tard
 
@@ -24,13 +25,30 @@ GameData& GameData::Get()
 void GameData::Initialize()
 {
 	m_timer.SetCurrentTime();
-
+	m_currentWeather = Weather::Clear;
+	WeatherManager::Get().Initialize();
 }
 
 void GameData::Update()
 {
 	m_timeSpent += m_timer.GetElapsed() * m_timeScale;
 	//m_playerData.m_playerInventory.OnUpdate();
+
+	WeatherManager& weatherManager = WeatherManager::Get();
+	weatherManager.Update();
+
+	if (weatherManager.GetWeather() != m_currentWeather)
+	{
+		m_currentWeather = weatherManager.GetWeather();
+	}
+
+	if (m_currentWeather == Weather::Clear)
+		std::cout << "Clear" << std::endl;
+	else if (m_currentWeather == Weather::Rain)
+		std::cout << "Rain" << std::endl;
+	else if (m_currentWeather == Weather::Storm)
+		std::cout << "Storm" << std::endl;
+
 }
 
 float GameData::GetTimeSpent()
@@ -63,8 +81,6 @@ int GameData::GetDay()
 	return totalDay % DAYS_PER_MONTH + 1;
 }
 
-
-
 int GameData::GetHour()
 {
 	int totalH = m_timeSpent / IRL_SECONDS_PER_GAME_HOUR;
@@ -75,11 +91,6 @@ int GameData::GetMinute()
 {
 	int time = m_timeSpent / IRL_SECONDS_PER_GAME_HOUR;
 	return ((m_timeSpent - time * IRL_SECONDS_PER_GAME_HOUR) * MINUTES_PER_HOUR) / IRL_SECONDS_PER_GAME_HOUR; //regardder si on peut faire mieux
-}
-
-Weather GameData::GetWeather()
-{
-	return Weather::Clear;
 }
 
 std::string GameData::GetMonthName()

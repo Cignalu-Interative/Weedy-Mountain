@@ -35,6 +35,8 @@ private:
 
 	CurrentScene m_currentScene = CurrentScene::FARM;
 
+	Weather m_currentWeather;
+
 public:
 
 	static GameData& Get();
@@ -51,7 +53,7 @@ public:
 	int GetHour();
 	int GetMinute();
 
-	Weather GetWeather();
+	Weather GetWeather() { return m_currentWeather; }
 	TimeOfDay GetTimeOfDay();
 	Season GetSeason();
 

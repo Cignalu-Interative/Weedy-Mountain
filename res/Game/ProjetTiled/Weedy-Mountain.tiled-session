@@ -6,10 +6,10 @@
     "fileStates": {
         "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Cave.tmx": {
             "scale": 1.5,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 334.99999999999994,
-                "y": 512.3333333333333
+                "x": 273.6666666666667,
+                "y": 517.6666666666666
             }
         },
         "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx": {
@@ -150,18 +150,15 @@
     "map.fixedSize": false,
     "map.lastUsedFormat": "tmx",
     "openFiles": [
-        "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Cave.tmx",
-        "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx",
-        "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/tiles_cave.tsx",
-        "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx"
+        "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Cave.tmx"
     ],
     "project": "Weedy-Mountain.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Cave.tmx",
         "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/Set 1.1.tsx",
         "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/tiles_cave.tsx",
         "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Farm.tmx",
-        "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Cave.tmx",
         "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tsx/RockSlope.tsx",
         "C:/Users/Wolfuego/Documents/GitHub/Weedy-Mountain/res/Game/Assets/Maps/tmx/Village.tmx",
         "Village.tmx",

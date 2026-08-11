@@ -166,7 +166,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_stats.m_hitToDestroy = 2;
 		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
-		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWIRON",1)), 1,3 };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAW_IRON",1)), 1,3 };
 		m_loots.push_back(loot1);
 		break;
 
@@ -177,7 +177,7 @@ void EnviroProps::SetType(EnviroSpawnName p_name)
 		m_stats.m_hitToDestroy = 2;
 		m_stats.m_minToolsRarity = ToolRarity::Wooden;
 		m_stats.m_toolType = { ToolType::Pickaxe };
-		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAWGOLD",1)), 1,3 };
+		EnviroLoots* loot1 = new EnviroLoots{ (ItemStack("ITEM_RAW_GOLD",1)), 1,3 };
 		m_loots.push_back(loot1);
 		break;
 	}

@@ -45,7 +45,7 @@ void CaveScene::OnInitialize()
 	mm->AddMaps("../../res/Game/Assets/Maps/Maps_Repertory.json");
 	mm->SetCurrentMap("Cave");
 
-	m_player = CreateEntity<Player>({0,0}, {16,32}, "player", Shape::Rectangle);
+	m_player = CreateEntity<Player>({136,844}, {16,32}, "player", Shape::Rectangle);
 	m_player->GetCollider()->SetDimension({ 14,14 });
 	m_player->GetCollider()->SetOffset({ 0,9 });
 	m_player->SetRigidBody(true);
@@ -67,6 +67,14 @@ void CaveScene::OnInitialize()
 	std::vector<TileInfo> canGrowTiles = map->GetAllTilesWithProperty("CanGrow", "CanGrow");
 	int size = canGrowTiles.size();
 	Vector2i tileDim = map->GetTileDimension();
+
+	std::vector<ObjectTiled*> objectGroup = map->GetObjectGroupByName("Wall")->GetObjectTiledByName("Wall");
+
+	for (ObjectTiled* obj : objectGroup)
+	{
+		Vector2f dim = obj->GetObjectDimension();
+		Entity* ent = CreateEntity<Entity>(obj->GetObjectPosition() + dim / 2, (Vector2i)dim, "", Shape::Rectangle);
+	}
 
 	for (const TileInfo& info : canGrowTiles)
 	{

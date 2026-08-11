@@ -15,6 +15,8 @@ class Hotbar : public Entity, public Savable
 
 	int m_selectedIndex = 0;
 
+	bool m_inventoryOpen = false;
+
 public:
 
 	Hotbar(int slotcount = 10, int invSlotCount = 30);
@@ -47,4 +49,8 @@ public:
 	std::string GetSaveID() const override { return "player_hotbar"; }
 	void Save(nlohmann::json& p_out) override;
 	void Load(const nlohmann::json& p_in) override;
+	void RealignSlots();
+
+	void SetIsInventoryOpen(bool inventory);
+	bool GetIsInventoryOpen();
 };

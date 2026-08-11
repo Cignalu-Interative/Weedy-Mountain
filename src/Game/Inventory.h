@@ -52,4 +52,5 @@ public:
 
 	void Save(nlohmann::json& p_out) override;
 	void Load(const nlohmann::json& p_in) override;
+	void OnUpdate() override;
 };

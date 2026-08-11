@@ -59,17 +59,3 @@ void InventorySlot::RefreshVisual()
         }
     }
 }
-
-void InventorySlot::OnUpdate()
-{
-    Button::OnUpdate();
-
-    if (IsMouseIn()) //FIX 
-    {
-        SetSprite("InventorySlotHover");
-    }
-    else
-    {
-        SetSprite("InventorySlot");
-    }
-}

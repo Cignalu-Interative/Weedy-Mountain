@@ -3,6 +3,7 @@
 #include "ItemDataBase.h"
 #include "ItemStack.h"
 #include "SpriteContainer.h"
+#include "Button.h"
 #include <cassert>
 
 #include "SaveManager.h"
@@ -333,5 +334,15 @@ void Inventory::Load(const nlohmann::json& in)
 
 		m_slots[index]->SetStack(ItemStack(entry.value("id", ""), entry.value("amount", 0)));
 		m_slots[index]->RefreshVisual();
+	}
+} 
+void Inventory::OnUpdate()
+{
+	for (InventorySlot* slot : m_slots)
+	{
+		if (slot->IsMouseIn())
+			slot->SetSprite("InventorySlotHover");
+		else
+			slot->SetSprite("InventorySlot");
 	}
 }

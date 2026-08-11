@@ -1,6 +1,7 @@
 #pragma once
-#include "Entity.h".
+#include "Entity.h"
 #include <functional>
+#include <chrono>
 
 class Button : public Entity
 {
@@ -19,9 +20,27 @@ private:
 	std::function<void()> m_onHeldRightClick;
 	std::function<void()> m_onReleaseRightClick;
 
+	std::function<void()> m_onDoubleLeftClick;
+	std::function<void()> m_onDoubleRightClick;
+
 	std::function<void()> m_onHoverEnter;
 	std::function<void()> m_onHoverStay;
 	std::function<void()> m_onHoverExit;
+
+	std::function<void()> m_onLeftHeldEnter;
+	std::function<void()> m_onLeftHeldExit;
+	std::function<void()> m_onRightHeldEnter;
+	std::function<void()> m_onRightHeldExit;
+
+	std::function<void()> m_onMiddleClick;
+
+	std::chrono::steady_clock::time_point m_lastLeftClick;
+	std::chrono::steady_clock::time_point m_lastRightClick;
+
+	float m_doubleClickDelay = 0.25f;
+
+	bool m_leftWasDown = false;
+	bool m_rightWasDown = false;
 
 public:
 	Button() = default;
@@ -35,9 +54,19 @@ public:
 	void SetOnHeldRightClick(std::function<void()> p_function) { m_onHeldRightClick = p_function; }
 	void SetOnReleaseRightClick(std::function<void()> p_function) { m_onReleaseRightClick = p_function; }
 
+	void SetOnDoubleLeftClick(std::function<void()> p_function) { m_onDoubleLeftClick = p_function; }
+	void SetOnDoubleRightClick(std::function<void()> p_function) { m_onDoubleRightClick = p_function; }
+
 	void SetOnHoverEnter(std::function<void()> p_function) { m_onHoverEnter = p_function; }
 	void SetOnHoverStay(std::function<void()> p_function) { m_onHoverStay = p_function; }
 	void SetOnHoverExit(std::function<void()> p_function) { m_onHoverExit = p_function; }
+
+	void SetOnLeftHeldEnter(std::function<void()> p_function) { m_onLeftHeldEnter = p_function; }
+	void SetOnLeftHeldExit(std::function<void()> p_function) { m_onLeftHeldExit = p_function; }
+	void SetOnRightHeldEnter(std::function<void()> p_function) { m_onRightHeldEnter = p_function; }
+	void SetOnRightHeldExit(std::function<void()> p_function) { m_onRightHeldExit = p_function; }
+
+	void SetOnMiddleClick(std::function<void()> p_function) { m_onMiddleClick = p_function; }
 
 	void InitText(const std::string& p_textID, const std::string& p_text);
 	void SetText(const std::string& p_text);

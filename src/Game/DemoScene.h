@@ -3,6 +3,12 @@
 #include <list>
 #include <vector>
 
+#include "InventoryInteractionManager.h"	
+
+#include "InventoryInputControler.h"
+#include "InventoryStateMachine.h"
+#include "InventoryLogicManager.h"
+
 class User;
 class Player;
 class Inventory;
@@ -33,6 +39,9 @@ private:
 	Hotbar* m_hotbar = nullptr;
 
 	PlayerInventory* m_playerInventory = nullptr;
+
+	InventoryManager m_i;
+
 
 protected:
 

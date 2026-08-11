@@ -65,6 +65,38 @@ void Button::OnUpdate()
 			m_onHoverExit();
 	}
 
+	// HELD ENTER / HELD EXIT
+	if (mouseIn && m_mouseWasIn == false)
+	{
+		if (im->IsMouseHeld(BUTTON_LEFT))
+		{
+			if (m_onLeftHeldEnter)
+				m_onLeftHeldEnter();
+		}
+
+		if (im->IsMouseHeld(BUTTON_RIGHT))
+		{
+			if (m_onRightHeldEnter)
+				m_onRightHeldEnter();
+		}
+	}
+	else if (mouseIn == false && m_mouseWasIn)
+	{
+		if (im->IsMouseHeld(BUTTON_RIGHT))
+		{
+			if (m_onRightHeldExit)
+				m_onRightHeldExit();
+		}
+		if (im->IsMouseHeld(BUTTON_LEFT))
+		{
+			if (m_onLeftHeldExit)
+				m_onLeftHeldExit();
+		}
+	}
+
+
+
+
 	auto now = std::chrono::steady_clock::now();
 
 	// LEFT CLICK
@@ -73,21 +105,18 @@ void Button::OnUpdate()
 		if (m_onReleaseLeftClick)
 			m_onReleaseLeftClick();
 
-		/*float elapsed = std::chrono::duration<float>(now - m_lastLeftClick).count();
-
-		if (elapsed <= m_doubleClickDelay)
+		m_leftWasDown = false;
+	}
+	else if (mouseIn && im->IsMouseHeld(BUTTON_LEFT))
+	{
+		if (m_leftWasDown)
 		{
-			if (m_onDoubleLeftClick)
-				m_onDoubleLeftClick();
+			if (m_onHeldLeftClick)
+				m_onHeldLeftClick();
 		}
-
-		m_lastLeftClick = now;*/
-
-
-		// Si tu veux que quand ya un double click, le click simple ne se fasse pas, tu peux faire ca :
-
-		
-
+	}
+	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
+	{
 		float elapsed = std::chrono::duration<float>(now - m_lastLeftClick).count();
 
 		if (elapsed <= m_doubleClickDelay)
@@ -97,23 +126,12 @@ void Button::OnUpdate()
 		}
 		else
 		{
-			if (m_onReleaseLeftClick)
-				m_onReleaseLeftClick();
+			if (m_onLeftClick)
+				m_onLeftClick();
 		}
 
 		m_lastLeftClick = now;
-
-		
-	}
-	else if (mouseIn && im->IsMouseHeld(BUTTON_LEFT))
-	{
-		if (m_onHeldLeftClick)
-			m_onHeldLeftClick();
-	}
-	else if (mouseIn && im->IsMouseDown(BUTTON_LEFT))
-	{
-		if (m_onLeftClick)
-			m_onLeftClick();
+		m_leftWasDown = true;
 	}
 
 	// RIGHT CLICK
@@ -122,6 +140,18 @@ void Button::OnUpdate()
 		if (m_onReleaseRightClick)
 			m_onReleaseRightClick();
 
+		m_rightWasDown = false;
+	}
+	else if (mouseIn && im->IsMouseHeld(BUTTON_RIGHT))
+	{
+		if (m_rightWasDown)
+		{
+			if (m_onHeldRightClick)
+				m_onHeldRightClick();
+		}
+	}
+	else if (mouseIn && im->IsMouseDown(BUTTON_RIGHT))
+	{
 		float elapsed = std::chrono::duration<float>(now - m_lastRightClick).count();
 
 		if (elapsed <= m_doubleClickDelay)
@@ -129,18 +159,21 @@ void Button::OnUpdate()
 			if (m_onDoubleRightClick)
 				m_onDoubleRightClick();
 		}
+		else
+		{
+			if (m_onRightClick)
+				m_onRightClick();
+		}
 
+		m_rightWasDown = true;
 		m_lastRightClick = now;
 	}
-	else if (mouseIn && im->IsMouseDown(BUTTON_RIGHT))
+
+	//Middke click
+	if (mouseIn && im->IsMouseDown(BUTTON_MIDDLE))
 	{
-		if (m_onRightClick)
-			m_onRightClick();
-	}
-	else if (mouseIn && im->IsMouseHeld(BUTTON_RIGHT))
-	{
-		if (m_onHeldRightClick)
-			m_onHeldRightClick();
+		if (m_onMiddleClick)
+			m_onMiddleClick();
 	}
 
 	m_mouseWasIn = mouseIn;

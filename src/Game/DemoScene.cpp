@@ -13,6 +13,7 @@
 #include "2DPendentEngine/RectangleCollider.h"
 #include "2DPendentLib/FontManager.h"
 #include "InventoryInteractionManager.h"
+#include "InventoryInputControler.h"
 
 #include "ItemDataBase.h"
 #include "PlayerInventory.h"
@@ -44,12 +45,16 @@ void DemoScene::OnInitialize()
 
 	m_playerInventory = new PlayerInventory(m_inv, m_hotbar);
 
-	m_playerInventory->Close();
-
 	ItemDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 
-	m_i.AddInventory(m_inv->GetSlots(), InventoryInterractionBit::MergeStack + InventoryInterractionBit::SplitStack + InventoryInterractionBit::PickItem + InventoryInterractionBit::PlaceItem);
-	m_i.AddInventory(m_hotbar->GetSlots(), 255);
+	/*m_i.AddInventory(m_inv->GetSlots(), InventoryInterractionBit::MergeStack + InventoryInterractionBit::SplitStack + InventoryInterractionBit::PickItem + InventoryInterractionBit::PlaceItem);
+	m_i.AddInventory(m_hotbar->GetSlots(), 255);*/
+
+	//initi incventaire
+	m_i.Initialize(this, m_inv, m_hotbar, m_playerInventory);
+	m_i.RegisterInventory(m_inv->GetSlots(), 255, InventoryLogic::InventoryType::PlayerInventory);
+	m_i.RegisterInventory(m_hotbar->GetSlots(),	255, InventoryLogic::InventoryType::Hotbar);
+
 }
 
 void DemoScene::OnEvent()
@@ -116,7 +121,7 @@ void DemoScene::OnEvent()
 
 void DemoScene::OnUpdate()
 {
-	m_playerInventory->OnUpdate(); //PAS BEAU
+	m_i.OnUpdate();
 }
 
 void DemoScene::OnSleep()

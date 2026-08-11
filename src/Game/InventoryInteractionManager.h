@@ -1,96 +1,102 @@
-//certains noms sont bien pourris, si vous avez des suggestions, mp discord xD
-
 #pragma once
 
-#include "InventorySlot.h"
-#include "ItemStack.h"
+#include "InventoryInputControler.h"
+#include "InventoryStateMachine.h"
+#include "InventoryLogicManager.h"
+#include "NotificationManager.h"
 
-#include <vector>
 
+#include "Button.h"
+#include "Entity.h"
 
+class CursorItemUI;
 
-class InventorySlot;
-
-enum InventoryInterractionBit
-{
-	PickItem			= 1 << 0,
-	PlaceItem			= 1 << 1,
-	SplitStack			= 1 << 2,
-	DragDistribute		= 1 << 3,
-	DoubleClickGather	= 1 << 4,
-	Drop				= 1 << 5,
-	SwapItem			= 1 << 6,
-	MergeStack			= 1 << 7
-};
+class Inventory;
+class Hotbar;
+class InputManager;
+class PlayerInventory;
 
 class InventoryManager
 {
+
 private:
 
-	
-	struct InventoryWithFlag //Le nom est pas terrible à changer
-	{
-		uint8_t m_flags;
+    InventoryLogic m_logic;
+    InventoryStateMachine m_stateMachine;
+    InventoryInputController m_inputController;
 
-		std::vector<InventorySlot*>* m_slots;
-	};
+    NotificationManager m_notificationManager;
 
+    PlayerInventory* m_playerInventory = nullptr;
 
-	std::vector<InventoryWithFlag> m_iventoriesWithFlag;
+    CursorItemUI* m_cursorUI = nullptr;
 
-	ItemStack m_cursorStack;
+    Inventory* m_inventory = nullptr;
+    Hotbar* m_hotbar = nullptr;
 
-	bool m_isDragging = false;
+    Scene* m_scene = nullptr;
 
-	std::vector<InventorySlot*> m_alreadyDraggedSlots;
-
-
+    bool m_isInventoryOpen = false;
 
 
 public:
 
-	void AddInventory(std::vector<InventorySlot*>& slots, uint8_t bit);
+    InventoryManager() = default;
 
-	void ClearInventories();
+    void Initialize(Scene* scene, Inventory* inventory, Hotbar* hotbar, PlayerInventory* playerInventory);
 
-	ItemStack& GetCursorStack();
+    void RegisterInventory(std::vector<InventorySlot*>& slots, uint8_t flags, InventoryLogic::InventoryType type);
+    
+    InventoryLogic* GetLogic();
 
-	bool HasCursorItem();
+    const char* GetState();
 
-	void HandleLeftClick(InventorySlot* slot);
 
-	void HandleRightClick(InventorySlot* slot);
 
-	void HandleDoubleLeftClick(InventorySlot* slot);
+    //les trucs du player inventory
+    void Open();
+    void Close();
+    void Toggle();
 
-	void HandleDropOutside();
+    bool IsOpen();
 
-	void HandleLeftHeld(InventorySlot* slot);
+    void OnUpdate();
+    
+private:
+    
+    void UpdateHotbarSelection(InputManager* input);
+    void SelectHoveredHotbarSlot();
+    void UpdateHotbarSwap(InputManager* input);
 
-	void HandleLeftRelease();
+    InventorySlot* GetHoveredSlot();
 
+};
+
+
+
+
+
+
+//a bouger mais là j'ai la flemme...
+
+
+class CursorItemUI : public Button
+{
+    ItemStack* m_stack = nullptr;
+
+    std::string m_lastID;
+
+public:
+
+    CursorItemUI() = default;
+
+
+    void OnInitialize() override;
+    void OnUpdate() override;
+
+
+    void SetStack(ItemStack* stack);
 
 private:
-
-	bool HasFlag(uint8_t flags, InventoryInterractionBit flag);
-
-	InventoryWithFlag* FindInventory(InventorySlot* slot);
-
-	void PickupStack(InventorySlot* slot);
-
-	void PlaceStack(InventorySlot* slot);
-
-	void SwapStacks(InventorySlot* slot);
-
-	void MergeStacks(InventorySlot* slot);
-
-	void SplitStack(InventorySlot* slot);
-
-	void PlaceSingleItem(InventorySlot* slot);
-
-	void GatherAllStacks(InventorySlot* slot);
-
-	int GetMaxStack(const std::string& itemID);
-
-	bool CanInteract(InventorySlot* slot, InventoryInterractionBit flag);
+    void RefreshVisual();
 };

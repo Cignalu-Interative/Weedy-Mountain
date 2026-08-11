@@ -128,7 +128,7 @@ SDL_Texture* AssetManager::GetTexture(const std::string& p_id) const
 	auto it = m_texturesMap.find(p_id);
 	if (it == m_texturesMap.end())
 	{
-		SDL_Log("Lib/AssetManager.cpp/GetTexture/find/Texture with id '%s' not found", p_id.c_str());
+		//SDL_Log("Lib/AssetManager.cpp/GetTexture/find/Texture with id '%s' not found", p_id.c_str());
 		return nullptr;
 	}
 	else if (it != m_texturesMap.end())

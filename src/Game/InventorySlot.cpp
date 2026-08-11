@@ -56,8 +56,3 @@ void InventorySlot::RefreshVisual()
         }
     }
 }
-
-void InventorySlot::OnUpdate()
-{
-    Button::OnUpdate();
-}

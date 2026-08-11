@@ -25,6 +25,4 @@ public:
 	void SetStack(const ItemStack& stack);
 
 	void RefreshVisual();
-
-	void OnUpdate() override;
 };

@@ -748,6 +748,9 @@
       "path": "../../res/Game/Assets/Textures/inventory.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/notificationBackground.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/player.png"
     },
     {

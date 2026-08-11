@@ -1,360 +1,265 @@
 #include "pch.h"
 #include "InventoryInteractionManager.h"
-#include "ItemData.h"
 #include "ItemDataBase.h"
+#include "2DPendentLib/InputManager.h"
+#include "InventorySlot.h"
+
+
+#include "Button.h"
+#include "Entity.h"
+#include "SpriteContainer.h"
+#include "Hotbar.h"
+#include "Inventory.h"
+#include "PlayerInventory.h"
+#include "DemoScene.h"
 
 #include <iostream>
 
 
-void InventoryManager::AddInventory(std::vector<InventorySlot*>& slots, uint8_t bit)
+void InventoryManager::Initialize(Scene* scene, Inventory* inventory, Hotbar* hotbar, PlayerInventory* playerInventory)
 {
-	InventoryWithFlag inventory;
+    m_stateMachine.SetLogic(&m_logic);
 
-	inventory.m_slots = &slots;
-	inventory.m_flags = bit;
+    m_inputController.SetStateMachine(&m_stateMachine);
 
-	m_iventoriesWithFlag.push_back(inventory);
+    m_scene = scene;
 
-	for (InventorySlot* slot : slots)
+	m_cursorUI = scene->CreateButton<CursorItemUI>({ 0,0 }, { 54,54 }, "", "cursor_amount", "", true);
+	m_cursorUI->SetStack(&m_logic.GetCursorStack());
+
+	m_cursorUI->SetDrawLayer(200);
+
+
+    m_hotbar = hotbar;
+    m_inventory = inventory;
+    m_isInventoryOpen = false;
+    Close();
+
+    m_notificationManager.Initialize(scene);
+
+    m_playerInventory = playerInventory;
+
+    m_playerInventory->SetNotificationManager(&m_notificationManager);
+}
+
+void InventoryManager::RegisterInventory(std::vector<InventorySlot*>& slots, uint8_t flags, InventoryLogic::InventoryType type)
+{
+    m_inputController.Register(slots);
+
+    m_logic.AddInventory(slots, flags, type);
+}
+
+InventoryLogic* InventoryManager::GetLogic()
+{
+	return &m_logic;
+}
+
+const char* InventoryManager::GetState()
+{
+    return m_stateMachine.GetState();
+}
+
+void InventoryManager::Open()
+{
+    m_isInventoryOpen = true;
+    m_inventory->SetVisible(true);
+    m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, (m_hotbar->GetScene<DemoScene>()->GetWindowHeight() + (70.0f * 3.0f)) / 2.0f });
+    m_hotbar->RealignSlots();
+    m_hotbar->SetIsInventoryOpen(true);
+}
+
+void InventoryManager::Close()
+{
+    m_isInventoryOpen = false;
+    m_inventory->SetVisible(false);
+    m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, ((float)m_hotbar->GetScene<DemoScene>()->GetWindowHeight()) }, { 0.5f, 1.0f });
+    m_hotbar->RealignSlots();
+    m_hotbar->SetIsInventoryOpen(false);
+}
+
+void InventoryManager::Toggle()
+{
+    if (m_isInventoryOpen)
+    {
+        Close();
+        m_logic.DisactivateInventory(m_hotbar->GetSlots());
+        m_logic.DisactivateInventory(m_inventory->GetSlots());
+    }
+    else
+    {
+        Open();
+        m_logic.ActivateInventory(m_hotbar->GetSlots());
+        m_logic.ActivateInventory(m_inventory->GetSlots());        
+    }
+}
+
+bool InventoryManager::IsOpen()
+{
+    return m_isInventoryOpen;
+}
+
+void InventoryManager::OnUpdate()
+{
+    InputManager* input = InputManager::Get();
+
+    m_notificationManager.Update();
+
+    if (input->IsKeyboardDown(K_TAB))
+    {
+        Toggle();
+        return;
+    }
+
+    if (m_isInventoryOpen == false)
+    {
+        if (input->IsMouseScrollDown(SCROLL_UP))
+            m_hotbar->GoNext(1);
+
+        else if (input->IsMouseScrollDown(SCROLL_DOWN))
+            m_hotbar->GoNext(-1);
+
+        UpdateHotbarSelection(input);
+
+        if (input->IsMouseDown(BUTTON_LEFT))
+            SelectHoveredHotbarSlot();
+        return;
+    }
+
+    UpdateHotbarSwap(input);
+}
+
+void InventoryManager::UpdateHotbarSelection(InputManager* input)
+{
+	if (input->IsKeyboardDown(K_1))
+		m_hotbar->Select(0);
+	if (input->IsKeyboardDown(K_2))
+        m_hotbar->Select(1);
+	if (input->IsKeyboardDown(K_3))
+        m_hotbar->Select(2);
+	if (input->IsKeyboardDown(K_4))
+        m_hotbar->Select(3);
+	if (input->IsKeyboardDown(K_5))
+        m_hotbar->Select(4);
+	if (input->IsKeyboardDown(K_6))
+        m_hotbar->Select(5);
+	if (input->IsKeyboardDown(K_7))
+        m_hotbar->Select(6);
+	if (input->IsKeyboardDown(K_8))
+        m_hotbar->Select(7);
+	if (input->IsKeyboardDown(K_9))
+        m_hotbar->Select(8);
+	if (input->IsKeyboardDown(K_0))
+        m_hotbar->Select(9);
+}
+
+void InventoryManager::SelectHoveredHotbarSlot()
+{
+	int c = 0;
+
+	for (InventorySlot* slot : m_hotbar->GetSlots())
 	{
-		slot->SetOnLeftClick([this, slot]() { HandleLeftClick(slot); });
-
-		slot->SetOnRightClick([this, slot]() { HandleRightClick(slot); });
-
-		slot->SetOnDoubleLeftClick([this, slot]() { HandleDoubleLeftClick(slot); });
-
-		slot->SetOnHeldLeftClick([this, slot]() { HandleLeftHeld(slot); });
-
-		slot->SetOnReleaseLeftClick([this]() { HandleLeftRelease(); });
-	}
-
-}
-
-void InventoryManager::ClearInventories()
-{
-	m_iventoriesWithFlag.clear();
-}
-
-ItemStack& InventoryManager::GetCursorStack()
-{
-	return m_cursorStack;
-}
-
-bool InventoryManager::HasCursorItem()
-{
-	return m_cursorStack.IsEmpty() == false;
-}
-
-bool InventoryManager::HasFlag(uint8_t flags, InventoryInterractionBit flag)
-{
-	return ((flags & flag) != 0);
-}
-
-InventoryManager::InventoryWithFlag* InventoryManager::FindInventory(InventorySlot* slot)
-{
-	for (InventoryWithFlag& inventory : m_iventoriesWithFlag)
-	{
-		for (InventorySlot* currentTestedSlot : *inventory.m_slots)
+		if (slot->IsMouseIn())
 		{
-			if (currentTestedSlot == slot)
-			{
-				return &inventory;
-			}
+			m_hotbar->Select(c);
+			break;
 		}
+
+		c++;
 	}
-
-	return nullptr;
 }
 
-void InventoryManager::HandleLeftClick(InventorySlot* slot)
+void InventoryManager::UpdateHotbarSwap(InputManager* input)
 {
-	if (slot == nullptr)
-		return;
+    int hotbarIndex = -1;
 
+	if (input->IsKeyboardDown(K_1))
+		hotbarIndex = 0;
+	if (input->IsKeyboardDown(K_2))
+		hotbarIndex = 1;
+	if (input->IsKeyboardDown(K_3))
+		hotbarIndex = 2;
+	if (input->IsKeyboardDown(K_4))
+		hotbarIndex = 3;
+	if (input->IsKeyboardDown(K_5))
+		hotbarIndex = 4;
+	if (input->IsKeyboardDown(K_6))
+		hotbarIndex = 5;
+	if (input->IsKeyboardDown(K_7))
+		hotbarIndex = 6;
+	if (input->IsKeyboardDown(K_8))
+		hotbarIndex = 7;
+	if (input->IsKeyboardDown(K_9))
+		hotbarIndex = 8;
+	if (input->IsKeyboardDown(K_0))
+		hotbarIndex = 9;
 
-
-	if (HasCursorItem() == false)
-	{
-		if (slot->IsEmpty())
-			return;
-
-		PickupStack(slot);
-		return;
-	}
-
-	
-	
-	if (slot->IsEmpty())
-	{
-		PlaceStack(slot);
-		return;
-
-	}
-
-
-
-	if (slot->GetStack().GetID() == m_cursorStack.GetID())
-	{
-		MergeStacks(slot);
-		return;
-	}
-
-
-
-	SwapStacks(slot);
+	if (hotbarIndex != -1)
+        return;
 }
 
-void InventoryManager::HandleRightClick(InventorySlot* slot)
+
+
+
+
+
+
+
+
+
+
+void CursorItemUI::OnInitialize()
 {
-	if (slot == nullptr)
-		return;
+	AddSprite("item_texture", "", { 54,54 }, 1, { 0,0 }, true);
+	InitText("cursor_amount", "");
 
-
-
-	if (HasCursorItem())
-	{
-		PlaceSingleItem(slot);
-		return;
-	}
-
-
-
-	if (slot->IsEmpty())
-	{
-		return;
-	}
-
-
-
-	SplitStack(slot);
+    SetDrawLayer(200);
 }
 
-void InventoryManager::HandleDoubleLeftClick(InventorySlot* slot)
+void CursorItemUI::OnUpdate()
 {
-	GatherAllStacks(slot);
+
+    Vector2f mousePOs = InputManager::Get()->GetMousePosition();
+
+    SetPosition(mousePOs);
+
+
+
+    if (m_stack == nullptr)
+        return;
+
+    RefreshVisual();
 }
 
-void InventoryManager::HandleDropOutside()
+void CursorItemUI::SetStack(ItemStack* stack)
 {
-	//Voir avec Nathan
-
-	m_cursorStack.Clear(); //En attendatn
+    m_stack = stack;
 }
 
-void InventoryManager::HandleLeftHeld(InventorySlot* slot)
+void CursorItemUI::RefreshVisual()
 {
-	if (slot == nullptr /*|| HasCursorItem() == false*/ || CanInteract(slot, InventoryInterractionBit::DragDistribute) == false)
-		return;
 
-	if (m_isDragging == false)
-	{
-		m_isDragging = true;
-		return;
-	}
+    if (m_stack->IsEmpty())
+    {   
+        SetSprite("item_texture", "");
+        SetText("");
+        return;
+    }
 
-	for (InventorySlot* current : m_alreadyDraggedSlots)
-	{
-		if (current == slot)
-			return;
-	}
+    ItemData* data = ItemDataBase::Get()->GetItem(m_stack->GetID());
 
-	m_alreadyDraggedSlots.push_back(slot);
-
-	PlaceSingleItem(slot);
-}
-
-void InventoryManager::HandleLeftRelease()
-{
-	m_isDragging = false;
-
-	m_alreadyDraggedSlots.clear();
-}
-
-void InventoryManager::PickupStack(InventorySlot* slot)
-{
-	if (CanInteract(slot, InventoryInterractionBit::PickItem) == false || slot->IsEmpty())
-		return;
-
-	m_cursorStack = slot->GetStack();
-	slot->Clear();
-}
-
-void InventoryManager::PlaceStack(InventorySlot* slot)
-{
-	if (CanInteract(slot, InventoryInterractionBit::PlaceItem) == false || slot->IsEmpty() == false || HasCursorItem() == false)
-		return;
-
-	slot->SetStack(m_cursorStack);
-	m_cursorStack.Clear();
-}
-
-void InventoryManager::SwapStacks(InventorySlot* slot)
-{
-	if (CanInteract(slot, InventoryInterractionBit::SwapItem) == false || HasCursorItem() == false)
-		return;
-
-	ItemStack intermediaire = slot->GetStack();
-	slot->SetStack(m_cursorStack);
-	m_cursorStack = intermediaire;
-}
-
-void InventoryManager::MergeStacks(InventorySlot* slot)
-{
-	if (CanInteract(slot, InventoryInterractionBit::MergeStack) == false || slot->IsEmpty() || HasCursorItem() == false)
-		return;
-
-	if (slot->GetStack().GetID() != m_cursorStack.GetID())
-		return;
-
-	int max = GetMaxStack(slot->GetStack().GetID());
-	if (max <= 0)
-		return;
-
-	int space = max - slot->GetStack().GetAmount();
-	if (space <= 0)
-		return;
-
-	int toMove = std::min(space, m_cursorStack.GetAmount());
-	slot->GetStack().SetAmount(slot->GetStack().GetAmount() + toMove); //Clean avec des var
-	m_cursorStack.SetAmount(m_cursorStack.GetAmount() - toMove); //Idem
-
-	if (m_cursorStack.GetAmount() <= 0)
-		m_cursorStack.Clear();
-
-	slot->RefreshVisual();
-}
-
-void InventoryManager::SplitStack(InventorySlot* slot)
-{
-	if (CanInteract(slot, InventoryInterractionBit::SplitStack) == false || slot->IsEmpty())
-		return;
-
-	
-	
-	if (slot->GetStack().GetAmount() <= 1)
-		return;
-
-	int half = (slot->GetStack().GetAmount() + 1) / 2;
-
-	m_cursorStack = slot->GetStack();
-	m_cursorStack.SetAmount(half);
-
-	slot->GetStack().SetAmount(slot->GetStack().GetAmount() - half);
-
-	if (slot->GetStack().GetAmount() <= 0)
-		slot->Clear();
-	else
-		slot->RefreshVisual();
-}
-
-void InventoryManager::PlaceSingleItem(InventorySlot* slot)
-{
-	if (CanInteract(slot, InventoryInterractionBit::PlaceItem) == false || HasCursorItem() == false)
-		return;
-
-	int max = GetMaxStack(m_cursorStack.GetID());
-	if (max <= 0)
-		return;
-
-	if (slot->IsEmpty())
-	{
-		ItemStack stack;
-		stack.SetID(m_cursorStack.GetID());
-		stack.SetAmount(1);
-
-		slot->SetStack(stack);
-
-		m_cursorStack.SetAmount(m_cursorStack.GetAmount() - 1);
-
-		if (m_cursorStack.GetAmount() <= 0)
-			m_cursorStack.Clear();
-
-		slot->RefreshVisual();
-
-		return;
-
-	}
-
-
-	if (slot->GetStack().GetID() != m_cursorStack.GetID() || slot->GetStack().GetAmount() >= max)
-		return;
-	
-
-	slot->GetStack().SetAmount(slot->GetStack().GetAmount() + 1);
-
-	m_cursorStack.SetAmount(m_cursorStack.GetAmount() - 1);
-
-	if (m_cursorStack.GetAmount() <= 0)
-		m_cursorStack.Clear();
-
-	slot->RefreshVisual();
-
-}
-
-void InventoryManager::GatherAllStacks(InventorySlot* slot)
-{
-	if (CanInteract(slot, InventoryInterractionBit::DoubleClickGather) == false || slot->IsEmpty())
-		return;
-
-	std::string id = slot->GetStack().GetID();
-	int max = GetMaxStack(id);
-
-	if (max <= 0)
-		return;
-
-	ItemStack& base = slot->GetStack();
-
-
-	for (InventoryWithFlag& inv : m_iventoriesWithFlag)
-	{
-		if (HasFlag(inv.m_flags, InventoryInterractionBit::DoubleClickGather) == false)
-			continue;
-
-		for (InventorySlot* s : *inv.m_slots)
-		{
-			if (s == nullptr || s == slot || s->IsEmpty() || s->GetStack().GetID() != id)
-				continue;
-
-			int space = max - base.GetAmount();
-			if (space <= 0)
-				return;
-
-			int move = std::min(space, s->GetStack().GetAmount());
-
-			base.SetAmount(base.GetAmount() + move);
-
-			s->GetStack().SetAmount(s->GetStack().GetAmount() - move);
-
-			if (s->GetStack().GetAmount() <= 0)
-				s->Clear();
-
-			s->RefreshVisual();
-		}
-	}
-	slot->RefreshVisual();
-}
-
-int InventoryManager::GetMaxStack(const std::string& itemID)
-{
-	ItemData* data = ItemDataBase::Get()->GetItem(itemID);
-
-	if (data == nullptr)
-		return -1;
-	
-	return data->GetMaxStack();
-}
-
-bool InventoryManager::CanInteract(InventorySlot* slot, InventoryInterractionBit flag)
-{
-	if (slot == nullptr)
-		return false;
-
-
-
-	InventoryWithFlag* inventory = FindInventory(slot);
-
-	if (inventory == nullptr)
-		return false;
-
-	return HasFlag(inventory->m_flags, flag);
+    if (data)
+    {
+        if (m_isVisible)
+        {
+            SetSprite("item_texture", data->GetPath());
+            SetText(std::to_string(m_stack->GetAmount()));
+            SetTextOffset({ 18.0f, 22.0f });
+        }
+        else
+        {
+            SetSprite("item_texture", "");
+            SetText("");
+            SetTextOffset({ 18.0f, 22.0f });
+        }
+    }
 }

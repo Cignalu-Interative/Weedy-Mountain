@@ -6,6 +6,7 @@
 class Hotbar;
 class Inventory;
 class InventorySlot;
+class NotificationManager;
 
 class PlayerInventory
 {
@@ -13,21 +14,11 @@ class PlayerInventory
 
 	Hotbar* m_hotbar = nullptr;
 
-	bool m_isInventoryOpen = false;
-
-	InventorySlot* m_selectedSlot = nullptr;
+	NotificationManager* m_notifManager = nullptr;
 
 public:
 
 	PlayerInventory(Inventory* inv, Hotbar* hot);
-
-
-
-	void Open();
-	void Close();
-	void Toggle();
-
-	bool IsOpen();
 
 
 
@@ -49,8 +40,6 @@ public:
 
 	Inventory* GetInventory();
 	Hotbar* GetHotbar();
-	void Select(int index);
-	void GoNext(int dir);
 	int GetSelectedIndex();
 	ItemStack& GetSelectedStack();
 	const std::string& GetSelectedItemID();
@@ -62,6 +51,6 @@ public:
 	void Clear();
 
 
+	void SetNotificationManager(NotificationManager* notificationManager);
 
-	void OnUpdate();
 };

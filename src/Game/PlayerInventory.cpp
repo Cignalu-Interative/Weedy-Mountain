@@ -6,6 +6,7 @@
 #include "ItemDataBase.h"
 #include "2DPendentLib/InputManager.h"
 #include "DemoScene.h"
+#include "NotificationManager.h"
 
 #include <iostream>
 
@@ -13,39 +14,6 @@ PlayerInventory::PlayerInventory(Inventory* inv, Hotbar* hot)
 {
 	m_inventory = inv;
 	m_hotbar = hot;
-}
-
-
-
-void PlayerInventory::Open()
-{
-	m_isInventoryOpen = true;
-	m_inventory->SetVisible(true);
-	m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, (m_hotbar->GetScene<DemoScene>()->GetWindowHeight() + (70.0f * 3.0f)) / 2.0f });
-	m_hotbar->RealignSlots();
-	m_hotbar->SetIsInventoryOpen(true);
-}
-
-void PlayerInventory::Close()
-{
-	m_isInventoryOpen = false;
-	m_inventory->SetVisible(false);
-	m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, ((float) m_hotbar->GetScene<DemoScene>()->GetWindowHeight())}, {0.5f, 1.0f});
-	m_hotbar->RealignSlots();
-	m_hotbar->SetIsInventoryOpen(false);
-}
-
-void PlayerInventory::Toggle()
-{
-	if (m_isInventoryOpen)
-		Close();
-	else
-		Open();
-}
-
-bool PlayerInventory::IsOpen()
-{
-	return m_isInventoryOpen;
 }
 
 
@@ -103,6 +71,18 @@ int PlayerInventory::AddItem(const std::string& ID, int amount, bool requireFull
 
 	int addedInventory = m_inventory->AddItem(ID, remaining, false);
 	remaining -= addedInventory;
+
+
+
+	if (amount - remaining > 0 && m_notifManager)
+	{
+		ItemData* data = ItemDataBase::Get()->GetItem(ID);
+
+		if (data)
+		{
+			m_notifManager->AddNotification("notificationBackground", data->GetPath(), data->GetName(), data->GetDescription(), std::to_string(amount - remaining));
+		}
+	}
 
 	return amount - remaining;
 }
@@ -173,16 +153,6 @@ Hotbar* PlayerInventory::GetHotbar()
 	return m_hotbar;
 }
 
-void PlayerInventory::Select(int index)
-{
-	m_hotbar->Select(index);
-}
-
-void PlayerInventory::GoNext(int dir)
-{
-	m_hotbar->GoNext(dir);
-}
-
 int PlayerInventory::GetSelectedIndex()
 {
 	return m_hotbar->GetSelectedIndex();
@@ -219,63 +189,7 @@ void PlayerInventory::Clear()
 		slot->Clear();
 }
 
-
-
-void PlayerInventory::OnUpdate()
+void PlayerInventory::SetNotificationManager(NotificationManager* notificationManager)
 {
-	InputManager* input = InputManager::Get();
-
-
-	if (input->IsKeyboardDown(K_TAB))
-		Toggle();
-
-	if (m_isInventoryOpen == false)
-	{
-		if (input->IsMouseScrollDown(SCROLL_UP))
-		{
-			GoNext(1);
-		}
-		else if (input->IsMouseScrollDown(SCROLL_DOWN))
-		{
-			GoNext(-1);
-		}
-
-
-		if (input->IsKeyboardDown(K_1))
-			Select(0);
-		if (input->IsKeyboardDown(K_2))
-			Select(1);
-		if (input->IsKeyboardDown(K_3))
-			Select(2);
-		if (input->IsKeyboardDown(K_4))
-			Select(3);
-		if (input->IsKeyboardDown(K_5))
-			Select(4);
-		if (input->IsKeyboardDown(K_6))
-			Select(5);
-		if (input->IsKeyboardDown(K_7))
-			Select(6);
-		if (input->IsKeyboardDown(K_8))
-			Select(7);
-		if (input->IsKeyboardDown(K_9))
-			Select(8);
-		if (input->IsKeyboardDown(K_0))
-			Select(9);
-
-		int c = 0;
-
-		if (input->IsMouseDown(BUTTON_LEFT) == false)
-			return;
-
-		for (InventorySlot* slot : m_hotbar->GetSlots())
-		{
-			if (slot->IsMouseIn())
-			{
-				m_hotbar->Select(c);
-				break;
-			}
-
-			c++;
-		}
-	}
+	m_notifManager = notificationManager;
 }

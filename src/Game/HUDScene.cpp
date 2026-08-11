@@ -226,7 +226,7 @@ void HUDScene::BarButtonInit()
 	m_jobsButton->SetOnHoverEnter([this] {m_jobsButton->SetPosition(m_jobsButton->GetPosition() + Vector2f{ 20,0 }); });
 	m_jobsButton->SetOnHoverStay([this] {m_jobsButton->SetSprite("button2");  });
 	m_jobsButton->SetOnHoverExit([this] {m_jobsButton->SetSprite("button"); m_jobsButton->SetPosition(m_jobsButton->GetPosition() - Vector2f{ 20,0 }); });
-	m_jobsButton->SetOnLeftClick([this] {m_jobsUi->Toggle(); });
+	m_jobsButton->SetOnLeftClick([this] {m_jobsUi->Open(); m_questMenu->Close(); m_recipe->Close(); m_collectionUi->Close(); });
 	m_jobsButton->GetCollider()->SetIsTrigger(true);
 	m_jobsButton->SetDrawLayer(INT_MAX - 1);
 
@@ -238,7 +238,7 @@ void HUDScene::BarButtonInit()
 	m_questButton->SetOnHoverEnter([this] {m_questButton->SetPosition(m_questButton->GetPosition() + Vector2f{ 20,0 }); });
 	m_questButton->SetOnHoverStay([this] {m_questButton->SetSprite("button2"); });
 	m_questButton->SetOnHoverExit([this] {m_questButton->SetSprite("button"); m_questButton->SetPosition(m_questButton->GetPosition() - Vector2f{ 20,0 }); });
-	m_questButton->SetOnLeftClick([this] {m_questMenu->Open(&QuestManager::Get()->GetQuestsInProcess()); });
+	m_questButton->SetOnLeftClick([this] {m_questMenu->Open(&QuestManager::Get()->GetQuestsInProcess()); m_jobsUi->Close(); m_recipe->Close(); m_collectionUi->Close(); });
 	m_questButton->GetCollider()->SetIsTrigger(true);
 	m_questButton->SetDrawLayer(INT_MAX - 1);
 
@@ -250,7 +250,7 @@ void HUDScene::BarButtonInit()
 	m_recipiesButton->SetOnHoverEnter([this] {m_recipiesButton->SetPosition(m_recipiesButton->GetPosition() + Vector2f{ 20,0 }); });
 	m_recipiesButton->SetOnHoverStay([this] {m_recipiesButton->SetSprite("button2"); });
 	m_recipiesButton->SetOnHoverExit([this] {m_recipiesButton->SetSprite("button"); m_recipiesButton->SetPosition(m_recipiesButton->GetPosition() - Vector2f{ 20,0 }); });
-	m_recipiesButton->SetOnLeftClick([this] {m_recipe->Open(); });
+	m_recipiesButton->SetOnLeftClick([this] {m_recipe->Open(); m_jobsUi->Close(); m_questMenu->Close(); m_collectionUi->Close(); });
 	m_recipiesButton->GetCollider()->SetIsTrigger(true);
 	m_recipiesButton->SetDrawLayer(INT_MAX - 1);
 
@@ -262,7 +262,7 @@ void HUDScene::BarButtonInit()
 	m_collectionButton->SetOnHoverEnter([this] {m_collectionButton->SetPosition(m_collectionButton->GetPosition() + Vector2f{ 20,0 }); });
 	m_collectionButton->SetOnHoverStay([this] {m_collectionButton->SetSprite("button2"); });
 	m_collectionButton->SetOnHoverExit([this] {m_collectionButton->SetSprite("button"); m_collectionButton->SetPosition(m_collectionButton->GetPosition() - Vector2f{ 20,0 }); });
-	m_collectionButton->SetOnLeftClick([this] {m_collectionUi->Open(); });
+	m_collectionButton->SetOnLeftClick([this] {m_collectionUi->Open(); m_jobsUi->Close(); m_recipe->Close(); m_questMenu->Close(); });
 	m_collectionButton->GetCollider()->SetIsTrigger(true);
 	m_collectionButton->SetDrawLayer(INT_MAX - 1);
 }
@@ -274,6 +274,8 @@ void HUDScene::HideUi()
 	m_timeUi->SetIsVisible(false);
 	m_cashUi->SetIsVisible(false);
 	m_dateUi->SetIsVisible(false);
+	m_backgroundUiTimeDate->SetIsVisible(false);
+	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(false);
 }
 
 void HUDScene::ShowUi()
@@ -283,4 +285,6 @@ void HUDScene::ShowUi()
 	m_timeUi->SetIsVisible(true);
 	m_cashUi->SetIsVisible(true);
 	m_dateUi->SetIsVisible(true);
+	m_backgroundUiTimeDate->SetIsVisible(true);
+	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(true);
 }

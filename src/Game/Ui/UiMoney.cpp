@@ -34,3 +34,10 @@ void UiMoney::SetPosition(Vector2f p_position, Vector2f p_anchor)
 	Vector2f textPos = { spriteRightPos.GetX() - 20, spriteRightPos.GetY() };
 	Debug::Get()->GetText("Money")->SetPosition(textPos);
 }
+
+void UiMoney::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+	GetSprite("UiMoney")->SetIsVisible(p_isVisible);
+	Debug::Get()->GetText("Money")->SetIsVisible(p_isVisible);
+}

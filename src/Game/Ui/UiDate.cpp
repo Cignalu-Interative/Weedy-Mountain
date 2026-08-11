@@ -31,3 +31,10 @@ void UiDate::SetPosition(Vector2f p_position, Vector2f p_anchor )
 
 	GetSprite("Calendar")->SetPosition(textLeftPosition, { 1,0.5f });
 }
+
+void UiDate::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+	GetSprite("Calendar")->SetIsVisible(p_isVisible);
+	Debug::Get()->GetText("Date")->SetIsVisible(p_isVisible);
+}

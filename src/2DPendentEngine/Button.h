@@ -50,5 +50,6 @@ public:
 	Text* GetButtonText() { return m_text; }
 
 	void SetIsVisible(bool p_isVisible);
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 };
 

@@ -43,3 +43,12 @@ void UiStats::SetPosition(Vector2f p_position, Vector2f p_anchor)
 	m_uiStamina->SetPosition(staminaPos);
 	m_uiToxicity->SetPosition(toxicityPos);
 }
+
+void UiStats::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+
+	m_uiLife->SetIsVisible(p_isVisible);
+	m_uiStamina->SetIsVisible(p_isVisible);
+	m_uiToxicity->SetIsVisible(p_isVisible);
+}

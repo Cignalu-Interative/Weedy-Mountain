@@ -121,3 +121,13 @@ void Button::SetIsVisible(bool p_isVisible)
 	GetScene()->GetGeometry<Text>(m_textID)->SetIsVisible(p_isVisible);
 
 }
+
+void Button::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	if (GetScene()->GetGeometry<Text>(m_textID) == nullptr)
+		return;
+
+	GetScene()->GetGeometry<Text>(m_textID)->SetPosition(GetPosition());
+}

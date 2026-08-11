@@ -44,6 +44,7 @@ int RecipesMenu::PlaceRecipeBlock(std::vector<RecipeBlock*> p_recipeVector, int 
 			previousPosY += 100;
 		else
 			previousPosY += 150;
+
 		if (previousPosY > bottomLeftPos.GetY())
 		{
 			nextIndex = i;

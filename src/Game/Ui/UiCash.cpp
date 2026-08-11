@@ -31,3 +31,10 @@ void UiCash::SetPosition(Vector2f p_position, Vector2f p_anchor)
 	Vector2f textPos = { spriteRightPos.GetX() - 20, spriteRightPos.GetY() };
 	Debug::Get()->GetText("UiCashText")->SetPosition(textPos);
 }
+
+void UiCash::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+	GetSprite("UiCash")->SetIsVisible(p_isVisible);
+	Debug::Get()->GetText("UiCashText")->SetIsVisible(p_isVisible);
+}

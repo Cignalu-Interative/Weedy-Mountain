@@ -29,3 +29,10 @@ void UiTime::SetPosition(Vector2f p_position, Vector2f p_anchor)
 	GetSprite("Clock")->SetPosition(GetPosition() + Vector2f{0, 20});
 	Debug::Get()->GetText("time")->SetPosition(GetSprite("Clock")->GetPosition({1,0.5}) + Vector2f{25,0});
 }
+
+void UiTime::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+	GetSprite("Clock")->SetIsVisible(p_isVisible);
+	Debug::Get()->GetText("time")->SetIsVisible(p_isVisible);
+}

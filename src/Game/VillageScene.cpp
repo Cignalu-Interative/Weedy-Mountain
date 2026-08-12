@@ -72,6 +72,30 @@ void VillageScene::OnInitialize()
 			{
 				QuestManager::Get()->SetStateQuestInProcess("Quest");
 			}
+			if (QuestManager::Get()->GetQuestOnNotStarted("Quest2") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("Quest2");
+			}
+			if (QuestManager::Get()->GetQuestOnNotStarted("Quest3") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("Quest3");
+			}
+			if (QuestManager::Get()->GetQuestOnNotStarted("Quest4") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("Quest4");
+			}
+			if (QuestManager::Get()->GetQuestOnNotStarted("Quest KAKI") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("Quest KAKI");
+			}
+			if (QuestManager::Get()->GetQuestOnNotStarted("KAKIKOU LE CAILLOU") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("KAKIKOU LE CAILLOU");
+			}
+			if (QuestManager::Get()->GetQuestOnNotStarted("ROGER LE CASTOR") != nullptr)
+			{
+				QuestManager::Get()->SetStateQuestInProcess("ROGER LE CASTOR");
+			}
 			if (QuestManager::Get()->GetQuestOnNotStarted("CASTOR-AMA") != nullptr)
 			{
 				QuestManager::Get()->SetStateQuestInProcess("CASTOR-AMA");

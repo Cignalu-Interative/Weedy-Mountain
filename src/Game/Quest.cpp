@@ -44,8 +44,8 @@ void Quest::AddRequirement(CheckQuest p_CheckType, const std::string& p_idTextur
 
 	m_icone->AddSprite("requirementSprite_" + std::to_string(m_requirements.size()), texturename, m_dimSpriteRequirement, 0, {0,0}, true);
 	
-	requirement->s_collectedText = Debug::Get()->CreateText("requirementTextHarvested_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_collectedAmount), ColorsNamed::Green, true, true);
-	requirement->s_requiredText = Debug::Get()->CreateText("requirementText_" + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_requiredAmount), ColorsNamed::Red, true, true);
+	requirement->s_collectedText = Debug::Get()->CreateText("requirementCollected_" + GetName() + std::to_string(m_requirements.size()), {0,0}, std::to_string(requirement->s_collectedAmount), ColorsNamed::Green, true, true);
+	requirement->s_requiredText = Debug::Get()->CreateText("requirementRequired_" + GetName() + std::to_string(m_requirements.size()), { 0,0 }, std::to_string(requirement->s_requiredAmount), ColorsNamed::Red, true, true);
 	
 	requirement->s_requiredText->SetDrawLayer(200);
 	requirement->s_collectedText->SetDrawLayer(200);
@@ -175,10 +175,10 @@ void Quest::ResizeGrid()
 	for (auto& [index, requirement] : m_requirements)
 	{
 		Sprite* sprite = m_icone->GetSprite("requirementSprite_" + std::to_string(index));
-		Vector2f spritePosLeftDown = sprite->GetPosition({ 0.f, 0.5f });
+		Vector2f spritePosLeftDown = sprite->GetPosition({ 0.f, 1.0f });
 		Vector2f spritePosRightDown = sprite->GetPosition({ 1.f, 1.f });
-		requirement->s_collectedText->SetPosition({ spritePosLeftDown.GetX(), spritePosLeftDown.GetY() + 10 });
-		requirement->s_requiredText->SetPosition({ spritePosRightDown.GetX(), spritePosRightDown.GetY() - 10 });
+		requirement->s_collectedText->SetPosition({ spritePosLeftDown.GetX(), spritePosLeftDown.GetY()});
+		requirement->s_requiredText->SetPosition({ spritePosRightDown.GetX(), spritePosRightDown.GetY() - 32 });
 
 		if (index == 0)
 		{

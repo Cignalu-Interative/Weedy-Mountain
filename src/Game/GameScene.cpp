@@ -197,7 +197,6 @@ void GameScene::OnInitialize()
 	qm->GetQuestOnNotStarted("CASTOR-AMA")->AddRequirement(CheckQuest::SellItem, "ITEM_SUN_FLOWER", 3);
 	qm->GetQuestOnNotStarted("CASTOR-AMA")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 69);
 	qm->GetQuestOnNotStarted("CASTOR-AMA")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to sell 3 sunflower and you will be rewarded with 69 eggs.");
-
 	Chest* c = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
 }
 

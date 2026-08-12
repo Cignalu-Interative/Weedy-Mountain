@@ -68,7 +68,7 @@ bool Window::CreateWindow()
 	m_windowDimension.SetX((int)(m_displayMode.w / SCREEN_SCALE));
 	m_windowDimension.SetY((int)(m_displayMode.h / SCREEN_SCALE));
 
-	m_window = SDL_CreateWindow("Weddy Mountain",
+	m_window = SDL_CreateWindow("Weedy Mountain",
 		m_windowDimension.GetX(),
 		m_windowDimension.GetY(),
 		SDL_WINDOW_RESIZABLE |

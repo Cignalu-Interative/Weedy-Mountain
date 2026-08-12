@@ -9,16 +9,14 @@
 
 void Text::CreateText()
 {
-	size_t lenText = strlen(m_text.c_str());
-
-	m_dynamicText = TTF_CreateText(m_textEngine, m_font, m_text.c_str(), lenText);
+	m_dynamicText = TTF_CreateText(m_textEngine, m_font, m_text.c_str(), 0);
 	if (m_dynamicText == NULL)
 	{
 		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_CreateText/TTF_CreateText m_dynamicText non reussie : %s", SDL_GetError());
 		return;
 	}
 
-	m_outlineText = TTF_CreateText(m_textEngine, m_outlineFont, m_text.c_str(), lenText);
+	m_outlineText = TTF_CreateText(m_textEngine, m_outlineFont, m_text.c_str(), 0);
 	if (m_outlineText == NULL)
 	{
 		SDL_Log("Lib/Text.cpp/CreateTexture/TTF_CreateText/TTF_CreateText m_outlineText non reussie : %s", SDL_GetError());
@@ -149,14 +147,12 @@ void Text::SetText(const std::string& p_text)
 		m_text = " ";
 	}
 
-	size_t lenText = strlen(m_text.c_str());
-
-	if (TTF_SetTextString(m_dynamicText, m_text.c_str(), lenText) == false)
+	if (TTF_SetTextString(m_dynamicText, m_text.c_str(), 0) == false)
 	{
 		SDL_Log("Text::SetText/TTF_SetTextString m_dynamicText failed : %s", SDL_GetError());
 		return;
 	}
-	if (TTF_SetTextString(m_outlineText, m_text.c_str(), lenText) == false)
+	if (TTF_SetTextString(m_outlineText, m_text.c_str(), 0) == false)
 	{
 		SDL_Log("Text::SetText/TTF_SetTextString m_outlineText failed : %s", SDL_GetError());
 		return;
@@ -242,14 +238,19 @@ void Text::Draw(Render* f_render, Window* f_window, Camera* p_camera)
 		dimension.GetX(),
 		dimension.GetY() };
 
+	int drawX = static_cast<int>(std::round(m_textRect.x));
+	int drawY = static_cast<int>(std::round(m_textRect.y));
+
 	if (m_isHasOutline)
 	{
-		TTF_DrawRendererText(m_outlineText, m_textRect.x, m_textRect.y);
+		TTF_DrawRendererText(m_outlineText, drawX, drawY);
 	}
 	
 	float sizetext = m_outlineSize + m_outlineSize * 0.5f;
+	int offsetDrawX = static_cast<int>(std::round(m_textRect.x + sizetext));
+	int offsetDrawY = static_cast<int>(std::round(m_textRect.y + sizetext));
 
-	TTF_DrawRendererText(m_dynamicText, m_textRect.x + sizetext, m_textRect.y + sizetext);
+	TTF_DrawRendererText(m_dynamicText, offsetDrawX, offsetDrawY);
 }
 
 void Text::UpdateTexture()

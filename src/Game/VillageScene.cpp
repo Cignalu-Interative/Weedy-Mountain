@@ -30,6 +30,7 @@
 #include "2DPendentLib/ObjectTiled.h"
 
 #include "QuestManager.h"
+#include "PolicemanSpawnManager.h"
 
 void VillageScene::OnInitialize()
 {
@@ -131,13 +132,8 @@ void VillageScene::OnInitialize()
 	
 	m_atm = CreateEntity<ATM>(m_spawnPoint + Vector2f(350, -100), { 32, 46 }, "ATM", Shape::Rectangle);
 
-	m_policeman = CreateEntity<Policeman>({ 500, 500 }, { 16, 32 }, "player", Shape::Rectangle);
-	m_policeman->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
-
 	GetCamera()->SetFollowedEntity(m_player);
-	Application::Get()->SetClampCameraToCurrentMap(true);
-
-	
+	Application::Get()->SetClampCameraToCurrentMap(true);	
 }
 
 void VillageScene::OnEvent()
@@ -202,6 +198,7 @@ void VillageScene::OnEvent()
 
 void VillageScene::OnUpdate()
 {
+	PolicemanSpawnManager::Get().Update();
 }
 
 void VillageScene::OnDestroy()

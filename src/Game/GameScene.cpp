@@ -94,7 +94,7 @@ void GameScene::OnInitialize()
 	m_player->GetPhysicsBody()->SetLinearDamping(0.f);
 	m_player->GetPhysicsBody()->SetRestitution(0.f);
 	
-	GetCamera()->SetZoom(5.f);
+	//GetCamera()->SetZoom(5.f);
 	GetCamera()->SetFollowedEntity(m_player);
 	GetCamera()->SetSmoothSpeed(2);
 	Application::Get()->SetClampCameraToCurrentMap(true);

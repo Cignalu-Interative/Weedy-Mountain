@@ -41,14 +41,6 @@ void GameData::Update()
 	{
 		m_currentWeather = weatherManager.GetWeather();
 	}
-
-	if (m_currentWeather == Weather::Clear)
-		std::cout << "Clear" << std::endl;
-	else if (m_currentWeather == Weather::Rain)
-		std::cout << "Rain" << std::endl;
-	else if (m_currentWeather == Weather::Storm)
-		std::cout << "Storm" << std::endl;
-
 }
 
 float GameData::GetTimeSpent()

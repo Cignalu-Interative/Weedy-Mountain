@@ -46,8 +46,10 @@ protected:
 	void OnCollisionStay(Collider* p_self, Collider* p_other, CollisionSide p_side) override;
 	void OnCollisionExit(Collider* p_self, Collider* p_other, CollisionSide p_side) override;
 
-public:
 
+
+public:
+	void OnDestroy() override {};
 	void SetupStateMachine();
 
 	void SetIdleCooldownEnded(bool p_value) { m_isIdleCooldownEnded = p_value; }

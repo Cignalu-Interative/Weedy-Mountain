@@ -5,22 +5,22 @@ void GlobalMenuScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 
-	Entity* background = CreateEntity<Entity>(GetWindowCenter(), GetWindowSize(), "InventoryWeedyMountain", Shape::Rectangle, true);
+	Entity* background = CreateEntity<Entity>(GetWindowCenter(), GetWindowSize(), "TitleScreen", Shape::Rectangle, true);
 	background->GetSprite()->ResizeStretched(GetWindowSize());
 	background->SyncSprites();
 
-	Debug::Get()->CreateText("GameTitle", { background->GetPosition({0.25f, 0.02f })}, "WEEDY MOUNTAIN ", ColorsNamed::Black, true);
-	Debug::Get()->GetText("GameTitle")->SetFontSize(200);
+	//Debug::Get()->CreateText("GameTitle", { background->GetPosition({0.25f, 0.02f })}, "WEEDY MOUNTAIN ", ColorsNamed::Black, true);
+	//Debug::Get()->GetText("GameTitle")->SetFontSize(200);
 
 	Vector2f windowCenter = GetWindowCenter();
 
-	Vector2f settingsButtonPos = windowCenter + Vector2f{0,100};
-	Vector2f quitButtonPos = windowCenter + Vector2f{0,200};
+	Vector2f settingsButtonPos = windowCenter + Vector2f{0,125};
+	Vector2f quitButtonPos = windowCenter + Vector2f{0,325};
 	Vector2i buttonDim = { 200,75 };
 	if (m_hasSave)
 	{
 		//m_newGameButton->SetIsVisible(false);
-		m_continueButton = CreateButton({ windowCenter - Vector2f{0, 100} }, buttonDim, "button", "continueButton", "CONTINUE");
+		m_continueButton = CreateButton({ windowCenter - Vector2f{0, -225} }, buttonDim, "button", "continueButton", "CONTINUE");
 		m_continueButton->GetSprite()->ResizeStretched(m_continueButton->GetDimension());
 		m_continueButton->SyncSprites();
 		m_continueButton->SetOnHoverStay([this] {m_continueButton->SetSprite("button2"); });
@@ -28,7 +28,7 @@ void GlobalMenuScene::OnInitialize()
 		Debug::Get()->GetText(m_continueButton->GetTextID())->SetFontSize(50);
 		Debug::Get()->GetText(m_continueButton->GetTextID())->SetPosition(m_continueButton->GetPosition());
 
-		m_newGameButton = CreateButton({ windowCenter }, buttonDim, "button", "newGameButton", "NEW GAME");
+		m_newGameButton = CreateButton({ windowCenter - Vector2f{0, -25} }, buttonDim, "button", "newGameButton", "NEW GAME");
 		m_newGameButton->GetSprite()->ResizeStretched(m_newGameButton->GetDimension());
 		m_newGameButton->SyncSprites();
 		m_newGameButton->SetOnHoverStay([this] {m_newGameButton->SetSprite("button2"); });
@@ -38,11 +38,11 @@ void GlobalMenuScene::OnInitialize()
 	}
 	else
 	{
-		settingsButtonPos = windowCenter;
-		quitButtonPos = windowCenter + Vector2f{ 0,100 };
+		settingsButtonPos = windowCenter + Vector2f{0,125};
+		quitButtonPos = windowCenter + Vector2f{ 0,225 };
 		//m_newGameButton->SetIsVisible(false);
 
-		m_startButton = CreateButton({ windowCenter - Vector2f{0, 100} }, buttonDim, "button", "startButton", "START");
+		m_startButton = CreateButton({ windowCenter - Vector2f{0, -25} }, buttonDim, "button", "startButton", "START");
 		m_startButton->GetSprite()->ResizeStretched(m_startButton->GetDimension());
 		m_startButton->SyncSprites();
 		m_startButton->SetOnHoverStay([this] {m_startButton->SetSprite("button2"); });

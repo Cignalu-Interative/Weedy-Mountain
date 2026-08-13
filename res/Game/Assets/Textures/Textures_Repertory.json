@@ -19,6 +19,9 @@
       "path": "../../res/Game/Assets/Textures/Clock.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Diamond.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Diamond_Ore.png"
     },
     {
@@ -7691,6 +7694,9 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/SunFlower.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/TitleScreen.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Tools/Diamond_Axe.png"

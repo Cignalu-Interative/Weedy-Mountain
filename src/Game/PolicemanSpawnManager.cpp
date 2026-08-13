@@ -47,14 +47,14 @@ void PolicemanSpawnManager::Update()
 {
 	GameData gd = GameData::Get();
 
-	if (gd.GetDayName() == "Mercredi" || gd.GetDayName() == "Jeudi" || gd.GetDayName() == "Dimanche")
-	{
-		return;
-	}
-
 	if (gd.GetHour() >= 20 && m_policeman->ToDestroy() == false)
 	{
 		DespawnPoliceman();
+		return;
+	}
+
+	if (gd.GetDayName() == "Mercredi" || gd.GetDayName() == "Jeudi" || gd.GetDayName() == "Dimanche")
+	{
 		return;
 	}
 

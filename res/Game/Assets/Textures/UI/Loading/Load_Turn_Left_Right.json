@@ -1,0 +1,37 @@
+{
+    "animations": {
+        "Load_Turn_Left": {
+            "frame_time": 0.11999999731779099,
+            "frames": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ],
+            "loop": true
+        },
+        "Load_Turn_Right": {
+            "frame_time": 0.11999999731779099,
+            "frames": [
+                8,
+                9,
+                10,
+                11,
+                12,
+                13,
+                14,
+                15
+            ],
+            "loop": true
+        }
+    },
+    "frame_size": {
+        "height": 64,
+        "width": 64
+    },
+    "texture": "D:\\Repo_GitHub\\aberny-oss\\Cignalu-Engine-2Dpendent\\res\\Game\\Assets\\Textures\\UI\\Loading\\Load_Turn_Left_Right.png"
+}

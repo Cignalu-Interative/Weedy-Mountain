@@ -25,9 +25,9 @@
 #include "UiChest.h"
 
 #include "RecipesUi.h"
-#include "RecipeDataBase.h"
-#include "ItemDataBase.h"
 #include "Ui/UiShop.h"
+
+#include "LoadMenuManager.h"
 
 void HUDScene::OnInitialize()
 {
@@ -36,6 +36,8 @@ void HUDScene::OnInitialize()
 	RecipeDataBase::Get()->LoadFromJSON("../../res/Game/Assets/db/items_db.json");
 
 	QuestManager::Get()->SetScene(this);
+
+	LoadMenuManager::Get()->SetScene(this);
 
 	Vector2f uiStatsPos = { 1175, 600 };
 
@@ -100,7 +102,8 @@ void HUDScene::OnInitialize()
 	m_recipe = CreateEntity<RecipesUi>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
 	m_recipe->SetDrawLayer(INT_MAX - 200);
 	m_recipe->Close();
-;
+
+	LoadMenuManager::Get()->CreateLoadMenu({ (float)GetWindowWidth() / 2.0f, (float)GetWindowHeight() / 2.0f }, { 400,400 }, "Load_Turn_Left_Right", true, "../../res/Game/Assets/Textures/UI/Loading/Load_Turn_Left_Right.json");
 }
 
 void HUDScene::OnEvent()

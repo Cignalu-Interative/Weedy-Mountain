@@ -38,7 +38,7 @@ public :
 
 	void ReadJson(const std::string& p_path);
 
-	void ReadJsonYuki(const std::string& p_path);
+	bool ReadJsonYuki(const std::string& p_path);
 
 	const InfoAnimation* GetInfoAnimationByName(const std::string& name) const;
 	Vector2i GetFrameDimension() const { return m_frameDimension; }

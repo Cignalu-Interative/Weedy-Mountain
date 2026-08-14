@@ -16,7 +16,7 @@ void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool 
         std::cout << "no Json for animation " << std::endl;
 
 	m_parser = new ParserSpriteSheet();
-    m_parser->ReadJsonYuki(p_infoAnimationSpriteSheet);
+    m_hasAnimation = m_parser->ReadJsonYuki(p_infoAnimationSpriteSheet);
     m_frameSize = m_parser->GetFrameDimension();
     m_totalFrames = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_nbFrames.size();
     m_frameTime = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_frameTime;

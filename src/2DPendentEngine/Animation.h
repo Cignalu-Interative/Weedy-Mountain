@@ -10,7 +10,7 @@ class Animation
 {
 	Sprite* m_sprite = nullptr;
 
-	bool m_hasAnimation = true;
+	bool m_hasAnimation = false;
 	bool m_isStop = false;
 
 	int m_currentFrame = 0;

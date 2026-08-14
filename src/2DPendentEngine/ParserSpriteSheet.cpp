@@ -56,14 +56,14 @@ void ParserSpriteSheet::ReadJson(const std::string& p_path)
   //  }
 }
 
-void ParserSpriteSheet::ReadJsonYuki(const std::string& p_path)
+bool ParserSpriteSheet::ReadJsonYuki(const std::string& p_path)
 {
     std::ifstream file(p_path);
 
     if (!file.is_open())
     {
         std::cerr << "Json file for animation " << p_path << " not found" << std::endl;
-        return;
+        return false;
     }
 
     std::cerr << "Json file for animation " << p_path << " loaded successfully" << std::endl;
@@ -72,7 +72,7 @@ void ParserSpriteSheet::ReadJsonYuki(const std::string& p_path)
     file >> spriteSheet_json;
 
     if (spriteSheet_json.contains("animations") == false)
-        return;
+        return false;
 
     for (auto& [animation, data] : spriteSheet_json["animations"].items())
     {
@@ -87,7 +87,7 @@ void ParserSpriteSheet::ReadJsonYuki(const std::string& p_path)
     }
 
     if (spriteSheet_json.contains("frame_size") == false)
-        return;
+        return false;
 
     for (auto& [dimension, value] : spriteSheet_json["frame_size"].items())
     {
@@ -96,11 +96,13 @@ void ParserSpriteSheet::ReadJsonYuki(const std::string& p_path)
     }
 
     if (spriteSheet_json.contains("texture") == false)
-        return;
+        return false;
 
     m_texturePath = spriteSheet_json["texture"].get<std::string>();
 
     std::cerr << "Json file for animation " << p_path << " read successfully" << std::endl;
+
+    return true;
 }
 
 const InfoAnimation* ParserSpriteSheet::GetInfoAnimationByName(const std::string& name) const

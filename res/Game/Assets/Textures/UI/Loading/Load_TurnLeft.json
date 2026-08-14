@@ -1,0 +1,23 @@
+{
+    "animations": {
+        "Load_TurnLeft": {
+            "frame_time": 0.11999999731779099,
+            "frames": [
+                0,
+                1,
+                2,
+                3,
+                4,
+                5,
+                6,
+                7
+            ],
+            "loop": true
+        }
+    },
+    "frame_size": {
+        "height": 64,
+        "width": 64
+    },
+    "texture": "..\\..\\res\\Game\\Assets\\Textures\\UI\\Loading\\Load_TurnLeft.png"
+}

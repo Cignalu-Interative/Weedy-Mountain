@@ -7747,6 +7747,12 @@
       "path": "../../res/Game/Assets/Textures/UI/Loading/Background_Black.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/UI/Loading/Load_TurnLeft.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/UI/Loading/Load_TurnRight.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/UI/Loading/Load_Turn_Left_Right.png"
     },
     {

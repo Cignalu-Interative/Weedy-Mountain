@@ -94,8 +94,13 @@ void RecipesUi::OnInitialize()
 	m_textBox->GetText()->SetColor(ColorsNamed::White);
 	m_textBox->SetIsVisible(false);
 
-	AddSprite("LoupeIcon", "loupe", { 32,32 }, 1, { -Vector2f{ 290,180 } }, true);
+	AddSprite("LoupeIcon", "Search_Bar", { 40,40}, 1, {-Vector2f{290,180}}, true);
 
+	m_textBoxBackground = GetScene()->CreateEntity<Entity>(m_textBox->GetPosition(), m_textBox->GetDimension(), "Search_Bar2", Shape::Rectangle,true);
+	m_textBoxBackground->GetSprite()->ResizeStretched(m_textBoxBackground->GetDimension());
+	m_textBoxBackground->GetCollider()->SetIsTrigger(true);
+	m_textBoxBackground->SetDrawLayer(m_textBox->GetDrawLayer() - 1);
+	m_textBoxBackground->SyncSprites(); 
 }
 
 void RecipesUi::OnUpdate()
@@ -148,6 +153,8 @@ void RecipesUi::OnEvent()
 
 void RecipesUi::Open()
 {
+	GetScene<HUDScene>()->HideUi();
+
 	Vector2f pos = GetPosition({ 0,0.5f });
 	
 	float offsetY = pos.GetY() + 80;
@@ -162,10 +169,9 @@ void RecipesUi::Open()
 	m_previousMenuButton->SetIsVisible(true);
 	m_craftButton->SetIsVisible(true);
 	m_textBox->SetIsVisible(true);
-
+	m_textBoxBackground->SetIsVisible(true);
 	m_menus[m_actualPageMenu]->SetIsVisible(true);
 	Debug::Get()->GetText("CraftTitle")->SetIsVisible(true);
-	GetScene<HUDScene>()->HideUi();
 
 }
 
@@ -187,6 +193,8 @@ void RecipesUi::Close()
 	m_previousMenuButton->SetIsVisible(false);
 	m_craftButton->SetIsVisible(false);
 	m_textBox->SetIsVisible(false);
+	m_textBoxBackground->SetIsVisible(false);
+
 	Debug::Get()->GetText("CraftTitle")->SetIsVisible(false);
 	for (RecipesMenu* menu : m_menus)
 	{
@@ -394,11 +402,12 @@ void RecipesUi::SetPosition(Vector2f p_position, Vector2f p_anchor)
 	Vector2f nextButtonPos = m_menus[0]->GetPosition({ 1,1 }) + Vector2f{ -50, 30 };
 	Vector2f previousButtonPos = m_menus[0]->GetPosition({ 0,1 }) + Vector2f{ 50, 30 };
 	Vector2f craftButtonPos = m_menus[0]->GetPosition({ 0.5,1 }) + Vector2f{ 0, 30 };
-	Vector2f textBoxPos = m_menus[0]->GetPosition({ 0.5,0 }) - Vector2f{ 0, 20 };
+	Vector2f textBoxPos = GetPosition() - Vector2f{ 200,180 };//m_menus[0]->GetPosition({ 0.5,0 }) - Vector2f{ 0, 20 };
 
 	m_nextMenuButton->SetPosition(nextButtonPos);
 	m_previousMenuButton->SetPosition(previousButtonPos);
 	m_craftButton->SetPosition(craftButtonPos);
 	m_textBox->SetPosition(textBoxPos);
- 
+	m_textBoxBackground->SetPosition(m_textBox->GetPosition());
+	
 }

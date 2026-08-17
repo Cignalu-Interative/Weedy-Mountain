@@ -61,10 +61,17 @@ protected:
 	void UiPos();
 
 	void BarButtonInit();
+
+	void CloseAllUi();
+
+
 public : 
 
 	void HideUi();
 
 	void ShowUi();
+
+	void OpenUi(Entity* p_Ui);
+
 };
 

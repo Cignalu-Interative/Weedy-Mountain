@@ -19,6 +19,7 @@ private :
 	PlayerInventory* m_playerInventory = nullptr;
 
 	TextBox* m_textBox = nullptr;
+	std::string m_searchText;
 
 	Button* m_sellButton = nullptr;
 	Button* m_sellAllButton = nullptr;

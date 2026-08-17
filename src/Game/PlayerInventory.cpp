@@ -241,6 +241,9 @@ void PlayerInventory::Clear()
 
 void PlayerInventory::OnUpdate()
 {
+	if (m_lockOnEvent)
+		return;
+
 	InputManager* input = InputManager::Get();
 
 	//refaire mouse

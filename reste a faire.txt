@@ -5,10 +5,3 @@ voir pour opti le draw de text box en appelant le draw d'entity Entity::Draw() p
 multi threader le moteur expemple charger les asset 
 faire des compute shader
 
-faire une gestion de base de données dans un json(sérialisée) écriture dans un .h qui constuit un enum 
-
-
-convertir les asset en binaire
-
-faire des priorite de chargement d'asset
-

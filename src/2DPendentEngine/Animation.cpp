@@ -13,13 +13,33 @@ void Animation::Init(Sprite* p_sprite, const std::string& p_nameAnimation, bool 
 
     // Auto-detect frame size based on sprite dimensions
     if (p_infoAnimationSpriteSheet.empty())
+    {
         std::cout << "no Json for animation " << std::endl;
+        m_hasAnimation = false;
+        return;
+    }
 
 	m_parser = new ParserSpriteSheet();
     m_hasAnimation = m_parser->ReadJsonYuki(p_infoAnimationSpriteSheet);
+
+    if (m_hasAnimation == false)
+    {
+        std::cout << "Json for animation " << p_infoAnimationSpriteSheet << " not found" << std::endl;
+        return;
+	}
+
     m_frameSize = m_parser->GetFrameDimension();
-    m_totalFrames = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_nbFrames.size();
-    m_frameTime = m_parser->GetInfoAnimationByName(p_nameAnimation)->s_frameTime;
+
+	const InfoAnimation* infoAnimation = m_parser->GetInfoAnimationByName(p_nameAnimation);
+    if (infoAnimation == nullptr)
+    {
+        std::cout << "Animation " << p_nameAnimation << " not found in JSON" << std::endl;
+        m_hasAnimation = false;
+        return;
+	}
+
+    m_totalFrames = infoAnimation->s_nbFrames.size();
+    m_frameTime = infoAnimation->s_frameTime;
     m_currentTimer = m_frameTime;
     DrawFrame();
         //m_sprite->GetSpriteRect() = new SDL_Rect();

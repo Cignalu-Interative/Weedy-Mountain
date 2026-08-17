@@ -23,5 +23,8 @@ public:
 	void SetName(const std::string& p_name) { m_name = p_name; }
 
 	const std::string& GetName() const { return m_name; }
+
+	void SetVisible(bool p_visible);
+	bool IsVisible() const { return m_background && m_background->GetIsVisible(); }
 };
 

@@ -1,6 +1,6 @@
 {
     "animations": {
-        "Load_Turn_Left": {
+        "default": {
             "frame_time": 0.11999999731779099,
             "frames": [
                 0,

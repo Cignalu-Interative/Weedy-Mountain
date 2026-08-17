@@ -17,7 +17,8 @@ void LoadMenuManager::CreateLoadMenu(Vector2f p_position, Vector2i p_dimension, 
 		LoadMenu* loadMenu = new LoadMenu();
 		loadMenu->InitializeLoadMenu(p_position, p_dimension, p_id, p_animation, p_jsonAnimation, m_scene, p_isGUI);
 		loadMenu->SetName(p_id);
-		m_loadMenus[p_id] = m_loadMenuVector.size() - 1;
+		m_loadMenus[p_id] = m_loadMenuVector.size();
+		m_loadMenuVector.push_back(loadMenu);
 		SDL_Log("Game/LoadMenuManager.cpp/CreateLoadMenu/GetNameFromPath/LoadMenu load with ID : %s", p_id.c_str());
 	}
 }

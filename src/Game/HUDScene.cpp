@@ -104,6 +104,7 @@ void HUDScene::OnInitialize()
 	m_recipe->Close();
 
 	LoadMenuManager::Get()->CreateLoadMenu({ (float)GetWindowWidth() / 2.0f, (float)GetWindowHeight() / 2.0f }, { 250, 250 }, "Load_Turn_Left_Right", true, "../../res/Game/Assets/Textures/UI/Loading/Load_Turn_Left_Right.json");
+	LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(false);
 }
 
 void HUDScene::OnEvent()
@@ -130,6 +131,14 @@ void HUDScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_KP_0))
 	{
 		GameData::Get().UnlockRecipe("a");
+	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_SUPERSCRIPT_TWO))
+	{
+		if (LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->IsVisible())
+			LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(false);
+		else
+			LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(true);
 	}
 }
 

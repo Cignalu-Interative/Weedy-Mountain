@@ -164,10 +164,10 @@ void HUDScene::UiPos()
 	float topRightPos = (float)GetWindowWidth();
 	float bottomRightPos = (float)GetWindowHeight();
 
-	Vector2f uiStatsPos = { topRightPos - GetWindowWidth() / 12, bottomRightPos - GetWindowHeight() / 11 };
+	Vector2f uiStatsPos = { topRightPos - 90, bottomRightPos - 75 };
 
-	Vector2f moneyPos = { topRightPos - GetWindowWidth() / 12, 50 };
-	Vector2f cashPos = { topRightPos - GetWindowWidth() / 12, 100 };
+	Vector2f moneyPos = { topRightPos - 90, 50 };
+	Vector2f cashPos = { topRightPos - 90, 100 };
 	Vector2f backgroundPos = { GetWindowCenter().GetX(), GetWindowCenter().GetY() - (GetWindowHeight() / 2) };
 	Vector2f timePos = { GetWindowCenter().GetX() - 106 ,GetWindowCenter().GetY() - (GetWindowHeight() / 2) };
 	Vector2f datePos = { GetWindowCenter().GetX() + 106 ,GetWindowCenter().GetY() - (GetWindowHeight() / 2) };

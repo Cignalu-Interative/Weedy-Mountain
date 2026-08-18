@@ -14,7 +14,7 @@ void UiCash::OnInitialize()
 
 	Vector2f spriteRightPos = GetSprite()->GetPosition({ 1,0.5f });
 	Vector2f textPos = { spriteRightPos.GetX() - 20, spriteRightPos.GetY() };
-	Debug::Get()->CreateText("UiCashText", textPos, std::to_string((int)m_currentValue), ColorsNamed::White, true);
+	Debug::Get()->CreateText("UiCashText", GetPosition(), std::to_string((int)m_currentValue), ColorsNamed::White, true);
 
 }
 
@@ -29,7 +29,7 @@ void UiCash::SetPosition(Vector2f p_position, Vector2f p_anchor)
 	GetSprite("UiCash")->SetPosition(GetPosition({ 0.2,0.5f }));
 	Vector2f spriteRightPos = GetSprite()->GetPosition({ 1,0.5f });
 	Vector2f textPos = { spriteRightPos.GetX() - 20, spriteRightPos.GetY() };
-	Debug::Get()->GetText("UiCashText")->SetPosition(textPos);
+	Debug::Get()->GetText("UiCashText")->SetPosition(GetPosition());
 }
 
 void UiCash::SetIsVisible(bool p_isVisible)

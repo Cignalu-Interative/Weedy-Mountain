@@ -123,7 +123,7 @@ void UiShop::OnInitialize()
 	m_minusButton->GetCollider()->SetMask(0);
 
 	Vector2f textBoxPos = { offset.GetX(),halfRightPos.GetY() };//GetPosition() - Vector2f{ 200,180 };
-	m_textBox = scene->CreateTextBox("amountUiShop", textBoxPos, { 110, 40 }, ColorsNamed::Black, true);
+	m_textBox = scene->CreateTextBox("amountUiShop", textBoxPos, { 110, 40 }, ColorsNamed::Transparent, true);
 	m_textBox->GetCollider()->SetIsTrigger(true);
 	m_textBox->SetDrawLayer(INT_MAX);
 	m_textBox->GetText()->SetColor(ColorsNamed::White);

@@ -88,7 +88,7 @@ void RecipesUi::OnInitialize()
 	m_craftButton->SetOnHoverExit([this] { m_craftButton->SetSprite("button"); });
 
 	Vector2f textBoxPos = GetPosition() -Vector2f{200,180 };//m_menus[0]->GetPosition({ 0.5,0 }) - Vector2f{0, 20};
-	m_textBox = scene->CreateTextBox("search", textBoxPos, { 150, 40 }, ColorsNamed::Black, true);
+	m_textBox = scene->CreateTextBox("search", textBoxPos, { 150, 40 }, ColorsNamed::Transparent, true);
 	m_textBox->GetCollider()->SetIsTrigger(true);
 	m_textBox->SetDrawLayer(INT_MAX);
 	m_textBox->GetText()->SetColor(ColorsNamed::White);

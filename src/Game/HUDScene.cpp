@@ -114,7 +114,7 @@ void HUDScene::OnInitialize()
 void HUDScene::OnEvent()
 {
 	if (InputManager::Get()->IsKeyboardDown(K_I))
-		m_collectionUi->Open();
+		OpenUi(m_collectionUi);//m_collectionUi->Open();
 
 	if (InputManager::Get()->IsKeyboardDown(K_O))
 		m_collectionUi->Close();
@@ -130,7 +130,7 @@ void HUDScene::OnEvent()
 		GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer, 5.f);
 	
 	if (InputManager::Get()->IsKeyboardDown(K_P))
-		m_recipe->Open();
+		OpenUi(m_recipe);//m_recipe->Open();
 
 	if (InputManager::Get()->IsKeyboardDown(K_KP_0))
 	{
@@ -148,6 +148,9 @@ void HUDScene::OnEvent()
 			SaveManager::Get().LoadFromFile("save1");
 		}
 	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE))
+		CloseAllUi();
 }
 
 void HUDScene::OnUpdate()

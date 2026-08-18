@@ -64,7 +64,6 @@ protected:
 
 	void CloseAllUi();
 
-
 public : 
 
 	void HideUi();

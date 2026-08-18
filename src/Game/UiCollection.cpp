@@ -6,6 +6,7 @@
 #include "RecipeDataBase.h"
 #include "GameScene.h"
 #include "SpriteContainer.h"
+#include "HUDScene.h"
 
 const float spacingX = 110;
 const float spacingY = 210;
@@ -227,10 +228,15 @@ void UiCollection::Open()
 	SetIsVisible(true);
 	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(false);
 	RefreshPage();
+
+	GetScene<HUDScene>()->HideUi();
 }
 
 void UiCollection::Close()
 {
+	if (m_isVisible)
+		GetScene<HUDScene>()->ShowUi();
+
 	for (ItemBlock* block : m_blocks)
 		block->SetVisible(false);
 
@@ -241,4 +247,5 @@ void UiCollection::Close()
 
 	m_isOpen = false;
 	
+
 }

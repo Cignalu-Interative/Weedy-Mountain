@@ -23,7 +23,7 @@ void UiStamina::OnInitialize()
 
 void UiStamina::OnUpdate()
 {
-	SetIsVisible(true);
+	//SetIsVisible(true);
 	
 	int stamina = GameData::Get().GetPlayerData().m_stats.m_stamina;
 
@@ -37,4 +37,10 @@ void UiStamina::OnUpdate()
 
 	GetSprite("StaminaFull")->SetDimension(dim);
 	GetSprite("StaminaFull")->SetPosition(GetPosition({ 0,1 }), { 0,1 });
+}
+
+void UiStamina::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+	GetSprite("Energy")->SetPosition(GetSprite("StaminaEmpty")->GetPosition({ 0.5f,0 }), { 0.5f,1 });
 }

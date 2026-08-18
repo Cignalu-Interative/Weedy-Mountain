@@ -40,3 +40,9 @@ void UiToxicity::OnUpdate()
 	GetSprite("UiToxicity")->SetDimension(dim);
 	GetSprite("UiToxicity")->SetPosition(GetPosition({ 0,1 }), { 0,1 });
 }
+
+void UiToxicity::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+	GetSprite("Drugs")->SetPosition(GetSprite("ToxicityEmpty")->GetPosition({ 0.5f,0 }), { 0.5f,1 });
+}

@@ -68,6 +68,7 @@ void FurnaceUi::OnInitialize()
 
 void FurnaceUi::OnUpdate()
 {	
+
 	float dt = GetDeltaTime();
 
 	if (m_currentfuelTime > 0)

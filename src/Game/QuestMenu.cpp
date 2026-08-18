@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "2DPendentLib/Utils.h"
 #include "QuestManager.h"
+#include "HUDScene.h"
 
 QuestMenu::QuestMenu(int p_slotCount)
 {
@@ -232,10 +233,15 @@ void QuestMenu::Open(std::vector<Quest*>* p_quest)
 	SetVisible(true);
 	SyncQuests(p_quest);
 	DisplayPage();
+
+	GetScene<HUDScene>()->HideUi();
 }
 
 void QuestMenu::Close()
 {
+	if (m_isVisible)
+		GetScene<HUDScene>()->ShowUi();
+
 	m_isOpen = false;
 	SetVisible(false);
 	m_selectedQuest = nullptr;
@@ -269,6 +275,7 @@ void QuestMenu::Close()
 		}
 
 	}
+
 }
 void QuestMenu::Toggle(std::vector<Quest*>* p_quest)
 {

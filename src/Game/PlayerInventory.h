@@ -19,6 +19,7 @@ class PlayerInventory
 
 	bool m_isInitialized = false;
 
+	bool m_lockOnEvent = false;
 public:
 
 	PlayerInventory() = default;
@@ -61,4 +62,7 @@ public:
 
 	void OnUpdate();
 
+	bool GetLockEvent() const { return m_lockOnEvent; }
+	void LockEvent() { m_lockOnEvent = true; }
+	void UnLockEvent() { m_lockOnEvent = false; }
 };

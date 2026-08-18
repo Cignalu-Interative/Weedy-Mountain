@@ -19,5 +19,8 @@ class UiJobs : public Ui
 public : 
 	void Toggle();
 	void SetIsVisible(bool p_visible);
+
+	void Open();
+	void Close();
 };
 

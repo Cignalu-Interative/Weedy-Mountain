@@ -25,6 +25,8 @@ private:
 	TextBox* m_textBox = nullptr;
 	std::string m_searchText;
 
+	Entity* m_textBoxBackground = nullptr;
+
 	void OnInitialize() override;
 	void OnUpdate() override;
 	void OnEvent() override;
@@ -48,6 +50,9 @@ public :
 
 	void Open();
 	void Close();
+
+
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 
 };
 

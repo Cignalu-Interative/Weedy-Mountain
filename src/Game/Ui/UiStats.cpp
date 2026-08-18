@@ -3,7 +3,8 @@
 
 void UiStats::OnInitialize()
 {
-	Vector2i dim = {8 * 4,32 * 4};
+	RemoveCollider("default");
+	Vector2i dim = {24,128};
 	Vector2i dimension = GetDimension();
 	
 	Vector2f lifePos = { GetPosition({0.5f,0}).GetX() - dimension.GetX() * 0.25f,GetPosition().GetY() };
@@ -27,4 +28,27 @@ void UiStats::OnInitialize()
 
 void UiStats::OnUpdate()
 {
+}
+
+void UiStats::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2i dimension = GetDimension();
+	Vector2f lifePos = { GetPosition({0.5f,0}).GetX() - dimension.GetX() * 0.25f,GetPosition().GetY() };
+	Vector2f staminaPos = { GetPosition({0.5f,1}).GetX() + dimension.GetX() * 0.25f,  GetPosition().GetY() };
+	Vector2f toxicityPos = GetPosition();
+
+	m_uiLife->SetPosition(lifePos);
+	m_uiStamina->SetPosition(staminaPos);
+	m_uiToxicity->SetPosition(toxicityPos);
+}
+
+void UiStats::SetIsVisible(bool p_isVisible)
+{
+	Entity::SetIsVisible(p_isVisible);
+
+	m_uiLife->SetIsVisible(p_isVisible);
+	m_uiStamina->SetIsVisible(p_isVisible);
+	m_uiToxicity->SetIsVisible(p_isVisible);
 }

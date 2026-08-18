@@ -12,6 +12,7 @@ class UiTime;
 class UiDate;
 class RecipesUi;
 class UiShop;
+class NightEffect;
 class HUDScene : public Scene
 {
 private:
@@ -21,6 +22,9 @@ private:
 
 	UiJobs* m_jobsUi = nullptr;
 
+	NightEffect* m_nightEffect = nullptr;
+
+	Entity* m_backgroundUiTimeDate = nullptr;
 	UiStats* m_statsUi = nullptr;
 	UiMoney* m_moneyUi = nullptr;
 	UiCash* m_cashUi = nullptr;
@@ -29,6 +33,14 @@ private:
 
 	RecipesUi* m_recipe = nullptr;
 	UiShop* m_shop = nullptr;
+
+	Vector2i m_lastWindowSize = {};
+
+	Button* m_jobsButton = nullptr;
+	Button* m_questButton = nullptr;
+	Button* m_recipiesButton = nullptr;
+	Button* m_collectionButton = nullptr;
+	Entity* m_barButtonEntity = nullptr;
 
 protected:
 
@@ -46,11 +58,20 @@ protected:
 
 	void OnDraw() override {};
 
+	void UiPos();
+
+	void BarButtonInit();
+
+	void CloseAllUi();
+
 
 public : 
 
 	void HideUi();
 
 	void ShowUi();
+
+	void OpenUi(Entity* p_Ui);
+
 };
 

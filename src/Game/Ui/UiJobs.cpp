@@ -7,6 +7,7 @@
 #include "UiFarmer.h"
 #include "UiMiner.h"
 #include "UiGatherer.h"
+#include "HUDScene.h"
 
 void UiJobs::OnInitialize()
 {
@@ -54,6 +55,39 @@ void UiJobs::Toggle()
 	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(visible);
 
 }
+void UiJobs::Open()
+{
+	Entity::SetIsVisible(true);
+
+	m_gathererUi->SetIsVisible(true);
+	m_farmerUi->SetIsVisible(true);
+	m_minerUi->SetIsVisible(true);
+
+	Debug::Get()->GetText("metier")->SetIsVisible(true);
+	Debug::Get()->GetText("FarmerLvL")->SetIsVisible(true);
+	Debug::Get()->GetText("MinerLvL")->SetIsVisible(true);
+	Debug::Get()->GetText("GathererLvL")->SetIsVisible(true);
+
+	GetScene<HUDScene>()->HideUi();
+}
+
+void UiJobs::Close()
+{
+	if (m_isVisible)
+		GetScene<HUDScene>()->ShowUi();
+
+	Entity::SetIsVisible(false);
+
+	m_gathererUi->SetIsVisible(false);
+	m_farmerUi->SetIsVisible(false);
+	m_minerUi->SetIsVisible(false);
+
+	Debug::Get()->GetText("metier")->SetIsVisible(false);
+	Debug::Get()->GetText("FarmerLvL")->SetIsVisible(false);
+	Debug::Get()->GetText("MinerLvL")->SetIsVisible(false);
+	Debug::Get()->GetText("GathererLvL")->SetIsVisible(false);
+
+}
 
 void UiJobs::SetIsVisible(bool p_visible)
 {
@@ -67,6 +101,5 @@ void UiJobs::SetIsVisible(bool p_visible)
 	Debug::Get()->GetText("FarmerLvL")->SetIsVisible(p_visible);
 	Debug::Get()->GetText("MinerLvL")->SetIsVisible(p_visible);
 	Debug::Get()->GetText("GathererLvL")->SetIsVisible(p_visible);
-
 
 }

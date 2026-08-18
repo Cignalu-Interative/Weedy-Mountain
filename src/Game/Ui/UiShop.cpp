@@ -35,6 +35,7 @@ void UiShop::OnInitialize()
 	m_slot->SyncSprites();
 	m_slot->InitText("slot", "");
 	m_slot->GetCollider()->SetMask(0);
+	m_slot->ShowCollider(true);
 
 	float offsetButtonX = GetPosition({ 1,1 }).GetX() - offsetX;
 	float offsetButtonY = GetPosition({ 1,1 }).GetY() - offsetY * 0.85f;
@@ -70,57 +71,119 @@ void UiShop::OnInitialize()
 	Vector2f offsetPlayerInventory = topLeftPos + Vector2f{ BoffsetX, BoffsetY };
 	Vector2f offsetShopInventory = topLeftPos + Vector2f{ BShopOffestX, BoffsetY };
 
-	m_choosePlayerInventory = scene->CreateButton({ offsetPlayerInventory }, { 150,50 }, "", "player", "Player Inventory");
+	m_choosePlayerInventory = scene->CreateButton({ offsetPlayerInventory }, { 170,50 }, "button", "player", "Player Inventory");
+	m_choosePlayerInventory->GetSprite()->ResizeStretched(m_choosePlayerInventory->GetDimension());
+	m_choosePlayerInventory->SyncSprites();
 	m_choosePlayerInventory->SetOnLeftClick([this] {ChoosePlayerInventoryButtonClicked(); });
+	m_choosePlayerInventory->SetOnHoverStay([this] {m_choosePlayerInventory->SetSprite("button2"); });
+	m_choosePlayerInventory->SetOnHoverExit([this] {m_choosePlayerInventory->SetSprite("button"); });
 	m_choosePlayerInventory->GetCollider()->SetIsTrigger(true);
+	m_choosePlayerInventory->ShowCollider(true);
 	m_choosePlayerInventory->GetCollider()->SetMask(0);
 
-	m_chooseShopInventory = scene->CreateButton({ offsetShopInventory }, { 150,50 }, "", "shop", "Shop Inventory");
+	m_chooseShopInventory = scene->CreateButton({ offsetShopInventory }, { 170,50 }, "button", "shop", "Shop Inventory");
+	m_chooseShopInventory->GetSprite()->ResizeStretched(m_choosePlayerInventory->GetDimension());
+	m_chooseShopInventory->SyncSprites();
 	m_chooseShopInventory->SetOnLeftClick([this] {ChooseShopInventoryButtonClicked(); });
+	m_chooseShopInventory->SetOnHoverStay([this] {m_chooseShopInventory->SetSprite("button2"); });
+	m_chooseShopInventory->SetOnHoverExit([this] {m_chooseShopInventory->SetSprite("button"); });
 	m_chooseShopInventory->GetCollider()->SetIsTrigger(true);
 	m_chooseShopInventory->GetCollider()->SetMask(0);
 
 	Vector2f halfRightPos = GetPosition({ 1,0.5f });
 	float offsetPriceX = GetPosition().GetX();
 	float offsetPriceY = halfRightPos.GetY() * 1.275f;
-	float offsetItemNameY = halfRightPos.GetY() * 0.86f;
-
+	float offsetItemNameY = halfRightPos.GetY() * 0.84f;
+	Vector2f posItemName = m_slot->GetPosition() + Vector2f{0, 80};
 	//m_textBox = scene->CreateTextBox("itemAmount", { offset.GetX(),halfRightPos.GetY() }, { 50,25 }, ColorsNamed::White);
-	scene->CreateText("itemAmount", { offset.GetX(),halfRightPos.GetY() }, "Item : " + std::to_string(m_amountOfItem), ColorsNamed::White, true);
+	//scene->CreateText("itemAmount", { offset.GetX(),halfRightPos.GetY() }, "Item : " + std::to_string(m_amountOfItem), ColorsNamed::White, true);
 	scene->CreateText("totalPrice", { offset.GetX(),offsetPriceY }, "Price : " + std::to_string(m_totalPrices), ColorsNamed::White, true);
-	scene->CreateText("itemName", { offset.GetX(), offsetItemNameY },"", ColorsNamed::White, true);
+	scene->CreateText("itemName", {}, "", ColorsNamed::White, true);
 
 	Vector2f plusButtonOffset = { GetPosition({ 1,0.5f }).GetX() - GetDimension().GetX() / 8.f, GetPosition({ 1,0.5f }).GetY() };
 	Vector2f minusButtonOffset = { GetPosition({ 1,0.5f }).GetX() - GetDimension().GetX() / 3.62f, GetPosition({ 1,0.5f }).GetY() };
 
-	m_plusButton = scene->CreateButton(plusButtonOffset, { 50,50 }, "", "plusButton", "+");
+	m_plusButton = scene->CreateButton(plusButtonOffset, { 40,40 }, "button", "plusButton", "+");
+	m_plusButton->GetSprite()->ResizeStretched(m_plusButton->GetDimension());
+	m_plusButton->SyncSprites();
 	m_plusButton->SetOnLeftClick([this] {PlusButton(); });
+	m_plusButton->SetOnHoverStay([this] {m_plusButton->SetSprite("button2"); });
+	m_plusButton->SetOnHoverExit([this] {m_plusButton->SetSprite("button"); });
 	m_plusButton->GetCollider()->SetIsTrigger(true);
 	m_plusButton->GetCollider()->SetMask(0);
+	m_plusButton->ShowCollider(true);
 
-	m_minusButton = scene->CreateButton(minusButtonOffset, { 50,50 }, "", "minusButton", "-");
+	m_minusButton = scene->CreateButton(minusButtonOffset, { 40,40 }, "button", "minusButton", "-");
+	m_minusButton->GetSprite()->ResizeStretched(m_minusButton->GetDimension());
+	m_minusButton->SyncSprites();
 	m_minusButton->SetOnLeftClick([this] {MinusButton(); });
+	m_minusButton->SetOnHoverStay([this] {m_minusButton->SetSprite("button2"); });
+	m_minusButton->SetOnHoverExit([this] {m_minusButton->SetSprite("button"); });
 	m_minusButton->GetCollider()->SetIsTrigger(true);
 	m_minusButton->GetCollider()->SetMask(0);
 
+	Vector2f textBoxPos = { offset.GetX(),halfRightPos.GetY() };//GetPosition() - Vector2f{ 200,180 };
+	m_textBox = scene->CreateTextBox("amountUiShop", textBoxPos, { 110, 40 }, ColorsNamed::Black, true);
+	m_textBox->GetCollider()->SetIsTrigger(true);
+	m_textBox->SetDrawLayer(INT_MAX);
+	m_textBox->GetText()->SetColor(ColorsNamed::White);
+	m_textBox->SetIsVisible(false);
+	
 	SetDrawLayer(GetDrawLayer() - 20);
 
 }
 
 void UiShop::OnEvent()
 {
-	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT))
+	if (m_isVisible == false)
+		return;
+
+	InputManager* im = InputManager::Get();
+
+	if (im->IsMouseDown(BUTTON_LEFT))
 		PlaceItemInInventoryToSlot();
 
-	if (InputManager::Get()->IsMouseDown(BUTTON_LEFT) && m_slot->IsMouseIn())
+	if (im->IsMouseDown(BUTTON_LEFT) && m_slot->IsMouseIn())
 		m_slot->Clear();
 
+	if (im->IsMouseDown(BUTTON_LEFT) && m_textBox->IsMouseIn())
+	{
+		im->StartTextInput();
+	}
+	if (im->IsMouseDown(BUTTON_LEFT) && !m_textBox->IsMouseIn())
+	{
+		im->StopTextInput();
+	}
+	if (im->IsTextInputActive() == true && im->IsKeyboardDown(K_BACKSPACE))
+	{
+		im->DeleteLastCharInFinalTextInput();
+	}
+	if (im->IsTextInputActive() == true)
+	{
+		m_searchText = im->GetfinalTextInput();
+		m_textBox->SetTextInBox(m_searchText);
+	}
+	if (im->IsKeyboardDown(K_ESCAPE))
+	{
+		Close();
+	}
 }
 
 void UiShop::OnUpdate()
 {
+	if (m_isVisible == false)
+		return;
+
+	bool r = false;
+	if (m_searchText.empty() == false)
+	{
+		m_amountOfItem = std::stoi(m_searchText);
+		r = true;
+	}
+
 	int price = 0;
-	m_amountOfItem = m_slot->GetStack().GetAmount();
+	if(r == false)
+		m_amountOfItem = m_slot->GetStack().GetAmount();
 
 	if (m_sellButton->GetIsVisible() && m_slot->IsEmpty() == false)
 		price = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetSellPrice();
@@ -128,10 +191,10 @@ void UiShop::OnUpdate()
 	if (m_buyButton->GetIsVisible() && m_slot->IsEmpty() == false)
 		price = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetBuyPrice();
 
-	m_totalPrices = m_slot->GetStack().GetAmount() * price;
+	m_totalPrices = m_amountOfItem/*m_slot->GetStack().GetAmount()*/ * price;
 
-	//m_textBox->SetText("Item : " + std::to_string(m_amountOfItem));
-	GetScene()->GetGeometry<Text>("itemAmount")->SetText("Item : " + std::to_string(m_amountOfItem));
+	m_textBox->SetTextInBox(std::to_string(m_amountOfItem));
+	//GetScene()->GetGeometry<Text>("itemAmount")->SetText("Item : " + std::to_string(m_amountOfItem));
 	GetScene()->GetGeometry<Text>("totalPrice")->SetText("Price : " + std::to_string(m_totalPrices));
 	if (m_slot->IsEmpty())
 	{
@@ -139,10 +202,10 @@ void UiShop::OnUpdate()
 		return;
 	}
 	std::string itemName = ItemDataBase::Get()->GetItem(m_slot->GetStack().GetID())->GetName();
+	Vector2f posItemName = m_slot->GetPosition() + Vector2f{ 0, 85 };
+	GetScene()->GetGeometry<Text>("itemName")->SetPosition(posItemName);
 	GetScene()->GetGeometry<Text>("itemName")->SetText(itemName);
 
-	//std::cout << "Slot :" << m_playerInventory->GetSlot(0)->GetIsVisible() << std::endl;
-	//std::cout << "Update Text :" <<GetScene()->GetGeometry<Text>(m_playerInventory->GetSlot(0)->GetTextID())->GetText() << std::endl;
 }
 
 void UiShop::PlaceInventory(Inventory* p_inventory)
@@ -177,7 +240,6 @@ void UiShop::Buy()
 		GameData::Get().GetPlayerData().m_money -= m_totalPrices;//GetScene<GameScene>()->GetPlayer()->DecreaseMoney(m_totalPrices);
 		m_slot->Clear();
 	}
-
 }
 
 void UiShop::Sell()
@@ -186,10 +248,14 @@ void UiShop::Sell()
 		return;
 
 	std::string id = m_slot->GetStack().GetID();
-	int amount = m_slot->GetStack().GetAmount();
+	int amount = m_amountOfItem; // m_slot->GetStack().GetAmount();
 
 	if(m_playerInventory->HasItems(id,amount))
 	{
+		//Add 15% at the total price if it s different season
+		//if (GameData::Get().GetSeason() != /*Get season of item*/)
+		//	m_totalPrices * 1, 15;
+
 		GameData::Get().GetPlayerData().m_money += m_totalPrices;
 		m_playerInventory->RemoveItem(id, amount, false);
 		m_slot->Clear();
@@ -220,6 +286,11 @@ void UiShop::SellAll()
 	int amount = m_playerInventory->CountItem(id);
 	m_playerInventory->RemoveItem(id, amount, false);
 	int price = amount * ItemDataBase::Get()->GetItem(id)->GetSellPrice();
+
+	//Add 15% at the total price if it s different season
+	//if (GameData::Get().GetSeason() != /*Get season of item*/)
+	//	price * 1, 15;
+
 	GameData::Get().GetPlayerData().m_money += price;
 	m_slot->Clear();
 }
@@ -272,6 +343,8 @@ void UiShop::PlaceItemInInventoryToSlot()
 	else
 		inventory = m_shopInventory;
 
+	if (inventory == nullptr)
+		return;
 	//Get item of slot in the inventory and place it in the slot
 	std::vector<InventorySlot*> slots = inventory->GetSlots();
 
@@ -330,11 +403,13 @@ void UiShop::SetIsVisible(bool p_isVisible)
 	m_buyButton->SetIsVisible(false);
 	m_slot->SetIsVisible(p_isVisible);
 	m_playerInventory->GetInventory()->SetVisible(false);
+	m_textBox->SetIsVisible(p_isVisible);
+
 	if(m_shopInventory)
 		m_shopInventory->SetVisible(false);
 
 	//m_textBox->SetIsVisible(p_isVisible);
-	GetScene()->GetGeometry<Text>("itemAmount")->SetIsVisible(p_isVisible);
+	//GetScene()->GetGeometry<Text>("itemAmount")->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("totalPrice")->SetIsVisible(p_isVisible);
 	GetScene()->GetGeometry<Text>("itemName")->SetIsVisible(p_isVisible);
 }
@@ -344,16 +419,18 @@ void UiShop::Open()
 	SetIsVisible(true);
 	m_playerInventory->GetHotbar()->SetIsVisible(false);
 	ChoosePlayerInventoryButtonClicked();
+	m_playerInventory->LockEvent();
 }
 
 void UiShop::Close()
 {
 	Vector2f hotbarPos = GetScene()->GetWindowCenter() + Vector2f{0, 300};
-	SetIsVisible(false);
 	m_slot->Clear();
-
+	m_textBox->SetIsVisible(false);
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
 	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
 
 	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
+
+	m_playerInventory->UnLockEvent();
 }

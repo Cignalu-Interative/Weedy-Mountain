@@ -12,9 +12,12 @@ void UiMoney::OnInitialize()
 
 	Vector2f spriteRightPos = GetSprite()->GetPosition({ 1,0.5f });
 	Vector2f textPos = { spriteRightPos.GetX() + 20, spriteRightPos.GetY() };
-	Debug::Get()->CreateText("Money", textPos, std::to_string((int)m_currentValue), ColorsNamed::White, true);
+	Text* t = Debug::Get()->CreateText("Money", textPos, std::to_string((int)m_currentValue), ColorsNamed::White, true);
 	
 	GetCollider()->SetIsTrigger(true);
+
+	SetDrawLayer(INT_MAX - 10);
+	t->SetDrawLayer(INT_MAX - 10);
 }
 
 void UiMoney::OnUpdate()

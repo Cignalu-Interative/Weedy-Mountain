@@ -130,6 +130,7 @@ void Application::FPSDeltaTime()
 		Debug::Get()->CreateText("AUTO_FPS", Vector2f(0.0f, 0.0f),
 			"FPS : " + std::to_string(GetCurrentFPS()),
 			Color(0, 255, 0, 255), true);
+		//Debug::Get()->GetText("AUTO_FPS")->SetDrawLayer(INT_MAX - 1000);
 	}
 	else
 	{

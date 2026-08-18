@@ -24,3 +24,9 @@ void SceneManager::AddScene(const std::string& p_id)
 		PushScene(p_id);
 	}
 }
+
+template<typename T>
+T* SceneManager::GetScene(const std::string& p_id) const
+{
+	return dynamic_cast<T*>(GetScene(p_id));
+}

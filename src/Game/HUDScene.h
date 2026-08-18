@@ -52,5 +52,7 @@ public :
 	void HideUi();
 
 	void ShowUi();
+
+	PlayerInventory* GetPlayerInventory() { return m_playerInventory; }
 };
 

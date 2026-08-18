@@ -78,6 +78,9 @@ public:
 
 	Scene* GetScene(const std::string& p_id) const;
 
+	template<typename T>
+	T* GetScene(const std::string& p_id) const;
+
 };
 
 #include "SceneManager.inl"

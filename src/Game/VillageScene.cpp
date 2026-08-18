@@ -183,7 +183,15 @@ void VillageScene::OnInitialize()
 	m_loadingTime = 0.03;
 	float fps = Application::Get()->GetTargetFPS();
 	m_maxDTFrame = (1.0f / fps) * 2;
+	Debug* debug = Debug::Get();
+	debug->GetText("AUTO_FPS")->SetIsVisible(false);
+	debug->GetText("Money")->SetIsVisible(false);
+	debug->GetText("UiCashText")->SetIsVisible(false);
+	debug->GetText("time")->SetIsVisible(false);
+	debug->GetText("Date")->SetIsVisible(false);
 
+	PlayerInventory* pi = GameData::Get().GetPlayerData().m_playerInventory;
+	pi->GetHotbar()->SetIsVisible(false);
 }
 
 void VillageScene::OnEvent()
@@ -259,6 +267,15 @@ void VillageScene::OnUpdate()
 			m_loading = false;
 			m_loadingTime = 0.03;
 			LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(false);
+			Debug* debug = Debug::Get();
+			debug->GetText("AUTO_FPS")->SetIsVisible(true);
+			debug->GetText("Money")->SetIsVisible(true);
+			debug->GetText("UiCashText")->SetIsVisible(true);
+			debug->GetText("time")->SetIsVisible(true);
+			debug->GetText("Date")->SetIsVisible(true);
+
+			PlayerInventory* pi = GameData::Get().GetPlayerData().m_playerInventory;
+			pi->GetHotbar()->SetIsVisible(true);
 		}
 	}
 }
@@ -294,6 +311,15 @@ void VillageScene::OnWake()
 		m_loadingTime = 0.03;
 		float fps = Application::Get()->GetTargetFPS();
 		m_maxDTFrame = (1.0f / fps) * 2;
+		Debug* debug = Debug::Get();
+		debug->GetText("AUTO_FPS")->SetIsVisible(false);
+		debug->GetText("Money")->SetIsVisible(false);
+		debug->GetText("UiCashText")->SetIsVisible(false);
+		debug->GetText("time")->SetIsVisible(false);
+		debug->GetText("Date")->SetIsVisible(false);
+
+		PlayerInventory* pi = GameData::Get().GetPlayerData().m_playerInventory;
+		pi->GetHotbar()->SetIsVisible(false);
 	}
 }
 

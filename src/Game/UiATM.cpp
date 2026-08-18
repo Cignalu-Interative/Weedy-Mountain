@@ -49,85 +49,85 @@ void UiATM::OnInitialize()
 	m_retrievePos = GetPosition({ 1,1 }) - Vector2f{ 200, 250 };
 	Vector2f textBoxPos = GetPosition({ 0,0 }) + Vector2f{ 200, 150 };
 
-	m_depositButton = scene->CreateButton(m_depositPos, Vector2i(240, 100), "button", "deposit", "Deposit", true);
+	m_depositButton = scene->CreateButton(m_depositPos, Vector2i(250, 100), "Bouton_ATM_Bank", "deposit", "Deposit", true);
 	m_depositButton->GetCollider()->SetIsTrigger(true);
 	m_depositButton->SetDrawLayer(INT_MAX);
-	m_depositButton->SetOnHoverEnter([this] {
+	/*m_depositButton->SetOnHoverEnter([this] {
 		m_depositButton->GetSprite()->ChangeTexture("buttonHover");
 		});
 	m_depositButton->SetOnHoverExit([this] {
 		m_depositButton->GetSprite()->ChangeTexture("button");
-		});
+		});*/
 	m_depositButton->SetOnLeftClick([this] {
 		StringToInt();
 		Deposit(m_amount);
 		});
 
-	m_retrieveButton = scene->CreateButton(m_retrievePos, Vector2i(250, 100), "button", "retrieve", "Retrieve", true);
+	m_retrieveButton = scene->CreateButton(m_retrievePos, Vector2i(250, 100), "Bouton_ATM_Cash", "retrieve", "Retrieve", true);
 	m_retrieveButton->GetCollider()->SetIsTrigger(true);
 	m_retrieveButton->SetDrawLayer(INT_MAX);
-	m_retrieveButton->SetOnHoverEnter([this] {
+	/*m_retrieveButton->SetOnHoverEnter([this] {
 		m_retrieveButton->GetSprite()->ChangeTexture("buttonHover");
 		});
 	m_retrieveButton->SetOnHoverExit([this] {
 		m_retrieveButton->GetSprite()->ChangeTexture("button");
-		});
+		});*/
 	m_retrieveButton->SetOnLeftClick([this] {
 		StringToInt();
 		Retrieve(m_amount);
 		});
 
-	m_10Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(95, 100), Vector2i(120, 50), "button", "+10", "10", true);
+	m_10Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(95, 100), Vector2i(120, 50), "Bouton_ATM", "+10", "10", true);
 	m_10Button->GetCollider()->SetIsTrigger(true);
 	m_10Button->SetDrawLayer(INT_MAX);
-	m_10Button->SetOnHoverEnter([this] {
+	/*m_10Button->SetOnHoverEnter([this] {
 		m_10Button->GetSprite()->ChangeTexture("buttonHover");
 		});
 	m_10Button->SetOnHoverExit([this] {
 		m_10Button->GetSprite()->ChangeTexture("button");
-		});
+		});*/
 	m_10Button->SetOnLeftClick([this] {
 		m_amount = 10;
 		m_amountBox->SetTextInBox(std::to_string(m_amount));
 		});
 
-	m_50Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(220, 100), Vector2i(120, 50), "button", "+50", "50", true);
+	m_50Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(220, 100), Vector2i(120, 50), "Bouton_ATM", "+50", "50", true);
 	m_50Button->GetCollider()->SetIsTrigger(true);
 	m_50Button->SetDrawLayer(INT_MAX);
-	m_50Button->SetOnHoverEnter([this] {
+	/*m_50Button->SetOnHoverEnter([this] {
 		m_50Button->GetSprite()->ChangeTexture("buttonHover");
 		});
 	m_50Button->SetOnHoverExit([this] {
 		m_50Button->GetSprite()->ChangeTexture("button");
-		});
+		});*/
 	m_50Button->SetOnLeftClick([this] {
 		m_amount = 50;
 		m_amountBox->SetTextInBox(std::to_string(m_amount));
 		});
 
-	m_100Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(345, 100), Vector2i(120, 50), "button", "+100", "100", true);
+	m_100Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(345, 100), Vector2i(120, 50), "Bouton_ATM", "+100", "100", true);
 	m_100Button->GetCollider()->SetIsTrigger(true);
 	m_100Button->SetDrawLayer(INT_MAX);
-	m_100Button->SetOnHoverEnter([this] {
+	/*m_100Button->SetOnHoverEnter([this] {
 		m_100Button->GetSprite()->ChangeTexture("buttonHover");
 		});
 	m_100Button->SetOnHoverExit([this] {
 		m_100Button->GetSprite()->ChangeTexture("button");
-		});
+		});*/
 	m_100Button->SetOnLeftClick([this] {
 		m_amount = 100;
 		m_amountBox->SetTextInBox(std::to_string(m_amount));
 		});
 
-	m_200Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(470, 100), Vector2i(120, 50), "button", "+200", "200", true);
+	m_200Button = scene->CreateButton(GetPosition({ 0, 0.35f }) + Vector2f(470, 100), Vector2i(120, 50), "Bouton_ATM", "+200", "200", true);
 	m_200Button->GetCollider()->SetIsTrigger(true);
 	m_200Button->SetDrawLayer(INT_MAX);
-	m_200Button->SetOnHoverEnter([this] {
+	/*m_200Button->SetOnHoverEnter([this] {
 		m_200Button->GetSprite()->ChangeTexture("buttonHover");
-		});
-	m_200Button->SetOnHoverExit([this] {
+		});*/
+	/*m_200Button->SetOnHoverExit([this] {
 		m_200Button->GetSprite()->ChangeTexture("button");
-		});
+		});*/
 	m_200Button->SetOnLeftClick([this] {
 		m_amount = 200;
 		m_amountBox->SetTextInBox(std::to_string(m_amount));

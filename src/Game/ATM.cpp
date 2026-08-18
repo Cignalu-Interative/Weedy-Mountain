@@ -5,7 +5,7 @@
 
 void ATM::OnInitialize()
 {
-	m_atmUI = GetScene()->CreateEntity<UiATM>({ GetScene()->GetWindowWidth() / 2.f, GetScene()->GetWindowHeight() / 2.f }, { 1000, 600 }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_atmUI = GetScene()->CreateEntity<UiATM>({ GetScene()->GetWindowWidth() / 2.f, GetScene()->GetWindowHeight() / 2.f }, { 1000, 600 }, "ATM_BackGround", Shape::Rectangle, true);
 	GetSprite()->ResizeStretched(GetDimension());
 	SyncSprites();
 }

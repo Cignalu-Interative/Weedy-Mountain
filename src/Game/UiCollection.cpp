@@ -81,7 +81,6 @@ void UiCollection::OnUpdate()
 	if (m_isItemSelected)
 		return;
 
-
 	RefreshPage();
 }
 
@@ -173,8 +172,15 @@ void UiCollection::NextPage()
 
 void UiCollection::OnItemClick(ItemBlock* block)
 {
+	if (!m_isOpen)
+		return;
+
 	if (!block->IsUnlocked())
 		return;
+
+	if (m_isItemSelected)
+		return;
+
 
 	ClearPage();
 	m_backButton->SetIsVisible(true);

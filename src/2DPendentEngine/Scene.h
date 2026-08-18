@@ -83,6 +83,10 @@ protected:
 	//Fonction virtuelle pure pour permettre aux classes qui héritent de Scene de définir leur propre logique de dessin
 	virtual void OnDraw() = 0;
 
+	bool m_loading = false; // Indique si elle est en animation de chargement 
+	float m_loadingTime = 2; // temps d'animation de chargement en secondes
+	float m_maxDTFrame = 0;
+
 public:
 	//int GetLayer() { return m_layer; }
 	//void SetLayer(int p_layer) { m_layer = p_layer; }

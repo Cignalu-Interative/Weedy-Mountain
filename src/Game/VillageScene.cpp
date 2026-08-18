@@ -30,6 +30,8 @@
 
 #include "QuestManager.h"
 
+#include "LoadMenuManager.h"
+
 void VillageScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -176,7 +178,12 @@ void VillageScene::OnInitialize()
 	GetCamera()->SetFollowedEntity(m_player);
 	Application::Get()->SetClampCameraToCurrentMap(true);
 
-	
+	LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(true);
+	m_loading = true;
+	m_loadingTime = 0.03;
+	float fps = Application::Get()->GetTargetFPS();
+	m_maxDTFrame = (1.0f / fps) * 2;
+
 }
 
 void VillageScene::OnEvent()
@@ -241,6 +248,19 @@ void VillageScene::OnEvent()
 
 void VillageScene::OnUpdate()
 {
+	if (m_loading)
+	{
+		float dt = Application::Get()->GetDeltaTime();
+		std::cerr << "dt in village scene: " << dt << std::endl;
+		m_loadingTime -= Utils::LimitMax(dt, m_maxDTFrame);
+
+		if (m_loadingTime <= 0.f)
+		{
+			m_loading = false;
+			m_loadingTime = 0.03;
+			LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(false);
+		}
+	}
 }
 
 void VillageScene::OnDestroy()
@@ -266,6 +286,15 @@ void VillageScene::OnWake()
 	GetCamera()->SetFollowedEntity(m_player);
 	SetSleepDraw(false);
 	SetSleepEvent(false);
+
+	if (m_loading == false)
+	{
+		LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(true);
+		m_loading = true;
+		m_loadingTime = 0.03;
+		float fps = Application::Get()->GetTargetFPS();
+		m_maxDTFrame = (1.0f / fps) * 2;
+	}
 }
 
 void VillageScene::OnDraw()

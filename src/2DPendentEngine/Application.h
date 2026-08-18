@@ -138,6 +138,9 @@ public:
 
 	void SetClampCameraToCurrentMap(bool p_isClamp) { m_cameraIsClamp = p_isClamp; }
 
+	float GetDeltaTime() const { return m_deltaTime; }
+	float GetTargetFPS() const { return m_targetFPS; }
+
 	//Liste des classes amies avec la classe Application, ces classes peuvent accéder aux membres privés de l'Application
 	friend class Entity;
 	friend class Debug;

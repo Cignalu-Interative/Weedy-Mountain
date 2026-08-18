@@ -52,6 +52,8 @@
 
 #include "SaveManager.h"
 
+#include "LoadMenuManager.h"
+
 void GameScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
@@ -198,6 +200,12 @@ void GameScene::OnInitialize()
 	qm->GetQuestOnNotStarted("CASTOR-AMA")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 69);
 	qm->GetQuestOnNotStarted("CASTOR-AMA")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to sell 3 sunflower and you will be rewarded with 69 eggs.");
 	Chest* c = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
+
+	LoadMenuManager::Get()->CreateLoadMenu({ (float)GetWindowWidth() / 2.0f, (float)GetWindowHeight() / 2.0f }, { 250, 250 }, "Load_Turn_Left_Right", true, "../../res/Game/Assets/Textures/UI/Loading/Load_Turn_Left_Right.json");
+	m_loading = true;
+	m_loadingTime = 0.69;
+	float fps = Application::Get()->GetTargetFPS();
+	m_maxDTFrame = (1.0f / fps) * 2;
 }
 
 
@@ -262,7 +270,6 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
-
 	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
@@ -283,7 +290,7 @@ void GameScene::OnUpdate()
 			Sound* sound = sm->GetSound("L_Automne (Nuit) - OST from Weedy Mountain v1");
 			if (sound->IsPlaying())
 			{
-				return;
+				break;
 			}
 			else
 			{
@@ -301,7 +308,7 @@ void GameScene::OnUpdate()
 			Sound* sound = sm->GetSound("L_Automne (Jour) - OST from Weedy Mountain v1");
 			if (sound->IsPlaying())
 			{
-				return;
+				break;
 			}
 			else
 			{
@@ -354,7 +361,7 @@ void GameScene::OnUpdate()
 			Sound* sound = sm->GetSound("L_hiver (Jour) - OST from Weedy Mountain v1");
 			if (sound->IsPlaying())
 			{
-				return;
+				break;
 			}
 			else
 			{
@@ -370,6 +377,21 @@ void GameScene::OnUpdate()
 		break;
 	}
 	}
+
+	if (m_loading)
+	{
+		float dt = Application::Get()->GetDeltaTime();
+		std::cerr << "dt in game scene : " << dt << std::endl;
+		m_loadingTime -= Utils::LimitMax(dt, m_maxDTFrame);
+
+		if (m_loadingTime <= 0.f)
+		{
+			m_loading = false;
+			m_loadingTime = 0.85;
+			LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(false);
+		}
+	}
+
 }
 
 void GameScene::OnDestroy()
@@ -403,6 +425,15 @@ void GameScene::OnWake()
 
 	MapTiledManager* mm = MapTiledManager::Get();
 	mm->SetCurrentMap("Farm");
+
+	if (m_loading == false)
+	{
+		LoadMenuManager::Get()->GetLoadMenu("Load_Turn_Left_Right")->SetVisible(true);
+		m_loading = true;
+		m_loadingTime = 0.02;
+		float fps = Application::Get()->GetTargetFPS();
+		m_maxDTFrame = (1.0f / fps) * 2;
+	}
 }
 
 void GameScene::OnDraw()

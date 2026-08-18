@@ -18,16 +18,14 @@ public:
 	const std::string& GetActiveSaveName() const { return m_activeSaveName; }
 
 	bool QuickSave() { return SaveToFile(m_activeSaveName); }
-
-	bool SaveExists(const std::string& p_saveName) const
-	{
-		return std::filesystem::exists(m_saveFolder + p_saveName + ".json");
-	}
+	bool SaveExists(const std::string& p_saveName) const;
 
 	void RegisterProvider(Savable* p_provider);
 	void UnregisterProvider(Savable* p_provider);
 
 	bool SaveToFile(const std::string& p_saveName);
 	bool LoadFromFile(const std::string& p_saveName);
+
+	bool PrepareSceneForLoad(const std::string& p_saveName);
 };
 

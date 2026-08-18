@@ -93,13 +93,13 @@
         "useActionID": ""
     },
     {
-        "buyPrice": 3,
-        "description": "Elle te regarde avec ses yeux...",
+        "buyPrice": 0,
+        "description": "",
         "id": 5,
         "imagePath": "..\\Textures\\Items\\Plant\\1\\potato_05.png",
         "itemType": "Default",
         "maxStack": 64,
-        "name": "Potatoe",
+        "name": "Potato",
         "recipes": [
             {
                 "ingredients": [
@@ -112,34 +112,7 @@
                 "resultQuantity": 1
             }
         ],
-        "sellPrice": 1,
-        "useActionID": ""
-    },
-    {
-        "buyPrice": 3,
-        "description": "Quasiment necessaire contre les zombies\n",
-        "id": 6,
-        "imagePath": "..\\Textures\\Items\\Plant\\1\\sunflower_05.png",
-        "itemType": "Default",
-        "maxStack": 64,
-        "name": "Sun Flower",
-        "recipes": [
-            {
-                "ingredients": [
-                    {
-                        "itemID": 8,
-                        "quantity": 6
-                    },
-                    {
-                        "itemID": 7,
-                        "quantity": 1
-                    }
-                ],
-                "recipeID": "ff",
-                "resultQuantity": 1
-            }
-        ],
-        "sellPrice": 1,
+        "sellPrice": 6,
         "useActionID": ""
     },
     {
@@ -437,10 +410,10 @@
         "useActionID": "WATER_CROP"
     },
     {
-        "buyPrice": 0,
+        "buyPrice": 1,
         "description": "",
         "id": 27,
-        "imagePath": "..\\Textures\\Wheat seed.png",
+        "imagePath": "..\\Textures\\Seeds\\Wheat seed.png",
         "itemType": "Default",
         "maxStack": 64,
         "name": "Wheat Seed",
@@ -449,10 +422,10 @@
         "useActionID": "PLANT_SEED"
     },
     {
-        "buyPrice": 0,
+        "buyPrice": 3,
         "description": "",
         "id": 28,
-        "imagePath": "..\\Textures\\Carrot seed.png",
+        "imagePath": "..\\Textures\\Seeds\\Carrot_Seed.png",
         "itemType": "Default",
         "maxStack": 64,
         "name": "Carrot Seed",
@@ -916,6 +889,210 @@
         "name": "Gold Ingot",
         "recipes": [],
         "sellPrice": 0,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 4,
+        "description": "",
+        "id": 67,
+        "imagePath": "..\\Textures\\Seeds\\Turnip_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Turnip Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 6,
+        "description": "",
+        "id": 68,
+        "imagePath": "..\\Textures\\Seeds\\Pumpkin_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Pumpkin Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 3,
+        "description": "",
+        "id": 70,
+        "imagePath": "..\\Textures\\Seeds\\Tomato_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Beatroot Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 2,
+        "description": "",
+        "id": 71,
+        "imagePath": "..\\Textures\\Seeds\\Parsnip_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Parsnip Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 3,
+        "description": "",
+        "id": 72,
+        "imagePath": "..\\Textures\\Seeds\\Potato_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Potato Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 2,
+        "description": "",
+        "id": 73,
+        "imagePath": "..\\Textures\\Seeds\\Radish_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Radish Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 5,
+        "description": "",
+        "id": 74,
+        "imagePath": "..\\Textures\\Seeds\\Eggplant_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Eggplant Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 2,
+        "description": "",
+        "id": 75,
+        "imagePath": "..\\Textures\\Seeds\\Cabbage_Seed.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Cabbage Seed",
+        "recipes": [],
+        "sellPrice": 0,
+        "useActionID": "PLANT_SEED"
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 76,
+        "imagePath": "..\\Textures\\Seeds\\Cabbage.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Cabbage",
+        "recipes": [],
+        "sellPrice": 5,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 77,
+        "imagePath": "..\\Textures\\Seeds\\Carrot.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Carrot",
+        "recipes": [],
+        "sellPrice": 5,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 78,
+        "imagePath": "..\\Textures\\Seeds\\Eggplant.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Eggplant",
+        "recipes": [],
+        "sellPrice": 11,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 79,
+        "imagePath": "..\\Textures\\Seeds\\Parsnip.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Parsnip",
+        "recipes": [],
+        "sellPrice": 4,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 80,
+        "imagePath": "..\\Textures\\Seeds\\Pumpkin.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Pumpkin",
+        "recipes": [],
+        "sellPrice": 12,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 81,
+        "imagePath": "..\\Textures\\Seeds\\Radish.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Radish",
+        "recipes": [],
+        "sellPrice": 4,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 82,
+        "imagePath": "..\\Textures\\Seeds\\Tomato.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Beatroot",
+        "recipes": [],
+        "sellPrice": 7,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 83,
+        "imagePath": "..\\Textures\\Seeds\\Turnip.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Turnip",
+        "recipes": [],
+        "sellPrice": 7,
+        "useActionID": ""
+    },
+    {
+        "buyPrice": 0,
+        "description": "",
+        "id": 84,
+        "imagePath": "..\\Textures\\Seeds\\Wheat.png",
+        "itemType": "Default",
+        "maxStack": 64,
+        "name": "Wheat",
+        "recipes": [],
+        "sellPrice": 3,
         "useActionID": ""
     }
 ]

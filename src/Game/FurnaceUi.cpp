@@ -327,3 +327,48 @@ void FurnaceUi::Close()
 	m_meltedOres->RefreshVisual();
 	m_consumables->RefreshVisual();
 }
+
+void FurnaceUi::Save(nlohmann::json& out) const
+{
+	out["rawOres"] = { {"id", m_rawOres->GetStack().GetID()}, {"amount", m_rawOres->GetStack().GetAmount()} };
+	out["meltedOres"] = { {"id", m_meltedOres->GetStack().GetID()}, {"amount", m_meltedOres->GetStack().GetAmount()} };
+	out["consumables"] = { {"id", m_consumables->GetStack().GetID()}, {"amount", m_consumables->GetStack().GetAmount()} };
+
+	out["currentFuelTime"] = m_currentfuelTime;
+	out["currentHeatingTime"] = m_currentHeatingTime;
+	out["heatingTimeRequired"] = m_heatingTimeRequired;
+}
+
+void FurnaceUi::Load(const nlohmann::json& in)
+{
+	auto loadSlot = [](InventorySlot* p_slot, const nlohmann::json& p_data)
+		{
+			std::string id = p_data.value("id", "ITEM_NOTHING");
+			int amount = p_data.value("amount", 0);
+
+			if (id.empty() || id == "ITEM_NOTHING" || amount <= 0)
+				p_slot->Clear();
+			else
+				p_slot->SetStack(ItemStack(id, amount));
+
+			p_slot->RefreshVisual();
+		};
+
+	if (in.contains("rawOres"))     
+		loadSlot(m_rawOres, in["rawOres"]);
+
+	if (in.contains("meltedOres")) 
+		loadSlot(m_meltedOres, in["meltedOres"]);
+
+	if (in.contains("consumables"))
+		loadSlot(m_consumables, in["consumables"]);
+
+	m_currentfuelTime = in.value("currentFuelTime", 0.f);
+	m_currentHeatingTime = in.value("currentHeatingTime", m_heatingTimeRequired);
+	m_heatingTimeRequired = in.value("heatingTimeRequired", 0.f);
+
+	if (m_rawOres->IsEmpty() == false && m_heatingTimeRequired > 0.f)
+	{
+		m_progressBarAnimation->SetDuration(m_heatingTimeRequired / m_progressBarAnimation->GetTotalFrames());
+	}
+}

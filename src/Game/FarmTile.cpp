@@ -2,6 +2,8 @@
 #include "FarmTile.h"
 #include "FarmManager.h"
 #include "SpriteContainer.h"
+#include "Aleatory.h"
+#include "GameData.h"
 #include <iostream>
 #include <cmath>
 
@@ -57,6 +59,20 @@ int FarmTile::ComputeGrowthStage() const
 
 void FarmTile::Till(int p_currentDay)
 {
+    if (m_state == FarmTileState::PLANTED || m_state == FarmTileState::GROWING)
+    {
+        std::cout << "[FarmTile] Culture retiree (" << (m_crop.has_value() ? m_crop->m_name : "?") << ")" << std::endl;
+
+        m_crop.reset();
+        m_growthStage = 0;
+        m_daysGrown = 0;
+        m_daysWithoutWater = 0;
+        m_wateredToday = false;
+        m_state = FarmTileState::TILLED;
+        UpdateVisuals();
+        return;
+    }
+
     // Dé-bêcher si déjà bêché et vide
     if (m_state == FarmTileState::TILLED || m_state == FarmTileState::WATERED)
     {
@@ -119,7 +135,18 @@ void FarmTile::Harvest(int p_currentDay)
     if (m_state != FarmTileState::READY) 
         return;
 
-    std::cout << "[FarmTile] Recolte : " << m_crop->m_name << " x" << m_crop->m_dropCount << " | XP : " << m_crop->m_xpOnHarvest << std::endl;
+    std::string id = "ITEM_";
+    for (char c : m_crop->m_name)
+    {
+        if (c == ' ' || c == '-')
+            id += '_';
+        else
+            id += static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+    }
+
+	PlayerData& pd = GameData::Get().GetPlayerData();
+	pd.m_playerInventory->AddItem(id, Aleatory::GetInt(m_crop->m_dropCountMin, m_crop->m_dropCountMax), false);
+	pd.AddXpToJob(JobType::Farmer, m_crop->m_xpOnHarvest);
 
     m_crop.reset();
     m_growthStage = 0;
@@ -160,7 +187,13 @@ void FarmTile::OnNewDay(int p_currentDay)
 
     if (m_wateredToday)
     {
-        m_daysGrown++;
+        bool canGrowThisSeason = (m_crop->m_seasonMask & S(GameData::Get().GetSeason())) != SeasonMask(0);
+
+        if (canGrowThisSeason)
+        {
+            m_daysGrown++;
+        }
+
         m_daysWithoutWater = 0;
     }
     else

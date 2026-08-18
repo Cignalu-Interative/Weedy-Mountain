@@ -206,15 +206,6 @@ void GameScene::OnEvent()
 		SceneManager::Get()->PushScene("cave");
 	}
 
-	if (im->IsKeyboardDown(K_G))
-	{
-		SaveManager::Get().QuickSave();
-	}
-	if (im->IsKeyboardDown(K_H))
-	{
-		SaveManager::Get().LoadFromFile("save1");
-	}
-
 	//if (im->IsKeyboardDown(K_O))
 	//	GameData::Get().GetPlayerData().m_playerInventory->AddItem("ITEM_WOOD", 64, false);
 

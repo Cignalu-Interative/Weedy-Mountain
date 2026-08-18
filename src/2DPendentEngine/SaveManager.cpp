@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "SaveManager.h"
 #include "Savable.h"
+#include "SceneManager.h"
 
 SaveManager& SaveManager::Get()
 {
@@ -60,7 +61,9 @@ bool SaveManager::LoadFromFile(const std::string& p_saveName)
 	try { root = json::parse(file); }
 	catch (...) { return false; }
 
-	for (Savable* provider : m_providers)
+	std::vector<Savable*> providersSnapshot = m_providers;
+
+	for (Savable* provider : providersSnapshot)
 	{
 		auto it = root.find(provider->GetSaveID());
 
@@ -69,6 +72,27 @@ bool SaveManager::LoadFromFile(const std::string& p_saveName)
 
 		provider->Load(*it);
 	}
+
+	return true;
+}
+
+bool SaveManager::SaveExists(const std::string& p_saveName) const
+{
+	return std::filesystem::exists(m_saveFolder + p_saveName + ".json");
+}
+
+bool SaveManager::PrepareSceneForLoad(const std::string& p_saveName)
+{
+	std::ifstream file(m_saveFolder + p_saveName + ".json");
+	if (file.is_open() == false)
+		return false;
+
+	json root;
+	try { root = json::parse(file); }
+	catch (...) { return false; }
+
+	std::string sceneID = root.value("gameData", json::object()).value("currentScene", "game");
+	SceneManager::Get()->PushScene(sceneID);
 
 	return true;
 }

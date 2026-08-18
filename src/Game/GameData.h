@@ -83,6 +83,9 @@ public:
 	void SetCurrentScene(CurrentScene p_currentScene) { m_currentScene = p_currentScene; }
 	const CurrentScene GetCurrentScene() const { return m_currentScene; }
 
+	static std::string SceneIDFromCurrentScene(CurrentScene p_scene);
+	static CurrentScene CurrentSceneFromSceneID(const std::string& p_id);
+
 	std::string GetSaveID() const override { return "gameData"; }
 	void Save(nlohmann::json& p_out) override;
 	void Load(const nlohmann::json& p_in) override;

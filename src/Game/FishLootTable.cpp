@@ -59,22 +59,38 @@ std::string FishLootTable::PickOne()
     return chosenSpecies->m_variants[variantIndex].m_id;
 }
 
+float FishLootTable::GetXpForFish(const std::string& fishID)
+{
+    const auto& table = GetTable();
+    for (const FishSpecies& species : table)
+    {
+        for (const FishVariant& variant : species.m_variants)
+        {
+            if (variant.m_id == fishID)
+            {
+                return variant.m_xpOnCatch;
+            }
+        }
+    }
+	return 0.f;
+}
+
 const std::array<FishSpecies, 12> FishLootTable::GetTable()
 {
     static const std::array<FishSpecies, 12> table
     {
-        FishSpecies{ W(Weather::Rain) | W(Weather::Storm),  T(TimeOfDay::Day),      ALL_SEASON,                             50.f,   {FishVariant{"ITEM_RED_FISH",       55.f},FishVariant{"ITEM_RED_SPARKLING_FISH",        30.f},FishVariant{"ITEM_RED_KING_FISH",         15.f}}},
-        FishSpecies{ W(Weather::Clear),                     ALL_TIME,               ALL_SEASON,                             65.f,   {FishVariant{"ITEM_BLUE_FISH",      55.f},FishVariant{"ITEM_BLUE_SPARKLING_FISH",       30.f},FishVariant{"ITEM_BLUE_KING_FISH",        15.f}}},
-        FishSpecies{ ALL_WEATHER,                           T(TimeOfDay::Night),    ALL_SEASON,                             60.f,   {FishVariant{"ITEM_CYAN_FISH",      55.f},FishVariant{"ITEM_CYAN_SPARKLING_FISH",       30.f},FishVariant{"ITEM_CYAN_KING_FISH",        15.f}}},
-        FishSpecies{ W(Weather::Clear),                     T(TimeOfDay::Day),      S(Season::Spring ) | S(Season::Summer), 55.f,   {FishVariant{"ITEM_GREEN_FISH",     55.f},FishVariant{"ITEM_GREEN_SPARKLING_FISH",      30.f},FishVariant{"ITEM_GREEN_KING_FISH",       15.f}}},
-        FishSpecies{ ALL_WEATHER,                           T(TimeOfDay::Night),    S(Season::Winter),                      45.f,   {FishVariant{"ITEM_BROWN_FISH",     55.f},FishVariant{"ITEM_BROWN_SPARKLING_FISH",      30.f},FishVariant{"ITEM_BROWN_KING_FISH",       15.f}}},
-        FishSpecies{ W(Weather::Rain),                      ALL_TIME,               S(Season::Autumn),                      40.f,   {FishVariant{"ITEM_GRAY_FISH",      55.f},FishVariant{"ITEM_GRAY_SPARKLING_FISH",       30.f},FishVariant{"ITEM_GRAY_KING_FISH",        15.f}}},
-        FishSpecies{ W(Weather::Clear),                     T(TimeOfDay::Day),      S(Season::Summer),                      40.f,   {FishVariant{"ITEM_PINK_FISH",      55.f},FishVariant{"ITEM_PINK_SPARKLING_FISH",       30.f},FishVariant{"ITEM_PINK_KING_FISH",        15.f}}},
-        FishSpecies{ W(Weather::Rain),                      T(TimeOfDay::Day),      S(Season::Spring),                      35.f,   {FishVariant{"ITEM_LIGHTPINK_FISH", 55.f},FishVariant{"ITEM_LIGHTPINK_SPARKLING_FISH",  30.f},FishVariant{"ITEM_LIGHTPINK_KING_FISH",   15.f}}},
-        FishSpecies{ W(Weather::Storm),                     T(TimeOfDay::Night),    ALL_SEASON,                             20.f,   {FishVariant{"ITEM_PURPLE_FISH",    55.f},FishVariant{"ITEM_PURPLE_SPARKLING_FISH",     30.f},FishVariant{"ITEM_PURPLE_KING_FISH",      15.f}}},
-        FishSpecies{ W(Weather::Clear),                     T(TimeOfDay::Night),    S(Season::Summer),                      18.f,   {FishVariant{"ITEM_ORANGE_FISH",    55.f},FishVariant{"ITEM_ORANGE_SPARKLING_FISH",     30.f},FishVariant{"ITEM_ORANGE_KING_FISH",      15.f}}},
-        FishSpecies{ W(Weather::Storm),                     T(TimeOfDay::Night),    S(Season::Winter),                      15.f,   {FishVariant{"ITEM_BLACK_FISH",     55.f},FishVariant{"ITEM_BLACK_SPARKLING_FISH",      30.f},FishVariant{"ITEM_BLACK_KING_FISH",       15.f}}},
-        FishSpecies{ W(Weather::Storm),                     T(TimeOfDay::Night),    S(Season::Autumn),                      6.f,    {FishVariant{"ITEM_GOLDEN_FISH",    70.f},FishVariant{"ITEM_GOLDEN_SPARKLING_FISH",     20.f},FishVariant{"ITEM_GOLDEN_KING_FISH",      10.f}}},
+        FishSpecies{ W(Weather::Rain) | W(Weather::Storm),  T(TimeOfDay::Day),      ALL_SEASON,                             50.f,   {FishVariant{"ITEM_RED_FISH",       55.f, 10.f},FishVariant{"ITEM_RED_SPARKLING_FISH",        30.f, 25.f},FishVariant{"ITEM_RED_KING_FISH",         15.f, 50.f}}},
+        FishSpecies{ W(Weather::Clear),                     ALL_TIME,               ALL_SEASON,                             65.f,   {FishVariant{"ITEM_BLUE_FISH",      55.f, 10.f},FishVariant{"ITEM_BLUE_SPARKLING_FISH",       30.f, 25.f},FishVariant{"ITEM_BLUE_KING_FISH",        15.f, 50.f}}},
+        FishSpecies{ ALL_WEATHER,                           T(TimeOfDay::Night),    ALL_SEASON,                             60.f,   {FishVariant{"ITEM_CYAN_FISH",      55.f, 10.f},FishVariant{"ITEM_CYAN_SPARKLING_FISH",       30.f, 25.f},FishVariant{"ITEM_CYAN_KING_FISH",        15.f, 50.f}}},
+        FishSpecies{ W(Weather::Clear),                     T(TimeOfDay::Day),      S(Season::Spring ) | S(Season::Summer), 55.f,   {FishVariant{"ITEM_GREEN_FISH",     55.f, 10.f},FishVariant{"ITEM_GREEN_SPARKLING_FISH",      30.f, 25.f},FishVariant{"ITEM_GREEN_KING_FISH",       15.f, 50.f}}},
+        FishSpecies{ ALL_WEATHER,                           T(TimeOfDay::Night),    S(Season::Winter),                      45.f,   {FishVariant{"ITEM_BROWN_FISH",     55.f, 10.f},FishVariant{"ITEM_BROWN_SPARKLING_FISH",      30.f, 25.f},FishVariant{"ITEM_BROWN_KING_FISH",       15.f, 50.f}}},
+        FishSpecies{ W(Weather::Rain),                      ALL_TIME,               S(Season::Autumn),                      40.f,   {FishVariant{"ITEM_GRAY_FISH",      55.f, 10.f},FishVariant{"ITEM_GRAY_SPARKLING_FISH",       30.f, 25.f},FishVariant{"ITEM_GRAY_KING_FISH",        15.f, 50.f}}},
+        FishSpecies{ W(Weather::Clear),                     T(TimeOfDay::Day),      S(Season::Summer),                      40.f,   {FishVariant{"ITEM_PINK_FISH",      55.f, 10.f},FishVariant{"ITEM_PINK_SPARKLING_FISH",       30.f, 25.f},FishVariant{"ITEM_PINK_KING_FISH",        15.f, 50.f}}},
+        FishSpecies{ W(Weather::Rain),                      T(TimeOfDay::Day),      S(Season::Spring),                      35.f,   {FishVariant{"ITEM_LIGHTPINK_FISH", 55.f, 10.f},FishVariant{"ITEM_LIGHTPINK_SPARKLING_FISH",  30.f, 25.f},FishVariant{"ITEM_LIGHTPINK_KING_FISH",   15.f, 50.f}}},
+        FishSpecies{ W(Weather::Storm),                     T(TimeOfDay::Night),    ALL_SEASON,                             20.f,   {FishVariant{"ITEM_PURPLE_FISH",    55.f, 10.f},FishVariant{"ITEM_PURPLE_SPARKLING_FISH",     30.f, 25.f},FishVariant{"ITEM_PURPLE_KING_FISH",      15.f, 50.f}}},
+        FishSpecies{ W(Weather::Clear),                     T(TimeOfDay::Night),    S(Season::Summer),                      18.f,   {FishVariant{"ITEM_ORANGE_FISH",    55.f, 10.f},FishVariant{"ITEM_ORANGE_SPARKLING_FISH",     30.f, 25.f},FishVariant{"ITEM_ORANGE_KING_FISH",      15.f, 50.f}}},
+        FishSpecies{ W(Weather::Storm),                     T(TimeOfDay::Night),    S(Season::Winter),                      15.f,   {FishVariant{"ITEM_BLACK_FISH",     55.f, 10.f},FishVariant{"ITEM_BLACK_SPARKLING_FISH",      30.f, 25.f},FishVariant{"ITEM_BLACK_KING_FISH",       15.f, 50.f}}},
+        FishSpecies{ W(Weather::Storm),                     T(TimeOfDay::Night),    S(Season::Autumn),                      6.f,    {FishVariant{"ITEM_GOLDEN_FISH",    70.f, 10.f},FishVariant{"ITEM_GOLDEN_SPARKLING_FISH",     20.f, 25.f},FishVariant{"ITEM_GOLDEN_KING_FISH",      10.f, 50.f}}},
     };
 
     return table;

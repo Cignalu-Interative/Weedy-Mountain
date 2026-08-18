@@ -25,9 +25,9 @@
 #include "UiChest.h"
 
 #include "RecipesUi.h"
-#include "RecipeDataBase.h"
-#include "ItemDataBase.h"
 #include "Ui/UiShop.h"
+
+#include "SaveManager.h"
 
 void HUDScene::OnInitialize()
 {
@@ -127,6 +127,18 @@ void HUDScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_KP_0))
 	{
 		GameData::Get().UnlockRecipe("a");
+	}
+
+	if (InputManager::Get()->IsKeyboardDown(K_G))
+	{
+		SaveManager::Get().QuickSave();
+	}
+	if (InputManager::Get()->IsKeyboardDown(K_H))
+	{
+		if (SaveManager::Get().PrepareSceneForLoad("save1"))
+		{
+			SaveManager::Get().LoadFromFile("save1");
+		}
 	}
 }
 

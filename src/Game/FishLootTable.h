@@ -19,6 +19,7 @@ struct FishVariant
 {
 	std::string m_id;
 	float weight;
+	float m_xpOnCatch;
 };
 
 struct FishSpecies
@@ -34,6 +35,7 @@ class FishLootTable
 {
 public:
 	static std::string PickOne();
+	static float GetXpForFish(const std::string& fishID);
 
 private:
 	static const std::array<FishSpecies, 12> GetTable();

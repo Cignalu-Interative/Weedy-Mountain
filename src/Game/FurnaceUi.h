@@ -1,5 +1,6 @@
 #pragma once
 #include "Entity.h"
+#include "2DpendentLib/json.hpp"
 
 class PlayerInventory;
 class InventorySlot;
@@ -40,5 +41,8 @@ public :
 
 	void Open();
 	void Close();
+
+	void Save(nlohmann::json& p_out) const;
+	void Load(const nlohmann::json& p_in);
 };
 

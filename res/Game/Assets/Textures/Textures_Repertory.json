@@ -7,9 +7,6 @@
       "path": "../../res/Game/Assets/Textures/Calendar.png"
     },
     {
-      "path": "../../res/Game/Assets/Textures/Carrot seed.png"
-    },
-    {
       "path": "../../res/Game/Assets/Textures/Characters/NPCs/humans/Man/3/Npc.png"
     },
     {
@@ -7669,6 +7666,114 @@
       "path": "../../res/Game/Assets/Textures/Pickaxe.png"
     },
     {
+      "path": "../../res/Game/Assets/Textures/Plantation/beatroot_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/beatroot_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/beatroot_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/beatroot_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/cabbage_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/cabbage_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/cabbage_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/cabbage_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/carrot_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/carrot_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/carrot_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/carrot_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/eggplant_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/eggplant_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/eggplant_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/eggplant_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/parsnip_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/parsnip_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/parsnip_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/parsnip_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/pumpkin_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/pumpkin_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/pumpkin_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/pumpkin_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/radish_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/radish_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/radish_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/radish_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/turnip_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/turnip_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/turnip_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/turnip_04.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/wheat_01.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/wheat_02.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/wheat_03.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Plantation/wheat_04.png"
+    },
+    {
       "path": "../../res/Game/Assets/Textures/Potatoe.png"
     },
     {
@@ -7682,6 +7787,72 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/Rock.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Cabbage.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Cabbage_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Carrot.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Carrot_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Eggplant.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Eggplant_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Parsnip.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Parsnip_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Potato.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Potato_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Pumpkin.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Pumpkin_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Radish.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Radish_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Sunflower.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Sunflower_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Tomato.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Tomato_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Turnip.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Turnip_Seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Wheat seed.png"
+    },
+    {
+      "path": "../../res/Game/Assets/Textures/Seeds/Wheat.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/Slot_Furnace.png"
@@ -7762,9 +7933,6 @@
       "path": "../../res/Game/Assets/Textures/UiToxicityFull.png"
     },
     {
-      "path": "../../res/Game/Assets/Textures/Wheat seed.png"
-    },
-    {
       "path": "../../res/Game/Assets/Textures/WhiteBackground.png"
     },
     {
@@ -7778,18 +7946,6 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/buttonHover.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/carrot_01.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/carrot_02.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/carrot_03.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/carrot_04.png"
     },
     {
       "path": "../../res/Game/Assets/Textures/cisailles.png"
@@ -7844,18 +8000,6 @@
     },
     {
       "path": "../../res/Game/Assets/Textures/soil_watered.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/wheat_01.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/wheat_02.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/wheat_03.png"
-    },
-    {
-      "path": "../../res/Game/Assets/Textures/wheat_04.png"
     }
   ]
 }

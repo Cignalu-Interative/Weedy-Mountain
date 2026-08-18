@@ -21,7 +21,7 @@
 #include "ItemActionRegistry.h"
 
 #include "FishLootTable.h"
-
+ 
 void Player::OnInitialize()
 {
 
@@ -152,19 +152,23 @@ void Player::HandleDefaultHarvestAction()
 
 	FarmTile* farmTarget = FarmManager::Get()->GetTileInActionBox(actionBox);
 
-	if (farmTarget != nullptr && farmTarget->GetState() == FarmTileState::IDLE)
+	if (farmTarget != nullptr)
 	{
-		PlayerInventory* inv = GetInventory();
-		if (inv == nullptr)
-			return;
+		FarmTileState state = farmTarget->GetState();
+		if (state == FarmTileState::IDLE || state == FarmTileState::PLANTED || state == FarmTileState::GROWING)
+		{
+			PlayerInventory* inv = GetInventory();
+			if (inv == nullptr)
+				return;
 
-		const std::string& selectedID = inv->GetSelectedItemID();
-		ItemData* data = (selectedID != "ITEM_NOTHING") ? ItemDataBase::Get()->GetItem(selectedID) : nullptr;
+			const std::string& selectedID = inv->GetSelectedItemID();
+			ItemData* data = (selectedID != "ITEM_NOTHING") ? ItemDataBase::Get()->GetItem(selectedID) : nullptr;
 
-		bool hasSpadeInHand = (data != nullptr && data->GetItemType() == ItemType::Tool && data->GetToolType() == ToolType::Spade);
+			bool hasSpadeInHand = (data != nullptr && data->GetItemType() == ItemType::Tool && data->GetToolType() == ToolType::Spade);
 
-		if (hasSpadeInHand == false)
-			return;
+			if (hasSpadeInHand == false)
+				return;
+		}
 	}
 
 	HandleFarmAction();
@@ -208,9 +212,11 @@ void Player::HandleFarmAction()
 	switch (target->GetState())
 	{
 	case FarmTileState::IDLE:
+	case FarmTileState::PLANTED:
+	case FarmTileState::GROWING:
 		target->Till(currentDay);
 		break;
-
+		
 	case FarmTileState::READY:
 		target->Harvest(currentDay);
 		break;
@@ -320,6 +326,7 @@ void Player::UpdateFishing()
 			std::cout << "[Fishing] poisson attraper : " << fish << std::endl;
 
 			GetInventory()->AddItem(fish, 1, false);
+			GameData::Get().GetPlayerData().AddXpToJob(JobType::Farmer, FishLootTable::GetXpForFish(fish));
 			RetractFishingRod();
 			break;
 		}

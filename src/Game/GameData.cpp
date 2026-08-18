@@ -218,6 +218,30 @@ const std::vector<std::string>& GameData::GetUnlockedRecipes()
 	return m_unlockedRecipes;
 }
 
+std::string GameData::SceneIDFromCurrentScene(CurrentScene p_scene)
+{
+	switch (p_scene)
+	{
+	case CurrentScene::FARM:    
+		return "game";
+	case CurrentScene::VILLAGE:
+		return "village";
+	case CurrentScene::CAVE: 
+		return "cave";
+	}
+	return "game";
+}
+
+CurrentScene GameData::CurrentSceneFromSceneID(const std::string& p_id)
+{
+	if (p_id == "cave")    
+		return CurrentScene::CAVE;
+	if (p_id == "village") 
+		return CurrentScene::VILLAGE;
+
+	return CurrentScene::FARM;
+}
+
 void GameData::Save(nlohmann::json& out)
 {
 	out["timeSpent"] = m_timeSpent;
@@ -243,6 +267,20 @@ void GameData::Save(nlohmann::json& out)
 		jobs.push_back({ {"name", (int)job->m_name}, {"lvl", job->m_lvl}, {"exp", job->m_exp}, {"expNeeded", job->m_expNeeded} });
 	
 	out["jobs"] = jobs;
+
+	std::string sceneID = SceneIDFromCurrentScene(m_currentScene);
+	out["currentScene"] = sceneID;
+
+	Scene* scene = SceneManager::Get()->GetScene(sceneID);
+	if (scene)
+	{
+		Entity* player = scene->GetEntityByTag(1);
+		if (player)
+		{
+			out["playerPosX"] = player->GetPosition().GetX();
+			out["playerPosY"] = player->GetPosition().GetY();
+		}
+	}
 }
 
 void GameData::Load(const nlohmann::json& in)
@@ -281,5 +319,23 @@ void GameData::Load(const nlohmann::json& in)
 		job->m_exp = j.value("exp", 0.f);
 		job->m_expNeeded = j.value("expNeeded", 100.f);
 		m_playerData.m_jobs.push_back(job);
+	}
+
+	std::string sceneID = in.value("currentScene", "game");
+	m_currentScene = CurrentSceneFromSceneID(sceneID);
+
+	Scene* scene = SceneManager::Get()->GetScene(sceneID);
+	if (scene && in.contains("playerPosX") && in.contains("playerPosY"))
+	{
+		Entity* player = scene->GetEntityByTag(1);
+		if (player)
+		{
+			Vector2f pos = { in.value("playerPosX", 0.f), in.value("playerPosY", 0.f) };
+			player->SetPosition(pos);
+
+			Camera* cam = scene->GetCamera();
+			if (cam)
+				cam->SetPosition(pos);
+		}
 	}
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <tileset version="1.10" tiledversion="1.11.2" name="tiles_cave" tilewidth="16" tileheight="16" tilecount="30" columns="6">
- <image source="../../res/Game/Assets/Textures/Environment/Tilesets/Rocks/tiles_cave.png" width="96" height="80"/>
+ <image source="../../Textures/Environment/Tilesets/Rocks/tiles_cave.png" width="96" height="80"/>
  <tile id="2">
   <properties>
    <property name="CanGrow" type="bool" value="false"/>

@@ -246,6 +246,14 @@ void UiCollection::Close()
 	for (ItemBlock* block : m_blocks)
 		block->SetVisible(false);
 
+	if (m_isItemSelected)
+	{
+		m_backButton->SetIsVisible(false);
+		m_isItemSelected = false;
+		m_itemPageName->SetIsVisible(false);
+		RemoveSprite("itemPageIcon");
+	}
+
 	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(true);
 	SetIsVisible(false);
 	m_itemPageDescription->SetIsVisible(false);

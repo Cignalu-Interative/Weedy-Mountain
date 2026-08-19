@@ -68,23 +68,23 @@ void VillageScene::OnInitialize()
 	m_PNJ->SetOnFinishFunction([this]
 		{
 			m_player->UnlockInputs();
-			if (QuestManager::Get()->GetQuestOnNotStarted("Quest") != nullptr)
+
+			Quest* quest = QuestManager::Get()->GetQuest("Vendre Recolte");
+			if (quest == nullptr)
+				return;
+
+			if (quest->IsBlocked())
 			{
-				QuestManager::Get()->SetStateQuestInProcess("Quest");
+				QuestManager::Get()->SetQuestState("Vendre Recolte", QuestState::InProgress);
 			}
-			Quest* quest = QuestManager::Get()->GetQuestOnInProcess("Quest");
-			if (quest != nullptr)
+			else if (quest->IsFinished())
 			{
-				if (quest->IsQuestCompleted() == true)
-				{
-					QuestManager::Get()->SetStateQuestFinished("Quest");
-					std::cerr << "Quest finished" << std::endl;
-					//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
-				}
-				else
-				{
-					//m_PNJ->Talk("Tu n'as pas encore terminé la quête, continue à chercher les objets dont j'ai besoin !");
-				}
+				std::cerr << "Quest finished" << std::endl;
+				//m_PNJ->Talk("Merci beaucoup pour ton aide, tu es vraiment un bon voisin ! Je te souhaite une bonne continuation !");
+			}
+			else
+			{
+				//m_PNJ->Talk("Tu n'as pas encore termine la quete, continue a chercher les objets dont j'ai besoin !");
 			}
 		});
 

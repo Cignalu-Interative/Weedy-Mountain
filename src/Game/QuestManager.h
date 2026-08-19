@@ -3,78 +3,57 @@
 #include <string>
 #include <unordered_map>
 #include "Quest.h"
+#include "QuestEvent.h"
+#include "Savable.h"
 #include "2DPendentLib/Vector2.h"
 #include "2DPendentEngine/Entity.h"
 
-class QuestManager
+class QuestManager : public Savable
 {
 private:
 
-	std::unordered_map<std::string, size_t> m_questsNotStarted;
-	std::vector<Quest*> m_questsNotStartedVector;
-
-	std::unordered_map<std::string, size_t> m_questsInProcess;
-	std::vector<Quest*> m_questsInProcessVector;
-
-	std::unordered_map<std::string, size_t> m_questsFinished;
-	std::vector<Quest*> m_questsFinishedVector;
-
-	std::vector<Quest*> m_allQuests;
+	std::unordered_map<std::string, Quest*> m_quests;
+	std::vector<Quest*> m_allQuestsCache;
 
 	Scene* m_scene = nullptr;
 
 	Quest* m_activeQuest = nullptr;
 
-	void RemoveQuestFromNotStarted(Quest* p_quest);
-	void RemoveQuestFromInProcess(Quest* p_quest);
-	void RemoveQuestFromFinished(Quest* p_quest);
+	QuestManager();
 
 public:
 
 	static QuestManager* Get();
+	~QuestManager();
 
 	void SetScene(Scene* p_scene) { m_scene = p_scene; }
 	Scene* GetScene() const { return m_scene; }
 
-	QuestManager();
-	~QuestManager();	
+	Quest* CreateQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
 
-	void CreateQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner);
 	void RemoveAllQuests();
-	
-	void DeleteQuestOnNotStarted(const std::string& p_name);
-	void DeleteQuestOnInProcess(const std::string& p_name);
-	void DeleteQuestOnFinished(const std::string& p_name);
+	void DeleteQuest(const std::string& p_name);
 
-	void AddQuestToNotStarted(Quest* p_quest);
-	void AddQuestToInProcess(Quest* p_quest);
-	void AddQuestToFinished(Quest* p_quest);
+	Quest* GetQuest(const std::string& p_name) const;
 
-	Quest* GetQuestOnNotStarted(const std::string& p_name) const;
-	Quest* GetQuestOnInProcess(const std::string& p_name) const;
-	Quest* GetQuestOnFinished(const std::string& p_name) const;
+	void UnlockQuest(const std::string& p_name) const;
 
-	std::vector<Quest*>& GetQuestsNotStarted() { return m_questsNotStartedVector; }
-	std::vector<Quest*>& GetQuestsInProcess() { return m_questsInProcessVector; }
-	std::vector<Quest*>& GetQuestsFinished() { return m_questsFinishedVector; }
-
+	std::vector<Quest*> GetQuestsByState(QuestState p_state) const;
 	std::vector<Quest*>& GetAllQuests();
 
-	void UpdateQuests();
+	void NotifyEvent(const QuestEvent& p_event);
 
-	void DrawQuests();
-
-	void CheckAddItem(const std::string& ID, int amount);
-
-	void SetStateQuestNotStarted(const std::string& p_name);
-	void SetStateQuestInProcess(const std::string& p_name);
-	void SetStateQuestFinished(const std::string& p_name);
+	void SetQuestState(const std::string& p_name, QuestState p_state);
 
 	void GiveReward(Quest* p_quest);
 
-	void SetActiveQuest(const std::string& p_id);
+	void SetActiveQuest(const std::string& p_name);
 	Quest* GetActiveQuest() const { return m_activeQuest; }
-
 	void RemoveActiveQuest(Quest* p_quest);
-};
 
+	void UpdateQuests();
+
+	std::string GetSaveID() const override { return "questManager"; }
+	void Save(nlohmann::json& p_out) override;
+	void Load(const nlohmann::json& p_in) override;
+};

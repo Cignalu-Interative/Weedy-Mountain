@@ -10,6 +10,8 @@
 
 #include "PlayerInventory.h"
 
+#include "QuestManager.h"
+
 void UiShop::OnInitialize()
 {
 	Scene* scene = GetScene();
@@ -259,6 +261,8 @@ void UiShop::Sell()
 		GameData::Get().GetPlayerData().m_money += m_totalPrices;
 		m_playerInventory->RemoveItem(id, amount, false);
 		m_slot->Clear();
+
+		QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::ItemSold, id, amount));
 	}
 
 	std::vector<InventorySlot*> slots = m_playerInventory->GetAllSlots();
@@ -293,6 +297,9 @@ void UiShop::SellAll()
 
 	GameData::Get().GetPlayerData().m_money += price;
 	m_slot->Clear();
+
+	if (amount > 0)
+		QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::ItemSold, id, amount));
 }
 
 void UiShop::ChoosePlayerInventoryButtonClicked()

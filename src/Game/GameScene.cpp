@@ -140,7 +140,9 @@ void GameScene::OnInitialize()
 	
 	Furnace* f = CreateEntity<Furnace>({ m_spawnPoint + Vector2f{0, 200} }, { 16,32 }, "", Shape::Rectangle);
 
-
+	Quest* quest = QuestManager::Get()->CreateQuest("Vendre Recolte", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
+	quest->AddObjective(new SellItemObjective("ITEM_CARROT", 5, "Carrot"));
+	quest->AddReward(ItemDataBase::Get()->GetItem("ITEM_FISHING_ROD"), 1);
 
 	EnviroSpawn::Get()->InitEnviroSpawn();
 
@@ -159,23 +161,6 @@ void GameScene::OnInitialize()
 	pi->GetInventory()->SetSaveTag("player_inventory");
 
 	//Application::Get()->GetWindow()->SetWindowAlwaysOnTop(true);
-
-
-	QuestManager::Get()->CreateQuest("Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Wood", 1);
-	QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddReward(ItemDataBase::Get()->GetItem("ITEM_EGG"), 67);
-	QuestManager::Get()->GetQuestOnNotStarted("Quest")->SetHistoryDescription("This is a test quest to check if the quest system is working properly. You need to collect 1 wood and you will be rewarded with 67 eggs.");
-	
-	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Rock", 1);
-	//QuestManager::Get()->GetQuestOnNotStarted("Quest")->AddRequirement(CheckQuest::AddItem, "Item_Fiber", 5);
-
-	QuestManager::Get()->CreateQuest("Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest("KAKA Quest", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKA Quest KAKA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKOU Quest KAKI", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" KAKIKOU LE CAILLOU", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
-	QuestManager::Get()->CreateQuest(" CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 
 	Chest* c = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
 }
@@ -196,7 +181,6 @@ void GameScene::OnEvent()
 
 	if (im->IsKeyboardDown(K_R))
 	{
-		
 		SceneManager::Get()->PushScene("village");
 	}
 

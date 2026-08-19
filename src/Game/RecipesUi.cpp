@@ -12,6 +12,8 @@
 #include "HUDScene.h"
 #include <algorithm>
 
+#include "QuestManager.h"
+
 void RecipesUi::OnInitialize()
 {
 	AddSprite("RecipeUiBackground", "Crafting_BackGround", GetDimension(), 0, {}, true);
@@ -256,6 +258,8 @@ void RecipesUi::CraftItem()
 		{
 			m_playerInventory->RemoveItem(data.itemID, data.quantity, false);
 		}
+
+		QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::ItemCrafted, selectedRecipe->GetItemName(), selectedRecipe->GetAmountItem()));
 	}
 
 }

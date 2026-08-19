@@ -9,6 +9,8 @@
 #include "UiGatherer.h"
 #include "HUDScene.h"
 
+#include "QuestManager.h"
+
 void UiJobs::OnInitialize()
 {
 	RemoveCollider("default");
@@ -36,6 +38,19 @@ void UiJobs::OnInitialize()
 	Debug::Get()->CreateText("metier", textPos, "JOBS", ColorsNamed::White, true);
 	Debug::Get()->GetText("metier")->SetFontSize(50);
 
+	Vector2f claimButtonPos = GetPosition({ 0.5f, 1.f }) + Vector2f(0, 40);
+	m_claimRewardButton = GetScene()->CreateButton(claimButtonPos, { 220,50 }, "button", "claimRewardButton", "CLAIM", true);
+	m_claimRewardButton->SetOnLeftClick([this] { ClaimReward(); });
+	m_claimRewardButton->SetOnHoverStay([this] { m_claimRewardButton->SetSprite("button2"); });
+	m_claimRewardButton->SetOnHoverExit([this] { m_claimRewardButton->SetSprite("button"); });
+	m_claimRewardButton->GetCollider()->SetIsTrigger(true);
+	m_claimRewardButton->SetIsVisible(false);
+
+}
+
+void UiJobs::ClaimReward()
+{
+	QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::RewardClaimed));
 }
 
 void UiJobs::Toggle()

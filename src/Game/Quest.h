@@ -4,68 +4,24 @@
 #include "2DPendentLib/Vector2.h"
 #include "2DPendentEngine/Entity.h"
 #include "2DPendentLib/Text.h"
-#include "2DPendentLib/Rectangle.h"
-#include "2DPendentLib/Circle.h"
-#include "2DPendentLib/Sprite.h"
-#include "2DPendentLib/AssetManager.h"
 #include "2DPendentLib/Drawable.h"
+#include "2DPendentLib/json.hpp"
+#include "QuestObjective.h"
 #include "ItemData.h"
 #include "ItemDataBase.h"
 
-enum class CheckQuest
+enum class QuestState
 {
-	UNDEFINED,
-	AddItem,
-
-	Max
-
-};
-
-struct QuestRequirement
-{
-	CheckQuest s_checkType = CheckQuest::UNDEFINED;
-
-	ItemData* s_itemData = nullptr;
-
-	int s_requiredAmount = 0;
-	int s_harvestedAmount = 0;
-
-	Text* s_requiredText = nullptr;
-	Text* s_harvestedText = nullptr;
-
-	bool s_isCompleted = false;
-
-	void SetCheckType(CheckQuest p_checkType) { s_checkType = p_checkType; }
-	CheckQuest GetCheckType() const { return s_checkType; }
-
-	void SetRequiredAmount(int p_amount) { s_requiredAmount = p_amount; }
-	void AddHarvestedAmount(int p_amount)
-	{
-		s_harvestedAmount += p_amount;
-		if (s_harvestedAmount >= s_requiredAmount)
-		{
-			s_isCompleted = true;
-			s_harvestedAmount = s_requiredAmount;
-		}
-	}
-
-	int GetRequiredAmount() const { return s_requiredAmount; }
-	int GetHarvestedAmount() const { return s_harvestedAmount; }
-
-	void SetItemData(ItemData* p_itemData) { s_itemData = p_itemData; }
-	ItemData* GetItemData() const { return s_itemData; }
-
-	bool IsCompleted() const { return s_isCompleted; }
-
-	void SetVisible(bool p_visible) { s_requiredText->SetIsVisible(p_visible); s_harvestedText->SetIsVisible(p_visible); }
+	Blocked,
+	NotStarted,
+	InProgress,
+	Finished
 };
 
 struct QuestReward
 {
 	ItemData* s_itemData = nullptr;
 	int s_amount = 0;
-
-	Text* s_amountText = nullptr;
 
 	void SetItemData(ItemData* p_itemData) { s_itemData = p_itemData; }
 	ItemData* GetItemData() const { return s_itemData; }
@@ -81,29 +37,24 @@ private:
 	std::string m_name;
 	Entity* m_questOwner = nullptr;
 
-	bool m_isNotStarted = true;
-	bool m_isInProcess = false;
-	bool m_isFinished = false;
+	QuestState m_state = QuestState::Blocked;
 
-	// signifie que le joueur perdra l'objet que la quête demande à la fin de la quête
-	bool m_lostItem = false;
-
-	std::unordered_map<size_t, QuestRequirement*> m_requirements;
-	std::unordered_map<size_t, QuestReward*> m_rewards;
+	std::vector<QuestObjective*> m_objectives;
+	std::vector<QuestReward*> m_rewards;
 
 	Entity* m_zone = nullptr;
+	Entity* m_icone = nullptr;
 
-	Vector2i m_dimSpriteRequirement = { 32, 32 };
+	Vector2i m_dimSpriteObjective = { 32, 32 };
 
 	Scene* m_scene = nullptr;
 
-	Entity* m_icone = nullptr;
-
-	bool m_QuestIsCompleted = false;
-
-	bool m_rewardclaimed = false;
+	bool m_rewardClaimed = false;
 
 	std::string m_historyDescription;
+
+	std::vector<Text*> m_progressTexts;
+	std::vector<Text*> m_requiredTexts;
 
 public:
 
@@ -116,22 +67,27 @@ public:
 	void SetQuestOwner(Entity* p_owner) { m_questOwner = p_owner; }
 	Entity* GetQuestOwner() const { return m_questOwner; }
 
-	void SetNotStarted() { m_isNotStarted = true; m_isInProcess = false; m_isFinished = false; }
-	void SetInProcess() { m_isNotStarted = false; m_isInProcess = true; m_isFinished = false; }
-	void SetFinished() { m_isNotStarted = false; m_isInProcess = false; m_isFinished = true; }
+	void SetState(QuestState p_state) { m_state = p_state; }
+	QuestState GetState() const { return m_state; }
 
-	void AddRequirement(CheckQuest p_CheckType, const std::string& p_idTexture, int p_requiredAmount);
-	QuestRequirement* GetRequirement(size_t p_emplacement) const;
-	size_t GetRequirementsCount() const { return m_requirements.size(); }
+	bool IsBlocked() const { return m_state == QuestState::Blocked; }
+	bool IsNotStarted() const { return m_state == QuestState::NotStarted; }
+	bool IsInProcess() const { return m_state == QuestState::InProgress; }
+	bool IsFinished() const { return m_state == QuestState::Finished; }
+
+	void AddObjective(QuestObjective* p_objective);
+	QuestObjective* GetObjective(size_t p_index) const;
+	size_t GetObjectiveCount() const { return m_objectives.size(); }
 
 	void AddReward(ItemData* p_itemData, int p_amount);
-	QuestReward* GetReward(size_t p_emplacement) const;
+	QuestReward* GetReward(size_t p_index) const;
 	size_t GetRewardsCount() const { return m_rewards.size(); }
 
-	void UpdateQuest();
+	void OnEvent(const QuestEvent& p_event);
 
-	void SetTextQuest();
+	bool AreAllObjectivesCompleted() const;
 
+	void RefreshVisuals();
 	void ResizeGrid();
 
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
@@ -139,20 +95,20 @@ public:
 	void SetScene(Scene* p_scene) { m_scene = p_scene; }
 	Scene* GetScene() const { return m_scene; }
 
-	bool IsQuestCompleted() const { return m_QuestIsCompleted; }
-
 	void SetHistoryDescription(const std::string& p_description) { m_historyDescription = p_description; }
+	const std::string& GetHistoryDescription() const { return m_historyDescription; }
 
-	std::string GetRewardDescription();
-
-	std::string GetHistoryDescription();
-
-	std::string GetRequiquementsDescription();
+	std::string GetRewardDescription() const;
+	std::string GetObjectivesDescription() const;
 
 	void SetVisible(bool p_visible);
-
 	bool GetVisible() const { return (m_zone->GetIsVisible() || m_icone->GetIsVisible()); }
+
+	bool IsRewardClaimed() const { return m_rewardClaimed; }
+	void SetRewardClaimed(bool p_claimed) { m_rewardClaimed = p_claimed; }
 
 	Entity* GetZone() const { return m_zone; }
 
+	void Save(nlohmann::json& p_out) const;
+	void Load(const nlohmann::json& p_in);
 };

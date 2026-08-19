@@ -7,9 +7,24 @@
 #include <iostream>
 #include <cmath>
 
+#include "QuestManager.h"
+
 FarmTile::FarmTile()
 {
 
+}
+
+std::string FarmTile::BuildCropItemID(const std::string& p_cropName)
+{
+    std::string id = "ITEM_";
+    for (char c : p_cropName)
+    {
+        if (c == ' ' || c == '-')
+            id += '_';
+        else
+            id += static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+    }
+    return id;
 }
 
 void FarmTile::UpdateVisuals()
@@ -91,6 +106,8 @@ void FarmTile::Till(int p_currentDay)
         m_wateredToday = false;
         UpdateVisuals();
         std::cout << "[FarmTile] Beche" << std::endl;
+
+        QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::HoleDug));
     }
 }
 
@@ -111,6 +128,9 @@ void FarmTile::Water(int p_currentDay)
 
     UpdateVisuals();
     std::cout << "[FarmTile] Arrose" << std::endl;
+
+    std::string cropID = m_crop.has_value() ? BuildCropItemID(m_crop->m_name) : "";
+    QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::PlantWatered, cropID));
 }
 
 void FarmTile::Plant(const CropDefinition& p_crop, int p_currentDay)
@@ -128,6 +148,8 @@ void FarmTile::Plant(const CropDefinition& p_crop, int p_currentDay)
 
     UpdateVisuals();
     std::cout << "[FarmTile] Plante : " << p_crop.m_name << std::endl;
+
+    QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::SeedPlanted, BuildCropItemID(p_crop.m_name)));
 }
 
 void FarmTile::Harvest(int p_currentDay)
@@ -135,18 +157,14 @@ void FarmTile::Harvest(int p_currentDay)
     if (m_state != FarmTileState::READY) 
         return;
 
-    std::string id = "ITEM_";
-    for (char c : m_crop->m_name)
-    {
-        if (c == ' ' || c == '-')
-            id += '_';
-        else
-            id += static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
-    }
+    std::string id = BuildCropItemID(m_crop->m_name);
+    int amountHarvested = Aleatory::GetInt(m_crop->m_dropCountMin, m_crop->m_dropCountMax);
 
 	PlayerData& pd = GameData::Get().GetPlayerData();
-	pd.m_playerInventory->AddItem(id, Aleatory::GetInt(m_crop->m_dropCountMin, m_crop->m_dropCountMax), false);
+	pd.m_playerInventory->AddItem(id, amountHarvested, false);
 	pd.AddXpToJob(JobType::Farmer, m_crop->m_xpOnHarvest);
+
+    QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::PlantHarvested, id, amountHarvested));
 
     m_crop.reset();
     m_growthStage = 0;

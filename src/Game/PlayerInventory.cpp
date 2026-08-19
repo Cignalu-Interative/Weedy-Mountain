@@ -99,7 +99,7 @@ int PlayerInventory::AddItem(const std::string& ID, int amount, bool requireFull
 	if (requireFull && CanAdd(ID, amount) == false)
 		return 0;
 
-	QuestManager::Get()->CheckAddItem(ID, amount);
+	QuestManager::Get()->NotifyEvent(QuestEvent(QuestEventType::ItemCollected, ID, amount));
 
 	int remaining = amount;
 

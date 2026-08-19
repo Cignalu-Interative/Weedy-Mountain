@@ -105,7 +105,6 @@ void HUDScene::OnInitialize()
 	m_recipe->SetDrawLayer(INT_MAX - 200);
 	m_recipe->Close();
 
-
 	BarButtonInit();
 	UiPos();
 
@@ -121,7 +120,7 @@ void HUDScene::OnEvent()
 	InputManager* input = InputManager::Get();
 	if (input->IsKeyboardDown(K_W))
 	{
-		m_questMenu->Toggle(&QuestManager::Get()->GetQuestsInProcess());
+		m_questMenu->Toggle(&QuestManager::Get()->GetAllQuests());
 	}
 	if (InputManager::Get()->IsKeyboardDown(K_J))
 		m_jobsUi->Toggle();
@@ -299,7 +298,7 @@ void HUDScene::OpenUi(Entity* p_Ui)
 	if (p_Ui == m_jobsUi)
 		m_jobsUi->Open();
 	else if (p_Ui == m_questMenu)
-		m_questMenu->Open(&QuestManager::Get()->GetQuestsInProcess());
+		m_questMenu->Open(&QuestManager::Get()->GetAllQuests());
 	else if (p_Ui == m_recipe)
 		m_recipe->Open();
 	else if (p_Ui == m_collectionUi)

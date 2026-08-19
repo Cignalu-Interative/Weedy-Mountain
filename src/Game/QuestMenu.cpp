@@ -357,7 +357,7 @@ void QuestMenu::DisplayQuest(QuestMenuSlot* p_quest)
 					text->SetFontSize(32);
 					text->SetWrapWidth(slot->GetDimension().GetX() - 20);
 					text->HorizontalAlignText(Center);
-					text->SetText(quest->GetRequiquementsDescription());
+					text->SetText(quest->GetObjectivesDescription());
 					text->SetPosition(slot->GetPosition());
 				}
 			}
@@ -391,6 +391,7 @@ void QuestMenu::FollowQuest(Quest* p_quest)
 		return;
 	}
 	QuestManager::Get()->SetActiveQuest(p_quest->GetName());
+	QuestManager::Get()->SetQuestState(p_quest->GetName(), QuestState::InProgress);
 	for (QuestMenuSlot* slot : m_slots)
 	{
 		if (slot->GetTextID() == p_quest->GetName())

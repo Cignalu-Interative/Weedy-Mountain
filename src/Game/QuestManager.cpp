@@ -2,6 +2,7 @@
 #include "QuestManager.h"
 #include "ItemDataBase.h"
 #include "GameData.h"
+#include "SaveManager.h"
 
 QuestManager* QuestManager::Get()
 {
@@ -11,407 +12,156 @@ QuestManager* QuestManager::Get()
 
 QuestManager::QuestManager()
 {
-
-
+	SaveManager::Get().RegisterProvider(this);
 }
 
 QuestManager::~QuestManager()
 {
+	SaveManager::Get().UnregisterProvider(this);
 	RemoveAllQuests();
 }
 
-void QuestManager::CreateQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner)
+Quest* QuestManager::CreateQuest(const std::string& p_name, Vector2f p_position, Vector2i p_dimension, Entity* p_owner)
 {
-	Quest* qns = GetQuestOnNotStarted(p_name);
-	Quest* qip = GetQuestOnInProcess(p_name);
-	Quest* qf = GetQuestOnFinished(p_name);
-
-	if (qns || qip || qf)
+	if (GetQuest(p_name) != nullptr)
 	{
-		SDL_Log("QuestManager::AddQuest/Quest with name '%s' already exists", p_name.c_str());
-		return;
+		SDL_Log("QuestManager::CreateQuest/Quest with name '%s' already exists", p_name.c_str());
+		return GetQuest(p_name);
 	}
 
 	Quest* quest = new Quest(p_name, p_position, p_dimension, p_owner, m_scene);
-
 	quest->GetZone()->GetCollider()->SetShow(false);
 	quest->SetVisible(false);
 
-	AddQuestToNotStarted(quest);
+	m_quests[p_name] = quest;
+	return quest;
 }
 
 void QuestManager::RemoveAllQuests()
 {
-	for (auto& quest : m_questsNotStartedVector)
+	for (auto& [name, quest] : m_quests)
 	{
 		if (quest)
 			delete quest;
 	}
-	m_questsNotStartedVector.clear();
-	m_questsNotStarted.clear();
 
-	for (auto& quest : m_questsInProcessVector)
-	{
-		if (quest)
-			delete quest;
-	}
-	m_questsInProcessVector.clear();
-	m_questsInProcess.clear();
-
-	for (auto& quest : m_questsFinishedVector)
-	{
-		if (quest)
-			delete quest;
-	}
-	m_questsFinishedVector.clear();
-	m_questsFinished.clear();
+	m_quests.clear();
+	m_activeQuest = nullptr;
 }
 
-void QuestManager::DeleteQuestOnNotStarted(const std::string& p_name)
+void QuestManager::DeleteQuest(const std::string& p_name)
 {
-	if (m_questsNotStartedVector.empty())
-	{
+	auto it = m_quests.find(p_name);
+
+	if (it == m_quests.end())
 		return;
-	}
-	auto it = m_questsNotStarted.find(p_name);
 
-	if (it == m_questsNotStarted.end())
-	{
-		return;
-	}
+	if (m_activeQuest == it->second)
+		m_activeQuest = nullptr;
 
-	size_t indexToDelete = it->second;
-	size_t lastIndex = m_questsNotStartedVector.size() - 1;
-
-	if (indexToDelete != lastIndex)
-	{
-		std::swap(m_questsNotStartedVector[indexToDelete], m_questsNotStartedVector[lastIndex]);
-		m_questsNotStarted[m_questsNotStartedVector[indexToDelete]->GetName()] = indexToDelete;
-	}
-	delete m_questsNotStartedVector[lastIndex];
-	m_questsNotStartedVector[lastIndex] = nullptr;
-	m_questsNotStartedVector.pop_back();
-	m_questsNotStarted.erase(it);
+	delete it->second;
+	m_quests.erase(it);
 }
 
-void QuestManager::DeleteQuestOnInProcess(const std::string& p_name)
+Quest* QuestManager::GetQuest(const std::string& p_name) const
 {
-	if (m_questsInProcessVector.empty())
-	{
-		return;
-	}
-	auto it = m_questsInProcess.find(p_name);
+	auto it = m_quests.find(p_name);
 
-	if (it == m_questsInProcess.end())
-	{
-		return;
-	}
-
-	size_t indexToDelete = it->second;
-	size_t lastIndex = m_questsInProcessVector.size() - 1;
-
-	if (indexToDelete != lastIndex)
-	{
-		std::swap(m_questsInProcessVector[indexToDelete], m_questsInProcessVector[lastIndex]);
-		m_questsInProcess[m_questsInProcessVector[indexToDelete]->GetName()] = indexToDelete;
-	}
-	delete m_questsInProcessVector[lastIndex];
-	m_questsInProcessVector[lastIndex] = nullptr;
-	m_questsInProcessVector.pop_back();
-	m_questsInProcess.erase(it);
-}
-
-void QuestManager::DeleteQuestOnFinished(const std::string& p_name)
-{
-	if (m_questsFinishedVector.empty())
-	{
-		return;
-	}
-	auto it = m_questsFinished.find(p_name);
-
-	if (it == m_questsFinished.end())
-	{
-		return;
-	}
-
-	size_t indexToDelete = it->second;
-	size_t lastIndex = m_questsFinishedVector.size() - 1;
-
-	if (indexToDelete != lastIndex)
-	{
-		std::swap(m_questsFinishedVector[indexToDelete], m_questsFinishedVector[lastIndex]);
-		m_questsFinished[m_questsFinishedVector[indexToDelete]->GetName()] = indexToDelete;
-	}
-	delete m_questsFinishedVector[lastIndex];
-	m_questsFinishedVector[lastIndex] = nullptr;
-	m_questsFinishedVector.pop_back();
-	m_questsFinished.erase(it);
-}
-
-void QuestManager::RemoveQuestFromNotStarted(Quest* p_quest)
-{
-	auto itNS = m_questsNotStarted.find(p_quest->GetName());
-	if (itNS != m_questsNotStarted.end())
-	{
-		m_questsNotStarted.erase(itNS);
-	}
-	auto itNSV = std::find(m_questsNotStartedVector.begin(), m_questsNotStartedVector.end(), p_quest);
-	if (itNSV != m_questsNotStartedVector.end())
-	{
-		m_questsNotStartedVector.erase(itNSV);
-	}
-}
-
-void QuestManager::RemoveQuestFromInProcess(Quest* p_quest)
-{
-	auto itIP = m_questsInProcess.find(p_quest->GetName());
-	if (itIP != m_questsInProcess.end())
-	{
-		m_questsInProcess.erase(itIP);
-	}
-	auto itIPV = std::find(m_questsInProcessVector.begin(), m_questsInProcessVector.end(), p_quest);
-	if (itIPV != m_questsInProcessVector.end())
-	{
-		m_questsInProcessVector.erase(itIPV);
-	}
-}
-
-void QuestManager::RemoveQuestFromFinished(Quest* p_quest)
-{
-	auto itNS = m_questsFinished.find(p_quest->GetName());
-	if (itNS != m_questsFinished.end())
-	{
-		m_questsFinished.erase(itNS);
-	}
-	auto itNSV = std::find(m_questsFinishedVector.begin(), m_questsFinishedVector.end(), p_quest);
-	if (itNSV != m_questsFinishedVector.end())
-	{
-		m_questsFinishedVector.erase(itNSV);
-	}
-}
-
-void QuestManager::AddQuestToNotStarted(Quest* p_quest)
-{
-	if (p_quest == nullptr)
-	{
-		return;
-	}
-	if (GetQuestOnNotStarted(p_quest->GetName()))
-	{
-		SDL_Log("QuestManager::AddQuestToNotStarted/Quest with name '%s' already exists in Not Started", p_quest->GetName().c_str());
-		return;
-	}
-
-	m_questsNotStarted[p_quest->GetName()] = m_questsNotStartedVector.size();
-	m_questsNotStartedVector.push_back(p_quest);
-
-	RemoveQuestFromInProcess(p_quest);
-	RemoveQuestFromFinished(p_quest);
-}
-
-void QuestManager::AddQuestToInProcess(Quest* p_quest)
-{
-	if (p_quest == nullptr)
-	{
-		return;
-	}
-	if (GetQuestOnInProcess(p_quest->GetName()))
-	{
-		SDL_Log("QuestManager::AddQuestToInProcess/Quest with name '%s' already exists in In Process", p_quest->GetName().c_str());
-		return;
-	}
-
-	m_questsInProcess[p_quest->GetName()] = m_questsInProcessVector.size();
-	m_questsInProcessVector.push_back(p_quest);
-	if (m_activeQuest == nullptr)
-	{
-		// A mettre en commentaire après test ces deux lignes
-		/*m_activeQuest = p_quest;
-		m_activeQuest->SetVisible(true);*/
-	}
-	else
-	{
-		p_quest->SetVisible(false);
-	}
-
-	RemoveQuestFromNotStarted(p_quest);
-	RemoveQuestFromFinished(p_quest);
-}
-
-void QuestManager::AddQuestToFinished(Quest* p_quest)
-{
-	if (p_quest == nullptr)
-	{
-		return;
-	}
-	if (GetQuestOnFinished(p_quest->GetName()))
-	{
-		SDL_Log("QuestManager::AddQuestToFinished/Quest with name '%s' already exists in Finished", p_quest->GetName().c_str());
-		return;
-	}
-
-	m_questsFinished[p_quest->GetName()] = m_questsFinishedVector.size();
-	m_questsFinishedVector.push_back(p_quest);
-
-	RemoveQuestFromNotStarted(p_quest);
-	RemoveQuestFromInProcess(p_quest);
-}
-
-Quest* QuestManager::GetQuestOnNotStarted(const std::string& p_name) const
-{
-	auto it = m_questsNotStarted.find(p_name);
-	if (it == m_questsNotStarted.end())
-	{
-		SDL_Log("Game/QuestManager.cpp/GetQuest/find/quest with id '%s' not found", p_name.c_str());
+	if (it == m_quests.end())
 		return nullptr;
-	}
 
-	return m_questsNotStartedVector[it->second];
+	return it->second;
 }
 
-Quest* QuestManager::GetQuestOnInProcess(const std::string& p_name) const
+void QuestManager::UnlockQuest(const std::string& p_name) const
 {
-	auto it = m_questsInProcess.find(p_name);
-	if (it == m_questsInProcess.end())
-	{
-		SDL_Log("Game/QuestManager.cpp/GetQuest/find/quest with id '%s' not found", p_name.c_str());
-		return nullptr;
-	}
+	auto it = m_quests.find(p_name);
 
-	return m_questsInProcessVector[it->second];
+	if (it == m_quests.end())
+		return;
+
+	it->second->SetState(QuestState::NotStarted);
 }
 
-Quest* QuestManager::GetQuestOnFinished(const std::string& p_name) const
+std::vector<Quest*> QuestManager::GetQuestsByState(QuestState p_state) const
 {
-	auto it = m_questsFinished.find(p_name);
-	if (it == m_questsFinished.end())
+	std::vector<Quest*> result;
+
+	for (auto& [name, quest] : m_quests)
 	{
-		SDL_Log("Game/QuestManager.cpp/GetQuest/find/quest with id '%s' not found", p_name.c_str());
-		return nullptr;
+		if (quest && quest->GetState() == p_state)
+			result.push_back(quest);
 	}
 
-	return m_questsFinishedVector[it->second];
+	return result;
 }
 
 std::vector<Quest*>& QuestManager::GetAllQuests()
 {
-	if (m_allQuests.empty() == false)
+	m_allQuestsCache.clear();
+	m_allQuestsCache.reserve(m_quests.size());
+
+	for (auto& [name, quest] : m_quests)
 	{
-		m_allQuests.clear();
+		if (quest->IsBlocked())
+			continue;
+
+		m_allQuestsCache.push_back(quest);
 	}
 
-	for (Quest* quest : m_questsNotStartedVector)
-	{
-		m_allQuests.push_back(quest);
-	}
-	for (Quest* quest : m_questsInProcessVector)
-	{
-		m_allQuests.push_back(quest);
-	}
-	for (Quest* quest : m_questsFinishedVector)
-	{
-		m_allQuests.push_back(quest);
-	}
-	return m_allQuests;
+	return m_allQuestsCache;
 }
 
-void QuestManager::UpdateQuests()
+void QuestManager::NotifyEvent(const QuestEvent& p_event)
 {
-	if (m_activeQuest)
+	std::vector<Quest*> inProcessQuests = GetQuestsByState(QuestState::InProgress);
+
+	for (Quest* quest : inProcessQuests)
 	{
-		m_activeQuest->UpdateQuest();
+		quest->OnEvent(p_event);
+
+		if (quest->AreAllObjectivesCompleted())
+			SetQuestState(quest->GetName(), QuestState::Finished);
 	}
+}
 
-	//suprimer a apres test le if
-	/*if (m_activeQuest == nullptr)
-	{
-		AddQuestToInProcess(GetQuestOnNotStarted("Quest"));
-	}*/
+void QuestManager::SetQuestState(const std::string& p_name, QuestState p_state)
+{
+	Quest* quest = GetQuest(p_name);
+	if (quest == nullptr)
+		return;
 
-	/*for (Quest* quest : m_questsInProcessVector)
+	QuestState previousState = quest->GetState();
+	if (previousState == p_state)
+		return;
+
+	quest->SetState(p_state);
+
+	if (p_state == QuestState::InProgress)
 	{
-		if (quest)
+		if (m_activeQuest == nullptr)
 		{
-			quest->UpdateQuest();
+			m_activeQuest = quest;
+			quest->SetVisible(true);
 		}
-	}*/
-}
-
-void QuestManager::DrawQuests()
-{
-	/*for (Quest* quest : m_questsVector)
-	{
-		if (quest)
+		else
 		{
-			quest->Draw(Application::Get()->GetRender(), Application::Get()->GetWindow(), Application::Get()->GetCamera());
-		}
-	}*/
-}
-
-void QuestManager::CheckAddItem(const std::string& ID, int amount)
-{
-	for (Quest* quest : m_questsInProcessVector)
-	{
-		for (size_t i = 0; i < quest->GetRequirementsCount(); ++i)
-		{
-			QuestRequirement* requirement = quest->GetRequirement(i);
-			if (requirement->GetCheckType() == CheckQuest::AddItem)
-			{
-				if (ItemDataBase::Get()->GetItem(ID) == requirement->GetItemData())
-				{
-					requirement->AddHarvestedAmount(amount);
-				}
-			}
+			quest->SetVisible(false);
 		}
 	}
-}
 
-void QuestManager::SetStateQuestNotStarted(const std::string& p_name)
-{
-	if (Quest* quest = GetQuestOnInProcess(p_name))
+	if (p_state == QuestState::Finished && previousState != QuestState::Finished)
 	{
-		quest->SetNotStarted();
-		AddQuestToNotStarted(quest);
-	}
-	else if (Quest* quest = GetQuestOnFinished(p_name))
-	{
-		quest->SetNotStarted();
-		AddQuestToNotStarted(quest);
-	}
-}
-
-void QuestManager::SetStateQuestInProcess(const std::string& p_name)
-{
-	if (Quest* quest = GetQuestOnNotStarted(p_name))
-	{
-		quest->SetInProcess();
-		AddQuestToInProcess(quest);
-	}
-	else if (Quest* quest = GetQuestOnFinished(p_name))
-	{
-		quest->SetInProcess();
-		AddQuestToInProcess(quest);
-	}
-}
-
-void QuestManager::SetStateQuestFinished(const std::string& p_name)
-{
-	if (Quest* quest = GetQuestOnNotStarted(p_name))
-	{
-		quest->SetFinished();
-		AddQuestToFinished(quest);
 		GiveReward(quest);
-	}
-	else if (Quest* quest = GetQuestOnInProcess(p_name))
-	{
-		quest->SetFinished();
-		AddQuestToFinished(quest);
-		GiveReward(quest);
+		RemoveActiveQuest(quest);
 	}
 }
 
 void QuestManager::GiveReward(Quest* p_quest)
 {
+	if (p_quest == nullptr)
+		return;
+
 	for (size_t i = 0; i < p_quest->GetRewardsCount(); ++i)
 	{
 		QuestReward* reward = p_quest->GetReward(i);
@@ -422,28 +172,60 @@ void QuestManager::GiveReward(Quest* p_quest)
 	}
 }
 
-void QuestManager::SetActiveQuest(const std::string& p_id)
+void QuestManager::SetActiveQuest(const std::string& p_name)
 {
-	Quest* quest = GetQuestOnInProcess(p_id);
-	if (quest == nullptr)
-	{
+	Quest* quest = GetQuest(p_name);
+	if (quest == nullptr || quest->GetState() != QuestState::InProgress)
 		return;
-	}
+
+	if (m_activeQuest)
+		m_activeQuest->SetVisible(false);
+
 	m_activeQuest = quest;
 	m_activeQuest->SetVisible(true);
 }
 
 void QuestManager::RemoveActiveQuest(Quest* p_quest)
 {
-	if (m_activeQuest == nullptr)
-	{
+	if (m_activeQuest == nullptr || p_quest == nullptr)
 		return;
-	}
-	if (m_activeQuest->GetName() == p_quest->GetName())
-	{
-		m_activeQuest->SetVisible(false);
-		m_activeQuest = nullptr;
-	}
+
+	if (m_activeQuest->GetName() != p_quest->GetName())
+		return;
+
+	m_activeQuest->SetVisible(false);
+	m_activeQuest = nullptr;
 }
 
+void QuestManager::UpdateQuests()
+{
+	if (m_activeQuest)
+		m_activeQuest->RefreshVisuals();
+}
 
+void QuestManager::Save(nlohmann::json& p_out)
+{
+	nlohmann::json questsJson;
+
+	for (auto& [name, quest] : m_quests)
+	{
+		nlohmann::json questJson;
+		quest->Save(questJson);
+		questsJson[name] = questJson;
+	}
+
+	p_out["quests"] = questsJson;
+}
+
+void QuestManager::Load(const nlohmann::json& p_in)
+{
+	if (p_in.contains("quests") == false)
+		return;
+
+	for (auto& [name, questJson] : p_in["quests"].items())
+	{
+		Quest* quest = GetQuest(name);
+		if (quest)
+			quest->Load(questJson);
+	}
+}

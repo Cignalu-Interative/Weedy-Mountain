@@ -62,6 +62,8 @@ public:
     const bool CanGrow() { return m_canGrow; }
     void SetCanGrow(bool p_canGrow) { m_canGrow = p_canGrow; }
 
+    static std::string BuildCropItemID(const std::string& p_cropName);
+
     void Save(nlohmann::json& p_out) const;
     void Load(const nlohmann::json& p_in);
 };

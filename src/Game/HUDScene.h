@@ -1,5 +1,6 @@
 #pragma once
 #include "2DPendentEngine\Scene.h"
+#include "InventoryInteractionManager.h"
 
 class PlayerInventory;
 class UiCollection;
@@ -29,6 +30,8 @@ private:
 
 	RecipesUi* m_recipe = nullptr;
 	UiShop* m_shop = nullptr;
+
+	InventoryManager m_inventoryManager;
 
 protected:
 

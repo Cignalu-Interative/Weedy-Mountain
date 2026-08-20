@@ -14,6 +14,7 @@ void Button::InitText(const std::string& p_textID, const std::string& p_text)
 {
 	m_textID = p_textID;
 	GetScene()->CreateText(p_textID, GetPosition(), p_text, { 255, 255, 255, 255 }, GetIsGUI());
+	m_text = GetScene()->GetGeometry<Text>(m_textID);
 }
 
 void Button::SetText(const std::string& p_text)

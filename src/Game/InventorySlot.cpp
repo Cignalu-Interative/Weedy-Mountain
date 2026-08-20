@@ -2,9 +2,13 @@
 #include "InventorySlot.h"
 #include "ItemData.h"
 #include "ItemDataBase.h"
+#include "Entity.h"
+#include "spritecontainer.h"
 
 InventorySlot::InventorySlot()
-	: m_stack("ITEM_NOTHING", 0) {
+	: m_stack("ITEM_NOTHING", 0) 
+{
+    SetDrawLayer(5999);
 }
 
 bool InventorySlot::IsEmpty()
@@ -35,6 +39,7 @@ void InventorySlot::RefreshVisual()
     if (m_stack.IsEmpty())
     {
         SetSprite("item_texture", "");
+        SetDrawLayer(5999);
         SetText(" ");
         return;
     }
@@ -45,8 +50,13 @@ void InventorySlot::RefreshVisual()
     {
         if (m_isVisible)
         {
-            SetSprite("item_texture", data->GetPath());
-            GetSprite("item_texture")->ResizeStretched(GetDimension());
+            /*SetSprite("item_texture", data->GetPath());
+            GetSprite("item_texture")->ResizeStretched(GetDimension());*/
+
+            RemoveSprite("item_texture");
+            AddSprite("item_texture", data->GetPath(), { 54,54 }, 1, { 0,0 }, true);
+            SetDrawLayer(5999);
+            GetSprite("item_texture")->Resize({ 54, 54 });
             SyncSprites();
             SetText(std::to_string(m_stack.GetAmount()));
             SetTextOffset({ 18.0f, 22.0f });
@@ -56,6 +66,7 @@ void InventorySlot::RefreshVisual()
             SetSprite("item_texture", "");
             SetText("");
             SetTextOffset({ 18.0f, 22.0f });
+            SetDrawLayer(5999);
         }
     }
 }

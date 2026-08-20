@@ -121,36 +121,36 @@ void NotificationManager::ShowNextNotification()
 Notification::~Notification()
 {
 	if (m_title)
-		m_scene->RemoveGeometry("title");
+		m_scene->RemoveGeometry("notificationTitle");
 
 	if (m_subtitle)
-		m_scene->RemoveGeometry("subtitle");
+		m_scene->RemoveGeometry("notificationSubtitle");
 
 	if (m_quantity)
-		m_scene->RemoveGeometry("quantity");
+		m_scene->RemoveGeometry("notificationQuantity");
 }
 
 void Notification::Initialize(const NotificationData& data)
 {
-	SetDrawLayer(300);
+	SetDrawLayer(5999);
 
 	SetSprite(data.background);//background
 
 	//icon
-	AddSprite("icon", data.icon, { 54, 54 }, 1, { -150.0f, 0.0f }, true);
+	AddSprite("notificationIcon", data.icon, { 54, 54 }, 1, { -150.0f, 0.0f }, true);
 		
 	//trxt titer
-	m_scene->CreateText("title", { 27 * 3, 10 * 3 }, data.title, { 255, 255, 255, 255 }, true, false);
+	m_scene->CreateText("notificationTitle", { 27 * 3, 10 * 3 }, data.title, { 255, 255, 255, 255 }, true, false);
 
 	//subtitle texte
-	m_scene->CreateText("subtitle", { 27 * 3, 20 * 3 }, CheckAndCutSubtitel(data.subtitle), { 255, 255, 255, 255 }, true, false);
+	m_scene->CreateText("notificationSubtitle", { 27 * 3, 20 * 3 }, CheckAndCutSubtitel(data.subtitle), { 255, 255, 255, 255 }, true, false);
 
 	//quantity texte
-	m_scene->CreateText("quantity", { GetPosition({1.0f, 0.0f}).GetX() - 48, GetPosition().GetY() + 0 }, data.quantity, { 255, 255, 255, 255 }, true, false);
+	m_scene->CreateText("notificationQuantity", { GetPosition({1.0f, 0.0f}).GetX() - 48, GetPosition().GetY() + 0 }, data.quantity, { 255, 255, 255, 255 }, true, false);
 
-	m_title = m_scene->GetGeometry<Text>("title");
-	m_subtitle = m_scene->GetGeometry<Text>("subtitle");
-	m_quantity = m_scene->GetGeometry<Text>("quantity");
+	m_title = m_scene->GetGeometry<Text>("notificationTitle");
+	m_subtitle = m_scene->GetGeometry<Text>("notificationSubtitle");
+	m_quantity = m_scene->GetGeometry<Text>("notificationQuantity");
 
 	m_title->SetPosition({ 27 * 3 + 10, 10 * 3 + 10 }, { 0.0f, 0.5f });
 	m_subtitle->SetPosition({ 27 * 3 + 10, 20 * 3 + 10 }, { 0.0f, 0.5f });

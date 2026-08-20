@@ -66,5 +66,4 @@ public:
 
 	//Fonction pour dessinner le sprite à l'écran
 	void Draw(Render* f_render, Window* f_window, Camera* p_camera) override;
-
 };

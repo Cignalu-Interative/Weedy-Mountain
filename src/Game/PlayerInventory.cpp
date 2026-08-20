@@ -21,9 +21,6 @@ PlayerInventory::PlayerInventory(Inventory* inv, Hotbar* hot)
 	m_isInitialized = true;
 	m_inventory->SetIsGUI(true);
 	m_hotbar->SetIsGUI(true);
-
-	Close();
-
 }
 
 

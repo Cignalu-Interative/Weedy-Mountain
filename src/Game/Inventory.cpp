@@ -22,9 +22,6 @@ Inventory::Inventory(int slotCount)
 
 void Inventory::OnInitialize()
 {
-
-	SetDrawLayer(INT_MAX - 2);
-
 	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
 	float startY = GetPosition({ 0, 0 }).GetY() + 45.f;
 

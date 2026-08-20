@@ -15,8 +15,6 @@ Hotbar::Hotbar(int slotcount, int invSlotCount)
 
 void Hotbar::OnInitialize()
 {
-	SetDrawLayer(INT_MAX - 2);
-
 	const float spacing = 60.f;
 
 	float startX = GetPosition({ 0, 0 }).GetX() + 48.f;
@@ -375,6 +373,8 @@ void Hotbar::Load(const nlohmann::json& in)
 	}
 
 	m_selectedIndex = in.value("selectedIndex", 0);
+}
+
 void Hotbar::RealignSlots()
 {
 	const float spacing = 60.f;

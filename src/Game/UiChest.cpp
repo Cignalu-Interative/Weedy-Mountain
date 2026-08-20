@@ -12,7 +12,7 @@ void UiChest::OnInitialize()
 	AddSprite("ChestBackground", "InventoryWeedyMountain", GetDimension(), 0,{}, true);
 	GetSprite("ChestBackground")->ResizeStretched(GetDimension());
 	SyncSprites();
-	SetDrawLayer(INT_MAX - 200);
+	SetDrawLayer(5001);
 	m_playerInventory = GameData::Get().GetPlayerData().m_playerInventory;
 	
 

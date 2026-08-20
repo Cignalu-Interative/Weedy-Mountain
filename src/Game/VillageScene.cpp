@@ -160,19 +160,19 @@ void VillageScene::OnEvent()
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_shopPNJ->IsInPlayerZone())
 	{
 		m_player->LockInputs();
-		m_shopPNJ->Talk("Bonjour, bienvenue dans la boutique! Que puis-je faire pour vous aujourd'hui ?");
+		m_shopPNJ->Talk("Hello, welcome to the shop! What can I do for you today?");
 	}
 
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_PNJ->IsInPlayerZone())
 	{
 		m_player->LockInputs();
-		m_PNJ->Talk("Salut ! Moi c'est Richard, ca fait maintenant un moment que j'habite ici et j'ai entendu dire que tu venais d'arriver dans le village, je voulais te souhaiter la bienvenue. Surtout si tu as besoin de quoi que ce soit n'hesite pas ! ");
+		m_PNJ->Talk("Hi! I'm Richard. I've been living here for quite some time now, and I heard you just arrived in the village. I wanted to welcome you. And if you ever need anything, don't hesitate to ask!");
 	}
 
 	if (InputManager::Get()->IsKeyboardDown(K_E) && m_drugDealer->IsInPlayerZone())
 	{
 		m_player->LockInputs();
-		m_drugDealer->Talk("Salut ! Soit discret, jai peut etre ce qu'il te faut . ");
+		m_drugDealer->Talk("Hey! Keep it discreet. I might have just what you need.");
 	}
 
 	if (InputManager::Get()->IsKeyboardDown(K_ESCAPE) && m_shop->GetIsVisible())

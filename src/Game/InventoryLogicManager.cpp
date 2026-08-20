@@ -3,6 +3,16 @@
 #include "ItemDataBase.h"
 #include "InventoryLogicManager.h"
 #include "InventorySlot.h"
+#include "Gamedata.h"
+
+#include "VillageScene.h"
+#include "CaveScene.h"
+#include "GameScene.h"
+#include "Scene.h"
+
+#include "ItemOnGround.h"
+
+
 
 #include <iostream>
 
@@ -298,6 +308,54 @@ void InventoryLogic::DropSlot(InventorySlot* slot)
 {
 	if (slot == nullptr || slot->IsEmpty() || CanInteract(slot, Drop) == false)
 		return;
+
+	CurrentScene currentScene = GameData::Get().GetCurrentScene();
+	
+	std::string sceneName;
+
+	switch (currentScene)
+	{
+	case CurrentScene::FARM:
+		sceneName = "game";
+		break;
+	case CurrentScene::VILLAGE:
+		sceneName = "village";
+		break;
+	case CurrentScene::CAVE:
+		sceneName = "cave";
+		break;
+	default:
+		break;
+	}
+
+	Scene* currentSceneTyped = SceneManager::Get()->GetScene(sceneName);
+
+	if (currentSceneTyped == nullptr)
+		return;
+
+	Player* player = dynamic_cast<Player*>(currentSceneTyped->GetEntityByTag(1));
+
+	if (player == nullptr)
+		return;
+
+	Vector2f playerPos = player->GetPosition();
+	Vector2f playerFacingDirection = player->GetFacingDirection();
+
+	ItemOnGround* drop;
+
+	std::string path = ItemDataBase::Get()->GetItem(slot->GetStack().GetID())->GetPath();
+
+	Vector2f dropPos = playerPos + (playerFacingDirection * 30.0f);
+
+	
+
+	drop = currentSceneTyped->CreateEntity<ItemOnGround>(dropPos, { 16,16 }, path, Shape::Circle);
+	drop->SetItem(slot->GetStack());
+	drop->SetTag(3);
+	drop->GetCollider()->Resize({ 20,20 });
+	drop->ShowCollider(true);
+	drop->InitialisePhysicsBody(ShapeBodyPhysics::Kinematic);
+	drop->GetCollider()->SetIsTrigger(true);
 
 	slot->Clear();
 }

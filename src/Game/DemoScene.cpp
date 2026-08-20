@@ -59,54 +59,54 @@ void DemoScene::OnInitialize()
 
 void DemoScene::OnEvent()
 {
-	if (input.IsKeyboardDown(K_a))
+	if (input.IsKeyboardDown(K_A))
 	{
 		m_playerInventory->AddItem("ITEM_EGG", 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_z))
+	if (input.IsKeyboardDown(K_Z))
 	{
 		m_playerInventory->AddItem("ITEM_POTATOE", 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_e))
+	if (input.IsKeyboardDown(K_E))
 	{
 		m_playerInventory->AddItem("ITEM_SUN_FLOWER", 32, false);
 		std::cout << "adddedd" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_r))
+	if (input.IsKeyboardDown(K_R))
 	{
 		m_playerInventory->AddItem("ITEM_HELMET", 3, false);
 		std::cout << "adddedd" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_t))
+	if (input.IsKeyboardDown(K_T))
 	{
 		m_playerInventory->AddItem("ITEM_FISHING_ROD", 3, false);
 		std::cout << "adddedd" << std::endl;
 	}
 
 
-	if (input.IsKeyboardDown(K_q))
+	if (input.IsKeyboardDown(K_Q))
 	{
 		m_playerInventory->RemoveItem("ITEM_EGG", 32, false);
 		std::cout << "rmv" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_s))
+	if (input.IsKeyboardDown(K_S))
 	{
 		m_playerInventory->RemoveItem("ITEM_POTATOE", 32, false);
 		std::cout << "rmv" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_d))
+	if (input.IsKeyboardDown(K_D))
 	{
 		m_playerInventory->RemoveItem("ITEM_SUN_FLOWER", 32, false);
 		std::cout << "rmv" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_f))
+	if (input.IsKeyboardDown(K_F))
 	{
 		m_playerInventory->RemoveItem("ITEM_HELMET", 3, false);
 		std::cout << "rmv" << std::endl;
 	}
-	if (input.IsKeyboardDown(K_g))
+	if (input.IsKeyboardDown(K_G))
 	{
 		m_playerInventory->RemoveItem("ITEM_FISHING_ROD", 3, false);
 		std::cout << "rmv" << std::endl;

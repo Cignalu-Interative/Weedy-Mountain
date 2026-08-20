@@ -71,10 +71,12 @@ void HUDScene::OnInitialize()
 	inv->GetSprite()->ResizeStretched(inv->GetDimension());
 	inv->SyncSprites();
 	inv->RemoveCollider("default");
+	inv->SetDrawLayer(5997);
 
 	Vector2f hotbarPos = { inv->GetPosition().GetX(), inv->GetPosition().GetY() + 300 };
 	Hotbar* hot = CreateEntity<Hotbar>(hotbarPos, { 636, 96 }, "Hotbar", Shape::Rectangle);
 	hot->SetIsVisible(false);
+	hot->SetDrawLayer(5998);
 
 	m_playerInventory = new PlayerInventory(inv, hot);
 	m_jobsUi->SetIsVisible(false);
@@ -87,7 +89,7 @@ void HUDScene::OnInitialize()
 	QuestMenu* questMenu = CreateEntity<QuestMenu>({ (float)GetWindowWidth() / 2.0f, (float)GetWindowHeight() / 2.0f }, { (int)(GetWindowWidth() * 0.85f), (int)(GetWindowHeight() * 0.85f) }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	questMenu->GetSprite()->ResizeStretched(questMenu->GetDimension());
 	questMenu->SyncSprites();
-	questMenu->SetDrawLayer(INT_MAX - 20);
+	questMenu->SetDrawLayer(5997);
 	questMenu->GetCollider()->SetIsTrigger(true);
 	//questMenu->GetCollider()->SetShow(true);
 	m_questMenu = questMenu;
@@ -98,9 +100,14 @@ void HUDScene::OnInitialize()
 	m_playerInventory->AddItem("ITEM_DIAMOND_PICKAXE", 1, false);
 	m_playerInventory->AddItem("ITEM_WOODEN_PICKAXE", 1, false);
 	m_recipe = CreateEntity<RecipesUi>(GetWindowCenter(), { 1200,600 }, "", Shape::Rectangle, true);
-	m_recipe->SetDrawLayer(INT_MAX - 200);
-	m_recipe->Close();
-;
+	m_recipe->SetDrawLayer(5997);
+	m_recipe->Close();	
+
+
+
+	m_inventoryManager.Initialize(this, inv, hot, m_playerInventory);
+	m_inventoryManager.RegisterInventory(inv->GetSlots(), 255, InventoryLogic::InventoryType::PlayerInventory);
+	m_inventoryManager.RegisterInventory(hot->GetSlots(), 255, InventoryLogic::InventoryType::Hotbar);
 }
 
 void HUDScene::OnEvent()
@@ -134,7 +141,7 @@ void HUDScene::OnUpdate()
 {
 	GameData& gm = GameData::Get();
 	gm.Update();
-	m_playerInventory->OnUpdate();
+	m_inventoryManager.OnUpdate();
 	QuestManager::Get()->UpdateQuests();
 	//m_questMenu->OnUpdate();
 }

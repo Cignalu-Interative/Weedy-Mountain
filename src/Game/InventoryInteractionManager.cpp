@@ -27,8 +27,6 @@ void InventoryManager::Initialize(Scene* scene, Inventory* inventory, Hotbar* ho
 	m_cursorUI = scene->CreateButton<CursorItemUI>({ 0,0 }, { 54,54 }, "", "cursor_amount", "", true);
 	m_cursorUI->SetStack(&m_logic.GetCursorStack());
 
-	m_cursorUI->SetDrawLayer(200);
-
 
     m_hotbar = hotbar;
     m_inventory = inventory;
@@ -63,7 +61,7 @@ void InventoryManager::Open()
 {
     m_isInventoryOpen = true;
     m_inventory->SetVisible(true);
-    m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, (m_hotbar->GetScene<DemoScene>()->GetWindowHeight() + (70.0f * 3.0f)) / 2.0f });
+    m_hotbar->SetPosition({ m_inventory->GetPosition().GetX(), m_inventory->GetPosition().GetY() + m_inventory->GetDimension().GetY() * 0.5f }, { 0.5f, 0.0f });
     m_hotbar->RealignSlots();
     m_hotbar->SetIsInventoryOpen(true);
 }
@@ -72,7 +70,7 @@ void InventoryManager::Close()
 {
     m_isInventoryOpen = false;
     m_inventory->SetVisible(false);
-    m_hotbar->SetPosition({ m_hotbar->GetScene<DemoScene>()->GetWindowWidth() / 2.0f, ((float)m_hotbar->GetScene<DemoScene>()->GetWindowHeight()) }, { 0.5f, 1.0f });
+    m_hotbar->SetPosition({ m_inventory->GetPosition().GetX(), m_inventory->GetPosition().GetY() + 300 });
     m_hotbar->RealignSlots();
     m_hotbar->SetIsInventoryOpen(false);
 }
@@ -124,8 +122,6 @@ void InventoryManager::OnUpdate()
             SelectHoveredHotbarSlot();
         return;
     }
-
-    UpdateHotbarSwap(input);
 }
 
 void InventoryManager::UpdateHotbarSelection(InputManager* input)
@@ -168,35 +164,6 @@ void InventoryManager::SelectHoveredHotbarSlot()
 	}
 }
 
-void InventoryManager::UpdateHotbarSwap(InputManager* input)
-{
-    int hotbarIndex = -1;
-
-	if (input->IsKeyboardDown(K_1))
-		hotbarIndex = 0;
-	if (input->IsKeyboardDown(K_2))
-		hotbarIndex = 1;
-	if (input->IsKeyboardDown(K_3))
-		hotbarIndex = 2;
-	if (input->IsKeyboardDown(K_4))
-		hotbarIndex = 3;
-	if (input->IsKeyboardDown(K_5))
-		hotbarIndex = 4;
-	if (input->IsKeyboardDown(K_6))
-		hotbarIndex = 5;
-	if (input->IsKeyboardDown(K_7))
-		hotbarIndex = 6;
-	if (input->IsKeyboardDown(K_8))
-		hotbarIndex = 7;
-	if (input->IsKeyboardDown(K_9))
-		hotbarIndex = 8;
-	if (input->IsKeyboardDown(K_0))
-		hotbarIndex = 9;
-
-	if (hotbarIndex != -1)
-        return;
-}
-
 
 
 
@@ -209,10 +176,9 @@ void InventoryManager::UpdateHotbarSwap(InputManager* input)
 
 void CursorItemUI::OnInitialize()
 {
-	AddSprite("item_texture", "", { 54,54 }, 1, { 0,0 }, true);
+	AddSprite("cursorItemSprite", "", { 54,54 }, 1, { 0,0 }, true);
 	InitText("cursor_amount", "");
-
-    SetDrawLayer(200);
+    GetCollider()->SetIsTrigger(true);
 }
 
 void CursorItemUI::OnUpdate()
@@ -228,6 +194,7 @@ void CursorItemUI::OnUpdate()
         return;
 
     RefreshVisual();
+    
 }
 
 void CursorItemUI::SetStack(ItemStack* stack)
@@ -240,7 +207,7 @@ void CursorItemUI::RefreshVisual()
 
     if (m_stack->IsEmpty())
     {   
-        SetSprite("item_texture", "");
+        SetSprite("cursorItemSprite", "");
         SetText("");
         return;
     }
@@ -251,13 +218,18 @@ void CursorItemUI::RefreshVisual()
     {
         if (m_isVisible)
         {
-            SetSprite("item_texture", data->GetPath());
+            /*SetSprite("cursorItemSprite", data->GetPath());*/
+            RemoveSprite("cursorItemSprite");
+            AddSprite("cursorItemSprite", data->GetPath(), { 54,54 }, 1, { 0,0 }, true);
+            GetSprite("cursorItemSprite")->Resize({ 54, 54 });
+            SetDrawLayer(6000);
             SetText(std::to_string(m_stack->GetAmount()));
             SetTextOffset({ 18.0f, 22.0f });
         }
         else
         {
-            SetSprite("item_texture", "");
+            SetSprite("cursorItemSprite", "");
+            SetDrawLayer(6000);
             SetText("");
             SetTextOffset({ 18.0f, 22.0f });
         }

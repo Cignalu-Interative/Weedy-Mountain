@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="38" height="31" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="57">
- <tileset firstgid="1" source="../tsx/InteriorWall.tsx"/>
- <tileset firstgid="49" source="../tsx/interiorsFurnitures.tsx"/>
- <tileset firstgid="225" source="../tsx/Interior1.tsx"/>
+ <tileset firstgid="1" source="../../res/Game/Assets/Maps/tsx/InteriorWall.tsx"/>
+ <tileset firstgid="49" source="../../res/Game/Assets/Maps/tsx/interiorsFurnitures.tsx"/>
+ <tileset firstgid="225" source="../../res/Game/Assets/Maps/tsx/Interior1.tsx"/>
  <layer id="2" name="Floor" width="38" height="31">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

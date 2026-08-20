@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="62" height="55" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="50">
- <tileset firstgid="1" source="../tsx/RockSlope.tsx"/>
- <tileset firstgid="4097" source="../tsx/tiles_cave.tsx"/>
+ <tileset firstgid="1" source="../../res/Game/Assets/Maps/tsx/RockSlope.tsx"/>
+ <tileset firstgid="4097" source="../../res/Game/Assets/Maps/tsx/tiles_cave.tsx"/>
  <layer id="1" name="CanGrow" class="canGrow" width="62" height="55">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

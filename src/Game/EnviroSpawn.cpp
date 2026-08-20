@@ -129,6 +129,11 @@ void EnviroSpawn::NewGameEnviroSpawn()
 {
 	UpdateFreeTiles();
 
+	if (m_freeTiles.empty()) // Evite un crash du vector freetiles car vide et donc size - 1 fait planter le programme
+	{
+		return;
+	}
+
 	for (int i = 0; i < 150; i++) {
 		int tile = Aleatory::GetInt(0, m_freeTiles.size() - 1);
 		while (TileUtils::GetPosition(m_freeTiles[tile]).GetX() >= 500) {

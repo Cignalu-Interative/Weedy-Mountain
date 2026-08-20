@@ -7,6 +7,9 @@
       "path": "../../res/Game/Assets/Maps/tmx/Farm.tmx"
     },
     {
+      "path": "../../res/Game/Assets/Maps/tmx/House.tmx"
+    },
+    {
       "path": "../../res/Game/Assets/Maps/tmx/Village.tmx"
     }
   ]

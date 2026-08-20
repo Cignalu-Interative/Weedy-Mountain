@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="44" height="48" tilewidth="16" tileheight="16" infinite="0" nextlayerid="8" nextobjectid="105">
- <tileset firstgid="1" source="../tsx/spring farm tilemap.tsx"/>
- <tileset firstgid="181" source="../tsx/farm objects free.tsx"/>
- <tileset firstgid="280" source="../tsx/Tileset_Road.tsx"/>
- <tileset firstgid="340" source="../tsx/Set 1.1.tsx"/>
- <tileset firstgid="502" source="../tsx/props.tsx"/>
- <tileset firstgid="4598" source="../tsx/Set 1.0.tsx"/>
- <tileset firstgid="4850" source="../tsx/Village.tsx"/>
+ <tileset firstgid="1" source="../../res/Game/Assets/Maps/tsx/spring farm tilemap.tsx"/>
+ <tileset firstgid="181" source="../../res/Game/Assets/Maps/tsx/farm objects free.tsx"/>
+ <tileset firstgid="280" source="../../res/Game/Assets/Maps/tsx/Tileset_Road.tsx"/>
+ <tileset firstgid="340" source="../../res/Game/Assets/Maps/tsx/Set 1.1.tsx"/>
+ <tileset firstgid="502" source="../../res/Game/Assets/Maps/tsx/props.tsx"/>
+ <tileset firstgid="4598" source="../../res/Game/Assets/Maps/tsx/Set 1.0.tsx"/>
+ <tileset firstgid="4850" source="../../res/Game/Assets/Maps/tsx/Village.tsx"/>
  <layer id="1" name="Floor" width="44" height="48">
   <data encoding="csv">
 423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,423,0,0,0,

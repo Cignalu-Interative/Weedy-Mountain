@@ -5,14 +5,16 @@ void GlobalMenuScene::OnInitialize()
 {
 	AssetManager::Get()->AddTextureByRepertory("../../res/Game/Assets/Textures/Textures_Repertory.json");
 
-	Entity* background = CreateEntity<Entity>(GetWindowCenter(), GetWindowSize(), "InventoryWeedyMountain", Shape::Rectangle, true);
-	background->GetSprite()->ResizeStretched(GetWindowSize());
-	background->SyncSprites();
-
-	Debug::Get()->CreateText("GameTitle", { background->GetPosition({0.25f, 0.02f })}, "WEEDY MOUNTAIN ", ColorsNamed::Black, true);
-	Debug::Get()->GetText("GameTitle")->SetFontSize(200);
+	m_background = CreateEntity<Entity>(GetWindowCenter(), GetWindowSize(), "InventoryWeedyMountain", Shape::Rectangle, true);
+	m_background->GetSprite()->ResizeStretched(GetWindowSize());
+	m_background->SyncSprites();
 
 	Vector2f windowCenter = GetWindowCenter();
+
+	float TitleY = (windowCenter.GetY() - 100) * 0.5f;
+
+	Debug::Get()->CreateText("GameTitle", {windowCenter.GetX(), TitleY}, "WEEDY MOUNTAIN", ColorsNamed::Black, true);
+	Debug::Get()->GetText("GameTitle")->SetFontSize(200);
 
 	Vector2f settingsButtonPos = windowCenter + Vector2f{0,100};
 	Vector2f quitButtonPos = windowCenter + Vector2f{0,200};
@@ -52,8 +54,6 @@ void GlobalMenuScene::OnInitialize()
 		Debug::Get()->GetText(m_startButton->GetTextID())->SetPosition(m_startButton->GetPosition());
 	}
 
-
-
 	m_settingsButton = CreateButton(settingsButtonPos, buttonDim, "button", "settingsButton", "SETTINGS");
 	m_settingsButton->GetSprite()->ResizeStretched(m_settingsButton->GetDimension());
 	m_settingsButton->SyncSprites();
@@ -70,7 +70,6 @@ void GlobalMenuScene::OnInitialize()
 	m_quitButton->SetOnHoverExit([this] {m_quitButton->SetSprite("button"); });
 	Debug::Get()->GetText(m_quitButton->GetTextID())->SetFontSize(50);
 	Debug::Get()->GetText(m_quitButton->GetTextID())->SetPosition(m_quitButton->GetPosition());
-
 }
 
 void GlobalMenuScene::OnEvent()
@@ -79,6 +78,55 @@ void GlobalMenuScene::OnEvent()
 
 void GlobalMenuScene::OnUpdate()
 {
+	Window* window = Application::Get()->GetWindow();
+
+	if (m_background->GetDimension() == window->GetWindowSize())
+	{
+		return;
+	}
+	Vector2f windowCenter = GetWindowCenter();
+
+	m_background->SetDimension(window->GetWindowSize());
+	m_background->SetPosition(windowCenter);
+	m_background->GetSprite()->ResizeStretched(m_background->GetDimension());
+	m_background->SyncSprites();
+
+	/*Debug::Get()->CreateText("GameTitle", { m_background->GetPosition({0.25f, 0.02f }) }, "WEEDY MOUNTAIN ", ColorsNamed::Black, true);
+	Debug::Get()->GetText("GameTitle")->SetFontSize(200);*/
+
+	float TitleY = (windowCenter.GetY() - 100) * 0.5f;
+
+	Debug::Get()->GetText("GameTitle")->SetPosition({ windowCenter.GetX(), TitleY });
+
+	if (m_hasSave)
+	{
+		m_continueButton->SetPosition(windowCenter - Vector2f{ 0, 100 });
+		m_continueButton->GetSprite()->ResizeStretched(m_continueButton->GetDimension());
+		m_continueButton->SyncSprites();
+		Debug::Get()->GetText(m_continueButton->GetTextID())->SetPosition(m_continueButton->GetPosition());
+
+		m_newGameButton->SetPosition(windowCenter);
+		m_newGameButton->GetSprite()->ResizeStretched(m_newGameButton->GetDimension());
+		m_newGameButton->SyncSprites();
+		Debug::Get()->GetText(m_newGameButton->GetTextID())->SetPosition(m_newGameButton->GetPosition());
+	}
+	else
+	{
+		m_startButton->SetPosition(windowCenter - Vector2f{ 0, 100 });
+		m_startButton->GetSprite()->ResizeStretched(m_startButton->GetDimension());
+		m_startButton->SyncSprites();
+		Debug::Get()->GetText(m_startButton->GetTextID())->SetPosition(m_startButton->GetPosition());
+	}
+
+	m_settingsButton->SetPosition(windowCenter);
+	m_settingsButton->GetSprite()->ResizeStretched(m_settingsButton->GetDimension());
+	m_settingsButton->SyncSprites();
+	Debug::Get()->GetText(m_settingsButton->GetTextID())->SetPosition(m_settingsButton->GetPosition());
+
+	m_quitButton->SetPosition(windowCenter + Vector2f{ 0, 100 });
+	m_quitButton->GetSprite()->ResizeStretched(m_quitButton->GetDimension());
+	m_quitButton->SyncSprites();
+	Debug::Get()->GetText(m_quitButton->GetTextID())->SetPosition(m_quitButton->GetPosition());
 }
 
 void GlobalMenuScene::OnDestroy()

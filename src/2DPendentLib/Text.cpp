@@ -85,9 +85,9 @@ void Text::Initialize(Vector2f p_position, const std::string p_text, Color p_col
 
 	SetColor(p_color);
 
-	SetPosition(p_position);
-
 	SetDimension(GetTextSize());
+
+	SetPosition(p_position);
 }
 
 void Text::SetFont(const std::string& p_idFont, int p_sizeFont)
@@ -115,9 +115,10 @@ void Text::SetFont(const std::string& p_idFont, int p_sizeFont)
 
 	m_font = newFont;
 	m_outlineFont = newOutlineFont;
-	SetPosition(m_positionWanted);
 
 	SetDimension(GetTextSize());
+
+	SetPosition(m_positionWanted);
 }
 
 TTF_Font* Text::GetFont() const
@@ -161,9 +162,9 @@ void Text::SetText(const std::string& p_text)
 		SDL_Log("Text::SetText/TTF_SetTextString m_outlineText failed : %s", SDL_GetError());
 		return;
 	}
-	SetPosition(m_positionWanted);
-
 	SetDimension(GetTextSize());
+
+	SetPosition(m_positionWanted);
 }
 
 void Text::SetFontSize(int p_size)
@@ -185,9 +186,9 @@ void Text::SetFontSize(int p_size)
 		SDL_Log("Text::SetFontSize/TTF_SetFontSize pour m_outlineFont failed : %s", SDL_GetError());
 		return;
 	}
-	SetPosition(m_positionWanted);
-
 	SetDimension(GetTextSize());
+
+	SetPosition(m_positionWanted);
 }
 
 float Text::GetFontSize() const
@@ -461,9 +462,9 @@ void Text::SetWrapWidth(int p_wrapWidth)
 		return;
 	}
 
-	SetPosition(m_positionWanted);
-
 	SetDimension(GetTextSize());
+
+	SetPosition(m_positionWanted);
 }
 
 int Text::GetWrapWidth() const
@@ -516,9 +517,9 @@ void Text::SetFontStyle(bool p_bold, bool p_italic, bool p_underline, bool p_str
 	TTF_SetFontStyle(m_font, m_fontStyle);
 	TTF_SetFontStyle(m_outlineFont, m_fontStyle);
 
-	SetPosition(m_positionWanted);
-
 	SetDimension(GetTextSize());
+
+	SetPosition(m_positionWanted);
 }
 
 FontStyle Text::GetFontStyle() const
@@ -554,9 +555,9 @@ void Text::SetOutlineSize(int p_outlineSize)
 			return;
 		}
 	}
-	SetPosition(m_positionWanted);
-
 	SetDimension(GetTextSize());
+
+	SetPosition(m_positionWanted);
 }
 
 void Text::SetOutLineColor(Color p_color)
@@ -600,9 +601,9 @@ void Text::HorizontalAlignText(HorizontalAlignment p_alignment)
 	TTF_SetFontWrapAlignment(m_font, (TTF_HorizontalAlignment)p_alignment);
 	TTF_SetFontWrapAlignment(m_outlineFont, (TTF_HorizontalAlignment)p_alignment);
 
-	SetPosition(m_positionWanted);
-
 	SetDimension(GetTextSize());
+
+	SetPosition(m_positionWanted);
 }
 
 HorizontalAlignment Text::GetHorizontalAlignText() const

@@ -4,7 +4,6 @@
 class Button;
 class GlobalMenuScene : public Scene
 {
-
 private :
 
 	Button* m_startButton = nullptr;
@@ -12,6 +11,8 @@ private :
 	Button* m_newGameButton = nullptr;
 	Button* m_settingsButton = nullptr;
 	Button* m_quitButton = nullptr;
+
+	Entity* m_background = nullptr;
 
 	bool m_hasSave = false;
 

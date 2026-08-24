@@ -16,11 +16,17 @@ class UiJobs : public Ui
 
 	void OnInitialize() override;
 
+	bool m_isOpen = false;
+
 public : 
 	void Toggle();
 	void SetIsVisible(bool p_visible);
 
 	void Open();
 	void Close();
+
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = {0.5f, 0.5f});
+
+	bool GetIsOpen() { return m_isOpen; }
 };
 

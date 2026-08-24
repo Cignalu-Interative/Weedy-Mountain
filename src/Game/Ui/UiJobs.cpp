@@ -57,6 +57,8 @@ void UiJobs::Toggle()
 }
 void UiJobs::Open()
 {
+	SetPosition((Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize());
+
 	Entity::SetIsVisible(true);
 
 	m_gathererUi->SetIsVisible(true);
@@ -69,6 +71,8 @@ void UiJobs::Open()
 	Debug::Get()->GetText("GathererLvL")->SetIsVisible(true);
 
 	GetScene<HUDScene>()->HideUi();
+
+	m_isOpen = true;
 }
 
 void UiJobs::Close()
@@ -87,6 +91,7 @@ void UiJobs::Close()
 	Debug::Get()->GetText("MinerLvL")->SetIsVisible(false);
 	Debug::Get()->GetText("GathererLvL")->SetIsVisible(false);
 
+	m_isOpen = false;
 }
 
 void UiJobs::SetIsVisible(bool p_visible)
@@ -102,4 +107,22 @@ void UiJobs::SetIsVisible(bool p_visible)
 	Debug::Get()->GetText("MinerLvL")->SetIsVisible(p_visible);
 	Debug::Get()->GetText("GathererLvL")->SetIsVisible(p_visible);
 
+}
+
+void UiJobs::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2i dimension = GetDimension();
+
+	Vector2f farmerPos = { GetPosition({0.5f,0}).GetX() - dimension.GetX() * 0.25f,GetPosition().GetY() };
+	Vector2f gathererPos = { GetPosition({0.5f,1}).GetX() + dimension.GetX() * 0.25f,  GetPosition().GetY() };
+	Vector2f minerPos = GetPosition();
+	Vector2f textPos = GetPosition({ 0.5f, 0 }) + Vector2f(0, 60);
+
+	m_gathererUi->SetPosition(gathererPos);
+	m_farmerUi->SetPosition(farmerPos);
+	m_minerUi->SetPosition(minerPos);
+
+	Debug::Get()->GetText("metier")->SetPosition(textPos);
 }

@@ -90,7 +90,7 @@ bool Window::CreateWindow()
 		m_isFullScreen = true;
 	}
 
-	SDL_Surface* icon = IMG_Load("../../res/2DPendentEngine/Assets/Textures/IconWindow/CignaluEngineIconeV2.png");
+	SDL_Surface* icon = IMG_Load("../../res/2DPendentEngine/Assets/Textures/IconWindow/logo mini.png");
 
 	if (icon != nullptr)
 	{

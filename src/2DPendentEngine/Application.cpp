@@ -214,6 +214,10 @@ void Application::Update()
 	if (m_camera->GetDimension().GetX() != sizeWindow.GetX() || m_camera->GetDimension().GetY() != sizeWindow.GetY())
 	{
 		m_camera->SetDimension(m_window.GetWindowSize());
+		if (m_camera->GetFollowedEntity() != nullptr)
+		{
+			m_camera->SetPosition(m_camera->GetFollowedEntity()->GetPosition());
+		}
 	}
 
 	for (auto it = m_entityToDestroy.begin(); it != m_entityToDestroy.end(); ++it)

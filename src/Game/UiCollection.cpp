@@ -229,13 +229,15 @@ void UiCollection::SetIsVisible(bool p_isVisible)
 
 void UiCollection::Open()
 {
-	m_isOpen = true;
+	SetPosition((Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize());
 
 	SetIsVisible(true);
 	GameData::Get().GetPlayerData().m_playerInventory->GetHotbar()->SetIsVisible(false);
 	RefreshPage();
 
 	GetScene<HUDScene>()->HideUi();
+
+	m_isOpen = true;
 }
 
 void UiCollection::Close()
@@ -260,6 +262,36 @@ void UiCollection::Close()
 	m_itemPageRecipies->SetIsVisible(false);
 
 	m_isOpen = false;
-	
+}
 
+void UiCollection::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2f prevPos = { GetPosition({ 0.5f,1 }).GetX() - 400.f, GetPosition({ 0.5f,1 }).GetY() - 70 };
+	Vector2f nextPos = { GetPosition({ 0.5f,1 }).GetX() + 400.f, GetPosition({ 0.5f,1 }).GetY() - 70 };
+	Vector2f backPos = { GetPosition({ 0,0 }).GetX() + 45.f, GetPosition({ 0,0 }).GetY() + 60.f };
+
+	Debug::Get()->GetText("ItemNamePage")->SetPosition({GetPosition({0.15f,0.50f})});
+	Debug::Get()->GetText("ItemNameDescription")->SetPosition({ GetPosition({0.10f,0.60f}) });
+	Debug::Get()->GetText("ItemNameRecipies")->SetPosition({ GetPosition({0.50f,0.20f}) });
+
+	m_prevPageButton->SetPosition(prevPos);
+	m_nextPageButton->SetPosition(nextPos);
+	m_backButton->SetPosition(backPos);
+	
+	float startX = GetPosition({ 0, 0 }).GetX() + 100.f;
+	float startY = GetPosition({ 0, 0 }).GetY() + 150.f;
+
+	for (int i = 0; i < m_allItemIDs.size(); i++)
+	{
+		int row = i / m_columns;
+		int col = i % m_columns;
+
+		Vector2f pos = { startX + col * spacingX, startY + row * spacingY };
+
+		ItemBlock* block = m_blocks[i];
+		block->SetPosition(pos);
+		GetScene()->GetGeometry<Text>(block->GetTextID())->SetPosition(block->GetPosition());
+	}
 }

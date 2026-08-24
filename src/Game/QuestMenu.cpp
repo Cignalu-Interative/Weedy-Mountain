@@ -229,12 +229,15 @@ void QuestMenu::SetVisible(bool p_visible)
 
 void QuestMenu::Open(std::vector<Quest*>* p_quest)
 {
-	m_isOpen = true;
+	SetPosition((Vector2f)Application::Get()->GetWindow()->GetHalfWindowSize());
+
 	SetVisible(true);
 	SyncQuests(p_quest);
 	DisplayPage();
 
 	GetScene<HUDScene>()->HideUi();
+
+	m_isOpen = true;
 }
 
 void QuestMenu::Close()
@@ -242,7 +245,6 @@ void QuestMenu::Close()
 	if (m_isVisible)
 		GetScene<HUDScene>()->ShowUi();
 
-	m_isOpen = false;
 	SetVisible(false);
 	m_selectedQuest = nullptr;
 	
@@ -275,7 +277,7 @@ void QuestMenu::Close()
 		}
 
 	}
-
+	m_isOpen = false;
 }
 void QuestMenu::Toggle(std::vector<Quest*>* p_quest)
 {
@@ -414,4 +416,85 @@ void QuestMenu::UnfollowQuest(Quest* p_quest)
 		}
 	}
 	QuestManager::Get()->RemoveActiveQuest(p_quest);
+}
+
+void QuestMenu::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	int marginOut = 20; //marge pour les bord du menu
+
+	for (QuestMenuSlot* slot : m_slots)
+	{
+		if (slot->GetTextID() == "title")
+		{
+			slot->SetPosition(GetPosition({ 0.0f, 0.0f }) + Vector2f{ marginOut * 1.5f, marginOut * 2.5f }, { 0.0f, 0.0f });
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "reward")
+		{
+			slot->SetPosition(GetSlot("title")->GetPosition({ 0.5f, 1.0f }) + Vector2f{ 0.0f, (float)marginOut / 2 }, { 0.5f, 0.0f });
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "history")
+		{
+			slot->SetPosition(GetSlot("title")->GetPosition({ 1.0f, 0.0f }) + Vector2f{ (float)marginOut, 0.0f }, { 0.0f, 0.0f });
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "requiquement")
+		{
+			slot->SetPosition({ GetSlot("history")->GetPosition({1.0f, 0.5f}).GetX() - 390, GetSlot("history")->GetPosition({0.5f, 1.0f}).GetY() + marginOut * 0.34f }, { 0.5f, 0.0f });
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "followQuest")
+		{
+			slot->SetPosition(GetSlot("requiquement")->GetPosition({ 0.25f, 1.f }) + Vector2f{ 0.0f, (float)marginOut }, { 0.0f, 0.0f });
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "unfollowQuest")
+		{
+			slot->SetPosition(GetSlot("requiquement")->GetPosition({ 0.75f, 1.0f }) + Vector2f{ 0.0f,(float)marginOut }, { 1.0f, 0.0f });
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "nextQuest")
+		{
+			slot->SetPosition({ GetPosition({ 1.0f, 0.5f }).GetX() + -(float)marginOut * 2, GetSlot("unfollowQuest")->GetPosition({0.5f, 1.0f}).GetY()}, {1.0f, 1.0f});
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "previousQuest")
+		{
+			slot->SetPosition({ GetPosition({ 0.0f, 0.5f }).GetX() + (float)marginOut * 2, GetSlot("unfollowQuest")->GetPosition({0.5f, 1.0f}).GetY()}, {0.0f, 1.0f});
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+		else if (slot->GetTextID() == "listOfQuest")
+		{
+			slot->SetPosition(GetSlot("history")->GetPosition({1.0f, 0.0f}) + Vector2f{(float)marginOut, 0.0f}, {0.0f, 0.0f});
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+		}
+	}
+
+	m_rewardText->SetPosition(GetSlot("reward")->GetPosition({ 0.5f, 0.2f }));
+
+	m_requirementText->SetPosition(GetSlot("requiquement")->GetPosition({ 0.5f, 0.2f }));
+
+	float margin = 10;
+	int count = 0;
+	QuestMenuSlot* listOfQuest = GetSlot("listOfQuest");
+	int totalHeight = listOfQuest->GetPosition({ 0.5f, 0.92f }).GetY() - GetPosition({ 0.5f, 0.08f }).GetY();
+	int sizeelement = (int)std::ceil(totalHeight / 6);
+
+	for (QuestMenuSlot * slot : m_slots)
+	{
+		if (slot->GetTextID() != "title" && slot->GetTextID() != "reward" && slot->GetTextID() != "history" && slot->GetTextID() != "requiquement" && slot->GetTextID() != "followQuest" && slot->GetTextID() != "unfollowQuest" && slot->GetTextID() != "nextQuest" && slot->GetTextID() != "previousQuest" && slot->GetTextID() != "listOfQuest")
+		{
+			slot->SetPosition(listOfQuest->GetPosition({ 0.5f, 0.075f }) + Vector2f{ 0.0f, margin + (slot->GetDimension().GetY() * count) }, { 0.5f, 0.0f });
+			slot->GetButtonText()->SetPosition(slot->GetPosition());
+
+			count++;
+			if (count >= 5)
+			{
+				count = 0;
+			}
+		}
+	}
 }

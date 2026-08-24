@@ -35,6 +35,7 @@ public:
 	void ZoomOut(float p_amount);
 
 	void SetFollowedEntity(Entity* p_entity) { m_followedEntity = p_entity; }
+	Entity* GetFollowedEntity() const { return m_followedEntity; }
 
 	void Follow(float p_dt);
 

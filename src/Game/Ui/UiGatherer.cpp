@@ -35,3 +35,14 @@ void UiGatherer::OnUpdate()
 	GetSprite("UiGathererFull")->SetDimension(dim);
 	GetSprite("UiGathererFull")->SetPosition(GetSprite("UiGathererEmpty")->GetPosition({0.01f,0.5f}), { 0,0.5f });
 }
+
+void UiGatherer::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2f barPos = GetSprite("GathererAsset")->GetPosition() + Vector2f(0, 50);
+	GetSprite("UiGathererEmpty")->SetPosition(barPos);
+
+	Vector2f textPos = GetSprite("GathererAsset")->GetPosition() + Vector2f(0, 80);
+	Debug::Get()->GetText("GathererLvL")->SetPosition(textPos);
+}

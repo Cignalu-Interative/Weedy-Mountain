@@ -33,5 +33,15 @@ void UiFarmer::OnUpdate()
 	GetSprite("UiFarmerFull")->SetDimension(dim);
 	GetSprite("UiFarmerFull")->SetPosition(GetSprite("UiFarmerEmpty")->GetPosition({ 0.01f,0.5f }), { 0,0.5f });
 
+}
 
+void UiFarmer::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2f barPos = GetSprite("FarmerAsset")->GetPosition() + Vector2f(0, 50);
+	GetSprite("UiFarmerEmpty")->SetPosition(barPos);
+
+	Vector2f textPos = GetSprite("FarmerAsset")->GetPosition() + Vector2f(0, 80);
+	Debug::Get()->GetText("FarmerLvL")->SetPosition(textPos);
 }

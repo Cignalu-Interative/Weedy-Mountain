@@ -424,11 +424,11 @@ void UiShop::Open()
 
 void UiShop::Close()
 {
-	Vector2f hotbarPos = GetScene()->GetWindowCenter() + Vector2f{0, 300};
+	Vector2f hotbarPos = { GetScene()->GetWindowCenter().GetX(),(float)GetScene()->GetWindowSize().GetY() - 12 };
 	m_slot->Clear();
 	m_textBox->SetIsVisible(false);
+	m_playerInventory->GetHotbar()->SetPosition(hotbarPos, { 0.5f, 1.0f });
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
-	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
 
 	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
 

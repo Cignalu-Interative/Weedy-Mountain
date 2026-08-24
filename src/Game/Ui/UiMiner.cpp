@@ -34,5 +34,15 @@ void UiMiner::OnUpdate()
 	GetSprite("UiMinerFull")->SetDimension(dim);
 	GetSprite("UiMinerFull")->SetPosition(GetSprite("UiMinerEmpty")->GetPosition({ 0.01f,0.5f }), { 0,0.5f });
 
+}
 
+void UiMiner::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2f barPos = GetSprite("MinerAsset")->GetPosition() + Vector2f(0, 50);
+	GetSprite("UiMinerEmpty")->SetPosition(barPos);
+
+	Vector2f textPos = GetSprite("MinerAsset")->GetPosition() + Vector2f(0, 80);
+	Debug::Get()->GetText("MinerLvL")->SetPosition(textPos);
 }

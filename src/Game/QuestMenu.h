@@ -53,5 +53,9 @@ public:
 
 	void FollowQuest(Quest* p_quest);
 	void UnfollowQuest(Quest* p_quest);
+
+	bool GetIsOpen() const { return m_isOpen; }
+
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 };
 

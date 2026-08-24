@@ -88,7 +88,7 @@ void HUDScene::OnInitialize()
 
 	SceneManager::Get()->SetPersistentScene(this);
 
-	QuestMenu* questMenu = CreateEntity<QuestMenu>({ (float)GetWindowWidth() / 2.0f, (float)GetWindowHeight() / 2.0f }, { (int)(GetWindowWidth() * 0.85f), (int)(GetWindowHeight() * 0.85f) }, "InventoryWeedyMountain", Shape::Rectangle, true);
+	QuestMenu* questMenu = CreateEntity<QuestMenu>(GetWindowCenter(), { 1088, 612 }, "InventoryWeedyMountain", Shape::Rectangle, true);
 	questMenu->GetSprite()->ResizeStretched(questMenu->GetDimension());
 	questMenu->SyncSprites();
 	questMenu->SetDrawLayer(INT_MAX - 20);
@@ -161,6 +161,7 @@ void HUDScene::OnUpdate()
 	{
 		m_lastWindowSize = newSize;
 		UiPos();
+		UiMenuPos();
 	}
 
 	GameData& gm = GameData::Get();
@@ -220,6 +221,33 @@ void HUDScene::UiPos()
 	//m_statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
 	//m_moneyUi = CreateEntity<UiMoney>(moneyPos, { 160,64 }, "", Shape::Rectangle, true);
 	//m_cashUi = CreateEntity<UiCash>(cashPos, { 160,64 }, "", Shape::Rectangle, true);
+}
+
+void HUDScene::UiMenuPos()
+{
+	if (m_jobsUi->GetIsOpen() == true)
+	{
+		m_jobsUi->SetPosition(GetWindowCenter());
+	}
+	if (m_collectionUi->GetIsOpen() == true)
+	{
+		m_collectionUi->SetPosition(GetWindowCenter());
+	}
+	if (m_questMenu->GetIsOpen() == true)
+	{
+		m_questMenu->SetPosition(GetWindowCenter());
+	}
+	if (m_recipe->GetIsOpen() == true)
+	{
+		m_recipe->SetPosition(GetWindowCenter());
+
+		Vector2f pos = m_recipe->GetPosition({ 0,0.5f });
+
+		float offsetY = pos.GetY() + 80;
+		m_playerInventory->GetInventory()->SetPosition({ pos.GetX() + 70,offsetY }, { 0,1 });
+
+		m_playerInventory->GetHotbar()->SetPosition({ pos.GetX() + 70,offsetY + 110 }, { 0,1 });
+	}
 }
 
 void HUDScene::BarButtonInit()

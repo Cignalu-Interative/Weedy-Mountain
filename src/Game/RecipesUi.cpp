@@ -173,6 +173,7 @@ void RecipesUi::Open()
 	m_menus[m_actualPageMenu]->SetIsVisible(true);
 	Debug::Get()->GetText("CraftTitle")->SetIsVisible(true);
 
+	m_isOpen = true;
 }
 
 void RecipesUi::Close()
@@ -182,12 +183,13 @@ void RecipesUi::Close()
 
 	SetIsVisible(false);
 	
-	Vector2f hotbarPos = GetScene()->GetWindowCenter() + Vector2f{ 0, 300 };
+	Vector2f hotbarPos = { GetScene()->GetWindowCenter().GetX(),(float)GetScene()->GetWindowSize().GetY() - 12 };
+
 	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
 	m_playerInventory->GetInventory()->SetVisible(false);
 
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
-	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
+	m_playerInventory->GetHotbar()->SetPosition(hotbarPos, {0.5f, 1.0f});
 
 	m_nextMenuButton->SetIsVisible(false);
 	m_previousMenuButton->SetIsVisible(false);
@@ -200,7 +202,7 @@ void RecipesUi::Close()
 	{
 		menu->SetIsVisible(false);
 	}
-
+	m_isOpen = false;
 }
 
 void RecipesUi::NextPageMenu()
@@ -410,4 +412,5 @@ void RecipesUi::SetPosition(Vector2f p_position, Vector2f p_anchor)
 	m_textBox->SetPosition(textBoxPos);
 	m_textBoxBackground->SetPosition(m_textBox->GetPosition());
 	
+	Debug::Get()->GetText("CraftTitle")->SetPosition(GetPosition({}) + Vector2f{ 125, 50 });
 }

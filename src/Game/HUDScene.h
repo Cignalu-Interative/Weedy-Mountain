@@ -60,6 +60,8 @@ protected:
 
 	void UiPos();
 
+	void UiMenuPos();
+
 	void BarButtonInit();
 
 	void CloseAllUi();

@@ -312,12 +312,13 @@ void FurnaceUi::Open()
 
 void FurnaceUi::Close()
 {
-	Vector2f hotbarPos = GetScene()->GetWindowCenter() + Vector2f{ 0, 300 };
+	Vector2f hotbarPos = { GetScene()->GetWindowCenter().GetX(),(float)GetScene()->GetWindowSize().GetY() - 12 };
+
 	m_playerInventory->GetInventory()->SetPosition(GetScene()->GetWindowCenter());
 	m_playerInventory->GetInventory()->SetVisible(false);
 
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
-	m_playerInventory->GetHotbar()->SetPosition(hotbarPos);
+	m_playerInventory->GetHotbar()->SetPosition(hotbarPos, { 0.5f, 1.0f });
 
 	SetIsVisible(false);
 	m_rawOres->SetIsVisible(false);

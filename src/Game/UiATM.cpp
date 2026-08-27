@@ -293,3 +293,40 @@ void UiATM::StringToInt()
 		std::cout << "[UiATM AMOUNT] : out of range " << std::endl;
 	}
 }
+
+void UiATM::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Scene* scene = GetScene();
+
+	m_title->SetPosition(GetPosition({ 0.5f, 0 }) + Vector2f(0, 75));
+
+	m_atmAmount->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(85, 0));
+
+	m_dailyDepositError->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(500, -75));
+
+	m_errorMsg->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(650, 0));
+
+	m_amountBox->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(250, 0));
+
+	m_depositPos = GetPosition({ 1,1 }) - Vector2f{ 200, 150 };
+	m_retrievePos = GetPosition({ 1,1 }) - Vector2f{ 200, 250 };
+	Vector2f textBoxPos = GetPosition({ 0,0 }) + Vector2f{ 200, 150 };
+
+	m_depositButton->SetPosition(m_depositPos);
+
+	m_retrieveButton->SetPosition(m_retrievePos);
+
+	m_10Button->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(95, 100));
+
+	m_50Button->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(220, 100));
+
+	m_100Button->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(345, 100));
+
+	m_200Button->SetPosition(GetPosition({ 0, 0.35f }) + Vector2f(470, 100));
+
+	m_cashAmount->SetPosition(textBoxPos + Vector2f{ 50 , 250 });
+
+	m_bankAmount->SetPosition(textBoxPos + Vector2f{ 70 , 320 });
+}

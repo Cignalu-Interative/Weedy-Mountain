@@ -21,4 +21,6 @@ public:
     void Toogle();
     bool IsOpen();
 
+	UiATM* GetUiATM() { return m_atmUI; }
+
 };

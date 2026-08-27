@@ -32,7 +32,6 @@ private :
 
 	int m_amount = 20;
 
-
 	bool m_isOpen = false;
 
 protected: 
@@ -51,6 +50,8 @@ public :
 	void Close();
 
 	bool IsOpen() { return m_isOpen; }
+
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 
 };
 

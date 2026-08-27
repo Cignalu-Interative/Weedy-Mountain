@@ -24,6 +24,7 @@
 #include "Ui/UiShop.h"
 #include "UiDealerShop.h"
 #include "ATM.h"
+#include "UiATM.h"
 
 #include "2DPendentLib/ObjectGroupTiled.h"
 #include "2DPendentLib/ObjectTiled.h"
@@ -149,7 +150,7 @@ void VillageScene::OnEvent()
 	if (im->IsKeyboardDown(K_A))
 		GetCamera()->SetZoom(5);
 
-	if (im->IsKeyboardDown(K_E) && (!m_shopPNJ->IsInPlayerZone() && !m_PNJ->IsInPlayerZone()))
+	if (im->IsKeyboardDown(K_I) && (!m_shopPNJ->IsInPlayerZone() && !m_PNJ->IsInPlayerZone()))
 		GetCamera()->SetZoom(1);
 
 	if (im->IsKeyboardDown(K_M))
@@ -199,6 +200,19 @@ void VillageScene::OnEvent()
 
 void VillageScene::OnUpdate()
 {
+	Vector2i newSize = GetWindowSize();
+
+	if (newSize != m_lastWindowSize)
+	{
+		m_lastWindowSize = newSize;
+		if (m_atm->IsOpen())
+		{
+			m_atm->GetUiATM()->SetPosition({ GetWindowWidth() / 2.f, GetWindowHeight() / 2.f });
+		}
+
+	}
+
+
 }
 
 void VillageScene::OnDestroy()

@@ -19,6 +19,7 @@ private :
 	UiShop* m_shop = nullptr;
 	UiDealerShop* m_dealerShop = nullptr;
 	Vector2f m_spawnPoint;
+	Vector2i m_lastWindowSize;
 
 protected :
 

@@ -247,10 +247,6 @@ void HUDScene::UiMenuPos()
 
 		m_playerInventory->GetHotbar()->SetPosition({ pos.GetX() + 70,offsetY + 110 }, { 0,1 });
 	}
-
-
-
-
 }
 
 void HUDScene::BarButtonInit()

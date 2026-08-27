@@ -24,6 +24,8 @@ private :
 	float m_heatingTimeRequired = 0.f;// time for item in rawOres
 	float m_currentHeatingTime = m_heatingTimeRequired;
 
+	bool m_isOpen = false;
+
 	void OnInitialize() override;
 	void OnUpdate() override;
 	void OnEvent() override;
@@ -44,5 +46,9 @@ public :
 
 	void Save(nlohmann::json& p_out) const;
 	void Load(const nlohmann::json& p_in);
+
+	bool GetIsOpen() { return m_isOpen; }
+
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5f, 0.5f });
 };
 

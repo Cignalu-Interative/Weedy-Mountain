@@ -17,6 +17,8 @@ class UiMoney;
 class UiCash;
 class UiTime;
 class UiDate;
+class Chest;
+class Furnace;
 
 class GameScene : public Scene
 {
@@ -24,6 +26,11 @@ private:
 	Player* m_player = nullptr;
 
 	Vector2f m_spawnPoint;
+
+	Chest* m_chest = nullptr;
+	Furnace* m_furnace = nullptr;
+
+	Vector2i m_lastWindowSize;
 
 protected:
 

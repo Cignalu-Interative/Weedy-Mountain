@@ -12,6 +12,8 @@ private :
 	
 	Inventory* m_chestInventory = nullptr;
 
+	bool m_isOpen = false;
+
 	void OnInitialize() override;
 	void OnEvent() override;
 
@@ -22,5 +24,9 @@ public:
 
 	void Open();
 	void Close(); 
+
+	void SetPosition(Vector2f p_position, Vector2f p_anchor = { 0.5f, 0.5f });
+
+	bool GetIsOpen() { return m_isOpen; }
 };
 

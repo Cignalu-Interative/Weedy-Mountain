@@ -293,11 +293,10 @@ void FurnaceUi::PlaceItemInInventory(InventorySlot* p_slot)
 
 void FurnaceUi::Open()
 {
-	Vector2f pos = GetPosition() + Vector2f{0,50};
-	m_playerInventory->GetInventory()->SetPosition(pos);
+	SetPosition(GetScene()->GetWindowCenter());
+
 	m_playerInventory->GetInventory()->SetVisible(true);
 
-	m_playerInventory->GetHotbar()->SetPosition(pos + Vector2f {0, 150});
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
 
 	SetIsVisible(true);
@@ -308,6 +307,8 @@ void FurnaceUi::Open()
 	m_rawOres->RefreshVisual();
 	m_meltedOres->RefreshVisual();
 	m_consumables->RefreshVisual();
+
+	m_isOpen = true;
 }
 
 void FurnaceUi::Close()
@@ -328,6 +329,8 @@ void FurnaceUi::Close()
 	m_rawOres->RefreshVisual();
 	m_meltedOres->RefreshVisual();
 	m_consumables->RefreshVisual();
+
+	m_isOpen = false;
 }
 
 void FurnaceUi::Save(nlohmann::json& out) const
@@ -373,4 +376,25 @@ void FurnaceUi::Load(const nlohmann::json& in)
 	{
 		m_progressBarAnimation->SetDuration(m_heatingTimeRequired / m_progressBarAnimation->GetTotalFrames());
 	}
+}
+
+void FurnaceUi::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2f pos = GetPosition() + Vector2f{ 0,50 };
+	m_playerInventory->GetInventory()->SetPosition(pos);
+
+	m_playerInventory->GetHotbar()->SetPosition(pos + Vector2f{ 0, 150 });
+
+	Scene* scene = GetScene();
+
+	Vector2f rowOresSlotPos = scene->GetWindowCenter() + Vector2f{ -75, -225 };
+	m_rawOres->SetPosition(rowOresSlotPos);
+
+	Vector2f consumablesSlotPos = scene->GetWindowCenter() + Vector2f{ -75, -100 };
+	m_consumables->SetPosition(consumablesSlotPos);
+
+	Vector2f meltedOresSlotPos = scene->GetWindowCenter() + Vector2f{ 80, -165 };
+	m_meltedOres->SetPosition(meltedOresSlotPos);
 }

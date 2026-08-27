@@ -78,20 +78,16 @@ void UiChest::AddItemInPlayerInventory()
 
 void UiChest::Open()
 {
+	SetPosition(GetScene()->GetWindowCenter());
+
 	SetIsVisible(true);
-	Vector2f pos = GetPosition();
-
-	float offsetY = pos.GetY() + 90;
-	m_playerInventory->GetInventory()->SetPosition({ pos.GetX() ,offsetY });
-	m_playerInventory->GetInventory()->SetVisible(true);
-
-	m_playerInventory->GetHotbar()->SetPosition({ pos.GetX(),offsetY + 150 });
-	m_playerInventory->GetHotbar()->SetIsVisible(true);
 
 	m_chestInventory->SetVisible(true);
 
 	Debug::Get()->GetText("Chest")->SetIsVisible(true);
 	Debug::Get()->GetText("InventoryText")->SetIsVisible(true);
+
+	m_isOpen = true;
 }
 
 void UiChest::Close()
@@ -110,4 +106,29 @@ void UiChest::Close()
 	Debug::Get()->GetText("InventoryText")->SetIsVisible(false);
 
 	std::cout <<m_playerInventory->GetInventory()->GetSlot(0)->GetIsVisible() << std::endl;
+
+	m_isOpen = false;
+}
+
+void UiChest::SetPosition(Vector2f p_position, Vector2f p_anchor)
+{
+	Entity::SetPosition(p_position, p_anchor);
+
+	Vector2f pos = GetPosition();
+
+	float offsetY = pos.GetY() + 90;
+	m_playerInventory->GetInventory()->SetPosition({ pos.GetX() ,offsetY });
+	m_playerInventory->GetInventory()->SetVisible(true);
+
+	m_playerInventory->GetHotbar()->SetPosition({ pos.GetX(),offsetY + 150 });
+	m_playerInventory->GetHotbar()->SetIsVisible(true);
+
+	Vector2f chestPos = GetScene()->GetWindowCenter() - Vector2f{ 0, 150 };
+	m_chestInventory->SetPosition(chestPos);
+
+	Vector2f textChestPos = chestPos - Vector2f{ 290,120 };
+	Debug::Get()->GetText("Chest")->SetPosition(textChestPos);
+
+	Vector2f textInventoryPos = textChestPos + Vector2f{ 25, 240 };
+	Debug::Get()->GetText("InventoryText")->SetPosition(textInventoryPos);
 }

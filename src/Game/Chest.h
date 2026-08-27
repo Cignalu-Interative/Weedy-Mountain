@@ -17,5 +17,7 @@ private :
 	void OnCollisionExit(Collider* _self, Collider* _other, CollisionSide _side) override;
 public : 
 
+	UiChest* GetUiChest() { return m_uiChest; }
+
 };
 

@@ -105,7 +105,6 @@ void HUDScene::OnInitialize()
 	m_recipe->SetDrawLayer(INT_MAX - 200);
 	m_recipe->Close();
 
-
 	BarButtonInit();
 	UiPos();
 
@@ -248,6 +247,10 @@ void HUDScene::UiMenuPos()
 
 		m_playerInventory->GetHotbar()->SetPosition({ pos.GetX() + 70,offsetY + 110 }, { 0,1 });
 	}
+
+
+
+
 }
 
 void HUDScene::BarButtonInit()

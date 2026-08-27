@@ -39,6 +39,7 @@
 #include "2DPendentLib/ObjectTiled.h"	
 
 #include "Furnace.h"
+#include "FurnaceUi.h"
 #include "ItemActions.h"
 #include "SoundManager.h"
 
@@ -46,11 +47,14 @@
 
 #include "QuestManager.h"
 #include "Chest.h"
+#include "UiChest.h"
 #include "RecipeDataBase.h"
 #include "RecipeBlock.h"
 #include "RecipesUi.h"
 
 #include "SaveManager.h"
+#include "HUDScene.h"
+
 
 void GameScene::OnInitialize()
 {
@@ -138,7 +142,7 @@ void GameScene::OnInitialize()
 		FarmManager::Get()->RegisterTile(tile);
 	}
 	
-	Furnace* f = CreateEntity<Furnace>({ m_spawnPoint + Vector2f{0, 200} }, { 16,32 }, "", Shape::Rectangle);
+	m_furnace = CreateEntity<Furnace>({ m_spawnPoint + Vector2f{0, 200} }, { 16,32 }, "", Shape::Rectangle);
 
 
 
@@ -177,7 +181,7 @@ void GameScene::OnInitialize()
 	QuestManager::Get()->CreateQuest(" ROGER LE CASTOR", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 	QuestManager::Get()->CreateQuest(" CASTOR-AMA", { (float)GetWindowWidth() - 30, 180.f }, { 150, 69 }, m_player);
 
-	Chest* c = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
+	m_chest = CreateEntity<Chest>(m_player->GetPosition() + Vector2f{ 0,100 }, { 16,16 }, "Wooden_Chest", Shape::Rectangle);
 }
 
 
@@ -233,13 +237,27 @@ void GameScene::OnEvent()
 
 void GameScene::OnUpdate()
 {
-
 	FarmManager::Get()->Update();
 	EnviroSpawn::Get()->Update();
 	GameData& gm = GameData::Get();
 
 	//gm.Update();
 	//std::cout << "X = " << m_Player->GetPosition().GetX() / 2 << " Y = " << m_Player->GetPosition().GetY() / 2 << std::endl;
+
+	Vector2i newSize = GetWindowSize();
+
+	if (newSize != m_lastWindowSize)
+	{
+		m_lastWindowSize = newSize;
+		if (m_chest->GetUiChest()->GetIsOpen())
+		{
+			m_chest->GetUiChest()->SetPosition(GetWindowCenter());
+		}
+		if (m_furnace->GetFurnaceUi()->GetIsOpen())
+		{
+			m_furnace->GetFurnaceUi()->SetPosition(GetWindowCenter());
+		}
+	}
 
 	SoundManager* sm = SoundManager::Get();
 

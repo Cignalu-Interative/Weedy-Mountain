@@ -52,19 +52,19 @@ void HUDScene::OnInitialize()
 	GameData::Get().GetPlayerData().m_jobs.push_back(miner);
 	NightEffect* nightEffect = CreateEntity<NightEffect>(GetCamera()->GetPosition(), GetWindowSize(), "", Shape::Rectangle, true);
 
-	UiStats* statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
-	UiMoney* moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiCash* cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiTime* timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
-	UiDate* dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
+	m_statsUi = CreateEntity<UiStats>(uiStatsPos, { 300,150 }, "", Shape::Rectangle, true);
+	m_moneyUi = CreateEntity<UiMoney>({ (float)GetWindowWidth() - 100, 50 }, { 120,64 }, "", Shape::Rectangle, true);
+	m_cashUi = CreateEntity<UiCash>({ (float)GetWindowWidth() - 100, 100 }, { 120,64 }, "", Shape::Rectangle, true);
+	m_timeUi = CreateEntity<UiTime>({ 100,100 }, { 120,64 }, "", Shape::Rectangle, true);
+	m_dateUi = CreateEntity<UiDate>({ 100,50 }, { 120,64 }, "", Shape::Rectangle, true);
 
 	nightEffect->RemoveCollider("default");
 
-	statsUi->RemoveCollider("default");
-	moneyUi->RemoveCollider("default");
-	cashUi->RemoveCollider("default");
-	timeUi->RemoveCollider("default");
-	dateUi->RemoveCollider("default");
+	m_statsUi->RemoveCollider("default");
+	m_moneyUi->RemoveCollider("default");
+	m_cashUi->RemoveCollider("default");
+	m_timeUi->RemoveCollider("default");
+	m_dateUi->RemoveCollider("default");
 	m_jobsUi = CreateEntity<UiJobs>(GetWindowCenter(), { 1000, 600 }, "", Shape::Rectangle, true);
 
 	Inventory* inv = CreateEntity<Inventory>(GetWindowCenter(), { 636, 210 }, "InventoryWeedyMountain", Shape::Rectangle);
@@ -146,18 +146,20 @@ void HUDScene::OnDestroy()
 
 void HUDScene::HideUi()
 {
-	m_statsUi->SetIsVisible(false);
+	m_statsUi->SetVisible(false);
 	m_moneyUi->SetIsVisible(false);
 	m_timeUi->SetIsVisible(false);
 	m_cashUi->SetIsVisible(false);
 	m_dateUi->SetIsVisible(false);
+	m_playerInventory->GetHotbar()->SetIsVisible(false);
 }
 
 void HUDScene::ShowUi()
 {
-	m_statsUi->SetIsVisible(true);
+	m_statsUi->SetVisible(true);
 	m_moneyUi->SetIsVisible(true);
 	m_timeUi->SetIsVisible(true);
 	m_cashUi->SetIsVisible(true);
 	m_dateUi->SetIsVisible(true);
+	m_playerInventory->GetHotbar()->SetIsVisible(true);
 }

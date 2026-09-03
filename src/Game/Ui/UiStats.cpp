@@ -27,4 +27,12 @@ void UiStats::OnInitialize()
 
 void UiStats::OnUpdate()
 {
+	//m_uiStamina->SetIsVisible(true);
+}
+
+void UiStats::SetVisible(bool p_value)
+{
+	m_uiLife->SetIsVisible(p_value);
+	m_uiStamina->SetIsVisible(p_value);
+	m_uiToxicity->SetIsVisible(p_value);
 }

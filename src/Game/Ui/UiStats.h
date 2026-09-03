@@ -17,5 +17,8 @@ private :
 
 	void OnInitialize() override;
 	void OnUpdate() override;
+
+public:
+	void SetVisible(bool p_value);
 };
 

@@ -9,6 +9,7 @@
 #include "GlobalMenuScene.h"
 #include "CaveScene.h"
 #include "SaveManager.h"
+#include "CreditScene.h"
 
 namespace Launcher
 {
@@ -21,6 +22,7 @@ namespace Launcher
 		//SceneManager::Get()->PushScene("game");
 		SceneManager::Get()->AddScene<VillageScene>("village");
 		SceneManager::Get()->AddScene<CaveScene>("cave");
+		SceneManager::Get()->AddScene<CreditScene>("credit");
 		//SceneManager::Get()->AddScene<DemoScene>("demo");
 		//SceneManager::Get()->AddScene<TestScene>("test");
 	}

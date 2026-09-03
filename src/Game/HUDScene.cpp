@@ -152,6 +152,10 @@ void HUDScene::HideUi()
 	m_cashUi->SetIsVisible(false);
 	m_dateUi->SetIsVisible(false);
 	m_playerInventory->GetHotbar()->SetIsVisible(false);
+	Debug::Get()->GetText("Date")->SetIsVisible(false);
+	Debug::Get()->GetText("Money")->SetIsVisible(false);
+	Debug::Get()->GetText("time")->SetIsVisible(false);
+	Debug::Get()->GetText("UiCashText")->SetIsVisible(false);
 }
 
 void HUDScene::ShowUi()
@@ -162,4 +166,8 @@ void HUDScene::ShowUi()
 	m_cashUi->SetIsVisible(true);
 	m_dateUi->SetIsVisible(true);
 	m_playerInventory->GetHotbar()->SetIsVisible(true);
+	Debug::Get()->GetText("Date")->SetIsVisible(true);
+	Debug::Get()->GetText("Money")->SetIsVisible(true);
+	Debug::Get()->GetText("time")->SetIsVisible(true);
+	Debug::Get()->GetText("UiCashText")->SetIsVisible(false);
 }

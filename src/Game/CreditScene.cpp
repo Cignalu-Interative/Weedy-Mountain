@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "CreditScene.h"
 #include "2DPendentLib/Debug.h"
+#include "HUDScene.h"
 
 void CreditScene::OnInitialize()
 {
@@ -11,18 +12,36 @@ void CreditScene::OnInitialize()
 
 	m_text = GetGeometry<Text>("text");
 
-	Entity* background = CreateEntity<Entity>(GetWindowCenter(), GetWindowSize(), "BlackBackground", Shape::Rectangle, true);
-	background->GetSprite()->ResizeStretched(GetWindowSize());
-	background->SyncSprites();
-	background->SetDrawLayer(5004);
+	m_background = CreateEntity<Entity>(GetWindowCenter(), GetWindowSize(), "BlackBackground", Shape::Rectangle, true);
+	m_background->GetSprite()->ResizeStretched(GetWindowSize());
+	m_background->SyncSprites();
+	m_background->SetDrawLayer(5004);
 }
 
 void CreditScene::OnUpdate()
 {
-	m_text->Move({ 0, -0.1 });
+	m_text->Move({ 0, -28 * GetDeltaTime()});
+
+	if (m_timer >= m_timerGoal)
+	{
+		m_timer = 0.f;
+		SceneManager::Get()->PushScene("Global");
+	}
+	else
+	{
+		m_timer += GetDeltaTime();
+	}
+}
+
+void CreditScene::OnSleep()
+{
+	SetSleepDraw(true);
+	SetSleepUpdate(true);
 }
 
 void CreditScene::OnWake()
 {
 	m_text->SetPosition(Vector2f{ (float)GetWindowWidth() / 2, (float)GetWindowHeight() + 400 });
+	SetSleepDraw(false);
+	SetSleepUpdate(false);
 }

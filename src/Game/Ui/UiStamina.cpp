@@ -23,8 +23,6 @@ void UiStamina::OnInitialize()
 
 void UiStamina::OnUpdate()
 {
-	//SetIsVisible(true);
-	
 	int stamina = GameData::Get().GetPlayerData().m_stats.m_stamina;
 
 	if (m_currentValue == stamina)

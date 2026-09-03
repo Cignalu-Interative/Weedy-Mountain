@@ -212,7 +212,6 @@ void GameScene::OnEvent()
 	{
 
 		SceneManager::Get()->PushScene("credit");
-		static_cast<HUDScene*>(SceneManager::Get()->GetScene("HUD"))->HideUi();
 	}
 
 	if (im->IsKeyboardDown(K_G))

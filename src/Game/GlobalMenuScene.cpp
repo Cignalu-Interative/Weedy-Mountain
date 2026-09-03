@@ -108,4 +108,20 @@ void GlobalMenuScene::OnSleep()
 
 void GlobalMenuScene::OnWake()
 {
+	SetSleepDraw(false);
+	SetSleepEvent(false);
+	SetSleepUpdate(false);
+
+	Debug::Get()->GetText("GameTitle")->SetIsVisible(true);
+
+	if (m_startButton)
+		m_startButton->SetIsVisible(true);
+
+	if (m_continueButton)
+		m_continueButton->SetIsVisible(true);
+	if (m_newGameButton)
+		m_newGameButton->SetIsVisible(true);
+
+	m_settingsButton->SetIsVisible(true);
+	m_quitButton->SetIsVisible(true);
 }

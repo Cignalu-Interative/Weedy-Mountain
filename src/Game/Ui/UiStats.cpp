@@ -27,7 +27,6 @@ void UiStats::OnInitialize()
 
 void UiStats::OnUpdate()
 {
-	//m_uiStamina->SetIsVisible(true);
 }
 
 void UiStats::SetVisible(bool p_value)
